@@ -1,5 +1,3 @@
 package com.yeonae.chamelezone
 
-import android.graphics.Bitmap
-
-class Place (val place_img: String, val place_name: String, val distance: String, val keyword: String)
+data class Place (val placeImg: String, val placeName: String, val distance: String, val keyword: String)

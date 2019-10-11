@@ -18,22 +18,21 @@ RecyclerView.Adapter<RecyclerViewAdapter.Holder>() {
         private val keyword = itemView?.findViewById<TextView>(R.id.keyword)
 
         fun bind(place: Place, context: Context) {
-            if (place.place_img != "") {
+            if (place.placeImg != "") {
                 val resourceId = context.resources.getIdentifier(
-                    place.place_img,
+                    place.placeImg,
                     "drawable",
-                    context.packageName
+                    itemView.context.packageName
                 )
                 placeImg.setImageResource(resourceId)
             } else {
                 placeImg.setImageResource(R.mipmap.ic_launcher)
             }
-            placeName.text = place.place_name
+            placeName.text = place.placeName
             distance.text = place.distance
             keyword.text = place.keyword
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.place_list_item, parent, false)

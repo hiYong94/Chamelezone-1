@@ -2,6 +2,7 @@ package com.yeonae.chamelezone
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,7 @@ class HomeTabFragment : Fragment() {
             Place("map", "Chow Chow", "Male", "Male"),
             Place("user", "Chow Chow", "Male", "Male")
         )
-        System.out.println(placeList.size)
+        Log.d("tag", placeList.size.toString())
 
         val gridlayout = GridLayoutManager(this.context, 2)
         val placeAdapter = this.context?.let { RecyclerViewAdapter(it, placeList) }

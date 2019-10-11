@@ -35,10 +35,7 @@ class PagerAdapter(
             1 -> "코스"
             2 -> "지도"
             3 -> "즐겨찾기"
-            else -> {
-                return "마이페이지"
-
-            }
+            else -> "마이페이지"
         }
     }
 
