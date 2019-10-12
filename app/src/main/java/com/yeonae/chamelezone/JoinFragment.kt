@@ -13,10 +13,6 @@ class JoinFragment : Fragment() {
     val testEmail = "heimish_08@naver.com"
     val testNickname = "yeonvely"
 
-    fun newInstance(): JoinFragment {
-        return JoinFragment()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +27,7 @@ class JoinFragment : Fragment() {
         join_email.setOnFocusChangeListener(object : View.OnFocusChangeListener {
             override fun onFocusChange(view: View?, hasFocus: Boolean) {
                 if (hasFocus) {
-                    val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
+                    val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")// 정규식 변수 이름 바꾸기
                     val m = p.matcher(join_email.text.toString())
 
                     if (!m.matches()) {
@@ -115,7 +111,7 @@ class JoinFragment : Fragment() {
         })
 
         btn_back.setOnClickListener {
-            (activity as LoginActivity).replace(LoginFragment().newInstance())
+            (activity as LoginActivity).replace(LoginFragment())
         }
     }
 }

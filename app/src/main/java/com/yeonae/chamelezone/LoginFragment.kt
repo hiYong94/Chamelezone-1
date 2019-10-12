@@ -14,10 +14,6 @@ class LoginFragment : Fragment() {
     val testEmail = "heimish_08@naver.com"
     val testPassword = "1234"
 
-    fun newInstance(): LoginFragment {
-        return LoginFragment()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,13 +26,13 @@ class LoginFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         btn_find_email.setOnClickListener {
-            (activity as LoginActivity).replace(FindEmailFragment().newInstance())
+            (activity as LoginActivity).replace(FindEmailFragment())
         }
         btn_find_password.setOnClickListener {
-            (activity as LoginActivity).replace(FindPasswordFragment().newInstance())
+            (activity as LoginActivity).replace(FindPasswordFragment())
         }
         btn_join.setOnClickListener {
-            (activity as LoginActivity).replace(JoinFragment().newInstance())
+            (activity as LoginActivity).replace(JoinFragment())
         }
         btn_login.setOnClickListener {
             loginCheck("${edt_email.text}", "${edt_password.text}")
@@ -65,15 +61,9 @@ class LoginFragment : Fragment() {
     fun alertdialog() {
         val builder = AlertDialog.Builder(context!!)
         builder.setMessage("입력하신 정보는 존재하지 않습니다.")
-        builder.setPositiveButton("확인",
-            object : DialogInterface.OnClickListener {
-                override fun onClick(
-                    dialog: DialogInterface, id: Int
-                ) {
-                    dialog.cancel();
-                }
-            })
+        builder.setPositiveButton("확인"
+        ) { dialog, id -> dialog.cancel(); }
         builder.create()
         builder.show()
-    }
+    }//dialogFragment, class로 따로 뺌
 }

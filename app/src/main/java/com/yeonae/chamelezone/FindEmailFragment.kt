@@ -1,25 +1,18 @@
 package com.yeonae.chamelezone
 
 import android.content.DialogInterface
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_confirm_email.*
 import kotlinx.android.synthetic.main.fragment_find_email.*
-import kotlinx.android.synthetic.main.fragment_find_email.btn_back
 
 class FindEmailFragment : Fragment() {
     val testEmail = "heimish_08@naver.com"
     val testName = "yeonjae"
     val testPhone = "01049403065"
-
-    fun newInstance(): FindEmailFragment {
-        return FindEmailFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,10 +26,15 @@ class FindEmailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         btn_email.setOnClickListener {
+            val confirmEmailFragment = ConfirmEmailFragment()
+            val bundle = arguments
+            bundle!!.putString("email", testEmail)
+            confirmEmailFragment.arguments = bundle
+
             emailCheck("${edt_name.text}", "${edt_phone.text}")
         }
         btn_back.setOnClickListener {
-            (activity as LoginActivity).replace(LoginFragment().newInstance())
+            (activity as LoginActivity).replace(LoginFragment())
         }
     }
 

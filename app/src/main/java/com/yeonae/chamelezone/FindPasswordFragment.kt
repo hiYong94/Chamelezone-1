@@ -14,10 +14,6 @@ class FindPasswordFragment : Fragment() {
     val testEmail = "heimish_08@naver.com"
     val testPhone = "01049403065"
 
-    fun newInstance(): FindPasswordFragment {
-        return FindPasswordFragment()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,7 +30,7 @@ class FindPasswordFragment : Fragment() {
         }
 
         btn_back.setOnClickListener {
-            (activity as LoginActivity).replace(LoginFragment().newInstance())
+            (activity as LoginActivity).replace(LoginFragment())
         }
     }
 
