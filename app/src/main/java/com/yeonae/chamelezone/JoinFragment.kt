@@ -111,7 +111,7 @@ class JoinFragment : Fragment() {
         })
 
         btn_back.setOnClickListener {
-            (activity as LoginActivity).replace(LoginFragment())
+            (activity as LoginActivity).back(this)
         }
     }
 }
