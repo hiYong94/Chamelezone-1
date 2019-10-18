@@ -7,25 +7,25 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 
 class PagerAdapter(
     fm: FragmentManager,
-    private val tabCount: Int
-) : FragmentStatePagerAdapter(fm) {
+    private val tabList: List<String>
+) : FragmentStatePagerAdapter(fm, BEHAVIOR_SET_USER_VISIBLE_HINT) {
 
     override fun getItem(position: Int): Fragment {
 
-        when (position) {
+        return when (position) {
             0 -> {
-                return HomeTabFragment()
+                HomeTabFragment()
             }
             1 -> {
-                return CourseTabFragment()
+                CourseTabFragment()
             }
             2 -> {
-                return MapTabFragment()
+                MapTabFragment()
             }
             3 -> {
-                return LikeTabFragment()
+                LikeTabFragment()
             }
-            else -> return MypageTabFragment()
+            else -> MypageTabFragment()
         }
     }
 
@@ -36,11 +36,11 @@ class PagerAdapter(
             2 -> "지도"
             3 -> "즐겨찾기"
             else -> "마이페이지"
+
+
         }
     }
 
-    override fun getCount(): Int {
-        return tabCount
-    }
-
+    override fun getCount(): Int =
+        tabList.size
 }

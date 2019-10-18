@@ -6,4 +6,5 @@
     <color name="toolBarBackground">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
     <color name="colorOrange">#FACC2E</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>

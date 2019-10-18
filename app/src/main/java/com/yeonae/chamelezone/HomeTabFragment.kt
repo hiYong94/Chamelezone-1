@@ -1,16 +1,20 @@
 package com.yeonae.chamelezone
 
-import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.provider.FontsContractCompat.Columns.RESULT_CODE
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.home_tab_fragment.*
+import kotlinx.android.synthetic.main.place_list_item.*
 
 class HomeTabFragment : Fragment() {
+
+    private var adapter: RecyclerViewAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,7 +27,7 @@ class HomeTabFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        var placeList = arrayListOf(
+        val placeList = arrayListOf(
             Place("backward", "구슬모아 당구장", "800m", "카페, 펍"),
             Place("course", "Chow Chow", "Male", "Male"),
             Place("home", "Chow Chow", "Male", "Male"),
@@ -34,13 +38,13 @@ class HomeTabFragment : Fragment() {
         )
         Log.d("tag", placeList.size.toString())
 
-        val gridlayout = GridLayoutManager(this.context, 2)
-        val placeAdapter = this.context?.let { RecyclerViewAdapter(it, placeList) }
+        val gridlayout = GridLayoutManager(context, 2)
+        val placeAdapter = RecyclerViewAdapter(placeList)
 
-        val recyclerViewPlace = view?.findViewById<RecyclerView>(R.id.recycler_view_place)
-        recyclerViewPlace?.apply {
+        recycler_view_place?.apply {
             layoutManager = gridlayout
             adapter = placeAdapter
+
         }
     }
 }
