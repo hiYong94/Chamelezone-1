@@ -14,8 +14,6 @@ import kotlinx.android.synthetic.main.place_list_item.*
 
 class HomeTabFragment : Fragment() {
 
-    private var adapter: RecyclerViewAdapter? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

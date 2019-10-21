@@ -22,8 +22,7 @@ class MainActivity : AppCompatActivity() {
 //        R.drawable.like_orange,
 //        R.drawable.user_orange
 //    )
-    private val tabList = listOf("홈", "코스", "지도", "즐겨찾기", "마이페이지")
-
+    private val tabList by lazy { listOf("홈", "코스", "지도", "즐겨찾기", "마이페이지") }
 
     //액션버튼 메뉴 액션바에 집어 넣기
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

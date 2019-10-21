@@ -16,8 +16,7 @@ class ImageViewPagerAdapter: PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view =
             LayoutInflater.from(container.context).inflate(R.layout.slider_image, container, false)
-        val imageView = view.image_view
-        imageView.setImageResource(images[position])
+        view.image_view.setImageResource(images[position])
         container.addView(view)
         return view
     }
@@ -26,6 +25,7 @@ class ImageViewPagerAdapter: PagerAdapter() {
         container.invalidate()
     }
 
-    override fun getCount(): Int = images.size
+    override fun getCount(): Int =
+        images.size
 }
 
