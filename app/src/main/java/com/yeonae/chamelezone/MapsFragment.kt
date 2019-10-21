@@ -37,9 +37,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
         override fun onLocationResult(locationResult: LocationResult?) {
             super.onLocationResult(locationResult)
 
-            val locationList = locationResult!!.locations
+            val locationList = locationResult?.locations
 
-            if (locationList.size > 0) {
+            if (locationList?.size!! > 0) {
                 location = locationList[locationList.size - 1]
 
                 currentPosition = LatLng(location!!.latitude, location!!.longitude)
