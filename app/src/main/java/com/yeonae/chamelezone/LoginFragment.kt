@@ -38,8 +38,7 @@ class LoginFragment : Fragment() {
             loginCheck("${edt_email.text}", "${edt_password.text}")
         }
         btn_map.setOnClickListener {
-            val intent = Intent(context, MapsActivity::class.java)
-            startActivity(intent)
+            (activity as LoginActivity).replace(MapsFragment())
         }
 
     }
