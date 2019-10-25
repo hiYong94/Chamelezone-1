@@ -1,7 +1,11 @@
 package com.yeonae.chamelezone
 
 import androidx.test.platform.app.InstrumentationRegistry
+<<<<<<< HEAD
 import androidx.test.ext.junit.runners.AndroidJUnit4
+=======
+import androidx.test.runner.AndroidJUnit4
+>>>>>>> develop
 
 import org.junit.Test
 import org.junit.runner.RunWith
