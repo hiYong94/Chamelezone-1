@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,43 +21,8 @@ import kotlinx.android.synthetic.main.fragment_maps.*
 import noman.googleplaces.*
 import java.util.*
 
-
 class MapsFragment : Fragment(), OnMapReadyCallback,
-    ActivityCompat.OnRequestPermissionsResultCallback, PlacesListener {
-    var previousMarker: List<Marker>? = null
-
-    override fun onPlacesFailure(e: PlacesException?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onPlacesSuccess(places: List<Place>?) {
-        runOnUiThread(Runnable {
-            if (places != null) {
-                for (place in places) {
-                    val latLng = LatLng(place.latitude, place.longitude)
-                    val markerSnippet = getCurrentAddress(latLng)
-                    val markerOptions = MarkerOptions()
-                    markerOptions.position(latLng)
-                    markerOptions.title(place.name)
-                    markerOptions.snippet(markerSnippet)
-                    val item = map?.addMarker(markerOptions)
-                    previousMarker.add(item)
-                }
-            }
-            val hashSet = HashSet<Marker>()
-            hashSet.addAll(previousMarker!!)
-            previousMarker.clear()
-            previousMarker.addAll(hashSet)
-        })
-    }
-
-    override fun onPlacesFinished() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onPlacesStart() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    ActivityCompat.OnRequestPermissionsResultCallback{
 
     private var map: GoogleMap? = null
     private var currentMarker: Marker? = null
@@ -112,9 +76,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
             .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS.toLong()) //위치 업데이트 간격
 
         LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
 
     }
 
@@ -210,22 +172,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
             animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
         }
 
-    }
-
-    fun showPlaceInformation(location: LatLng) {
-        map?.clear()//지도 클리어
-
-        if (previous_marker != null)
-            previous_marker.clear()//지역정보 마커 클리어
-
-        NRPlaces.Builder()
-            .listener(this)
-            .key("Places API Web Service 키")
-            .latlng(location.latitude, location.longitude)//현재 위치
-            .radius(500) //500 미터 내에서 검색
-            .type(PlaceType.RESTAURANT) //음식점
-            .build()
-            .execute()
     }
 
     companion object {
