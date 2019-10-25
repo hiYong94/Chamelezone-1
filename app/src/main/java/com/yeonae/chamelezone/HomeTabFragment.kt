@@ -1,16 +1,13 @@
 package com.yeonae.chamelezone
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.provider.FontsContractCompat.Columns.RESULT_CODE
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.home_tab_fragment.*
-import kotlinx.android.synthetic.main.place_list_item.*
+import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 class HomeTabFragment : Fragment() {
 
@@ -19,7 +16,7 @@ class HomeTabFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_tab_fragment, container, false)
+        return inflater.inflate(R.layout.fragment_home_tab, container, false)
     }
 
     override fun onStart() {

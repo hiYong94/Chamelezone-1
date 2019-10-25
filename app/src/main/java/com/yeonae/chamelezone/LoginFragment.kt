@@ -25,20 +25,23 @@ class LoginFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        btn_back.setOnClickListener {
+            requireActivity().finish()
+        }
         btn_find_email.setOnClickListener {
-            (activity as LoginActivity).replace(FindEmailFragment())
+            (activity as LoginActivity).replace(FindEmailFragment(), true)
         }
         btn_find_password.setOnClickListener {
-            (activity as LoginActivity).replace(FindPasswordFragment())
+            (activity as LoginActivity).replace(FindPasswordFragment(), true)
         }
         btn_join.setOnClickListener {
-            (activity as LoginActivity).replace(JoinFragment())
+            (activity as LoginActivity).replace(JoinFragment(), true)
         }
         btn_login.setOnClickListener {
             loginCheck("${edt_email.text}", "${edt_password.text}")
         }
         btn_map.setOnClickListener {
-            (activity as LoginActivity).replace(MapsFragment())
+            (activity as LoginActivity).replace(MapsFragment(), true)
         }
 
     }

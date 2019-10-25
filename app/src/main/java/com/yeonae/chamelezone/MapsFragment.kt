@@ -18,7 +18,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.fragment_maps.*
-import noman.googleplaces.*
 import java.util.*
 
 class MapsFragment : Fragment(), OnMapReadyCallback,
@@ -76,7 +75,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
             .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS.toLong()) //위치 업데이트 간격
 
         LocationSettingsRequest.Builder().addLocationRequest(locationRequest!!)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(App.instance.context())
 
     }
 
@@ -105,7 +104,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
     }
 
     fun getCurrentAddress(latLng: LatLng): String {
-        val geoCoder = Geocoder(context, Locale.getDefault())
+        val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
         val addresses = geoCoder.getFromLocation(
             latLng.latitude,
             latLng.longitude,
@@ -153,24 +152,32 @@ class MapsFragment : Fragment(), OnMapReadyCallback,
 
     private fun searchLocation() {
         map?.clear()
-        val geoCoder = Geocoder(context, Locale.getDefault())
+        val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
         val addresses = geoCoder.getFromLocationName(
             edt_search.text.toString(),
-            1
+            10
         )
-        val searchLatLng = LatLng(addresses[0].latitude, addresses[0].longitude)
-        val markerTitle = getCurrentAddress(searchLatLng)
 
-        val markerOptions = MarkerOptions().apply {
-            position(searchLatLng)
-            title(markerTitle)
-            draggable(true)
+        if(addresses.size > 0){
+            val searchLatLng = LatLng(addresses[0].latitude, addresses[0].longitude)
+
+            val markerTitle = getCurrentAddress(searchLatLng)
+
+            val markerOptions = MarkerOptions().apply {
+                position(searchLatLng)
+                title(markerTitle)
+                draggable(true)
+            }
+
+            map?.run {
+                addMarker(markerOptions)
+                animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
+            }
         }
 
-        map?.run {
-            addMarker(markerOptions)
-            animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
-        }
+
+
+
 
     }
 

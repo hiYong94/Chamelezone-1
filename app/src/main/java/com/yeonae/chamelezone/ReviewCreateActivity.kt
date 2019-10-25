@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 class ReviewCreateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.review_create)
+        setContentView(R.layout.activity_review_create)
 
     }
 

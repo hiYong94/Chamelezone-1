@@ -10,12 +10,17 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         val loginFragment = LoginFragment()
-        replace(loginFragment)
-
+        replace(loginFragment, false)
     }
 
-    fun replace(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.login_fragment, fragment).addToBackStack(null).commit()
+    fun replace(fragment: Fragment, isBackStack: Boolean = true) {
+        if(isBackStack){
+            supportFragmentManager.beginTransaction().replace(R.id.login_fragment, fragment).addToBackStack(null).commit()
+        }else{
+            supportFragmentManager.beginTransaction().replace(R.id.login_fragment, fragment).commit()
+
+        }
+
     }
 
     fun back(fragment: Fragment){

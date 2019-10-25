@@ -30,11 +30,11 @@ class ConfirmEmailFragment : Fragment() {
         val email = arguments!!.getString(userEmail)
         tv_email.text = email
         btn_find_password.setOnClickListener {
-            (activity as LoginActivity).replace(FindPasswordFragment())
+            (activity as LoginActivity).replace(FindPasswordFragment(), true)
         }
 
         btn_login.setOnClickListener {
-            (activity as LoginActivity).replace(LoginFragment())
+            (activity as LoginActivity).replace(LoginFragment(), true)
         }
 
         btn_back.setOnClickListener {
