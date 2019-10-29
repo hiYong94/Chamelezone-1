@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
         with(viewPager) {
             adapter = tabPagerAdapter
+            offscreenPageLimit = 5
 
             addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
@@ -103,6 +104,7 @@ class MainActivity : AppCompatActivity() {
 
         tabLayout.run {
             setupWithViewPager(viewPager)
+
 
             drawableList.forEachIndexed { index, drawableId ->
                 getTabAt(index)?.setIcon(drawableId)

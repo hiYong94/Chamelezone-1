@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 class PagerAdapter(
     fm: FragmentManager,
     private val tabList: List<String>
-) : FragmentStatePagerAdapter(fm, BEHAVIOR_SET_USER_VISIBLE_HINT) {
+) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
 
@@ -20,7 +20,7 @@ class PagerAdapter(
                 CourseTabFragment()
             }
             2 -> {
-                MapTabFragment()
+                MapsFragment()
             }
             3 -> {
                 LikeTabFragment()
@@ -36,8 +36,6 @@ class PagerAdapter(
             2 -> "지도"
             3 -> "즐겨찾기"
             else -> "마이페이지"
-
-
         }
     }
 
