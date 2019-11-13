@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="회원가입"
+            android:text="회원정보 수정"
             android:textSize="20sp" />
     </RelativeLayout>
 
@@ -156,7 +156,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="20dp"
         android:background="@color/colorOrange"
-        android:text="가입"
+        android:text="수정"
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 </LinearLayout>

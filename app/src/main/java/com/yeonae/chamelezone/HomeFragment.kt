@@ -7,16 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import kotlinx.android.synthetic.main.fragment_home_tab.*
+import com.yeonae.chamelezone.model.Place
+import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeTabFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home_tab, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onStart() {

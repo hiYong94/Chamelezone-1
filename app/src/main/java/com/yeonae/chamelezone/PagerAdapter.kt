@@ -14,18 +14,18 @@ class PagerAdapter(
 
         return when (position) {
             0 -> {
-                HomeTabFragment()
+                HomeFragment()
             }
             1 -> {
-                CourseTabFragment()
+                CourseFragment()
             }
             2 -> {
                 MapsFragment()
             }
             3 -> {
-                LikeTabFragment()
+                LikeFragment()
             }
-            else -> MypageTabFragment()
+            else -> MypageFragment()
         }
     }
 
