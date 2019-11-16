@@ -19,9 +19,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
         <activity android:name=".LoginActivity"/>
-        <activity android:name=".HomeActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
-
+        <activity android:name=".HomeActivity"/>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -29,5 +27,11 @@
         </activity>
         <activity android:name=".PlaceDetailActivity"/>
         <activity android:name=".ReviewCreateActivity"/>
+        <activity android:name=".MyPlaceActivity"/>
+        <activity android:name=".PlaceRegisterActivity"/>
+        <activity android:name=".MyCourseActivity"/>
+        <activity android:name=".MyReviewActivity"/>
+        <activity android:name=".UserModifyActivity"/>
+        <activity android:name=".SearchAddressActivity"/>
     </application>
 </manifest>
