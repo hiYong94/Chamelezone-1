@@ -7,7 +7,7 @@ import android.view.MenuItem
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     val drawableList = intArrayOf(
         R.drawable.home,
         R.drawable.course,

@@ -23,7 +23,7 @@ class FindEmailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        btn_email.setOnClickListener {
+        btn_find_email.setOnClickListener {
             emailCheck("${edt_name.text}", "${edt_phone.text}")
         }
         btn_back.setOnClickListener {

@@ -20,7 +20,7 @@ class PagerAdapter(
                 CourseTabFragment()
             }
             2 -> {
-                MapsFragment()
+                MapTabFragment()
             }
             3 -> {
                 LikeTabFragment()

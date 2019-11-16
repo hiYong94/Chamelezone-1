@@ -40,9 +40,6 @@ class LoginFragment : Fragment() {
         btn_login.setOnClickListener {
             loginCheck("${edt_email.text}", "${edt_password.text}")
         }
-        btn_map.setOnClickListener {
-            (activity as LoginActivity).replace(MapsFragment(), true)
-        }
 
     }
 
