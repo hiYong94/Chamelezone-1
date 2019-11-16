@@ -4,10 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
     val drawableList = intArrayOf(
         R.drawable.home,
         R.drawable.course,
@@ -15,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         R.drawable.like,
         R.drawable.user
     )
-//    val selectDrawableList = intArrayOf(
+    //    val selectDrawableList = intArrayOf(
 //        R.drawable.home_orange,
 //        R.drawable.course_orange,
 //        R.drawable.map_orange,
@@ -44,7 +45,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val tabPagerAdapter = PagerAdapter(supportFragmentManager, tabList)
+        val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
+            override fun getItem(position: Int): Fragment {
+                return when (position) {
+                    0 -> {
+                        HomeTabFragment()
+                    }
+                    1 -> {
+                        CourseTabFragment()
+                    }
+                    2 -> {
+                        MapsFragment()
+                    }
+                    3 -> {
+                        LikeTabFragment()
+                    }
+                    else -> MypageTabFragment()
+                }
+            }
+        }
 
         with(viewPager) {
             adapter = tabPagerAdapter

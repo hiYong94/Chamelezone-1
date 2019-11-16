@@ -19,7 +19,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
         <activity android:name=".LoginActivity"/>
-        <activity android:name=".MainActivity"
+        <activity android:name=".HomeActivity"
             android:windowSoftInputMode="stateAlwaysHidden">
 
             <intent-filter>
