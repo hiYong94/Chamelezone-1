@@ -12,10 +12,11 @@
         <ImageButton
             android:id="@+id/btn_back"
             android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:background="@color/transparent"
             android:scaleType="fitXY"
+            android:adjustViewBounds="true"
             android:src="@drawable/backward" />
 
         <TextView
@@ -207,19 +208,31 @@
                 android:textSize="15sp" />
 
             <LinearLayout
+                android:weightSum="3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:background="@drawable/draw">
 
                 <Spinner
-                    android:id="@+id/open_spinner"
-                    android:layout_width="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:id="@+id/day_spinner"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content" />
 
                 <Spinner
+                    android:textSize="12sp"
+                    android:layout_weight="1"
+                    android:id="@+id/open_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+
+                <Spinner
+                    android:textSize="12sp"
+                    android:layout_weight="1"
                     android:id="@+id/close_spinner"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>

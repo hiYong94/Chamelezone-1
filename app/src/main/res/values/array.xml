@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string-array name="day_array">
+        <item>매일</item>
+        <item>평일</item>
+        <item>주말</item>
+    </string-array>
+
     <string-array name="open_array">
         <item>00:00</item>
         <item>00:30</item>

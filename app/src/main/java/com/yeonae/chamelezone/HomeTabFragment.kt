@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.yeonae.chamelezone.model.Place
 import kotlinx.android.synthetic.main.fragment_home.*
 
-class HomeFragment : Fragment() {
+class HomeTabFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
         Log.d("tag", placeList.size.toString())
 
         val gridlayout = GridLayoutManager(context, 2)
-        val placeAdapter = RecyclerViewAdapter(placeList)
+        val placeAdapter = HomePlaceRvAdapter(placeList)
 
         recycler_view_place?.apply {
             layoutManager = gridlayout

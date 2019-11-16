@@ -15,10 +15,11 @@
             <ImageButton
                 android:id="@+id/btn_back"
                 android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:background="@color/transparent"
                 android:scaleType="fitXY"
+                android:adjustViewBounds="true"
                 android:src="@drawable/backward" />
         </LinearLayout>
 
@@ -51,7 +52,7 @@
         android:layout_marginHorizontal="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_like"
+            android:id="@+id/recycler_place"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

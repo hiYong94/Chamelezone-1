@@ -15,14 +15,18 @@ class PlaceRegisterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_register)
 
+        val dayArray = resources.getStringArray(R.array.day_array)
         val openArray = resources.getStringArray(R.array.open_array)
         val closeArray = resources.getStringArray(R.array.close_array)
 
+        val dayAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, dayArray)
         val openAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, openArray)
         val closeAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, closeArray)
 
+        day_spinner.adapter = dayAdapter
         open_spinner.adapter = openAdapter
         close_spinner.adapter = closeAdapter
 

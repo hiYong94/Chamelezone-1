@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
-import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_search_address.*
 
@@ -19,11 +18,13 @@ class SearchAddressActivity : AppCompatActivity() {
     }
 
     fun setWebView() {
-        web_view!!.settings.javaScriptEnabled = true
-        web_view!!.settings.javaScriptCanOpenWindowsAutomatically = true
-        web_view!!.addJavascriptInterface(AndroidBridge(), "TestApp")
-        web_view!!.webChromeClient = WebChromeClient()
-        web_view!!.loadUrl("http://192.168.25.60:80/daum_address.php")
+        web_view.run {
+            settings.javaScriptEnabled = true
+            settings.javaScriptCanOpenWindowsAutomatically = true
+            addJavascriptInterface(AndroidBridge(), "TestApp")
+            webChromeClient = WebChromeClient()
+            loadUrl("http://192.168.25.60:80/daum_address.php")
+        }
     }
 
     private inner class AndroidBridge {

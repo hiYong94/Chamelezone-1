@@ -17,7 +17,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.android.synthetic.main.fragment_maps.*
 import java.util.*
 
-class MapsFragment : Fragment(), OnMapReadyCallback {
+class MapTabFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -81,7 +81,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         }
-
     }
 
     private fun createLocationRequest() {
