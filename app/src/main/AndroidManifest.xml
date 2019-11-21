@@ -18,20 +18,20 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".HomeActivity"/>
+        <activity android:name=".login.LoginActivity"/>
+        <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlaceDetailActivity"/>
-        <activity android:name=".ReviewCreateActivity"/>
-        <activity android:name=".MyPlaceActivity"/>
-        <activity android:name=".PlaceRegisterActivity"/>
-        <activity android:name=".MyCourseActivity"/>
-        <activity android:name=".MyReviewActivity"/>
-        <activity android:name=".UserModifyActivity"/>
-        <activity android:name=".SearchAddressActivity"/>
+        <activity android:name=".place.PlaceDetailActivity"/>
+        <activity android:name=".review.ReviewCreateActivity"/>
+        <activity android:name=".mypage.myplace.MyPlaceActivity"/>
+        <activity android:name=".mypage.myplace.PlaceRegisterActivity"/>
+        <activity android:name=".mypage.mycourse.MyCourseActivity"/>
+        <activity android:name=".mypage.myreview.MyReviewActivity"/>
+        <activity android:name=".login.UserModifyActivity"/>
+        <activity android:name=".mypage.myplace.SearchAddressActivity"/>
     </application>
 </manifest>
