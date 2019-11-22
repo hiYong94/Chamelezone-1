@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.mypage.myplace
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.activity_place_register.*
 
 
@@ -51,7 +52,8 @@ class PlaceRegisterActivity : AppCompatActivity() {
 
         builder.setTitle("키워드")
 
-        builder.setMultiChoiceItems(R.array.keyword, null,
+        builder.setMultiChoiceItems(
+            R.array.keyword, null,
             object : DialogInterface.OnMultiChoiceClickListener {
                 override fun onClick(dialog: DialogInterface?, position: Int, isChecked: Boolean) {
                     if (isChecked) {

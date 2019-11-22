@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.map
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,13 +7,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.yeonae.chamelezone.R
 
 class GpsPermission : AppCompatActivity() {
 
     private val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_home)
+        setContentView(R.layout.fragment_home_tab)
 
         val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
 

@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.map
 
 import android.location.Geocoder
 import android.location.Location
@@ -14,7 +14,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import kotlinx.android.synthetic.main.fragment_maps.*
+import com.yeonae.chamelezone.App
+import com.yeonae.chamelezone.R
+import kotlinx.android.synthetic.main.fragment_map_tab.*
 import java.util.*
 
 class MapTabFragment : Fragment(), OnMapReadyCallback {
@@ -30,7 +32,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+        return inflater.inflate(R.layout.fragment_map_tab, container, false)
     }
 
     override fun onMapReady(map: GoogleMap?) {

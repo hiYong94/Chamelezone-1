@@ -1,10 +1,12 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.login
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.yeonae.chamelezone.AlertDialogFragment
+import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.fragment_find_email.*
 
 class FindEmailFragment : Fragment() {
@@ -34,7 +36,8 @@ class FindEmailFragment : Fragment() {
     private fun emailCheck(name: String, phone: String) {
         if (name == testName) {
             if (phone == testPhone) {
-                (activity as LoginActivity).replace(ConfirmEmailFragment().newInstance(
+                (activity as LoginActivity).replace(
+                    ConfirmEmailFragment().newInstance(
                     testEmail), true)
 
             } else {

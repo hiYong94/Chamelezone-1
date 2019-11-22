@@ -1,8 +1,8 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.login
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.activity_user_modify.*
 
 class UserModifyActivity : AppCompatActivity() {
