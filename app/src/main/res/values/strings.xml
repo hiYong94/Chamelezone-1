@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Chamelezone</string>
+<<<<<<< HEAD
 
     <string name="file_provider" translatable="false">com.kroegerama.imgpicker.demo.fileprovider</string>
 
@@ -14,4 +15,14 @@
     </plurals>
 
     <string name="pick_multi_limit">You have more than %1$d images selected…</string>
+=======
+    <string-array name = "keyword">
+        <item>"카페"</item>
+        <item>"전시회"</item>
+        <item>"편집샵"</item>
+        <item>"빨래방"</item>
+        <item>"편의점"</item>
+        <item>"레지던스"</item>
+    </string-array>
+>>>>>>> 684d58aa6168d9da1adcc4a17aa51e08601eedff
 </resources>

@@ -12,10 +12,6 @@ abstract class PagerAdapter(
 
     abstract override fun getItem(position: Int): Fragment
 
-    override fun getPageTitle(position: Int): CharSequence? =
-        tabList[position]
-
-
     override fun getCount(): Int =
         tabList.size
 }

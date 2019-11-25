@@ -44,6 +44,10 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'com.kroegerama:bottomsheet-imagepicker:1.0.4'
+<<<<<<< HEAD
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation 'com.kroegerama:android-kaiteki:2.7.1'
 }
+=======
+}
+>>>>>>> 684d58aa6168d9da1adcc4a17aa51e08601eedff
