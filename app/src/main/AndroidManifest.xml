@@ -20,7 +20,7 @@
             android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
         <activity android:name=".LoginActivity"/>
         <activity android:name=".HomeActivity"
-            android:windowSoftInputMode="stateAlwaysHidden">
+            android:windowSoftInputMode="stateHidden">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
