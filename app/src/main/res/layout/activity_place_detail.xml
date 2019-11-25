@@ -244,7 +244,9 @@
                 android:id="@+id/review"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="리뷰"/>
+                android:text="리뷰"
+                android:textColor="@drawable/selected_btn_text"
+                android:background="@drawable/selected_btn_background"/>
 
         </LinearLayout>
 
