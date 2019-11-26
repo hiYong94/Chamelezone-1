@@ -19,13 +19,8 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
         <activity android:name=".LoginActivity"/>
-<<<<<<< HEAD
         <activity android:name=".HomeActivity"
             android:windowSoftInputMode="stateHidden">
-
-=======
-        <activity android:name=".HomeActivity"/>
->>>>>>> 684d58aa6168d9da1adcc4a17aa51e08601eedff
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
