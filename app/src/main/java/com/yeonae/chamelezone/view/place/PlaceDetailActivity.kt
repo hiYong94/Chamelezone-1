@@ -14,8 +14,7 @@ class PlaceDetailActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
 
-        val imageAdapter = ImageViewPagerAdapter()
-        view.adapter = imageAdapter
+        view.adapter = ImageViewPagerAdapter()
 
         review.setOnClickListener {
             val intent = Intent(this, ReviewCreateActivity::class.java)

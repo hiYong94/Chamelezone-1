@@ -37,7 +37,7 @@ class FindEmailFragment : Fragment() {
         if (name == testName) {
             if (phone == testPhone) {
                 (activity as LoginActivity).replace(
-                    ConfirmEmailFragment().newInstance(
+                    ConfirmEmailFragment.newInstance(
                     testEmail), true)
 
             } else {
