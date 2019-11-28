@@ -1,0 +1,1 @@
+package com.yeonae.chamelezone.view.mypage.myplace.adapter
