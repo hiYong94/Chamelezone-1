@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.mypage
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.view.login.LoginActivity
+import com.yeonae.chamelezone.view.login.UserModifyActivity
+import com.yeonae.chamelezone.view.mypage.mycourse.MyCourseActivity
+import com.yeonae.chamelezone.view.mypage.myplace.MyPlaceActivity
+import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import kotlinx.android.synthetic.main.fragment_mypage.*
 
 class MypageTabFragment : Fragment() {

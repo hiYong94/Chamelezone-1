@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.home
 
 import android.os.Bundle
 import android.util.Log
@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.model.Place
+import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeTabFragment : Fragment() {
@@ -35,7 +37,8 @@ class HomeTabFragment : Fragment() {
         Log.d("tag", placeList.size.toString())
 
         val gridlayout = GridLayoutManager(context, 2)
-        val placeAdapter = HomePlaceRvAdapter(placeList)
+        val placeAdapter =
+            HomePlaceRvAdapter(placeList)
 
         recycler_view_place?.apply {
             layoutManager = gridlayout

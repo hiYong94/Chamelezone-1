@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -6,6 +6,12 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.yeonae.chamelezone.*
+import com.yeonae.chamelezone.adapter.PagerAdapter
+import com.yeonae.chamelezone.view.course.CourseTabFragment
+import com.yeonae.chamelezone.view.like.LikeTabFragment
+import com.yeonae.chamelezone.view.map.MapsFragment
+import com.yeonae.chamelezone.view.mypage.MypageTabFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class HomeActivity : AppCompatActivity() {

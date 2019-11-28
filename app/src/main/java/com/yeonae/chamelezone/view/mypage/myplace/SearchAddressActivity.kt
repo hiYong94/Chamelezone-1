@@ -1,10 +1,11 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.os.Bundle
 import android.os.Handler
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import androidx.appcompat.app.AppCompatActivity
+import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.activity_search_address.*
 
 class SearchAddressActivity : AppCompatActivity() {

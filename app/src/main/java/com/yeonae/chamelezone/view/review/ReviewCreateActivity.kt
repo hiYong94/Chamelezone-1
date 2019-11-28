@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.review
 
 import android.net.Uri
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.activity_review_create.*
 
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener {

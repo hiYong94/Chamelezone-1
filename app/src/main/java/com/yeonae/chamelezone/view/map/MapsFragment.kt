@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.map
 
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment

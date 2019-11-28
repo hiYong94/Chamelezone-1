@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.map
 
 import android.location.Geocoder
 import android.location.Location
@@ -14,6 +14,8 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.yeonae.chamelezone.App
+import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.fragment_maps.*
 import java.util.*
 

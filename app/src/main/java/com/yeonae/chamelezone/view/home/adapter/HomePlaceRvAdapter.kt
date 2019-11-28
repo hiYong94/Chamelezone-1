@@ -1,10 +1,12 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.home.adapter
 
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.yeonae.chamelezone.view.place.PlaceDetailActivity
+import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.model.Place
 import kotlinx.android.synthetic.main.item_place_list.view.*
 
@@ -55,7 +57,9 @@ class HomePlaceRvAdapter(var placeList: ArrayList<Place>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_place_list, parent, false)
-        return Holder(view)
+        return Holder(
+            view
+        )
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {

@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
