@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.R
 
 class CourseTabFragment : Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

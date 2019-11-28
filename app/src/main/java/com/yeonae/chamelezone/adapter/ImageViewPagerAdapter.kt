@@ -11,7 +11,8 @@ class ImageViewPagerAdapter: PagerAdapter() {
     private val images = intArrayOf(
         R.drawable.img1,
         R.drawable.img2,
-        R.drawable.img3
+        R.drawable.img3,
+        R.drawable.img4
     )
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {

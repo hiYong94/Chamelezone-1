@@ -39,7 +39,6 @@ class FindEmailFragment : Fragment() {
                 (activity as LoginActivity).replace(
                     ConfirmEmailFragment.newInstance(
                     testEmail), true)
-
             } else {
                 showDialog()
             }

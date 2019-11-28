@@ -1,4 +1,4 @@
-﻿package com.yeonae.chamelezone.view.home
+package com.yeonae.chamelezone.view.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

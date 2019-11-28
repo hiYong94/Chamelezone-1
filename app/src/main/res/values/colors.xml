@@ -7,6 +7,8 @@
     <color name="colorBlack">#000000</color>
     <color name="colorOrange">#FACC2E</color>
     <color name="transparent">#00FFFFFF</color>
-    <color name="colorGray">#F6F6F6</color>
+    <color name="colorGray">#D5D5D5</color>
+    <color name="yellowOrange">#F5DA81</color>
+    <color name="colorWhite">#FFFFFF</color>
     <color name="lightGray">#D5D5D5</color>
 </resources>
