@@ -10,7 +10,7 @@ import com.yeonae.chamelezone.*
 import com.yeonae.chamelezone.adapter.PagerAdapter
 import com.yeonae.chamelezone.view.course.CourseTabFragment
 import com.yeonae.chamelezone.view.like.LikeTabFragment
-import com.yeonae.chamelezone.view.map.MapsFragment
+import com.yeonae.chamelezone.view.map.MapTabFragment
 import com.yeonae.chamelezone.view.mypage.MypageTabFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -61,7 +61,7 @@ class HomeActivity : AppCompatActivity() {
                         CourseTabFragment()
                     }
                     2 -> {
-                        MapsFragment()
+                        MapTabFragment()
                     }
                     3 -> {
                         LikeTabFragment()

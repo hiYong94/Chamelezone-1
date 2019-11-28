@@ -7,8 +7,6 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_place_detail.*
-//import me.relex.circleindicator.CircleIndicator
-
 
 class PlaceDetailActivity: AppCompatActivity() {
 
@@ -19,9 +17,7 @@ class PlaceDetailActivity: AppCompatActivity() {
         val imageAdapter = ImageViewPagerAdapter()
         view.adapter = imageAdapter
 
-//        val indicator = R.id.indicator as CircleIndicator
         tab_layout.setupWithViewPager(view, true);
-
 
         review.setOnClickListener {
             val intent = Intent(this, ReviewCreateActivity::class.java)

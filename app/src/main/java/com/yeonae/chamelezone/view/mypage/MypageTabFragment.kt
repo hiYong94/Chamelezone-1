@@ -12,12 +12,12 @@ import com.yeonae.chamelezone.view.login.UserModifyActivity
 import com.yeonae.chamelezone.view.mypage.mycourse.MyCourseActivity
 import com.yeonae.chamelezone.view.mypage.myplace.MyPlaceActivity
 import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
-import kotlinx.android.synthetic.main.fragment_mypage.*
+import kotlinx.android.synthetic.main.fragment_mypage_tab.*
 
 class MypageTabFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_mypage, container, false)
+        inflater.inflate(R.layout.fragment_mypage_tab, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

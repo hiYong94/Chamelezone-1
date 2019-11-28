@@ -18,7 +18,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
-        <activity android:name=".view.login.LoginActivity"/>
         <activity android:name=".view.home.HomeActivity"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
@@ -27,12 +26,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.place.PlaceDetailActivity"/>
+        <activity android:name=".view.search.SearchActivity"/>
+        <activity android:name=".view.course.CourseDetailActivity"/>
+        <activity android:name=".view.course.CourseRegisterActivity"/>
         <activity android:name=".view.review.ReviewCreateActivity"/>
         <activity android:name=".view.mypage.myplace.MyPlaceActivity"/>
         <activity android:name=".view.mypage.myplace.PlaceRegisterActivity"/>
+        <activity android:name=".view.mypage.myplace.SearchAddressActivity"/>
         <activity android:name=".view.mypage.mycourse.MyCourseActivity"/>
         <activity android:name=".view.mypage.myreview.MyReviewActivity"/>
+        <activity android:name=".view.login.LoginActivity"/>
         <activity android:name=".view.login.UserModifyActivity"/>
-        <activity android:name=".view.mypage.myplace.SearchAddressActivity"/>
     </application>
 </manifest>

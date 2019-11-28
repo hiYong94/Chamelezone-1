@@ -57,9 +57,7 @@ class HomePlaceRvAdapter(var placeList: ArrayList<Place>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_place_list, parent, false)
-        return Holder(
-            view
-        )
+        return Holder(view)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {

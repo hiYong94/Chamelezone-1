@@ -52,10 +52,9 @@ class FindPasswordFragment : Fragment() {
     }
 
     private fun showDialog() {
-        val newFragment =
-            AlertDialogFragment.newInstance(
-                "입력하신 정보는 존재하지 않습니다."
-            )
+        val newFragment = AlertDialogFragment.newInstance(
+            "입력하신 정보는 존재하지 않습니다."
+        )
         newFragment.show(fragmentManager!!, "dialog")
     }
 }

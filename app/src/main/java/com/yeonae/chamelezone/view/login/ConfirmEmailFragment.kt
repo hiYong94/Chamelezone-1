@@ -11,11 +11,6 @@ import kotlinx.android.synthetic.main.fragment_confirm_email.*
 class ConfirmEmailFragment : Fragment() {
 
     private val userEmail = "email"
-    fun newInstance(email: String) = ConfirmEmailFragment().apply {
-        arguments = Bundle().apply {
-            putString(userEmail, email)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,17 +26,23 @@ class ConfirmEmailFragment : Fragment() {
         val email = arguments!!.getString(userEmail)
         tv_email.text = email
         btn_find_password.setOnClickListener {
-            (activity as LoginActivity).replace(
-                FindPasswordFragment(), true)
+            (activity as LoginActivity).replace(FindPasswordFragment(), true)
         }
 
         btn_login.setOnClickListener {
-            (activity as LoginActivity).replace(
-                LoginFragment(), true)
+            (activity as LoginActivity).replace(LoginFragment(), true)
         }
 
         btn_back.setOnClickListener {
             (activity as LoginActivity).back(this)
+        }
+    }
+
+    companion object {
+        fun newInstance(email: String) = ConfirmEmailFragment().apply {
+            arguments = Bundle().apply {
+                putString(userEmail, email)
+            }
         }
     }
 }

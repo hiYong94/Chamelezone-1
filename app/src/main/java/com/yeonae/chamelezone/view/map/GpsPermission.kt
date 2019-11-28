@@ -14,7 +14,7 @@ class GpsPermission : AppCompatActivity() {
     private val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_home)
+        setContentView(R.layout.fragment_home_tab)
 
         val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
 

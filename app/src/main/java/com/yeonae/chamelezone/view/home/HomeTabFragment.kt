@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Place
 import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
-import kotlinx.android.synthetic.main.fragment_home.*
+import com.yeonae.chamelezone.model.Place
+import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 class HomeTabFragment : Fragment() {
 
@@ -19,7 +19,7 @@ class HomeTabFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_home_tab, container, false)
     }
 
     override fun onStart() {
@@ -37,13 +37,12 @@ class HomeTabFragment : Fragment() {
         Log.d("tag", placeList.size.toString())
 
         val gridlayout = GridLayoutManager(context, 2)
-        val placeAdapter =
-            HomePlaceRvAdapter(placeList)
+
+        val placeAdapter = HomePlaceRvAdapter(placeList)
 
         recycler_view_place?.apply {
             layoutManager = gridlayout
             adapter = placeAdapter
-
         }
     }
 }
