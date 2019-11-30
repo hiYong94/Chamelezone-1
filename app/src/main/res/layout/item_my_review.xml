@@ -46,7 +46,6 @@
                             android:id="@+id/tv_place_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="구슬모아당구장"
                             android:textSize="15sp" />
 
                         <LinearLayout
@@ -69,7 +68,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:text="여기 진짜 분위기 이뻐요"
                         android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
