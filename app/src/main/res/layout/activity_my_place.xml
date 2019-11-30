@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -17,9 +18,9 @@
                 android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:scaleType="fitXY"
-                android:adjustViewBounds="true"
                 android:src="@drawable/backward" />
         </LinearLayout>
 
@@ -31,10 +32,10 @@
             android:textSize="20sp" />
 
         <LinearLayout
-            android:layout_marginRight="20dp"
-            android:gravity="right"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:gravity="right">
 
             <ImageButton
                 android:id="@+id/btn_register"
@@ -52,7 +53,7 @@
         android:layout_marginHorizontal="10dp">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_place"
+            android:id="@+id/recycler_my_place"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

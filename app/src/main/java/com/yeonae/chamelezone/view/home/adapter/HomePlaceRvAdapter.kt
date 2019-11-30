@@ -37,8 +37,8 @@ class HomePlaceRvAdapter(var placeList: ArrayList<Place>) :
                 placeImg.setImageResource(R.mipmap.ic_launcher)
             }
             placeName.text = place.placeName
-            distance.text = place.distance
-            keyword.text = place.keyword
+            distance.text = place.placeDistance
+            keyword.text = place.placeKeyword
 
             itemView.setOnClickListener {
                 val position = adapterPosition
