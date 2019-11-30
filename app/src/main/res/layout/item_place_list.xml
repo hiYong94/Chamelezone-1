@@ -6,7 +6,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_list_item"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_margin="3dp"
         android:clipToPadding="true">

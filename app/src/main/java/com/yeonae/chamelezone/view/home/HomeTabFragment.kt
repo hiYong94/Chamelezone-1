@@ -38,12 +38,12 @@ class HomeTabFragment : Fragment() {
         Log.d("tag", placeList.size.toString())
 
         val gridlayout = GridLayoutManager(context, 2)
+
         val placeAdapter = HomePlaceRvAdapter(placeList)
 
         recycler_view_place?.apply {
             layoutManager = gridlayout
             adapter = placeAdapter
-
         }
     }
 

@@ -45,3 +45,4 @@ class LikeTabFragment : Fragment() {
         recycler_like.adapter = likeTabRvAdapter
     }
 }
+
