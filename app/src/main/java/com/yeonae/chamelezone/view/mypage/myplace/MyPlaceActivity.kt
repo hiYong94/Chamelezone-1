@@ -5,8 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Like
-import com.yeonae.chamelezone.model.Place
+import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.mypage.myplace.adapter.MyPlaceRvAdapter
 import kotlinx.android.synthetic.main.activity_my_place.*
 

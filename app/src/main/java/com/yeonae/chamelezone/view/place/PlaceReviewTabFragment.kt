@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Like
+import com.yeonae.chamelezone.data.model.Like
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 

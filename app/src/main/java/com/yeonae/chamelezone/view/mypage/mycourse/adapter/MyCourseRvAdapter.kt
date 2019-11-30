@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Course
+import com.yeonae.chamelezone.data.model.Course
 import kotlinx.android.synthetic.main.item_my_course.view.*
 
 class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Adapter<MyCourseRvAdapter.MyCourseViewHolder>() {

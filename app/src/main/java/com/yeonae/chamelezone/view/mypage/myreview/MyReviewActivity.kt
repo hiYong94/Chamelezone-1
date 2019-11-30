@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Review
+import com.yeonae.chamelezone.data.model.Review
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import kotlinx.android.synthetic.main.activity_my_review.*
 

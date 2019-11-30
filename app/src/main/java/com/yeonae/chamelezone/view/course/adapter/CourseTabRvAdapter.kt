@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Course
+import com.yeonae.chamelezone.data.model.Course
 import kotlinx.android.synthetic.main.item_course_list.view.*
 import kotlinx.android.synthetic.main.item_my_course.view.tv_course_name
 import kotlinx.android.synthetic.main.item_place_review.view.tv_user_id

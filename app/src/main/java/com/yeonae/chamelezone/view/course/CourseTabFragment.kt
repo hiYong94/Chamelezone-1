@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Course
+import com.yeonae.chamelezone.data.model.Course
 import com.yeonae.chamelezone.view.course.adapter.CourseTabRvAdapter
 import kotlinx.android.synthetic.main.fragment_course_tab.*
 
