@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
-import com.yeonae.chamelezone.model.Place
+import com.yeonae.chamelezone.data.model.Place
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 class HomeTabFragment : Fragment() {
@@ -26,13 +26,48 @@ class HomeTabFragment : Fragment() {
         super.onStart()
 
         val placeList = arrayListOf(
-            Place("backward", "구슬모아 당구장", "800m", "카페, 펍"),
-            Place("course", "Chow Chow", "Male", "Male"),
-            Place("home", "Chow Chow", "Male", "Male"),
-            Place("like", "Chow Chow", "Male", "Male"),
-            Place("search", "Chow Chow", "Male", "Male"),
-            Place("map", "Chow Chow", "Male", "Male"),
-            Place("user", "Chow Chow", "Male", "Male")
+            Place(
+                "backward",
+                "구슬모아 당구장",
+                "800m",
+                "카페, 펍"
+            ),
+            Place(
+                "course",
+                "Chow Chow",
+                "Male",
+                "Male"
+            ),
+            Place(
+                "home",
+                "Chow Chow",
+                "Male",
+                "Male"
+            ),
+            Place(
+                "like",
+                "Chow Chow",
+                "Male",
+                "Male"
+            ),
+            Place(
+                "search",
+                "Chow Chow",
+                "Male",
+                "Male"
+            ),
+            Place(
+                "map",
+                "Chow Chow",
+                "Male",
+                "Male"
+            ),
+            Place(
+                "user",
+                "Chow Chow",
+                "Male",
+                "Male"
+            )
         )
         Log.d("tag", placeList.size.toString())
 
