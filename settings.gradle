@@ -1,2 +1,2 @@
-include ':app', ':tedbottompicker', ':tedpermission'
+include ':app'
 rootProject.name='Chamelezone'
