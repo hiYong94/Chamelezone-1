@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Like
-import com.yeonae.chamelezone.model.Place
+import com.yeonae.chamelezone.data.model.Place
 import kotlinx.android.synthetic.main.item_like.view.*
 
 class LikeTabRvAdapter(private var items : ArrayList<Place>) : RecyclerView.Adapter<LikeTabRvAdapter.LikeViewHolder>() {

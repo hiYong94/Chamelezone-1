@@ -31,10 +31,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:layout_marginRight="20dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -49,18 +49,16 @@
                             android:textSize="15sp" />
 
                         <LinearLayout
-                            android:gravity="right"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:gravity="right">
 
-                            <ImageButton
+                            <CheckBox
+
                                 android:id="@+id/btn_like"
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:background="@color/transparent"
-                                android:padding="1dp"
-                                android:scaleType="fitXY"
-                                android:src="@drawable/like" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/btn_heart" />
                         </LinearLayout>
                     </LinearLayout>
 
