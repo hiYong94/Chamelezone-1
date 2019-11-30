@@ -17,13 +17,21 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val iv = LayoutInflater.from(this).inflate(R.layout.slider_item_image, imageContainer, false) as ImageView
+            val iv = LayoutInflater.from(this).inflate(
+                R.layout.slider_item_image,
+                imageContainer,
+                false
+            ) as ImageView
             imageContainer.addView(iv)
             Glide.with(this).load(uri).into(iv)
         }
     }
-        tv_title.requestFocus()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_review_create)
+
+        tv_title.requestFocus()
         setupGUI()
     }
 
