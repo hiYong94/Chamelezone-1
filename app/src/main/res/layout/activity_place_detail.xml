@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:class="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -33,67 +34,64 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <view
-                    android:id="@+id/view"
-                    class="androidx.viewpager.widget.ViewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="170dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="30dp" />
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="162dp"
-                    app:tabBackground="@drawable/tab_selector"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp" >
+                    android:orientation="vertical">
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
+                    <view
+                        android:id="@+id/view"
+                        class="androidx.viewpager.widget.ViewPager"
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="30dp" />
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tab_layout"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="정보" />
+                        android:layout_marginTop="162dp"
+                        app:tabBackground="@drawable/tab_selector"
+                        app:tabGravity="center"
+                        app:tabIndicatorHeight="0dp">
 
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="리뷰" />
+                    </com.google.android.material.tabs.TabLayout>
 
-                </com.google.android.material.tabs.TabLayout>
+                </RelativeLayout>
 
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="20dp">
-
-                <TextView
-                    android:id="@+id/user_id"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="100dp"
-                    android:text="구슬모아당구장"
-                    android:textSize="25sp"/>
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/product_like"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/transparent"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/like_empty">
+                    <TextView
+                        android:id="@+id/user_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginRight="100dp"
+                        android:text="구슬모아당구장"
+                        android:textSize="25sp" />
 
-                </ImageButton>
+                    <ImageButton
+                        android:id="@+id/product_like"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/transparent"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/like_empty">
+
+                    </ImageButton>
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -105,24 +103,42 @@
                 android:layout_marginRight="30dp"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabs_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        app:tabMode="fixed" />
+                        app:tabMode="fixed">
 
-                    <view
-                        class="androidx.viewpager.widget.ViewPager"
-                        android:id="@+id/viewpager_detail"
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="정보" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="리뷰" />
+
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="match_parent">
 
-                </RelativeLayout>
+                        <com.yeonae.chamelezone.view.NonSwipeViewPager
+                            android:id="@+id/viewpager_detail"
+                            class="androidx.viewpager.widget.ViewPager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

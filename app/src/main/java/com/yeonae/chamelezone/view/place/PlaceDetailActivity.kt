@@ -15,12 +15,10 @@ class PlaceDetailActivity : AppCompatActivity() {
 
         val imageAdapter = ImageViewPagerAdapter()
         view.adapter = imageAdapter
-
         tab_layout.setupWithViewPager(view, true)
 
         val fragmentAdapter = PlaceDetailPagerAdapter(supportFragmentManager)
         viewpager_detail.adapter = fragmentAdapter
-
         tabs_detail.setupWithViewPager(viewpager_detail)
     }
 }
