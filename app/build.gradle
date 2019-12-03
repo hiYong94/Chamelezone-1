@@ -45,7 +45,11 @@ dependencies {
     implementation 'gun0912.ted:tedpermission:2.2.2'
 
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha01'
+
+    implementation 'com.google.android.material:material:1.2.0-alpha02'
+    implementation 'com.google.android.libraries.places:places:2.0.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 
     implementation 'com.kroegerama:bottomsheet-imagepicker:1.0.4'
 

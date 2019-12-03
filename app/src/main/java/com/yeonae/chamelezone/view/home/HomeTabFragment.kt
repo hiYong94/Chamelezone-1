@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
 import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
+import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 class HomeTabFragment : Fragment() {
@@ -27,46 +29,46 @@ class HomeTabFragment : Fragment() {
 
         val placeList = arrayListOf(
             Place(
-                "backward",
-                "구슬모아 당구장",
-                "800m",
-                "카페, 펍"
+                "구슬모아당구장",
+                "전시회, 카페",
+                "서울 용산구 독서당로 85",
+                "7km",
+                "backward"
             ),
             Place(
-                "course",
-                "Chow Chow",
-                "Male",
-                "Male"
+                "론리드프로젝트",
+                "빨래방, 카페",
+                "서울 용산구 신흥로 78",
+                "10km",
+                "course"
             ),
             Place(
-                "home",
-                "Chow Chow",
-                "Male",
-                "Male"
+                "하나은행X북바이북",
+                "은행, 서점",
+                "서울 종로구 새문안로5길 19",
+                "13km",
+                "home"
             ),
             Place(
-                "like",
-                "Chow Chow",
-                "Male",
-                "Male"
+                "구슬모아당구장",
+                "전시회, 카페",
+                "서울 용산구 독서당로 85",
+                "7km",
+                "backward"
             ),
             Place(
-                "search",
-                "Chow Chow",
-                "Male",
-                "Male"
+                "론리드프로젝트",
+                "빨래방, 카페",
+                "서울 용산구 신흥로 78",
+                "10km",
+                "course"
             ),
             Place(
-                "map",
-                "Chow Chow",
-                "Male",
-                "Male"
-            ),
-            Place(
-                "user",
-                "Chow Chow",
-                "Male",
-                "Male"
+                "하나은행X북바이북",
+                "은행, 서점",
+                "서울 종로구 새문안로5길 19",
+                "13km",
+                "home"
             )
         )
         Log.d("tag", placeList.size.toString())
@@ -78,6 +80,15 @@ class HomeTabFragment : Fragment() {
         recycler_view_place?.apply {
             layoutManager = gridlayout
             adapter = placeAdapter
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        btn_search.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
         }
     }
 }
