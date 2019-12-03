@@ -14,9 +14,9 @@
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:adjustViewBounds="true"
             android:background="@color/transparent"
             android:scaleType="fitXY"
-            android:adjustViewBounds="true"
             android:src="@drawable/backward" />
 
         <TextView
@@ -74,6 +74,8 @@
                     android:layout_margin="10dp"
                     android:background="@null"
                     android:hint="장소명을 입력하세요 (최대 20자)"
+                    android:maxLength="20"
+                    android:singleLine="true"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -208,32 +210,32 @@
                 android:textSize="15sp" />
 
             <LinearLayout
-                android:weightSum="3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
-                android:background="@drawable/draw">
+                android:background="@drawable/draw"
+                android:weightSum="3">
 
                 <Spinner
-                    android:textSize="12sp"
-                    android:layout_weight="1"
                     android:id="@+id/day_spinner"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp" />
 
                 <Spinner
-                    android:textSize="12sp"
-                    android:layout_weight="1"
                     android:id="@+id/open_spinner"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp" />
 
                 <Spinner
-                    android:textSize="12sp"
-                    android:layout_weight="1"
                     android:id="@+id/close_spinner"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp" />
 
             </LinearLayout>
         </LinearLayout>
@@ -279,7 +281,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
                 android:layout_weight="2"
                 android:text="상세설명"
                 android:textSize="15sp" />
@@ -296,7 +298,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@null"
+                    android:gravity="top"
                     android:hint="장소에 대한 설명을 입력하세요"
+                    android:lines="8"
                     android:textSize="15sp" />
 
             </LinearLayout>

@@ -20,5 +20,4 @@ class MemberRemoteDataSourceImpl private constructor(/*api: Api*/): MemberRemote
     companion object{
         fun getInstence() : MemberRemoteDataSource = MemberRemoteDataSourceImpl()
     }
-
 }

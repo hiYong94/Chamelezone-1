@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
+import com.yeonae.chamelezone.data.model.Like
+import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 
 class PlaceReviewTabFragment : Fragment() {
+    private val placeReviewRvAdapter = PlaceReviewTabRvAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,5 +30,18 @@ class PlaceReviewTabFragment : Fragment() {
             val intent = Intent(context, ReviewCreateActivity::class.java)
             startActivity(intent)
         }
+      
+        setAdapter()
+
+        placeReviewRvAdapter.setOnClickListener(object : PlaceReviewTabRvAdapter.OnClickListener {
+            override fun onClick(like: Like) {
+
+            }
+        })
+    }
+
+    private fun setAdapter() {
+        recycler_place_review.layoutManager = LinearLayoutManager(context)
+        recycler_place_review.adapter = placeReviewRvAdapter
     }
 }

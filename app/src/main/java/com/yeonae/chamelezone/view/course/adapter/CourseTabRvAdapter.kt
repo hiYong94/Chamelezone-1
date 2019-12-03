@@ -1,15 +1,17 @@
-package com.yeonae.chamelezone.view.mypage.mycourse.adapter
+package com.yeonae.chamelezone.view.course.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
-import kotlinx.android.synthetic.main.item_my_course.view.*
+import kotlinx.android.synthetic.main.item_course_list.view.*
+import kotlinx.android.synthetic.main.item_my_course.view.tv_course_name
+import kotlinx.android.synthetic.main.item_place_review.view.tv_user_id
 
-class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Adapter<MyCourseRvAdapter.MyCourseViewHolder>() {
+class CourseTabRvAdapter(var items : ArrayList<Course>) : RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
 
-    //private var items = mutableListOf<Like>()
+    //private var items = mutableListOf<Course>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
@@ -20,13 +22,13 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
         onClickListener = listener
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyCourseViewHolder =
-        MyCourseViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseViewHolder =
+        CourseViewHolder(parent)
 
     override fun getItemCount(): Int =
         items.size
 
-    override fun onBindViewHolder(holder: MyCourseViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: CourseViewHolder, position: Int) =
         holder.bind(items[position], onClickListener)
 
     fun addData(addDataList: List<Course>) {
@@ -35,8 +37,8 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
         notifyDataSetChanged()
     }
 
-    class MyCourseViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_my_course, parent, false)
+    class CourseViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+        LayoutInflater.from(parent.context).inflate(R.layout.item_course_list, parent, false)
     ) {
         fun bind(item: Course, listener: OnClickListener?) {
             itemView.run {
@@ -44,7 +46,8 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
                     listener?.onClick(item)
                 }
                 tv_course_name.text = item.courseName
-                tv_course_content.text = item.courseText
+                tv_register_date.text = item.registerDate
+                tv_user_id.text = item.userId
             }
         }
     }
