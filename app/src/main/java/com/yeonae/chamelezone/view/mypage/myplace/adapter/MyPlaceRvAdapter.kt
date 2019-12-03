@@ -36,7 +36,7 @@ class MyPlaceRvAdapter(private var items : ArrayList<Place>) : RecyclerView.Adap
     }
 
     class MyPlaceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_like, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.item_my_place, parent, false)
     ) {
         fun bind(item: Place, listener: OnClickListener?) {
             itemView.run {
