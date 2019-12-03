@@ -49,4 +49,6 @@ dependencies {
     implementation 'com.kroegerama:bottomsheet-imagepicker:1.0.4'
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     implementation 'com.kroegerama:android-kaiteki:2.7.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

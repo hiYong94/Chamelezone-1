@@ -23,9 +23,11 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             Glide.with(this).load(uri).into(iv)
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_create)
+
         tv_title.requestFocus()
         setupGUI()
     }
