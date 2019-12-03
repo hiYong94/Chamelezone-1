@@ -19,8 +19,16 @@ class PlaceChoiceFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        view?.setOnClickListener {
+            true
+        }
+
         btn_search.setOnClickListener {
 
+        }
+
+        btn_back.setOnClickListener {
+            requireActivity().onBackPressed()
         }
     }
 }
