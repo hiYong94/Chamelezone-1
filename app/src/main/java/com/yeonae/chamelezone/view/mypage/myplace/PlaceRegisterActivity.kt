@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.R
@@ -15,6 +16,9 @@ class PlaceRegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_register)
+
+        edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
+        edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         val dayArray = resources.getStringArray(R.array.day_array)
         val openArray = resources.getStringArray(R.array.open_array)

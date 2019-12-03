@@ -48,17 +48,6 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right">
-
-                            <CheckBox
-                                android:id="@+id/btn_like"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:button="@drawable/btn_heart" />
-                        </LinearLayout>
                     </LinearLayout>
 
                     <TextView

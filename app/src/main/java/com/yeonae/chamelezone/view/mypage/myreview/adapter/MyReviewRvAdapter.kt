@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Review
+import com.yeonae.chamelezone.data.model.Review
 import kotlinx.android.synthetic.main.item_my_review.view.*
 
 class MyReviewRvAdapter(private var items: ArrayList<Review>) :

@@ -4,8 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Like
-import com.yeonae.chamelezone.model.Place
+import com.yeonae.chamelezone.data.model.Place
 import kotlinx.android.synthetic.main.item_like.view.*
 
 class MyPlaceRvAdapter(private var items : ArrayList<Place>) : RecyclerView.Adapter<MyPlaceRvAdapter.MyPlaceViewHolder>() {
@@ -37,7 +36,7 @@ class MyPlaceRvAdapter(private var items : ArrayList<Place>) : RecyclerView.Adap
     }
 
     class MyPlaceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_like, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.item_my_place, parent, false)
     ) {
         fun bind(item: Place, listener: OnClickListener?) {
             itemView.run {

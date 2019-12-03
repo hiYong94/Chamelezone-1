@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Like
-import com.yeonae.chamelezone.model.Place
+import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.like.adapter.LikeTabRvAdapter
 import kotlinx.android.synthetic.main.fragment_like_tab.*
-import kotlinx.android.synthetic.main.item_like.*
 
 class LikeTabFragment : Fragment() {
     private val likeList = arrayListOf(
@@ -33,11 +31,6 @@ class LikeTabFragment : Fragment() {
 
             }
         })
-
-//        btn_like.setOnClickListener {
-//            btn_like.setImageResource(R.drawable.like01)
-//        }
-
     }
 
     private fun setAdapter() {

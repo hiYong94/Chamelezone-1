@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.model
+package com.yeonae.chamelezone.data.model
 
 import java.io.Serializable
 

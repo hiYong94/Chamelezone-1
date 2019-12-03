@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+<FrameLayout
+    android:id="@+id/fragment_place_choice"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -68,12 +71,14 @@
                 android:background="@drawable/draw">
 
                 <EditText
-                    android:id="@+id/edt_place_name"
+                    android:id="@+id/edt_course_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@null"
-                    android:hint="장소명을 입력하세요 (최대 20자)"
+                    android:hint="코스 제목을 입력하세요 (최대 20자)"
+                    android:maxLength="20"
+                    android:singleLine="true"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -88,7 +93,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
+                android:layout_marginTop="10dp"
                 android:layout_weight="2"
                 android:text="코스 설명"
                 android:textSize="15sp" />
@@ -100,12 +105,14 @@
                 android:background="@drawable/draw">
 
                 <EditText
-                    android:id="@+id/edt_place_phone"
+                    android:id="@+id/edt_course_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@null"
-                    android:hint="- 없이 번호만 입력하세요"
+                    android:gravity="top"
+                    android:hint="코스에 대한 설명을 입력하세요"
+                    android:lines="8"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -134,8 +141,9 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:id="@+id/btn_place"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="61dp"
                 android:background="@color/transparent"
                 android:text="장소 선택" />
         </LinearLayout>
@@ -164,7 +172,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="구슬모아당구장"
-                        android:textSize="15dp" />
+                        android:textSize="15sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -185,13 +193,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="카페, 전시회"
-                    android:textSize="13dp" />
+                    android:textSize="13sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="서울특별시 용산구 한남동 독서당로 85"
-                    android:textSize="13dp" />
+                    android:textSize="13sp" />
             </LinearLayout>
         </LinearLayout>
 
