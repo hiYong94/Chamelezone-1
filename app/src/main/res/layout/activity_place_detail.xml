@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/btn_back"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/backward"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
             android:background="@color/transparent"
             android:scaleType="fitCenter"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"></ImageButton>
+            android:src="@drawable/backward" />
 
     </LinearLayout>
 
@@ -43,220 +43,90 @@
                     class="androidx.viewpager.widget.ViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="170dp"
-                    android:layout_marginTop="30dp"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"/>
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="30dp" />
 
                 <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="162dp"
                     app:tabBackground="@drawable/tab_selector"
                     app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp"
-                    android:layout_marginTop="162dp"
-                    android:id="@+id/tab_layout" />
+                    app:tabIndicatorHeight="0dp" >
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="정보" />
+
+                    <com.google.android.material.tabs.TabItem
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="리뷰" />
+
+                </com.google.android.material.tabs.TabLayout>
 
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_marginStart="20dp">
+
+                <TextView
+                    android:id="@+id/user_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="100dp"
+                    android:text="구슬모아당구장"
+                    android:textSize="25sp"/>
+
+                <ImageButton
+                    android:id="@+id/product_like"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/transparent"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/like_empty">
+
+                </ImageButton>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp">
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:orientation="vertical">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/user_id"
-                        android:layout_width="wrap_content"
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tabs_detail"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="25sp"
-                        android:text="구슬모아당구장"
-                        android:layout_marginRight="100dp">
+                        android:layout_marginTop="8dp"
+                        app:tabMode="fixed" />
 
-                    </TextView>
+                    <view
+                        class="androidx.viewpager.widget.ViewPager"
+                        android:id="@+id/viewpager_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-                    <ImageButton
-                        android:id="@+id/product_like"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/like_empty"
-                        android:scaleType="fitCenter"
-                        android:layout_marginTop="10dp"
-                        android:background="@color/transparent">
-
-                    </ImageButton>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="키워드"
-                        android:textSize="15sp"
-                        android:layout_marginRight="37dp">
-
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/keyword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="22dp"
-                        android:text="주소"
-                        android:textSize="15sp">
-
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/address"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="영업시간"
-                        android:textSize="15sp"
-                        android:layout_marginRight="40dp">
-
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="전화번호"
-                        android:textSize="15sp"
-                        android:layout_marginRight="22dp">
-
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="설명"
-                        android:textSize="15sp"
-                        android:layout_marginBottom="10dp">
-
-                    </TextView>
-
-                    <TextView
-                        android:id="@+id/explain"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20dp">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="지도"
-                        android:textSize="15sp"
-                        android:layout_marginRight="57dp">
-
-                    </TextView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center">
-
-                    <Button
-                        android:id="@+id/review"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="리뷰"
-                        android:textColor="@drawable/selected_btn_text"
-                        android:background="@drawable/selected_btn_background"/>
-
-                </LinearLayout>
+                </RelativeLayout>
 
             </LinearLayout>
 
         </LinearLayout>
-
 
     </ScrollView>
 
