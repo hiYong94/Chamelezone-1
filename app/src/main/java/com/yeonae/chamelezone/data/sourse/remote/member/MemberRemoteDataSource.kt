@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.data.sourse.remote
+package com.yeonae.chamelezone.data.sourse.remote.member
 
 interface MemberRemoteDataSource {
     fun createMember()
