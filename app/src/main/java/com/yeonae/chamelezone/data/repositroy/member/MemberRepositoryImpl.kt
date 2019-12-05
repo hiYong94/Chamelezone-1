@@ -2,7 +2,8 @@ package com.yeonae.chamelezone.data.repositroy
 
 import com.yeonae.chamelezone.data.sourse.remote.MemberRemoteDataSource
 
-class MemberRepositoryImpl private constructor(val remoteDataSource: MemberRemoteDataSource): MemberRepository{
+class MemberRepositoryImpl private constructor(val remoteDataSource: MemberRemoteDataSource) :
+    MemberRepository {
     override fun createMember() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -19,7 +20,8 @@ class MemberRepositoryImpl private constructor(val remoteDataSource: MemberRemot
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    companion object{
-        fun getInstance(remoteDataSource: MemberRemoteDataSource):MemberRepository = MemberRepositoryImpl(remoteDataSource)
+    companion object {
+        fun getInstance(remoteDataSource: MemberRemoteDataSource): MemberRepository =
+            MemberRepositoryImpl(remoteDataSource)
     }
 }
