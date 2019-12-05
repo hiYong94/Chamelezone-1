@@ -34,7 +34,8 @@ class CourseTabFragment : Fragment() {
 
         courseTabRvAdapter.setOnClickListener(object : CourseTabRvAdapter.OnClickListener {
             override fun onClick(course: Course) {
-
+                val intent = Intent(requireContext(), CourseDetailActivity::class.java)
+                startActivity(intent)
             }
         })
 
