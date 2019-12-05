@@ -18,7 +18,7 @@ class MyCourseActivity : AppCompatActivity() {
         ),
         Course("용권이의 코스", "2019-11-28", "hiyong", "용애용애"),
         Course(
-            "책을 좋아하는 사람을 위한 코스",
+            "선애와 연재처럼 책을 좋아하는 사람을 위한 코스",
             "2019-11-27",
             "Lsunae",
             "선애바보"
