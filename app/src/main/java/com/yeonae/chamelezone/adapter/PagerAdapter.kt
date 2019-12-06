@@ -15,12 +15,6 @@ abstract class PagerAdapter(
         tabList.size
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return when (position) {
-            0 -> "홈"
-            1 -> "코스"
-            2 -> "지도"
-            3 -> "즐겨찾기"
-            else -> "마이페이지"
-        }
+        return tabList[position]
     }
 }
