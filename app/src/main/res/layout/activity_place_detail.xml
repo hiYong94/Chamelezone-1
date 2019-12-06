@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <view
+                    <androidx.viewpager.widget.ViewPager
                         android:id="@+id/view"
                         class="androidx.viewpager.widget.ViewPager"
                         android:layout_width="match_parent"
