@@ -4,16 +4,16 @@
     <string name="file_provider" translatable="false">com.kroegerama.imgpicker.demo.fileprovider</string>
 
     <plurals name="pick_multi">
-        <item quantity="one">One image selected</item>
-        <item quantity="other">%1$d images selected</item>
+        <item quantity="one">1개의 이미지가 선택되었습니다.</item>
+        <item quantity="other">%1$d개의 이미지가 선택되었습니다.</item>
     </plurals>
 
     <plurals name="pick_multi_more">
-        <item quantity="one">Please select one more image…</item>
-        <item quantity="other">Please select %1$d more images…</item>
+        <item quantity="one">1개의 이미지를 더 선택해주세요.</item>
+        <item quantity="other">%1$d개의 이미지를 더 선택해주세요.</item>
     </plurals>
 
-    <string name="pick_multi_limit">You have more than %1$d images selected…</string>
+    <string name="pick_multi_limit">최대 %1$d개의 이미지를 선택해주세요.</string>
 
     <string-array name = "keyword">
         <item>"카페"</item>
