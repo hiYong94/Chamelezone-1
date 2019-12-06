@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="마이페이지"
+            android:text="@string/mypage"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
-            android:text="로그인"
+            android:text="@string/login"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="회원정보 수정"
+        android:text="@string/member_info_modify"
         android:textSize="15dp" />
 
     <ImageView
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="나의 리뷰"
+        android:text="@string/my_review"
         android:textSize="15dp" />
 
     <ImageView
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="나의 장소"
+        android:text="@string/my_place"
         android:textSize="15dp" />
 
     <ImageView
@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="나의 코스"
+        android:text="@string/my_course"
         android:textSize="15dp" />
 
     <ImageView
@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="카멜레존 소개"
+        android:text="@string/chamelezone_info"
         android:textSize="15dp" />
 
     <ImageView
@@ -121,7 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="개인정보 수집 및 이용"
+        android:text="@string/privacy"
         android:textSize="15dp" />
 
     <ImageView
@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:text="로그아웃"
+        android:text="@string/logout"
         android:textSize="15dp" />
 
     <ImageView

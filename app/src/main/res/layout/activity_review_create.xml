@@ -27,7 +27,7 @@
             android:layout_gravity="right"
             android:layout_marginRight="15dp"
             android:background="@drawable/selected_btn_background"
-            android:text="리뷰 등록"
+            android:text="@string/review_create"
             android:textColor="@drawable/selected_btn_text"
             android:layout_marginStart="250dp"/>
 

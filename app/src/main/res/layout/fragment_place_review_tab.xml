@@ -14,7 +14,7 @@
             android:id="@+id/review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="리뷰를 남겨주세요"
+            android:text="@string/review_create_message"
             android:background="@drawable/selected_btn_background"
             android:textColor="@drawable/selected_btn_text"/>
 
