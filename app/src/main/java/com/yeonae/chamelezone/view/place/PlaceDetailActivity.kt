@@ -13,6 +13,10 @@ class PlaceDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
 
+        btn_back.setOnClickListener {
+            finish()
+        }
+
         val imageAdapter = ImageViewPagerAdapter()
         view.adapter = imageAdapter
         tab_layout.setupWithViewPager(view, true)
