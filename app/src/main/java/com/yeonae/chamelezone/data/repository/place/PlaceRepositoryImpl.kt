@@ -2,7 +2,7 @@ package com.yeonae.chamelezone.data.repository.place
 
 import com.yeonae.chamelezone.data.sourse.remote.place.PlaceRemoteDataSource
 
-class PlaceRepositoryImpl private constructor(val remoteDataSource: PlaceRemoteDataSource) :
+class PlaceRepositoryImpl private constructor(private val remoteDataSource: PlaceRemoteDataSource) :
     PlaceRepository {
     override fun registerPlace() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
