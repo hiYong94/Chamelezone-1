@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.like
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.like.adapter.LikeTabRvAdapter
+import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.fragment_like_tab.*
 
 class LikeTabFragment : Fragment() {
@@ -28,7 +30,8 @@ class LikeTabFragment : Fragment() {
 
         likeTabRvAdapter.setOnClickListener(object : LikeTabRvAdapter.OnClickListener {
             override fun onClick(place: Place) {
-
+                val intent = Intent(context, PlaceDetailActivity::class.java)
+                startActivity(intent)
             }
         })
     }

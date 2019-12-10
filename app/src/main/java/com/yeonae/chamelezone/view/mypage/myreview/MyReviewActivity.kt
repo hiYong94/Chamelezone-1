@@ -10,7 +10,9 @@ import kotlinx.android.synthetic.main.activity_my_review.*
 
 class MyReviewActivity : AppCompatActivity() {
     private val myReviewList = arrayListOf(
-        Review("구슬모아당구장", "여기 진짜 존예ㅠㅠ 다음에 또 방문할 예정이에요.")
+        Review("구슬모아당구장", "여기 진짜 존예ㅠㅠ 다음에 또 방문할 예정이에요."),
+        Review("커피빈 강남오토스퀘어점", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ" +
+                "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
     )
     private val myReviewRvAdapter = MyReviewRvAdapter(myReviewList)
 
