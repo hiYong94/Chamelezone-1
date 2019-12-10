@@ -2,44 +2,43 @@ package com.yeonae.chamelezone.view.search
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
-import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
+import com.yeonae.chamelezone.view.search.adapter.SearchTabAdapter
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : AppCompatActivity() {
-    private val searchList = arrayListOf(
-        Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85", "7km"),
-        Place("론리드프로젝트", "빨래방, 카페", "서울 용산구 신흥로 78", "10km"),
-        Place(
-            "하나은행X북바이북",
-            "은행, 서점",
-            "서울 종로구 새문안로5길 19",
-            "13km"
-        )
-    )
-    private val searchRvAdapter = SearchRvAdapter(searchList)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        setAdapter()
 
-        searchRvAdapter.setOnClickListener(object : SearchRvAdapter.OnClickListener {
-            override fun onClick(place: Place) {
+        search_tab.addTab(search_tab.newTab().setText("장소명"))
+        search_tab.addTab(search_tab.newTab().setText("지역명"))
+        search_tab.addTab(search_tab.newTab().setText("키워드"))
 
+        val searchTabAdapter = SearchTabAdapter(supportFragmentManager)
+        search_view_pager.adapter = searchTabAdapter
+        search_view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(search_tab))
+
+        search_tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
             }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                if (tab != null) {
+                    search_view_pager.currentItem = tab.position
+                }
+            }
+
         })
 
         btn_back.setOnClickListener {
             finish()
         }
 
-    }
-
-    private fun setAdapter() {
-        recycler_search.layoutManager = LinearLayoutManager(this)
-        recycler_search.adapter = searchRvAdapter
     }
 }
