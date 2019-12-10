@@ -11,7 +11,7 @@ import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.activity_review_create.*
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
-        toast("Result from tag: $tag")
+        toast("$tag")
         imageContainer.removeAllViews()
         uris.forEach { uri ->
             val iv = LayoutInflater.from(this).inflate(
@@ -27,6 +27,10 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_create)
+
+        btn_back.setOnClickListener {
+            finish()
+        }
 
         tv_title.requestFocus()
         setupGUI()
@@ -48,4 +52,5 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         btn_image_create.setOnClickListener { pickMulti() }
         btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
     }
+
 }

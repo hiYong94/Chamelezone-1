@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
 import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
 import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 

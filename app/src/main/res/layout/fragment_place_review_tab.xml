@@ -8,13 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
         <Button
+            android:id="@+id/review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:text="리뷰를 남겨주세요" />
+            android:text="@string/review_create_message"
+            android:background="@drawable/selected_btn_background"
+            android:textColor="@drawable/selected_btn_text"/>
 
     </LinearLayout>
 
@@ -29,20 +31,4 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <Button
-            android:id="@+id/review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/selected_btn_background"
-            android:text="리뷰"
-            android:textColor="@drawable/selected_btn_text" />
-
-    </LinearLayout>
 </LinearLayout>
