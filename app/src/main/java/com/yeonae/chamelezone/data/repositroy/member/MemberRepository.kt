@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.data.repositroy
+package com.yeonae.chamelezone.data.repositroy.member
 
 interface MemberRepository {
     fun createMember()
