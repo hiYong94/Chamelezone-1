@@ -70,17 +70,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
                 }
 
                 currentLatLng = LatLng(currentLocation?.latitude!!, currentLocation?.longitude!!)
-                val markerTitle = getCurrentAddress(currentLatLng!!)
-                val markerOptions = MarkerOptions().apply {
-                    position(currentLatLng!!)
-                    title(markerTitle)
-                    draggable(true)
-                }
 
-                map?.run {
-                    addMarker(markerOptions)
-                    moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
-                }
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
             }
         }
     }
@@ -123,13 +114,16 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
 
                 map?.run {
                     addMarker(markerOptions)
+                    setOnMarkerClickListener {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
                     animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
                 }
             }
         }
     }
 
-    fun getCurrentAddress(latLng: LatLng): String {
+    private fun getCurrentAddress(latLng: LatLng): String {
         val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
         val addresses = geoCoder.getFromLocation(
             latLng.latitude,
@@ -138,5 +132,4 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         )
         return addresses[0].getAddressLine(0).toString()
     }
-
 }

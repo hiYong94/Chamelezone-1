@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <LinearLayout
@@ -55,106 +56,64 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="20dp"
-                    android:text="사진"
-                    android:textSize="15sp">
-
-                </TextView>
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="30dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/image_view_1"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp" />
-
-                        <Button
-                            android:id="@+id/btn_img_1"
-                            android:layout_width="80dp"
-                            android:layout_height="30dp"
-                            android:text="+"
-                            android:textSize="10dp" />
-
-                    </LinearLayout>
+                        android:text="사진"
+                        android:textSize="15sp" />
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/image_view_2"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp" />
+                        android:layout_marginLeft="150dp"
+                        android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/btn_img_2"
-                            android:layout_width="80dp"
-                            android:layout_height="30dp"
-                            android:text="+"
-                            android:textSize="10dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/image_view_3"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp" />
+                            android:id="@+id/btn_img_create"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/selected_btn_background"
+                            android:text="사진 등록"
+                            android:textColor="@drawable/selected_btn_text" />
 
                         <Button
-                            android:id="@+id/btn_img_3"
-                            android:layout_width="80dp"
-                            android:layout_height="30dp"
-                            android:text="+"
-                            android:textSize="10dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="30dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:id="@+id/image_view_4"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp" />
-
-                        <Button
-                            android:id="@+id/btn_img_4"
-                            android:layout_width="80dp"
-                            android:layout_height="30dp"
-                            android:text="+"
-                            android:textSize="10dp" />
+                            android:id="@+id/btn_img_clear"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/selected_btn_background"
+                            android:text="리셋"
+                            android:textColor="@drawable/selected_btn_text" />
 
                     </LinearLayout>
 
                 </LinearLayout>
 
+                <HorizontalScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:background="#eee"
+                    android:clipToPadding="false"
+                    android:paddingStart="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="16dp"
+                    android:scrollbarStyle="outsideOverlay">
+
+                    <LinearLayout
+                        android:id="@+id/imageContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
 
             </LinearLayout>
 

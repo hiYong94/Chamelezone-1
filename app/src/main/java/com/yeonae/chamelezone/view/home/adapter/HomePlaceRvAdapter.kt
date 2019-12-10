@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.model.Place
+import com.yeonae.chamelezone.data.model.Place
 import kotlinx.android.synthetic.main.item_place_list.view.*
 
 class HomePlaceRvAdapter(var placeList: ArrayList<Place>) :
@@ -37,8 +37,8 @@ class HomePlaceRvAdapter(var placeList: ArrayList<Place>) :
                 placeImg.setImageResource(R.mipmap.ic_launcher)
             }
             placeName.text = place.placeName
-            distance.text = place.distance
-            keyword.text = place.keyword
+            distance.text = place.placeDistance
+            keyword.text = place.placeKeyword
 
             itemView.setOnClickListener {
                 val position = adapterPosition
