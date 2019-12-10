@@ -1,8 +1,8 @@
 package com.yeonae.chamelezone.data.repositroy
 
-import com.yeonae.chamelezone.data.sourse.remote.MemberRemoteDataSource
+import com.yeonae.chamelezone.data.sourse.member.remote.MemberRemoteDataSource
 
-class MemberRepositoryImpl private constructor(val remoteDataSource: MemberRemoteDataSource): MemberRepository{
+class MemberRepositoryImpl private constructor(private val remoteDataSource: MemberRemoteDataSource): MemberRepository{
     override fun createMember() {
         remoteDataSource.createMember()
     }
