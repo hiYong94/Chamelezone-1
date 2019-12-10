@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.data.sourse.remote
+package com.yeonae.chamelezone.data.sourse.member.remote
 
 class MemberRemoteDataSourceImpl private constructor(/*api: Api*/): MemberRemoteDataSource {
     override fun createMember() {
