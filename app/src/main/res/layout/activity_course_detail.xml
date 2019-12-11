@@ -34,10 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="코스 공유"
+                android:text="@string/course_share"
                 android:textSize="20sp" />
         </LinearLayout>
-
     </RelativeLayout>
 
     <LinearLayout
@@ -50,7 +49,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="코스 제목"
+            android:text="@string/course_title"
             android:textSize="20sp" />
 
         <TextView
@@ -68,7 +67,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="첫번째 코스"
+                android:text="@string/course_first"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -122,7 +121,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="두번째 코스"
+                android:text="@string/course_second"
                 android:textSize="18sp" />
         </LinearLayout>
 
@@ -176,7 +175,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="세번째 코스"
+                android:text="@string/course_third"
                 android:textSize="18sp" />
         </LinearLayout>
 

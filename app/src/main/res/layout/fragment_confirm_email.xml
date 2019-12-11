@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="이메일 찾기"
+                android:text="@string/email_search"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="회원님의 이메일은"
+            android:text="@string/member_email_search"
             android:textSize="15sp" />
 
         <TextView
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorOrange"
-            android:text="비밀번호 찾기"
+            android:text="@string/password_search"
             android:textColor="#FFFFFF" />
 
         <Button
@@ -89,7 +89,7 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="1"
             android:background="@color/colorOrange"
-            android:text="로그인"
+            android:text="@string/login"
             android:textColor="#FFFFFF" />
     </LinearLayout>
 </LinearLayout>

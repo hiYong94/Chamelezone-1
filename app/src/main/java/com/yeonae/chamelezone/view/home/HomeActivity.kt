@@ -1,12 +1,13 @@
 package com.yeonae.chamelezone.view.home
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
-import com.yeonae.chamelezone.*
+import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.PagerAdapter
 import com.yeonae.chamelezone.view.course.CourseTabFragment
 import com.yeonae.chamelezone.view.like.LikeTabFragment
@@ -149,6 +150,10 @@ class HomeActivity : AppCompatActivity() {
 //        selectDrawableList.forEachIndexed { index, selectDrawable ->
 //            getTabAt(index)?.setIcon(selectDrawable)
 
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return super.onTouchEvent(event)
     }
 }
 

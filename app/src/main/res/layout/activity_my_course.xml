@@ -34,10 +34,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="나의 코스"
+                android:text="@string/my_course"
                 android:textSize="20sp" />
         </LinearLayout>
-
     </RelativeLayout>
 
     <LinearLayout

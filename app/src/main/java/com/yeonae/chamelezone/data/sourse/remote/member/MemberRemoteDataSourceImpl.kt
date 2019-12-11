@@ -19,7 +19,6 @@ class MemberRemoteDataSourceImpl private constructor(/*api: Api*/) :
     }
 
     companion object {
-        fun getInstance(): MemberRemoteDataSource =
-            MemberRemoteDataSourceImpl()
+        fun getInstance(): MemberRemoteDataSource = MemberRemoteDataSourceImpl()
     }
 }

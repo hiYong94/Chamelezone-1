@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="키워드"
+            android:text="@string/keyword"
             android:textSize="18sp" />
 
         <TextView
@@ -36,7 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="주소"
+            android:text="@string/address"
             android:textSize="18sp" />
 
         <TextView
@@ -58,7 +58,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="영업시간"
+            android:text="@string/business_hours"
             android:textSize="18sp" />
 
         <TextView
@@ -80,7 +80,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="전화번호"
+            android:text="@string/phone_number"
             android:textSize="18sp" />
 
         <TextView
@@ -102,7 +102,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="상세설명"
+            android:text="@string/detail_description"
             android:textSize="18sp" />
 
         <TextView
@@ -124,7 +124,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="지도"
+            android:text="@string/map"
             android:textSize="18sp" />
 
     </LinearLayout>

@@ -34,7 +34,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="나의 리뷰"
+                android:text="@string/my_review"
                 android:textSize="20sp" />
         </LinearLayout>
 
