@@ -1,6 +1,6 @@
-package com.yeonae.chamelezone.data.sourse.remote
+package com.yeonae.chamelezone.data.repository.member
 
-interface MemberRemoteDataSource {
+interface MemberRepository {
     fun createMember()
     fun getMember()
     fun deleteMember()

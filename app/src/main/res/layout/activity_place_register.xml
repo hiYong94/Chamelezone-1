@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,31 +12,31 @@
 
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="25dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:adjustViewBounds="true"
             android:background="@color/transparent"
-            android:scaleType="fitXY"
-            android:src="@drawable/backward" />
+            android:padding="20dp"
+            android:src="@drawable/ic_keyboard_backspace_black_24dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="10dp"
             android:text="@string/place_create"
             android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right">
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical">
 
             <TextView
                 android:id="@+id/btn_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="10dp"
+                android:padding="10dp"
                 android:text="@string/create"
                 android:textSize="20sp" />
         </LinearLayout>
@@ -44,7 +45,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -62,9 +64,8 @@
                 android:textSize="15sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
                 android:background="@drawable/draw">
 
                 <EditText
@@ -94,11 +95,11 @@
                 android:layout_weight="2"
                 android:text="@string/keyword"
                 android:textSize="15sp" />
+            >>>>>>> d85dddc5c4b8194bd4f6f0a0d5d2fedf56765a10
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
                 android:background="@drawable/draw"
                 android:weightSum="10">
 
@@ -137,9 +138,8 @@
                 android:textSize="15sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
                 android:background="@drawable/draw"
                 android:orientation="horizontal"
                 android:weightSum="10">
@@ -167,20 +167,11 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:weightSum="10">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:textSize="15sp" />
+            android:layout_marginTop="10dp">
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
                 android:background="@drawable/draw">
 
                 <EditText
@@ -216,26 +207,38 @@
                 android:background="@drawable/draw"
                 android:weightSum="3">
 
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="8"
+                android:background="@drawable/draw"
+                android:weightSum="3">
+
                 <Spinner
                     android:id="@+id/day_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="12sp" />
+                    android:layout_weight="1" />
 
                 <Spinner
                     android:id="@+id/open_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="12sp" />
+                    android:layout_weight="1" />
 
                 <Spinner
                     android:id="@+id/close_spinner"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textSize="12sp" />
+                    android:layout_weight="1" />
 
             </LinearLayout>
         </LinearLayout>
@@ -255,9 +258,8 @@
                 android:textSize="15sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
                 android:background="@drawable/draw">
 
                 <EditText
@@ -287,9 +289,8 @@
                 android:textSize="15sp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="8"
                 android:background="@drawable/draw">
 
                 <EditText
