@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:class="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:background="@color/colorWhite"
+    android:orientation="vertical">>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -69,8 +69,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/user_id"
@@ -137,15 +137,10 @@
                             class="androidx.viewpager.widget.ViewPager"
                             android:layout_width="match_parent"
                             android:layout_height="350dp"
-                            android:layout_marginTop="10dp"/>
+                            android:layout_marginTop="10dp" />
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
-
     </ScrollView>
-
 </LinearLayout>

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -19,18 +20,17 @@
                 android:layout_height="180dp" />
 
             <LinearLayout
-                android:layout_marginBottom="10dp"
-                android:layout_marginHorizontal="10dp"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/tv_course_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:textSize="18sp"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                         android:id="@+id/tv_register_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                             android:id="@+id/tv_user_id"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp" />
+                            android:textSize="15sp" />
 
                     </LinearLayout>
                 </LinearLayout>
