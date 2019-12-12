@@ -15,6 +15,7 @@ import com.yeonae.chamelezone.view.map.MapTabFragment
 import com.yeonae.chamelezone.view.mypage.MypageTabFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class HomeActivity : AppCompatActivity() {
     val drawableList = intArrayOf(
         R.drawable.home,
@@ -63,6 +64,7 @@ class HomeActivity : AppCompatActivity() {
                     }
                     2 -> {
                         MapTabFragment()
+
                     }
                     3 -> {
                         LikeTabFragment()

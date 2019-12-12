@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.map
 
+import android.Manifest
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -14,10 +16,13 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.fragment_map_tab.*
 import java.util.*
+
 
 class MapTabFragment : Fragment(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
@@ -58,7 +63,40 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         btn_search.setOnClickListener {
             getSearchLocation()
         }
+
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        val permissionlistener: PermissionListener = object : PermissionListener {
+            override fun onPermissionGranted() {
+                Toast.makeText(activity, "Permission Granted", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onPermissionDenied(deniedPermissions: List<String>) {
+                Toast.makeText(
+                    activity,
+                    "Permission Denied\n$deniedPermissions",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        }
+
+        TedPermission.with(activity)
+            .setPermissionListener(permissionlistener)
+            .setRationaleTitle(R.string.rationale_title)
+            .setRationaleMessage(R.string.rationale_message)
+            .setDeniedTitle("Permission denied")
+            .setDeniedMessage(
+                "If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]"
+            )
+            .setGotoSettingButtonText("bla bla")
+            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+            .check()
+    }
+
 
     private fun createLocationCallBack() {
         locationCallBack = object : LocationCallback() {
