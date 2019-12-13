@@ -22,6 +22,7 @@ import kotlinx.android.synthetic.main.fragment_map_tab.*
 import java.util.*
 
 class MapTabFragment : Fragment(), OnMapReadyCallback {
+    private var markerInfoFragment = MarkerInfoFragment()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -118,8 +119,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
                     addMarker(markerOptions)
                     setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
                         override fun onMarkerClick(p0: Marker?): Boolean {
-                            (activity as HomeActivity).back(MarkerInfoFragment())
-                            (activity as HomeActivity).replace(MarkerInfoFragment(), true)
+                            (activity as? HomeActivity)?.back(markerInfoFragment)
+                            (activity as? HomeActivity)?.replace(markerInfoFragment, true)
                             return false
                         }
 
