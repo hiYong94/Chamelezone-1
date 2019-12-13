@@ -58,7 +58,7 @@ class MyPlaceRvAdapter(private var items : ArrayList<Place>) : RecyclerView.Adap
         }
         private fun showPopup(v: View) {
             val popup = PopupMenu(v.context, v)
-            val inflater: MenuInflater = popup.menuInflater
+            val inflater = popup.menuInflater
             inflater.inflate(R.menu.pop_up_menu, popup.menu)
             popup.show()
         }
