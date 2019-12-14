@@ -35,6 +35,22 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
     lateinit var currentLatLng: LatLng
     private lateinit var locationCallBack: LocationCallback
 
+    val permissionListener: PermissionListener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            loadMap()
+            Toast.makeText(activity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: List<String>) {
+            Toast.makeText(
+                activity,
+                "권한이 거부되었습니다\n$deniedPermissions",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,13 +63,38 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         if (map != null) {
             this.map = map
         }
-        updateLocationUI()
         getCurrentLocation()
+        updateLocationUI()
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         map_view.onCreate(savedInstanceState)
+
+        checkPermission()
+
+        btn_search.setOnClickListener {
+            getSearchLocation()
+        }
+
+    }
+
+    private fun checkPermission(){
+        TedPermission.with(activity)
+            .setPermissionListener(permissionListener)
+            .setRationaleTitle(R.string.rationale_title)
+            .setRationaleMessage(R.string.rationale_message)
+            .setDeniedTitle("권한 거부")
+            .setDeniedMessage(
+                "만약 권한 허가를 거부한다면, 이 서비스를 사용할 수 없습니다.\n\n[설정] > [사용 권한]에서 사용 권한을 설정하십시오."
+            )
+            .setGotoSettingButtonText("설정")
+            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
+            .check()
+    }
+    private fun loadMap(){
+
         map_view.onResume()
         map_view.getMapAsync(this)
 
@@ -62,42 +103,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
 
         createLocationCallBack()
         createLocationRequest()
-
-        btn_search.setOnClickListener {
-            getSearchLocation()
-        }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        val permissionlistener: PermissionListener = object : PermissionListener {
-            override fun onPermissionGranted() {
-                Toast.makeText(activity, "Permission Granted", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onPermissionDenied(deniedPermissions: List<String>) {
-                Toast.makeText(
-                    activity,
-                    "Permission Denied\n$deniedPermissions",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }
-
-        TedPermission.with(activity)
-            .setPermissionListener(permissionlistener)
-            .setRationaleTitle(R.string.rationale_title)
-            .setRationaleMessage(R.string.rationale_message)
-            .setDeniedTitle("Permission denied")
-            .setDeniedMessage(
-                "If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]"
-            )
-            .setGotoSettingButtonText("bla bla")
-            .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
-            .check()
     }
 
 

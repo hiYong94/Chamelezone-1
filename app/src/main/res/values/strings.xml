@@ -15,8 +15,8 @@
 
     <string name="pick_multi_limit">최대 %1$d개의 이미지를 선택해주세요.</string>
 
-    <string name="rationale_title">Permission required</string>
-    <string name="rationale_message">we need permission for write find your <b>location</b></string>
+    <string name="rationale_title">권한이 필요합니다.</string>
+    <string name="rationale_message"><b>위치정보</b>에 접근하기 위해 권한이 필요합니다.</string>
 
     <string-array name = "keyword">
         <item>"카페"</item>
