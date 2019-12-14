@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.item_place_choice.view.*
 
 class PlaceChoiceRvAdapter(var items: ArrayList<Place>) :
     RecyclerView.Adapter<PlaceChoiceRvAdapter.PlaceChoiceViewHolder>() {
-
+    private var selectedPosition = -1
     //private var items = mutableListOf<Course>()
     private var onClickListener: OnClickListener? = null
 
@@ -27,8 +27,19 @@ class PlaceChoiceRvAdapter(var items: ArrayList<Place>) :
     override fun getItemCount(): Int =
         items.size
 
-    override fun onBindViewHolder(holder: PlaceChoiceViewHolder, position: Int) =
+    override fun onBindViewHolder(holder: PlaceChoiceViewHolder, position: Int) {
         holder.bind(items[position], onClickListener)
+        holder.itemView.btn_check.isChecked = selectedPosition == position
+
+        holder.itemView.btn_check.setOnClickListener {
+            if (selectedPosition == position) {
+                holder.itemView.btn_check.isChecked = false
+            } else {
+                selectedPosition = position
+                notifyDataSetChanged()
+            }
+        }
+    }
 
     fun addData(addDataList: List<Place>) {
         items.clear()
