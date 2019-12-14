@@ -157,6 +157,19 @@ class HomeActivity : AppCompatActivity() {
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return super.onTouchEvent(event)
     }
+
+    fun replace(fragment: Fragment, isBackStack: Boolean = true) {
+        if(isBackStack){
+            supportFragmentManager.beginTransaction().replace(R.id.map_fragment, fragment).addToBackStack(null).commit()
+        }else{
+            supportFragmentManager.beginTransaction().replace(R.id.map_fragment, fragment).commit()
+        }
+    }
+
+    fun back(fragment: Fragment){
+        supportFragmentManager.beginTransaction().remove(fragment).commit()
+        supportFragmentManager.popBackStack()
+    }
 }
 
 
