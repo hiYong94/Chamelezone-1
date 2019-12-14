@@ -3,11 +3,14 @@ package com.yeonae.chamelezone.network.model
 import com.google.gson.annotations.SerializedName
 
 data class PlaceResponse(
-    @SerializedName("memberNumber") val memberNumber: Int,
-    @SerializedName("email") val email: String,
-    @SerializedName("password") val password: String,
+    @SerializedName("placeNumber") val placeNumber: Int,
+    @SerializedName("keywordNumber") val keywordNumber: Int,
     @SerializedName("name") val name: String,
-    @SerializedName("nickName") val nickName: String,
+    @SerializedName("address") val address: String,
+    @SerializedName("openingTime") val openingTime: String,
     @SerializedName("phoneNumber") val phoneNumber: String,
+    @SerializedName("content") val content: String,
+    @SerializedName("fileName") val fileName: String,
+    @SerializedName("fileExtension") val fileExtension: String,
     @SerializedName("regiDate") val regiDate: String
 )

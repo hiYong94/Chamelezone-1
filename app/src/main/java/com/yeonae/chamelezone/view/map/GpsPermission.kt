@@ -16,36 +16,37 @@ class GpsPermission : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_home_tab)
 
-        val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val permissionCheck =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
 
-        if (permissionCheck != PackageManager.PERMISSION_GRANTED)
-        {
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "권한 승인이 필요합니다", Toast.LENGTH_LONG).show()
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION))
-            {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
                 Toast.makeText(this, "사용을 위해 위치 권한이 필요합니다.", Toast.LENGTH_LONG).show()
-            }
-            else
-            {
-                ActivityCompat.requestPermissions(this,
+            } else {
+                ActivityCompat.requestPermissions(
+                    this,
                     arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+                )
                 Toast.makeText(this, "사용을 위해 위치 권한이 필요합니다.", Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode:Int,
-                                   permissions:Array<String>, grantResults:IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
         when (requestCode) {
             MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED))
-                {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Toast.makeText(this, "승인이 허가되어 있습니다.", Toast.LENGTH_LONG).show()
-                }
-                else
-                {
+                } else {
                     Toast.makeText(this, "아직 승인받지 않았습니다.", Toast.LENGTH_LONG).show()
                 }
             }
