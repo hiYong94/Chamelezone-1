@@ -2,6 +2,9 @@ package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuInflater
+import android.view.View
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
@@ -9,6 +12,10 @@ import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.mypage.myplace.adapter.MyPlaceRvAdapter
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_my_place.*
+import kotlinx.android.synthetic.main.activity_my_place.btn_back
+import kotlinx.android.synthetic.main.activity_place_detail.view.*
+import kotlinx.android.synthetic.main.item_my_place.*
+import kotlinx.android.synthetic.main.item_my_place.view.*
 
 class MyPlaceActivity : AppCompatActivity() {
     private val myPlaceList = arrayListOf(

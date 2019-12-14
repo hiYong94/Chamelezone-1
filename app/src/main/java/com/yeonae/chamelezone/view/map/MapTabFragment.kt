@@ -15,16 +15,19 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.view.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_map_tab.*
 import java.util.*
 
 
 class MapTabFragment : Fragment(), OnMapReadyCallback {
+    private var markerInfoFragment = MarkerInfoFragment()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -152,9 +155,14 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
 
                 map?.run {
                     addMarker(markerOptions)
-                    setOnMarkerClickListener {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                    }
+                    setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
+                        override fun onMarkerClick(p0: Marker?): Boolean {
+                            (activity as? HomeActivity)?.back(markerInfoFragment)
+                            (activity as? HomeActivity)?.replace(markerInfoFragment, true)
+                            return false
+                        }
+
+                    })
                     animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
                 }
             }
