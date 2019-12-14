@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="@string/place_create"
+            android:text="장소 등록"
             android:textSize="20sp" />
 
         <LinearLayout
@@ -37,305 +37,263 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
                 android:padding="10dp"
-                android:text="@string/create"
+                android:text="등록"
                 android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:weightSum="10">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:text="@string/place_name"
-                android:textSize="15sp" />
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/draw">
+                android:layout_marginTop="20dp">
 
-                <EditText
-                    android:id="@+id/edt_place_name"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:hint="장소명을 입력하세요 (최대 20자)"
-                    android:maxLength="20"
-                    android:singleLine="true"
-                    android:textSize="15sp" />
+                    android:background="@drawable/draw">
 
+                    <EditText
+                        android:id="@+id/edt_place_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@null"
+                        android:hint="장소명을 입력하세요 (최대 20자)"
+                        android:maxLength="20"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:weightSum="10">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:text="@string/keyword"
-                android:textSize="15sp" />
-            >>>>>>> d85dddc5c4b8194bd4f6f0a0d5d2fedf56765a10
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/draw"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/tv_place_keyword"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="9"
+                        android:background="@null"
+                        android:hint="키워드를 선택하세요"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/btn_category_choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="선택" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <EditText
+                        android:id="@+id/edt_place_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="9"
+                        android:background="@null"
+                        android:hint="주소를 검색하세요"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/btn_address_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="검색" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw">
+
+                    <EditText
+                        android:id="@+id/edt_detail_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@null"
+                        android:hint="상세주소를 입력하세요"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:weightSum="10">
 
                 <TextView
-                    android:id="@+id/tv_place_keyword"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="9"
-                    android:background="@null"
-                    android:hint="키워드를 선택하세요"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/btn_category_choice"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/selected" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:weightSum="10">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:text="@string/address"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/draw"
-                android:orientation="horizontal"
-                android:weightSum="10">
-
-                <EditText
-                    android:id="@+id/edt_place_address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="9"
-                    android:background="@null"
-                    android:hint="주소를 검색하세요"
+                    android:layout_weight="2"
+                    android:text="영업시간"
                     android:textSize="15sp" />
 
-                <TextView
-                    android:id="@+id/btn_address_search"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/search" />
+                    android:layout_weight="8"
+                    android:background="@drawable/draw"
+                    android:weightSum="3">
 
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/draw">
+                android:layout_marginTop="10dp">
 
-                <EditText
-                    android:id="@+id/edt_detail_address"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="8"
+                    android:background="@drawable/draw"
+                    android:weightSum="3">
+
+                    <Spinner
+                        android:id="@+id/day_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Spinner
+                        android:id="@+id/open_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <Spinner
+                        android:id="@+id/close_spinner"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:hint="상세주소를 입력하세요"
-                    android:textSize="15sp" />
+                    android:background="@drawable/draw">
 
+                    <EditText
+                        android:id="@+id/edt_place_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@null"
+                        android:hint="- 없이 번호만 입력하세요"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:weightSum="10">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:text="@string/business_hours"
-                android:textSize="15sp" />
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:background="@drawable/draw"
-                android:weightSum="3">
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:background="@drawable/draw"
-                android:weightSum="3">
-
-                <Spinner
-                    android:id="@+id/day_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Spinner
-                    android:id="@+id/open_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Spinner
-                    android:id="@+id/close_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:weightSum="10">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:text="@string/phone_number"
-                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/draw">
+                android:layout_marginTop="20dp">
 
-                <EditText
-                    android:id="@+id/edt_place_phone"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:hint="- 없이 번호만 입력하세요"
-                    android:textSize="15sp" />
+                    android:background="@drawable/draw">
 
+                    <EditText
+                        android:id="@+id/edt_place_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:hint="장소에 대한 설명을 입력하세요"
+                        android:lines="8"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:weightSum="10">
 
             <TextView
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="사진"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_weight="2"
-                android:text="@string/detail_description"
-                android:textSize="15sp" />
+                android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/draw">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
 
-                <EditText
-                    android:id="@+id/edt_place_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:gravity="top"
-                    android:hint="장소에 대한 설명을 입력하세요"
-                    android:lines="8"
-                    android:textSize="15sp" />
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
 
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp" />
             </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/image"
-            android:textSize="15sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-        </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>
