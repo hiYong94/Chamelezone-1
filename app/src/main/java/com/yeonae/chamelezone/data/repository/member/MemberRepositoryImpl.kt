@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.data.repository.member
 
-import com.yeonae.chamelezone.data.sourse.remote.member.MemberRemoteDataSource
+import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSource
 
 class MemberRepositoryImpl private constructor(private val remoteDataSource: MemberRemoteDataSource) :
     MemberRepository {
