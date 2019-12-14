@@ -1,7 +1,7 @@
 package com.yeonae.chamelezone.view.course
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.course.adapter.PlaceChoiceRvAdapter
-import kotlinx.android.synthetic.main.activity_course_register.*
 import kotlinx.android.synthetic.main.fragment_place_choice.*
 
 class PlaceChoiceFragment : Fragment() {
+    private lateinit var lastCheckedPlace: Place
+
     private val placeChoiceList = arrayListOf(
         Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85"),
         Place(
@@ -36,13 +37,25 @@ class PlaceChoiceFragment : Fragment() {
 
         placeChoiceRvAdapter.setOnClickListener(object : PlaceChoiceRvAdapter.OnClickListener {
             override fun onClick(place: Place) {
-                btn_ok.setOnClickListener {
-                    val visible = arguments!!.getString("visible")
-                    (activity as CourseRegisterActivity).getVisible(visible.toString(), place)
-                    requireActivity().onBackPressed()
-                }
+                Log.d("하하하", "0")
+                lastCheckedPlace = place
             }
         })
+
+        btn_ok.setOnClickListener {
+            Log.d("하하하", "1")
+            if (::lastCheckedPlace.isInitialized) {
+                Log.d("하하하", "2")
+                val visible = arguments!!.getString("visible")
+                Log.d("하하하", "$visible")
+                (activity as? CourseRegisterActivity)?.getVisible(
+                    visible.toString(),
+                    lastCheckedPlace
+                )
+                requireActivity().onBackPressed()
+            }
+
+        }
 
         view?.setOnClickListener {
             true

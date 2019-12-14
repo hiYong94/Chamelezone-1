@@ -28,17 +28,7 @@ class PlaceChoiceRvAdapter(var items: ArrayList<Place>) :
         items.size
 
     override fun onBindViewHolder(holder: PlaceChoiceViewHolder, position: Int) {
-        holder.bind(items[position], onClickListener)
-        holder.itemView.btn_check.isChecked = selectedPosition == position
-
-        holder.itemView.btn_check.setOnClickListener {
-            if (selectedPosition == position) {
-                holder.itemView.btn_check.isChecked = false
-            } else {
-                selectedPosition = position
-                notifyDataSetChanged()
-            }
-        }
+        holder.bind(position, items[position], onClickListener)
     }
 
     fun addData(addDataList: List<Place>) {
@@ -47,13 +37,19 @@ class PlaceChoiceRvAdapter(var items: ArrayList<Place>) :
         notifyDataSetChanged()
     }
 
-    class PlaceChoiceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+    inner class PlaceChoiceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_place_choice, parent, false)
     ) {
-        fun bind(item: Place, listener: OnClickListener?) {
+        fun bind(position: Int, item: Place, listener: OnClickListener?) {
             itemView.run {
-                setOnClickListener {
-                    listener?.onClick(item)
+
+                btn_check.setOnClickListener {
+                    if (selectedPosition == position) {
+                        btn_check.isChecked = false
+                    } else {
+                        listener?.onClick(item)
+                        selectedPosition = position
+                    }
                 }
                 tv_place_name.text = item.placeName
                 tv_place_keyword.text = item.placeKeyword
