@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.course
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,8 @@ import com.yeonae.chamelezone.view.course.adapter.PlaceChoiceRvAdapter
 import kotlinx.android.synthetic.main.fragment_place_choice.*
 
 class PlaceChoiceFragment : Fragment() {
+    private lateinit var lastCheckedPlace: Place
+
     private val placeChoiceList = arrayListOf(
         Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85"),
         Place(
@@ -34,9 +37,25 @@ class PlaceChoiceFragment : Fragment() {
 
         placeChoiceRvAdapter.setOnClickListener(object : PlaceChoiceRvAdapter.OnClickListener {
             override fun onClick(place: Place) {
-
+                Log.d("하하하", "0")
+                lastCheckedPlace = place
             }
         })
+
+        btn_ok.setOnClickListener {
+            Log.d("하하하", "1")
+            if (::lastCheckedPlace.isInitialized) {
+                Log.d("하하하", "2")
+                val visible = arguments!!.getString("visible")
+                Log.d("하하하", "$visible")
+                (activity as? CourseRegisterActivity)?.getVisible(
+                    visible.toString(),
+                    lastCheckedPlace
+                )
+                requireActivity().onBackPressed()
+            }
+
+        }
 
         view?.setOnClickListener {
             true
@@ -46,14 +65,26 @@ class PlaceChoiceFragment : Fragment() {
 
         }
 
-        btn_back.setOnClickListener {
+        btn_cancel.setOnClickListener {
             requireActivity().onBackPressed()
         }
+
     }
 
     private fun setAdapter() {
         recycler_place_choice.layoutManager = LinearLayoutManager(context)
         recycler_place_choice.adapter = placeChoiceRvAdapter
+    }
+
+    companion object {
+        fun newInstance(
+            visible: String
+        ) = PlaceChoiceFragment().apply {
+            arguments = Bundle().apply {
+                putString("visible", visible)
+            }
+
+        }
     }
 
 }

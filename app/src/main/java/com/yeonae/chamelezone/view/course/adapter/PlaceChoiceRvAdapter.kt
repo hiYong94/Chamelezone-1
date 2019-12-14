@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.item_place_choice.view.*
 
 class PlaceChoiceRvAdapter(var items: ArrayList<Place>) :
     RecyclerView.Adapter<PlaceChoiceRvAdapter.PlaceChoiceViewHolder>() {
-
+    private var selectedPosition = -1
     //private var items = mutableListOf<Course>()
     private var onClickListener: OnClickListener? = null
 
@@ -27,8 +27,9 @@ class PlaceChoiceRvAdapter(var items: ArrayList<Place>) :
     override fun getItemCount(): Int =
         items.size
 
-    override fun onBindViewHolder(holder: PlaceChoiceViewHolder, position: Int) =
-        holder.bind(items[position], onClickListener)
+    override fun onBindViewHolder(holder: PlaceChoiceViewHolder, position: Int) {
+        holder.bind(position, items[position], onClickListener)
+    }
 
     fun addData(addDataList: List<Place>) {
         items.clear()
@@ -36,13 +37,19 @@ class PlaceChoiceRvAdapter(var items: ArrayList<Place>) :
         notifyDataSetChanged()
     }
 
-    class PlaceChoiceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+    inner class PlaceChoiceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_place_choice, parent, false)
     ) {
-        fun bind(item: Place, listener: OnClickListener?) {
+        fun bind(position: Int, item: Place, listener: OnClickListener?) {
             itemView.run {
-                setOnClickListener {
-                    listener?.onClick(item)
+
+                btn_check.setOnClickListener {
+                    if (selectedPosition == position) {
+                        btn_check.isChecked = false
+                    } else {
+                        listener?.onClick(item)
+                        selectedPosition = position
+                    }
                 }
                 tv_place_name.text = item.placeName
                 tv_place_keyword.text = item.placeKeyword

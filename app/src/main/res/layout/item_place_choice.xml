@@ -17,7 +17,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -33,18 +34,19 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:layout_marginEnd="10dp"
                     android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:weightSum="10">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="9">
 
                             <TextView
                                 android:id="@+id/tv_place_name"
@@ -56,6 +58,18 @@
                                 android:textSize="15sp" />
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1">
+
+                            <CheckBox
+                                android:id="@+id/btn_check"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:button="@drawable/btn_check"
+                                android:padding="5dp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                     <TextView
