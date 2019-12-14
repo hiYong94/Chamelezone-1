@@ -32,6 +32,23 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
     lateinit var currentLatLng: LatLng
     private lateinit var locationCallBack: LocationCallback
 
+    val permissionListener: PermissionListener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            loadMap()
+            Toast.makeText(activity, "Permission Granted", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: List<String>) {
+            Toast.makeText(
+                activity,
+                "Permission Denied\n$deniedPermissions",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+    }
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,21 +61,16 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         if (map != null) {
             this.map = map
         }
-        updateLocationUI()
         getCurrentLocation()
+        updateLocationUI()
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         map_view.onCreate(savedInstanceState)
-        map_view.onResume()
-        map_view.getMapAsync(this)
 
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(App.instance.context())
-
-        createLocationCallBack()
-        createLocationRequest()
+        checkPermission()
 
         btn_search.setOnClickListener {
             getSearchLocation()
@@ -66,26 +78,9 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-
-        val permissionlistener: PermissionListener = object : PermissionListener {
-            override fun onPermissionGranted() {
-                Toast.makeText(activity, "Permission Granted", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onPermissionDenied(deniedPermissions: List<String>) {
-                Toast.makeText(
-                    activity,
-                    "Permission Denied\n$deniedPermissions",
-                    Toast.LENGTH_SHORT
-                )
-                    .show()
-            }
-        }
-
+    private fun checkPermission(){
         TedPermission.with(activity)
-            .setPermissionListener(permissionlistener)
+            .setPermissionListener(permissionListener)
             .setRationaleTitle(R.string.rationale_title)
             .setRationaleMessage(R.string.rationale_message)
             .setDeniedTitle("Permission denied")
@@ -96,7 +91,21 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
             .check()
     }
+    private fun loadMap(){
 
+        map_view.onResume()
+        map_view.getMapAsync(this)
+
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(App.instance.context())
+
+        createLocationCallBack()
+        createLocationRequest()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
 
     private fun createLocationCallBack() {
         locationCallBack = object : LocationCallback() {
