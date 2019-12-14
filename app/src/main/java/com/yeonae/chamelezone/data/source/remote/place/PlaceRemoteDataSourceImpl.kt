@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.data.sourse.remote.place
+package com.yeonae.chamelezone.data.source.remote.place
 
 class PlaceRemoteDataSourceImpl private constructor() :
     PlaceRemoteDataSource {
