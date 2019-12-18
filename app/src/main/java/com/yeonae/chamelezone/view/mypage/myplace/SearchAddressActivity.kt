@@ -2,11 +2,14 @@ package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.os.Bundle
 import android.os.Handler
+import android.os.Message
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
+import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.activity_search_address.*
+import android.webkit.WebViewClient
 
 class SearchAddressActivity : AppCompatActivity() {
     private var handler: Handler? = null
@@ -20,11 +23,25 @@ class SearchAddressActivity : AppCompatActivity() {
 
     fun setWebView() {
         web_view.run {
+            webChromeClient = WebChromeClient() // 웹뷰에 크롬 사용 허용
+            settings.setSupportMultipleWindows(true)
             settings.javaScriptEnabled = true
             settings.javaScriptCanOpenWindowsAutomatically = true
+            settings.useWideViewPort = true // 화면 사이즈 맞추기 허용 여부
+            settings.setSupportZoom(true) // 화면 줌 허용 여부
             addJavascriptInterface(AndroidBridge(), "TestApp")
-            webChromeClient = WebChromeClient()
-            loadUrl("http://192.168.25.60:80/daum_address.php")
+            web_view.webChromeClient = object : WebChromeClient() {
+                override fun onCreateWindow(
+                    view: WebView?,
+                    isDialog: Boolean,
+                    isUserGesture: Boolean,
+                    resultMsg: Message?
+                ): Boolean {
+
+                    return super.onCreateWindow(view, isDialog, isUserGesture, resultMsg)
+                }
+            }
+            loadUrl("http://13.209.136.122:3000/addressSearch")
         }
     }
 
