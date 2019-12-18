@@ -46,5 +46,15 @@ class MypageTabFragment : Fragment() {
             val intent = Intent(requireContext(), MyCourseActivity::class.java)
             startActivity(intent)
         }
+
+        btn_intro.setOnClickListener {
+            val intent = Intent(requireContext(), IntroActivity::class.java)
+            startActivity(intent)
+        }
+
+        btn_personal_info.setOnClickListener {
+            val intent = Intent(requireContext(), PersonaInfoActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
