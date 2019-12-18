@@ -72,7 +72,10 @@
                         android:hint="장소명을 입력하세요 (최대 20자)"
                         android:maxLength="20"
                         android:singleLine="true"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        style="@style/EditTextStyle"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -96,7 +99,10 @@
                         android:layout_weight="9"
                         android:background="@null"
                         android:hint="키워드를 선택하세요"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        style="@style/EditTextStyle"/>
 
                     <TextView
                         android:id="@+id/btn_category_choice"
@@ -128,7 +134,10 @@
                         android:layout_weight="9"
                         android:background="@null"
                         android:hint="주소를 검색하세요"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        style="@style/EditTextStyle"/>
 
                     <TextView
                         android:id="@+id/btn_address_search"
@@ -157,7 +166,10 @@
                         android:layout_margin="10dp"
                         android:background="@null"
                         android:hint="상세주소를 입력하세요"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        style="@style/EditTextStyle"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -236,7 +248,10 @@
                         android:layout_margin="10dp"
                         android:background="@null"
                         android:hint="- 없이 번호만 입력하세요"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        style="@style/EditTextStyle"/>
 
                 </LinearLayout>
             </LinearLayout>
@@ -260,7 +275,10 @@
                         android:gravity="top"
                         android:hint="장소에 대한 설명을 입력하세요"
                         android:lines="8"
-                        android:textSize="15sp" />
+                        android:textSize="15sp"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        style="@style/EditTextStyle"/>
 
                 </LinearLayout>
             </LinearLayout>

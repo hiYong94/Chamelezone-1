@@ -16,7 +16,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="검색어를 입력하세요." />
+            android:hint="검색어를 입력하세요."
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/lightGray"
+            style="@style/EditTextStyle"/>
 
         <Button
             android:id="@+id/btn_search"
