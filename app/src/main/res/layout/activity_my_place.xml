@@ -61,9 +61,15 @@
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_my_place"
+        <FrameLayout
+            android:id="@+id/fragment_more"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_my_place"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>
