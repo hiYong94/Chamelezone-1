@@ -103,7 +103,7 @@ class HomeActivity : AppCompatActivity() {
             })
         }
 
-        val tabView = viewPager.let {
+        viewPager.let {
             it.adapter = tabPagerAdapter
 
             it.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
