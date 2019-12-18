@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
+        android:usesCleartextTraffic="true"
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -37,5 +38,7 @@
         <activity android:name=".view.mypage.myreview.MyReviewActivity"/>
         <activity android:name=".view.login.LoginActivity"/>
         <activity android:name=".view.login.UserModifyActivity"/>
+        <activity android:name=".view.mypage.IntroActivity"/>
+        <activity android:name=".view.mypage.PersonaInfoActivity"/>
     </application>
 </manifest>
