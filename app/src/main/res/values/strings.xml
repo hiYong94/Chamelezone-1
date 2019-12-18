@@ -54,7 +54,9 @@
     <string name="course_title_hint">코스 제목을 입력하세요 (최대 20자)</string>
     <string name="course_explanation_hint">코스에 대한 설명을 입력하세요</string>
     <string name="course_title_image">사진(대표사진)</string>
-    <string name="place_selected">장소 선택</string>
+    <string name="place_selected_first">첫번째 장소 선택</string>
+    <string name="place_selected_second">두번째 장소 선택</string>
+    <string name="place_selected_third">세번째 장소 선택</string>
     <string name="course_modify">코스 수정</string>
 
     <string name="my_course">나의 코스</string>

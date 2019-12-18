@@ -37,17 +37,13 @@ class PlaceChoiceFragment : Fragment() {
 
         placeChoiceRvAdapter.setOnClickListener(object : PlaceChoiceRvAdapter.OnClickListener {
             override fun onClick(place: Place) {
-                Log.d("하하하", "0")
                 lastCheckedPlace = place
             }
         })
 
         btn_ok.setOnClickListener {
-            Log.d("하하하", "1")
             if (::lastCheckedPlace.isInitialized) {
-                Log.d("하하하", "2")
                 val visible = arguments!!.getString("visible")
-                Log.d("하하하", "$visible")
                 (activity as? CourseRegisterActivity)?.getVisible(
                     visible.toString(),
                     lastCheckedPlace

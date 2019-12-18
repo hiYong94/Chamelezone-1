@@ -37,6 +37,62 @@ class CourseRegisterActivity : AppCompatActivity() {
                 .addToBackStack(null)
                 .commit()
         }
+
+        btn_close1.setOnClickListener {
+            tv_place_name1.text = ""
+            tv_place_keyword1.text = ""
+            tv_place_address1.text = ""
+            layout_place1.visibility = View.VISIBLE
+            layout_place2.visibility = View.VISIBLE
+            layout_course1.visibility = View.GONE
+            if (tv_place_name2.text != "") {
+                layout_place2.visibility = View.GONE
+            }
+        }
+
+        btn_close2.setOnClickListener {
+            tv_place_name2.text = ""
+            tv_place_keyword2.text = ""
+            tv_place_address2.text = ""
+            layout_place2.visibility = View.VISIBLE
+            layout_course2.visibility = View.GONE
+            if (tv_place_name1.text != "") {
+                layout_place1.visibility = View.GONE
+                layout_course1.visibility = View.VISIBLE
+            } else {
+                layout_place1.visibility = View.VISIBLE
+                layout_course1.visibility = View.GONE
+            }
+            if (tv_place_name3.text != "") {
+                layout_place3.visibility = View.GONE
+                layout_course3.visibility = View.VISIBLE
+            } else {
+                layout_place3.visibility = View.VISIBLE
+                layout_course3.visibility = View.GONE
+            }
+        }
+
+        btn_close3.setOnClickListener {
+            tv_place_name3.text = ""
+            tv_place_keyword3.text = ""
+            tv_place_address3.text = ""
+            layout_place3.visibility = View.VISIBLE
+            layout_course3.visibility = View.GONE
+            if (tv_place_name1.text != "") {
+                layout_place1.visibility = View.GONE
+                layout_course1.visibility = View.VISIBLE
+            } else {
+                layout_place1.visibility = View.VISIBLE
+                layout_course1.visibility = View.GONE
+            }
+            if (tv_place_name2.text != "") {
+                layout_place2.visibility = View.GONE
+                layout_course2.visibility = View.VISIBLE
+            } else {
+                layout_place2.visibility = View.VISIBLE
+                layout_course2.visibility = View.GONE
+            }
+        }
     }
 
     fun getVisible(visible: String, place: Place) {
@@ -46,30 +102,51 @@ class CourseRegisterActivity : AppCompatActivity() {
                 tv_place_keyword1.text = place.placeKeyword
                 tv_place_address1.text = place.placeAddress
                 layout_place1.visibility = View.GONE
-                layout_place2.visibility = View.VISIBLE
                 layout_course1.visibility = View.VISIBLE
+                layout_place2.visibility = View.GONE
+                if (tv_place_name2.text == "") {
+                    layout_place2.visibility = View.VISIBLE
+                }
+
             }
             "2" -> {
                 tv_place_name2.text = place.placeName
                 tv_place_keyword2.text = place.placeKeyword
                 tv_place_address2.text = place.placeAddress
+                layout_place2.visibility = View.GONE
+                layout_course2.visibility = View.VISIBLE
                 layout_place1.visibility = View.GONE
                 layout_course1.visibility = View.VISIBLE
-                layout_place2.visibility = View.GONE
-                layout_place3.visibility = View.VISIBLE
-                layout_course2.visibility = View.VISIBLE
+                layout_place3.visibility = View.GONE
+                layout_course3.visibility = View.VISIBLE
+                if (tv_place_name1.text == "") {
+                    layout_place1.visibility = View.VISIBLE
+                    layout_course1.visibility = View.GONE
+                }
+                if (tv_place_name3.text == "") {
+                    layout_place3.visibility = View.VISIBLE
+                    layout_course3.visibility = View.GONE
+                }
 
             }
             "3" -> {
                 tv_place_name3.text = place.placeName
                 tv_place_keyword3.text = place.placeKeyword
                 tv_place_address3.text = place.placeAddress
+                layout_place3.visibility = View.GONE
+                layout_course3.visibility = View.VISIBLE
                 layout_place1.visibility = View.GONE
                 layout_course1.visibility = View.VISIBLE
                 layout_place2.visibility = View.GONE
                 layout_course2.visibility = View.VISIBLE
-                layout_place3.visibility = View.GONE
-                layout_course3.visibility = View.VISIBLE
+                if (tv_place_name1.text == "") {
+                    layout_place1.visibility = View.VISIBLE
+                    layout_course1.visibility = View.GONE
+                }
+                if (tv_place_name2.text == "") {
+                    layout_place2.visibility = View.VISIBLE
+                    layout_course2.visibility = View.GONE
+                }
             }
         }
     }

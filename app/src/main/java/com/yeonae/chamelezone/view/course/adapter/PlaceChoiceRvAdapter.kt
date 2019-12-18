@@ -42,13 +42,15 @@ class PlaceChoiceRvAdapter(var items: ArrayList<Place>) :
     ) {
         fun bind(position: Int, item: Place, listener: OnClickListener?) {
             itemView.run {
-
+                btn_check.isChecked = selectedPosition == position
                 btn_check.setOnClickListener {
                     if (selectedPosition == position) {
                         btn_check.isChecked = false
+                        selectedPosition = -1
                     } else {
                         listener?.onClick(item)
                         selectedPosition = position
+                        notifyDataSetChanged()
                     }
                 }
                 tv_place_name.text = item.placeName
