@@ -42,7 +42,13 @@
                             android:layout_width="300dp"
                             android:layout_height="200dp"
                             android:background="@drawable/edit_edge"
-                            android:inputType="textMultiLine|textNoSuggestions" />
+                            android:inputType="textMultiLine|textNoSuggestions"
+                            android:gravity="top"
+                            android:hint="리뷰 내용을 입력해주세요"
+                            android:textSize="15sp"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/lightGray"
+                            style="@style/EditTextStyle"/>
 
                     </RelativeLayout>
 
