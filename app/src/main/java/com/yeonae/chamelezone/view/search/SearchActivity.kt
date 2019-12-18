@@ -7,7 +7,10 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.search.adapter.SearchTabAdapter
 import kotlinx.android.synthetic.main.activity_search.*
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelectedListener {
+    override fun keywordSelected(keyword: String) {
+        edt_search.setText(keyword)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
