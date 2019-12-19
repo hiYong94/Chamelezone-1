@@ -18,24 +18,15 @@ class CourseRegisterActivity : AppCompatActivity() {
         }
 
         btn_place1.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_place_choice, placeChoiceFragment.newInstance("1"))
-                .addToBackStack(null)
-                .commit()
+            replace("1")
         }
 
         btn_place2.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_place_choice, placeChoiceFragment.newInstance("2"))
-                .addToBackStack(null)
-                .commit()
+            replace("2")
         }
 
         btn_place3.setOnClickListener {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_place_choice, placeChoiceFragment.newInstance("3"))
-                .addToBackStack(null)
-                .commit()
+            replace("3")
         }
 
         btn_close1.setOnClickListener {
@@ -95,8 +86,8 @@ class CourseRegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun getVisible(visible: String, place: Place) {
-        when (visible) {
+    fun getVisible(placeIndex: String, place: Place) {
+        when (placeIndex) {
             "1" -> {
                 tv_place_name1.text = place.placeName
                 tv_place_keyword1.text = place.placeKeyword
@@ -149,5 +140,11 @@ class CourseRegisterActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+    fun replace(placeIndex: String){
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment_place_choice, placeChoiceFragment.newInstance(placeIndex))
+            .addToBackStack(null)
+            .commit()
     }
 }
