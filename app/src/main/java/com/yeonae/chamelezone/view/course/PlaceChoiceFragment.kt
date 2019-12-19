@@ -43,9 +43,9 @@ class PlaceChoiceFragment : Fragment() {
 
         btn_ok.setOnClickListener {
             if (::lastCheckedPlace.isInitialized) {
-                val visible = arguments!!.getString("visible")
+                val placeIndex = arguments!!.getString("placeIndex")
                 (activity as? CourseRegisterActivity)?.getVisible(
-                    visible.toString(),
+                    placeIndex.toString(),
                     lastCheckedPlace
                 )
                 requireActivity().onBackPressed()
@@ -73,14 +73,15 @@ class PlaceChoiceFragment : Fragment() {
     }
 
     companion object {
+        private const val PLACE_INDEX = "placeIndex"
+
         fun newInstance(
-            visible: String
+            placeIndex: String
         ) = PlaceChoiceFragment().apply {
             arguments = Bundle().apply {
-                putString("visible", visible)
+                putString(PLACE_INDEX, placeIndex)
             }
 
         }
     }
-
 }
