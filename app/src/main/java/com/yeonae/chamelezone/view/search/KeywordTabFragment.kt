@@ -27,7 +27,7 @@ class KeywordTabFragment : Fragment() {
     )
     private val searchRvAdapter = SearchRvAdapter(searchList)
 
-    private var listener: OnKeywordSelectedListener? = null
+    private lateinit var listener: OnKeywordSelectedListener
 
     interface OnKeywordSelectedListener {
         fun keywordSelected(keyword: String)
@@ -35,7 +35,7 @@ class KeywordTabFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        listener = context as? OnKeywordSelectedListener
+        listener = (context as OnKeywordSelectedListener)
         if (listener == null) {
             throw ClassCastException("$context must implement OnArticleSelectedListener")
         }
