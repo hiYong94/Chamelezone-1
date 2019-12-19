@@ -94,6 +94,6 @@
     <string name="chamelezone_info">카멜레존 소개</string>
     <string name="privacy">개인정보 수집 및 이용</string>
 
-
+    <string name="search_word">검색어를 입력하세요.</string>
     <string name="place_name_test">구슬모아당구장</string>
 </resources>

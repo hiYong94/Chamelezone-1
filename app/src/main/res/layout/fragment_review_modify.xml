@@ -44,7 +44,7 @@
                             android:background="@drawable/edit_edge"
                             android:inputType="textMultiLine|textNoSuggestions"
                             android:gravity="top"
-                            android:hint="리뷰 내용을 입력해주세요"
+                            android:hint="@string/review_create_message"
                             android:textSize="15sp"
                             android:textColor="@color/colorBlack"
                             android:textColorHint="@color/lightGray"
