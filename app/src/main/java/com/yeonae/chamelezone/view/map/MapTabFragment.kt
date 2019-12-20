@@ -1,13 +1,17 @@
 package com.yeonae.chamelezone.view.map
 
 import android.Manifest
+import android.content.ContentValues.TAG
+import android.graphics.Rect
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.*
@@ -25,7 +29,7 @@ import com.yeonae.chamelezone.view.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_map_tab.*
 import java.util.*
 
-
+@Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
 class MapTabFragment : Fragment(), OnMapReadyCallback {
     private var markerInfoFragment = MarkerInfoFragment()
     private lateinit var map: GoogleMap
@@ -35,7 +39,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
     lateinit var currentLatLng: LatLng
     private lateinit var locationCallBack: LocationCallback
 
-    val permissionListener: PermissionListener = object : PermissionListener {
+    private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
             loadMap()
             Toast.makeText(activity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
@@ -78,6 +82,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
             getSearchLocation()
         }
 
+        keyBoard()
+
     }
 
     private fun checkPermission(){
@@ -94,6 +100,18 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
             .check()
     }
     private fun loadMap(){
+
+        map_view.onResume()
+        map_view.getMapAsync(this)
+
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(App.instance.context())
+
+        createLocationCallBack()
+        createLocationRequest()
+    }
+
+    private fun loadMap() {
 
         map_view.onResume()
         map_view.getMapAsync(this)
@@ -182,5 +200,30 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
             1
         )
         return addresses[0].getAddressLine(0).toString()
+    }
+
+    private fun keyBoard() {
+        var isKeyboardShowing = false
+        contentView.viewTreeObserver.addOnGlobalLayoutListener(
+            object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val r = Rect()
+                    contentView.getWindowVisibleDisplayFrame(r)
+                    val screenHeight = contentView.rootView.height
+                    val keypadHeight = screenHeight - r.bottom
+                    Log.d(TAG, "keypadHeight = $keypadHeight")
+                    if (keypadHeight > screenHeight * 0.15) {
+                        if (!isKeyboardShowing) {
+                            isKeyboardShowing = true
+                            (activity as HomeActivity).tabGone()
+                        }
+                    } else {
+                        if (isKeyboardShowing) {
+                            isKeyboardShowing = false
+                            (activity as HomeActivity).tabVisible()
+                        }
+                    }
+                }
+            })
     }
 }

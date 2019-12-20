@@ -119,6 +119,7 @@
         android:background="@color/lightGray" />
 
     <TextView
+        android:id="@+id/btn_intro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -134,9 +135,9 @@
         android:background="@color/lightGray" />
 
     <TextView
+        android:id="@+id/btn_personal_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:padding="10dp"
