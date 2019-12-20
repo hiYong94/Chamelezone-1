@@ -86,7 +86,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    private fun checkPermission() {
+    private fun checkPermission(){
         TedPermission.with(activity)
             .setPermissionListener(permissionListener)
             .setRationaleTitle(R.string.rationale_title)
@@ -98,6 +98,17 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
             .setGotoSettingButtonText("설정")
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
             .check()
+    }
+    private fun loadMap(){
+
+        map_view.onResume()
+        map_view.getMapAsync(this)
+
+        fusedLocationProviderClient =
+            LocationServices.getFusedLocationProviderClient(App.instance.context())
+
+        createLocationCallBack()
+        createLocationRequest()
     }
 
     private fun loadMap() {
