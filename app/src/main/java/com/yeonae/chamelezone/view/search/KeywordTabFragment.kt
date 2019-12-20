@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.search
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +12,6 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
-import kotlinx.android.synthetic.main.fragment_area_name_tab.*
 import kotlinx.android.synthetic.main.fragment_keyword_tab.*
 
 class KeywordTabFragment : Fragment() {
@@ -26,6 +26,21 @@ class KeywordTabFragment : Fragment() {
         )
     )
     private val searchRvAdapter = SearchRvAdapter(searchList)
+
+    private lateinit var listener: OnKeywordSelectedListener
+
+    interface OnKeywordSelectedListener {
+        fun keywordSelected(keyword: String)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = (context as OnKeywordSelectedListener)
+        if (listener == null) {
+            throw ClassCastException("$context must implement OnArticleSelectedListener")
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,6 +52,10 @@ class KeywordTabFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         setAdapter()
+
+        btn_cafe.setOnClickListener {
+            listener?.keywordSelected("카페")
+        }
 
         searchRvAdapter.setOnClickListener(object : SearchRvAdapter.OnClickListener {
             override fun onClick(place: Place) {

@@ -17,6 +17,7 @@
             android:weightSum="5">
 
             <Button
+                android:id="@+id/btn_cafe"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -49,6 +50,7 @@
                 android:text="편집샵" />
 
             <Button
+                android:id="@+id/btn_bank"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

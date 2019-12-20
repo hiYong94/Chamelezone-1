@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -64,7 +65,6 @@ class HomeActivity : AppCompatActivity() {
                     }
                     2 -> {
                         MapTabFragment()
-
                     }
                     3 -> {
                         LikeTabFragment()
@@ -168,7 +168,15 @@ class HomeActivity : AppCompatActivity() {
 
     fun back(fragment: Fragment){
         supportFragmentManager.beginTransaction().remove(fragment).commit()
-        supportFragmentManager.popBackStack()
+        //supportFragmentManager.popBackStack()
+    }
+
+    fun tabVisible(){
+        tabLayout.visibility = View.VISIBLE
+    }
+
+    fun tabGone(){
+        tabLayout.visibility = View.GONE
     }
 }
 

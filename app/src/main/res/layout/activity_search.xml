@@ -39,10 +39,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:padding="10dp"
-                android:singleLine="true"
-                android:text="테스트"
-                android:textColor="@color/colorBlack"
-                style="@style/EditTextStyle" />
+                android:singleLine="true"/>
 
             <ImageButton
                 android:id="@+id/btn_search"

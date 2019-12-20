@@ -37,19 +37,15 @@ class PlaceChoiceFragment : Fragment() {
 
         placeChoiceRvAdapter.setOnClickListener(object : PlaceChoiceRvAdapter.OnClickListener {
             override fun onClick(place: Place) {
-                Log.d("하하하", "0")
                 lastCheckedPlace = place
             }
         })
 
         btn_ok.setOnClickListener {
-            Log.d("하하하", "1")
             if (::lastCheckedPlace.isInitialized) {
-                Log.d("하하하", "2")
-                val visible = arguments!!.getString("visible")
-                Log.d("하하하", "$visible")
+                val placeIndex = arguments!!.getString("placeIndex")
                 (activity as? CourseRegisterActivity)?.getVisible(
-                    visible.toString(),
+                    placeIndex.toString(),
                     lastCheckedPlace
                 )
                 requireActivity().onBackPressed()
@@ -77,14 +73,15 @@ class PlaceChoiceFragment : Fragment() {
     }
 
     companion object {
+        private const val PLACE_INDEX = "placeIndex"
+
         fun newInstance(
-            visible: String
+            placeIndex: String
         ) = PlaceChoiceFragment().apply {
             arguments = Bundle().apply {
-                putString("visible", visible)
+                putString(PLACE_INDEX, placeIndex)
             }
 
         }
     }
-
 }
