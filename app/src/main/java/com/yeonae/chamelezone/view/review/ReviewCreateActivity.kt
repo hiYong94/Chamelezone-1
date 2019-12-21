@@ -8,6 +8,7 @@ import com.bumptech.glide.Glide
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.catchFocus
 import kotlinx.android.synthetic.main.activity_review_create.*
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
@@ -28,11 +29,11 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_create)
 
+        tv_title.catchFocus(this)
         btn_back.setOnClickListener {
             finish()
         }
 
-        tv_title.requestFocus()
         setupGUI()
     }
     private fun pickMulti() {

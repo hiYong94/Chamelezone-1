@@ -74,10 +74,12 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@null"
-                    android:hint="장소명을 입력하세요 (최대 20자)"
+                    android:hint="@string/place_title_hint"
                     android:maxLength="20"
                     android:singleLine="true"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColorHint="@color/lightGray"
+                    style="@style/EditTextStyle"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -103,15 +105,17 @@
                 android:background="@drawable/draw"
                 android:weightSum="10">
 
-                <TextView
+                <EditText
                     android:id="@+id/tv_place_keyword"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_weight="9"
                     android:background="@null"
-                    android:hint="키워드를 선택하세요"
-                    android:textSize="15sp" />
+                    android:hint="@string/keyword_hint"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/lightGray"
+                    style="@style/EditTextStyle"/>
 
                 <TextView
                     android:id="@+id/btn_category_choice"
@@ -152,8 +156,10 @@
                     android:layout_margin="10dp"
                     android:layout_weight="9"
                     android:background="@null"
-                    android:hint="주소를 검색하세요"
-                    android:textSize="15sp" />
+                    android:hint="@string/address_hint"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/lightGray"
+                    style="@style/EditTextStyle"/>
 
                 <TextView
                     android:id="@+id/btn_address_search"
@@ -190,8 +196,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@null"
-                    android:hint="상세주소를 입력하세요"
-                    android:textSize="15sp" />
+                    android:hint="@string/detail_address_hint"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/lightGray"
+                    style="@style/EditTextStyle"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -267,8 +275,10 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:background="@null"
-                    android:hint="- 없이 번호만 입력하세요"
-                    android:textSize="15sp" />
+                    android:hint="@string/place_phone_number_hint"
+                    android:textSize="15sp"
+                    android:textColorHint="@color/lightGray"
+                    style="@style/EditTextStyle"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -300,9 +310,12 @@
                     android:layout_margin="10dp"
                     android:background="@null"
                     android:gravity="top"
-                    android:hint="장소에 대한 설명을 입력하세요"
+                    android:hint="@string/place_detail_description_hint"
                     android:lines="8"
-                    android:textSize="15sp" />
+                    android:textSize="15sp"
+                    android:textColor="@color/colorBlack"
+                    android:textColorHint="@color/lightGray"
+                    style="@style/EditTextStyle"/>
 
             </LinearLayout>
         </LinearLayout>

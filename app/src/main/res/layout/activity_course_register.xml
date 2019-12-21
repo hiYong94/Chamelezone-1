@@ -87,10 +87,13 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:background="@null"
-                                android:hint="코스 제목을 입력하세요 (최대 20자)"
+                                android:hint="@string/course_title_hint"
                                 android:maxLength="20"
                                 android:singleLine="true"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/lightGray"
+                                style="@style/EditTextStyle"/>
 
                         </LinearLayout>
                     </LinearLayout>
@@ -122,9 +125,12 @@
                                 android:layout_margin="10dp"
                                 android:background="@null"
                                 android:gravity="top"
-                                android:hint="코스에 대한 설명을 입력하세요"
+                                android:hint="@string/course_explanation_hint"
                                 android:lines="8"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                android:textColor="@color/colorBlack"
+                                android:textColorHint="@color/lightGray"
+                                style="@style/EditTextStyle" />
 
                         </LinearLayout>
                     </LinearLayout>
