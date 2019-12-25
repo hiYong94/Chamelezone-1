@@ -25,4 +25,5 @@ class PlaceDetailActivity : AppCompatActivity() {
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
     }
+
 }
