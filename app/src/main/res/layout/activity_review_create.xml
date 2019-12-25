@@ -34,10 +34,6 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,16 +56,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center">
+                    android:layout_marginTop="20dp" >
 
                     <ScrollView
-                        android:layout_width="300dp"
-                        android:layout_height="200dp">
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center" >
 
                             <EditText
                                 android:layout_width="300dp"
@@ -160,7 +156,5 @@
             </LinearLayout>
 
         </LinearLayout>
-
-    </ScrollView>
 
 </LinearLayout>
