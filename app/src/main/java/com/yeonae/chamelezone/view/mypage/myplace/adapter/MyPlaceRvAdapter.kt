@@ -1,13 +1,13 @@
 package com.yeonae.chamelezone.view.mypage.myplace.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
+import kotlinx.android.synthetic.main.activity_my_place.view.*
 import kotlinx.android.synthetic.main.item_my_place.view.*
 
 class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
@@ -15,13 +15,22 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
 
     //private var items = mutableListOf<Place>()
     private var onClickListener: OnClickListener? = null
+    private var locationListener: GetLocationListener? = null
 
     interface OnClickListener {
         fun onClick(place: Place)
     }
 
+    interface GetLocationListener {
+        fun getLocation(x: Float, y: Int, position: Int)
+    }
+
     fun setOnClickListener(listener: OnClickListener) {
         onClickListener = listener
+    }
+
+    fun getLocation(listener: GetLocationListener){
+        locationListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPlaceViewHolder =
@@ -31,7 +40,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
         items.size
 
     override fun onBindViewHolder(holder: MyPlaceViewHolder, position: Int) =
-        holder.bind(items[position], onClickListener)
+        holder.bind(items[position], onClickListener, locationListener!!)
 
     fun addData(addDataList: List<Place>) {
         items.clear()
@@ -42,7 +51,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
     class MyPlaceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_place, parent, false)
     ) {
-        fun bind(item: Place, listener: OnClickListener?) {
+        fun bind(item: Place, listener: OnClickListener?, listener2: GetLocationListener) {
             itemView.run {
                 setOnClickListener {
                     listener?.onClick(item)
@@ -51,24 +60,16 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
                 tv_place_keyword.text = item.placeKeyword
                 tv_place_address.text = item.placeAddress
 
-                btn_more.setOnTouchListener(object : View.OnTouchListener {
-                    override fun onTouch(p0: View?, p1: MotionEvent?): Boolean {
-                        if (p1?.action == MotionEvent.ACTION_DOWN) {
-                            popup_menu.visibility = View.VISIBLE
-                            popup_menu.x = p1.x
-                            popup_menu.y = p1.y
-                        }
-                        return true
-                    }
-                })
+                btn_more.setOnClickListener {
+                    val originalPos = IntArray(2)
+                    itemView.getLocationInWindow(originalPos)
+                    val x = originalPos[0]
+                    val y = originalPos[1]
+                    val realX = layout_01.width + btn_more.x + btn_more.width
+                    Log.d("tag", "$x & $y & $realX")
+                    listener2.getLocation(realX, y, position)
+                }
             }
-        }
-
-        private fun showPopup(v: View) {
-            val popup = PopupMenu(v.context, v)
-            val inflater = popup.menuInflater
-            inflater.inflate(R.menu.pop_up_menu, popup.menu)
-            popup.show()
         }
     }
 }
