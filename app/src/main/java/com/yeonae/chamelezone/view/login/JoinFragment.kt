@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.gson.JsonObject
+import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.network.model.MemberResponse
@@ -20,7 +21,7 @@ import java.util.regex.Pattern
 class JoinFragment : Fragment() {
     val testEmail = "heimish_08@naver.com"
     val testNickname = "yeonvely"
-    private val retrofitConnection = RetrofitConnection()
+    private val retrofitConnection = RetrofitConnection
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -125,7 +126,14 @@ class JoinFragment : Fragment() {
         }
 
         btn_join.setOnClickListener {
-            userRegister()
+            when {
+                "${join_email.text}".isEmpty() -> showDialog("아이디를 입력해주세요.")
+                "${join_password.text}".isEmpty() -> showDialog("비밀번호를 입력해주세요.")
+                "${join_name.text}".isEmpty() -> showDialog("이름을 입력해주세요.")
+                "${join_nickname.text}".isEmpty() -> showDialog("닉네임을 입력해주세요.")
+                "${join_phone.text}".isEmpty() -> showDialog("핸드폰 번호를 입력해주세요.")
+                else -> userRegister()
+            }
         }
     }
 
@@ -147,7 +155,7 @@ class JoinFragment : Fragment() {
             addProperty("phoneNumber", memberResponse.phoneNumber)
         }
 
-        retrofitConnection.service.userRegister(jsonObject).enqueue(object :
+        retrofitConnection.memberService.userRegister(jsonObject).enqueue(object :
             Callback<MemberResponse> {
             override fun onResponse(
                 call: Call<MemberResponse>,
@@ -163,5 +171,12 @@ class JoinFragment : Fragment() {
                 Log.e("tag", t.toString())
             }
         })
+    }
+
+    private fun showDialog(message: String) {
+        val newFragment = AlertDialogFragment.newInstance(
+            message
+        )
+        newFragment.show(fragmentManager!!, "dialog")
     }
 }
