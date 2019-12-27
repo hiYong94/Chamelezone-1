@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.yeonae.chamelezone.R
-import kotlinx.android.synthetic.main.activity_review_create.*
-import kotlinx.android.synthetic.main.activity_review_create.imageContainer
 import kotlinx.android.synthetic.main.fragment_review_modify.*
 
 class ReviewModifyFragment : Fragment(), BottomSheetImagePicker.OnImagesSelectedListener {
@@ -59,7 +57,7 @@ class ReviewModifyFragment : Fragment(), BottomSheetImagePicker.OnImagesSelected
     }
 
     private fun setupGUI() {
-        btn_img_create.setOnClickListener { pickMulti() }
-        btn_img_clear.setOnClickListener { imageContainer.removeAllViews() }
+        btn_image_create.setOnClickListener { pickMulti() }
+        btn_image_create.setOnClickListener { imageContainer.removeAllViews() }
     }
 }
