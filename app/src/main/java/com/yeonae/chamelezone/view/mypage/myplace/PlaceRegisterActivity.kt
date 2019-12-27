@@ -20,7 +20,7 @@ import retrofit2.Response
 
 
 class PlaceRegisterActivity : AppCompatActivity() {
-    private val retrofitConnection = RetrofitConnection()
+    private val retrofitConnection = RetrofitConnection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,7 +65,7 @@ class PlaceRegisterActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 tv_place_address.text = data?.getStringExtra("result")
             }
@@ -95,7 +95,7 @@ class PlaceRegisterActivity : AppCompatActivity() {
             addProperty("content", placeResponse.content)
         }
 
-        retrofitConnection.service.placeRegister(jsonObject).enqueue(object :
+        retrofitConnection.placeService.placeRegister(jsonObject).enqueue(object :
             Callback<PlaceResponse> {
             override fun onResponse(
                 call: Call<PlaceResponse>,
@@ -142,5 +142,9 @@ class PlaceRegisterActivity : AppCompatActivity() {
 
         builder.create()
         builder.show()
+    }
+
+    companion object {
+        const val REQUEST_CODE = 1
     }
 }
