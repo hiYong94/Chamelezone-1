@@ -15,7 +15,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
 
     //private var items = mutableListOf<Place>()
     private var onClickListener: OnClickListener? = null
-    private var locationListener: GetLocationListener? = null
+    private lateinit var locationListener: GetLocationListener
 
     interface OnClickListener {
         fun onClick(place: Place)
@@ -40,7 +40,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
         items.size
 
     override fun onBindViewHolder(holder: MyPlaceViewHolder, position: Int) =
-        holder.bind(items[position], onClickListener, locationListener!!)
+        holder.bind(items[position], onClickListener, locationListener)
 
     fun addData(addDataList: List<Place>) {
         items.clear()
@@ -51,10 +51,10 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
     class MyPlaceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_place, parent, false)
     ) {
-        fun bind(item: Place, listener: OnClickListener?, listener2: GetLocationListener) {
+        fun bind(item: Place, clickListener: OnClickListener?, locationListener: GetLocationListener) {
             itemView.run {
                 setOnClickListener {
-                    listener?.onClick(item)
+                    clickListener?.onClick(item)
                 }
                 tv_place_name.text = item.placeName
                 tv_place_keyword.text = item.placeKeyword
@@ -67,7 +67,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
                     val y = originalPos[1]
                     val realX = layout_01.width + btn_more.x + btn_more.width
                     Log.d("tag", "$x & $y & $realX")
-                    listener2.getLocation(realX, y, position)
+                    locationListener.getLocation(realX, y, position)
                 }
             }
         }
