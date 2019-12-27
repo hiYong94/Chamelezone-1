@@ -104,17 +104,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
             .check()
     }
-    private fun loadMap(){
-
-        map_view.onResume()
-        map_view.getMapAsync(this)
-
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(App.instance.context())
-
-        createLocationCallBack()
-        createLocationRequest()
-    }
 
     private fun loadMap() {
 
@@ -236,6 +225,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         val newFragment = AlertDialogFragment.newInstance(
             "검색어를 입력해주세요"
         )
-        newFragment.show(fragmentManager!!, "dialog")
+        newFragment.show(requireFragmentManager(), "dialog")
     }
 }
