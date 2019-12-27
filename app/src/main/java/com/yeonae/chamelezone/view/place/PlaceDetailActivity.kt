@@ -31,20 +31,17 @@ class PlaceDetailActivity : AppCompatActivity() {
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
-    }
+        scroll_view.viewTreeObserver.addOnScrollChangedListener {
+            Log.d("ssssssssssssssssssss", "${scroll_view.scrollY}")
+            Log.d("imageView", "${view.bottom}")
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-
-        Log.d("ssssssssssssssssssss", "${scroll_view.scrollY}")
-        Log.d("imageView", "${view.bottom}")
-
-        if (scroll_view.scrollY <= img_layout.bottom) {
-            layout_visibility.visibility = View.GONE // 화면에서 제외
-            btn_back.visibility = View.VISIBLE
-        } else {
-            layout_visibility.visibility = View.VISIBLE // 화면에서 보이기
-            btn_back.visibility = View.GONE
+            if (scroll_view.scrollY <= img_layout.bottom) {
+                layout_visibility.visibility = View.GONE // 화면에서 제외
+                btn_back.visibility = View.VISIBLE
+            } else {
+                layout_visibility.visibility = View.VISIBLE // 화면에서 보이기
+                btn_back.visibility = View.GONE
+            }
         }
     }
 }
