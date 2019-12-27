@@ -49,8 +49,8 @@ class SearchAddressActivity : AppCompatActivity() {
                             dialog.dismiss()
                         }
                     }
-                    (resultMsg!!.obj as WebView.WebViewTransport).webView = newWebView
-                    resultMsg!!.sendToTarget()
+                    (resultMsg?.obj as WebView.WebViewTransport).webView = newWebView
+                    resultMsg.sendToTarget()
                     return true
                 }
             }
