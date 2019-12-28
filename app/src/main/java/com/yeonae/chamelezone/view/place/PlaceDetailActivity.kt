@@ -15,6 +15,8 @@ class PlaceDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
 
+        layout_visibility.bringToFront()
+
         btn_back.setOnClickListener {
             finish()
         }
