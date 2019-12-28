@@ -225,6 +225,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         val newFragment = AlertDialogFragment.newInstance(
             "검색어를 입력해주세요"
         )
-        newFragment.show(requireFragmentManager(), "dialog")
+        fragmentManager?.let{
+            newFragment.show(it, "dialog")
+        }
     }
 }
