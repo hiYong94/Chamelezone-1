@@ -44,6 +44,7 @@
     <string name="mypage">마이페이지</string>
 
     <string name="review_create">리뷰 등록</string>
+    <string name="review_modify">리뷰 수정</string>
     <string name="review_create_message">리뷰를 남겨주세요</string>
     <string name="image_register">사진 등록</string>
     <string name="reset">리셋</string>
