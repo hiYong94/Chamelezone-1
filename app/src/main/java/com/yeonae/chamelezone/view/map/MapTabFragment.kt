@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
+import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.home.HomeActivity
@@ -79,7 +80,11 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         checkPermission()
 
         btn_search.setOnClickListener {
-            getSearchLocation()
+            if (edt_search.text.toString().isEmpty()) {
+                showDialog()
+            } else {
+                getSearchLocation()
+            }
         }
 
         keyBoard()
@@ -214,5 +219,14 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
                     }
                 }
             })
+    }
+
+    private fun showDialog() {
+        val newFragment = AlertDialogFragment.newInstance(
+            "검색어를 입력해주세요"
+        )
+        fragmentManager?.let{
+            newFragment.show(it, "dialog")
+        }
     }
 }

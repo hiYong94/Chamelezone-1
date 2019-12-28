@@ -117,6 +117,7 @@
         android:gravity="center">
 
         <TextView
+            android:padding="5dp"
             android:id="@+id/btn_find_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -130,6 +131,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:padding="5dp"
             android:id="@+id/btn_find_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -143,6 +145,7 @@
             android:textSize="15sp" />
 
         <TextView
+            android:padding="5dp"
             android:id="@+id/btn_join"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

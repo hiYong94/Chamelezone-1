@@ -10,42 +10,6 @@
         android:layout_height="wrap_content"
         android:clipToPadding="true">
 
-        <RelativeLayout
-            android:id="@+id/popup_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorGray"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/btn_modify"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingTop="15dp"
-                    android:paddingEnd="60dp"
-                    android:paddingBottom="15dp"
-                    android:text="수정"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/btn_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="10dp"
-                    android:paddingTop="15dp"
-                    android:paddingEnd="60dp"
-                    android:paddingBottom="15dp"
-                    android:text="삭제"
-                    android:textSize="15sp" />
-            </LinearLayout>
-        </RelativeLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,6 +21,7 @@
                 android:layout_marginVertical="8dp">
 
                 <LinearLayout
+                    android:id="@+id/layout_01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -94,19 +59,15 @@
                                 android:textSize="15sp" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <ImageButton
+                            android:id="@+id/btn_more"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/transparent"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_more_vert_black_24dp" />
 
-                            <ImageButton
-                                android:id="@+id/btn_more"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@color/transparent"
-                                android:padding="5dp"
-                                android:src="@drawable/ic_more_vert_black_24dp" />
-                        </LinearLayout>
                     </LinearLayout>
 
                     <TextView

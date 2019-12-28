@@ -21,10 +21,14 @@
     <string-array name = "keyword">
         <item>"카페"</item>
         <item>"전시회"</item>
-        <item>"편집샵"</item>
         <item>"빨래방"</item>
-        <item>"편의점"</item>
-        <item>"레지던스"</item>
+        <item>"편집샵"</item>
+        <item>"은행"</item>
+        <item>"서점"</item>
+        <item>"숙소"</item>
+        <item>"오피스"</item>
+        <item>"식물원"</item>
+        <item>"레스토랑"</item>
     </string-array>
 
     <string name="create">등록</string>
