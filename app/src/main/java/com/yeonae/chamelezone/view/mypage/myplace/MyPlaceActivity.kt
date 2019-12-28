@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
@@ -26,12 +27,28 @@ class MyPlaceActivity : AppCompatActivity() {
         setAdapter()
 
         myPlaceRvAdapter.setOnClickListener(object : MyPlaceRvAdapter.OnClickListener {
-
             override fun onClick(place: Place) {
                 val intent = Intent(this@MyPlaceActivity, PlaceDetailActivity::class.java)
                 startActivity(intent)
             }
         })
+
+        myPlaceRvAdapter.getLocation(object  :  MyPlaceRvAdapter.GetLocationListener{
+            override fun getLocation(x: Float, y: Int, position: Int) {
+                popup_menu.visibility = View.VISIBLE
+                popup_menu.x = x - popup_menu.measuredWidth
+                popup_menu.y = y.toFloat() + 50
+                popup_menu.bringToFront()
+            }
+        })
+
+        btn_delete.setOnClickListener {
+
+        }
+
+        btn_modify.setOnClickListener {
+
+        }
 
         btn_back.setOnClickListener {
             finish()
