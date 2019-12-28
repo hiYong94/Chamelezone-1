@@ -1,3 +1,106 @@
 <resources>
     <string name="app_name">Chamelezone</string>
+
+    <string name="file_provider" translatable="false">com.kroegerama.imgpicker.demo.fileprovider</string>
+
+    <plurals name="pick_multi">
+        <item quantity="one">1개의 이미지가 선택되었습니다.</item>
+        <item quantity="other">%1$d개의 이미지가 선택되었습니다.</item>
+    </plurals>
+
+    <plurals name="pick_multi_more">
+        <item quantity="one">1개의 이미지를 더 선택해주세요.</item>
+        <item quantity="other">%1$d개의 이미지를 더 선택해주세요.</item>
+    </plurals>
+
+    <string name="pick_multi_limit">최대 %1$d개의 이미지를 선택해주세요.</string>
+
+    <string name="rationale_title">권한이 필요합니다.</string>
+    <string name="rationale_message"><b>위치정보</b>에 접근하기 위해 권한이 필요합니다.</string>
+
+    <string-array name = "keyword">
+        <item>"카페"</item>
+        <item>"전시회"</item>
+        <item>"빨래방"</item>
+        <item>"편집샵"</item>
+        <item>"은행"</item>
+        <item>"서점"</item>
+        <item>"숙소"</item>
+        <item>"오피스"</item>
+        <item>"식물원"</item>
+        <item>"레스토랑"</item>
+    </string-array>
+
+    <string name="create">등록</string>
+    <string name="selected">선택</string>
+    <string name="search">검색</string>
+    <string name="modify">수정</string>
+    <string name="join">가입</string>
+    <string name="image">사진</string>
+    <string name="completion">완료</string>
+
+    <string name="like">좋아요</string>
+    <string name="map">지도</string>
+    <string name="mypage">마이페이지</string>
+
+    <string name="review_create">리뷰 등록</string>
+    <string name="review_modify">리뷰 수정</string>
+    <string name="review_create_message">리뷰를 남겨주세요</string>
+    <string name="image_register">사진 등록</string>
+    <string name="reset">리셋</string>
+    
+    <string name="course_share">코스 공유</string>
+    <string name="course_title">코스 제목</string>
+    <string name="course_first">첫번째 코스</string>
+    <string name="course_second">두번째 코스</string>
+    <string name="course_third">세번째 코스</string>
+    <string name="course_create">코스 등록</string>
+    <string name="course_explanation">코스 설명</string>
+    <string name="course_title_hint">코스 제목을 입력하세요 (최대 20자)</string>
+    <string name="course_explanation_hint">코스에 대한 설명을 입력하세요</string>
+    <string name="course_title_image">사진(대표사진)</string>
+    <string name="place_selected_first">첫번째 장소 선택</string>
+    <string name="place_selected_second">두번째 장소 선택</string>
+    <string name="place_selected_third">세번째 장소 선택</string>
+    <string name="course_modify">코스 수정</string>
+
+    <string name="my_course">나의 코스</string>
+    <string name="my_place">나의 장소</string>
+    <string name="my_review">나의 리뷰</string>
+
+    <string name="information">정보</string>
+    <string name="review">리뷰</string>
+
+    <string name="place_create">장소 등록</string>
+    <string name="place_modify">장소 수정</string>
+    <string name="place_name">장소명</string>
+    <string name="keyword">키워드</string>
+    <string name="address">주소</string>
+    <string name="business_hours">영업시간</string>
+    <string name="phone_number">전화번호</string>
+    <string name="detail_description">상세설명</string>
+    <string name="place_title_hint">장소명을 입력하세요 (최대 20자)</string>
+    <string name="keyword_hint">키워드를 선택하세요</string>
+    <string name="address_hint">주소를 검색하세요</string>
+    <string name="detail_address_hint">상세주소를 입력하세요</string>
+    <string name="place_phone_number_hint">- 없이 번호만 입력하세요</string>
+    <string name="place_detail_description_hint">장소에 대한 설명을 입력하세요</string>
+
+    <string name="member_join">회원가입</string>
+    <string name="member_info_modify">회원정보 수정</string>
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="name">이름</string>
+    <string name="nickname">닉네임</string>
+    <string name="email_search">이메일 찾기</string>
+    <string name="member_email_search">회원님의 이메일은</string>
+    <string name="password_search">비밀번호 찾기</string>
+    <string name="login">로그인</string>
+    <string name="logout">로그아웃</string>
+
+    <string name="chamelezone_info">카멜레존 소개</string>
+    <string name="privacy">개인정보 수집 및 이용</string>
+
+    <string name="search_word">검색어를 입력하세요.</string>
+    <string name="place_name_test">구슬모아당구장</string>
 </resources>

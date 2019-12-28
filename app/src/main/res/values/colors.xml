@@ -3,4 +3,13 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="toolBarBackground">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorOrange">#FACC2E</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="colorGray">#D5D5D5</color>
+    <color name="yellowOrange">#F5DA81</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="lightGray">#D5D5D5</color>
+    <color name="btn_corner">#EAEAEA</color>
 </resources>
