@@ -14,7 +14,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
     RecyclerView.Adapter<MyPlaceRvAdapter.MyPlaceViewHolder>() {
 
     //private var items = mutableListOf<Place>()
-    private var onClickListener: OnClickListener? = null
+    private lateinit var onClickListener: OnClickListener
     private lateinit var locationListener: GetLocationListener
 
     interface OnClickListener {
@@ -39,8 +39,11 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
     override fun getItemCount(): Int =
         items.size
 
-    override fun onBindViewHolder(holder: MyPlaceViewHolder, position: Int) =
-        holder.bind(items[position], onClickListener, locationListener)
+    override fun onBindViewHolder(holder: MyPlaceViewHolder, position: Int) {
+        if(::locationListener.isInitialized) {
+            holder.bind(items[position], onClickListener, locationListener)
+        }
+    }
 
     fun addData(addDataList: List<Place>) {
         items.clear()
@@ -67,7 +70,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
                     val y = originalPos[1]
                     val realX = layout_01.width + btn_more.x + btn_more.width
                     Log.d("tag", "$x & $y & $realX")
-                    locationListener.getLocation(realX, y, position)
+                    locationListener.getLocation(realX, y, layoutPosition)
                 }
             }
         }
