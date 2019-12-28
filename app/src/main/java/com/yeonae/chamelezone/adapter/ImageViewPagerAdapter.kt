@@ -1,14 +1,17 @@
 package com.yeonae.chamelezone.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
+import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.slider_image.view.*
 
-class ImageViewPagerAdapter: PagerAdapter() {
-    private val images = intArrayOf(
+class ImageViewPagerAdapter : PagerAdapter() {
+
+    val images = intArrayOf(
         R.drawable.img1,
         R.drawable.img2,
         R.drawable.img3,
@@ -22,7 +25,16 @@ class ImageViewPagerAdapter: PagerAdapter() {
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view =
             LayoutInflater.from(container.context).inflate(R.layout.slider_image, container, false)
-        view.image_view.setImageResource(images[position])
+
+        view.post {
+            Log.d("size defi", "gggggggggg  ${view.measuredWidth} ${view.measuredHeight}")
+
+            Glide.with(view.context)
+                .load(images[position])
+                .override(view.measuredWidth, view.measuredHeight)
+                .centerCrop()
+                .into(view.image_view)
+        }
         container.addView(view)
         return view
     }
@@ -33,6 +45,5 @@ class ImageViewPagerAdapter: PagerAdapter() {
 
     override fun getCount(): Int =
         images.size
-
 }
 

@@ -99,17 +99,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
             .check()
     }
-    private fun loadMap(){
-
-        map_view.onResume()
-        map_view.getMapAsync(this)
-
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(App.instance.context())
-
-        createLocationCallBack()
-        createLocationRequest()
-    }
 
     private fun loadMap() {
 
