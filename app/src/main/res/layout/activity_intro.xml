@@ -36,5 +36,20 @@
                 android:text="카멜레존 소개"
                 android:textSize="20sp" />
         </LinearLayout>
+
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/intro"
+            android:textSize="20dp"
+            style="@style/TextViewStyle"/>
+    </LinearLayout>
 </LinearLayout>
