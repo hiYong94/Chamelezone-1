@@ -1,27 +1,29 @@
 package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.gson.JsonObject
 import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
+import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceImpl
 import com.yeonae.chamelezone.network.api.RetrofitConnection
-import com.yeonae.chamelezone.network.model.MemberResponse
+import com.yeonae.chamelezone.view.login.presenter.JoinContract
+import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_join.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.regex.Pattern
 
-class JoinFragment : Fragment() {
+class JoinFragment : Fragment(), JoinContract.View {
+    override fun join() {
+
+    }
+
     val testEmail = "heimish_08@naver.com"
     val testNickname = "yeonvely"
-    private val retrofitConnection = RetrofitConnection
+    override lateinit var presenter: JoinContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +35,12 @@ class JoinFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        presenter = JoinPresenter(
+            MemberRepositoryImpl.getInstance(
+                MemberRemoteDataSourceImpl.getInstance()
+            ), this
+        )
 
         join_email.setOnFocusChangeListener(object : View.OnFocusChangeListener {
             override fun onFocusChange(view: View?, hasFocus: Boolean) {
@@ -132,45 +140,15 @@ class JoinFragment : Fragment() {
                 "${join_name.text}".isEmpty() -> showDialog("이름을 입력해주세요.")
                 "${join_nickname.text}".isEmpty() -> showDialog("닉네임을 입력해주세요.")
                 "${join_phone.text}".isEmpty() -> showDialog("핸드폰 번호를 입력해주세요.")
-                else -> userRegister()
+                else -> presenter.userRegister(
+                    "${join_email.text}",
+                    "${join_password.text}",
+                    "${join_name.text}",
+                    "${join_nickname.text}",
+                    "${join_phone.text}"
+                )
             }
         }
-    }
-
-    private fun userRegister() {
-        val memberResponse = MemberResponse(
-            1,
-            "${join_email.text}",
-            "${join_password.text}",
-            "${join_name.text}",
-            "${join_nickname.text}",
-            "${join_phone.text}",
-            ""
-        )
-        val jsonObject = JsonObject().apply {
-            addProperty("email", memberResponse.email)
-            addProperty("password", memberResponse.password)
-            addProperty("name", memberResponse.name)
-            addProperty("nickName", memberResponse.nickName)
-            addProperty("phoneNumber", memberResponse.phoneNumber)
-        }
-
-        retrofitConnection.memberService.userRegister(jsonObject).enqueue(object :
-            Callback<MemberResponse> {
-            override fun onResponse(
-                call: Call<MemberResponse>,
-                response: Response<MemberResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(context, "회원가입 성공", Toast.LENGTH_LONG)
-                        .show()
-                }
-            }
-
-            override fun onFailure(call: Call<MemberResponse>, t: Throwable) {
-                Log.e("tag", t.toString())
-            }
-        })
     }
 
     private fun showDialog(message: String) {
