@@ -30,7 +30,6 @@ import com.yeonae.chamelezone.view.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_map_tab.*
 import java.util.*
 
-@Suppress("ASSIGNED_BUT_NEVER_ACCESSED_VARIABLE")
 class MapTabFragment : Fragment(), OnMapReadyCallback {
     private var markerInfoFragment = MarkerInfoFragment()
     private lateinit var map: GoogleMap
