@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.mycourse.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -11,13 +12,22 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
 
     //private var items = mutableListOf<Like>()
     private var onClickListener: OnClickListener? = null
+    private lateinit var locationListener: GetLocationListener
 
     interface OnClickListener {
         fun onClick(course: Course)
     }
 
+    interface GetLocationListener {
+        fun getLocation(x: Float, y: Int, position: Int)
+    }
+
     fun setOnClickListener(listener: OnClickListener) {
         onClickListener = listener
+    }
+
+    fun getLocation(listener: GetLocationListener){
+        locationListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyCourseViewHolder =
@@ -26,8 +36,11 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
     override fun getItemCount(): Int =
         items.size
 
-    override fun onBindViewHolder(holder: MyCourseViewHolder, position: Int) =
-        holder.bind(items[position], onClickListener)
+    override fun onBindViewHolder(holder: MyCourseViewHolder, position: Int) {
+        if(::locationListener.isInitialized) {
+            holder.bind(items[position], onClickListener, locationListener)
+        }
+    }
 
     fun addData(addDataList: List<Course>) {
         items.clear()
@@ -38,13 +51,23 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
     class MyCourseViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_course, parent, false)
     ) {
-        fun bind(item: Course, listener: OnClickListener?) {
+        fun bind(item: Course, clickListener: OnClickListener?, locationListener: GetLocationListener) {
             itemView.run {
                 setOnClickListener {
-                    listener?.onClick(item)
+                    clickListener?.onClick(item)
                 }
                 tv_course_name.text = item.courseName
                 tv_course_content.text = item.courseText
+
+                btn_more.setOnClickListener {
+                    val originalPos = IntArray(2)
+                    itemView.getLocationInWindow(originalPos)
+                    val x = originalPos[0]
+                    val y = originalPos[1]
+                    val realX = layout_01.width + btn_more.x + btn_more.width
+                    Log.d("tag", "$x & $y & $realX")
+                    locationListener.getLocation(realX, y, layoutPosition)
+                }
             }
         }
     }
