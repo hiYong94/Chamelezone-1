@@ -3,28 +3,57 @@ package com.yeonae.chamelezone.view.mypage.myplace
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.JsonObject
+import com.bumptech.glide.Glide
+import com.kroegerama.imgpicker.BottomSheetImagePicker
+import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.api.RetrofitConnection
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
+import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
+import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
+import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 
-class PlaceRegisterActivity : AppCompatActivity() {
-    private val retrofitConnection = RetrofitConnection
+class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
+    BottomSheetImagePicker.OnImagesSelectedListener {
+    override fun onImagesSelected(uris: List<Uri>, tag: String?) {
+        toast("$tag")
+        imageContainer.removeAllViews()
+        uris.forEach { uri ->
+            val iv = LayoutInflater.from(this).inflate(
+                R.layout.slider_item_image,
+                imageContainer,
+                false
+            ) as ImageView
+            imageContainer.addView(iv)
+            Glide.with(this).load(uri).into(iv)
+        }
+    }
 
+    override fun place() {
+
+    }
+
+    override lateinit var presenter: PlaceContract.Presenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_register)
+
+        setupGUI()
+
+        presenter = PlacePresenter(
+            PlaceRepositoryImpl.getInstance(
+                PlaceRemoteDataSourceImpl.getInstance()
+            ), this
+        )
 
         edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
         edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -40,9 +69,29 @@ class PlaceRegisterActivity : AppCompatActivity() {
         val closeAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, closeArray)
 
-        day_spinner.adapter = dayAdapter
-        open_spinner.adapter = openAdapter
-        close_spinner.adapter = closeAdapter
+        day_spinner1.adapter = dayAdapter
+        open_spinner1.adapter = openAdapter
+        close_spinner1.adapter = closeAdapter
+
+        day_spinner2.adapter = dayAdapter
+        open_spinner2.adapter = openAdapter
+        close_spinner2.adapter = closeAdapter
+
+        day_spinner3.adapter = dayAdapter
+        open_spinner3.adapter = openAdapter
+        close_spinner3.adapter = closeAdapter
+
+        btn_add1.setOnClickListener {
+            layout_open_time2.visibility = View.VISIBLE
+            btn_add1.visibility = View.GONE
+            btn_add2.visibility = View.VISIBLE
+        }
+
+        btn_add2.setOnClickListener {
+            layout_open_time3.visibility = View.VISIBLE
+            btn_add2.visibility = View.GONE
+        }
+
 
         btn_back.setOnClickListener {
             finish()
@@ -58,7 +107,15 @@ class PlaceRegisterActivity : AppCompatActivity() {
         }
 
         btn_register.setOnClickListener {
-            placeRegister()
+            val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
+            presenter.placeRegister(
+                1,
+                "${edt_place_name.text}",
+                realAddress,
+                "평일 11:00 ~ 20:00",
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}"
+            )
         }
 
     }
@@ -70,47 +127,6 @@ class PlaceRegisterActivity : AppCompatActivity() {
                 tv_place_address.text = data?.getStringExtra("result")
             }
         }
-    }
-
-    private fun placeRegister() {
-        val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
-        val placeResponse = PlaceResponse(
-            1,
-            1,
-            "${edt_place_name.text}",
-            realAddress,
-            "평일 11:00 ~ 20:00",
-            "${edt_place_phone.text}",
-            "${edt_place_text.text}",
-            "",
-            "",
-            ""
-        )
-        val jsonObject = JsonObject().apply {
-            addProperty("keywordNumber", placeResponse.keywordNumber)
-            addProperty("name", placeResponse.name)
-            addProperty("address", placeResponse.address)
-            addProperty("openingTime", placeResponse.openingTime)
-            addProperty("phoneNumber", placeResponse.phoneNumber)
-            addProperty("content", placeResponse.content)
-        }
-
-        retrofitConnection.placeService.placeRegister(jsonObject).enqueue(object :
-            Callback<PlaceResponse> {
-            override fun onResponse(
-                call: Call<PlaceResponse>,
-                response: Response<PlaceResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(this@PlaceRegisterActivity, "장소 등록 성공", Toast.LENGTH_LONG)
-                        .show()
-                }
-            }
-
-            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
-                Log.e("tag", t.toString())
-            }
-        })
     }
 
     private fun categoryDialog() {
@@ -142,6 +158,25 @@ class PlaceRegisterActivity : AppCompatActivity() {
 
         builder.create()
         builder.show()
+    }
+
+    private fun pickMulti() {
+        BottomSheetImagePicker.Builder(getString(R.string.file_provider))
+            .multiSelect(2, 4)
+            .multiSelectTitles(
+                R.plurals.pick_multi,
+                R.plurals.pick_multi_more,
+                R.string.pick_multi_limit
+            )
+            .peekHeight(R.dimen.peekHeight)
+            .columnSize(R.dimen.columnSize)
+            .requestTag("사진이 선택되었습니다.")
+            .show(supportFragmentManager)
+    }
+
+    private fun setupGUI() {
+        btn_image_create.setOnClickListener { pickMulti() }
+        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
     }
 
     companion object {
