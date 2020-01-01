@@ -4,20 +4,34 @@ import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSource
 
 class PlaceRepositoryImpl private constructor(private val remoteDataSource: PlaceRemoteDataSource) :
     PlaceRepository {
-    override fun registerPlace() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun registerPlace(
+        keywordNumber: Int,
+        name: String,
+        address: String,
+        openingTime: String,
+        phoneNumber: String,
+        content: String
+    ) {
+        remoteDataSource.registerPlace(
+            keywordNumber,
+            name,
+            address,
+            openingTime,
+            phoneNumber,
+            content
+        )
     }
 
     override fun getPlace() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun deletePlace() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun modifyPlace() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 
