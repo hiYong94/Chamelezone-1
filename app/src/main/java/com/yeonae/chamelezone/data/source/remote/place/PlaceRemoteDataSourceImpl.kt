@@ -1,63 +1,44 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import com.google.gson.JsonObject
-import com.yeonae.chamelezone.App
+import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.api.RetrofitConnection
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PlaceRemoteDataSourceImpl private constructor() :
+class PlaceRemoteDataSourceImpl private constructor(private val retrofitConnection: RetrofitConnection) :
     PlaceRemoteDataSource {
-    private val retrofitConnection = RetrofitConnection
-    private val context: Context = App.instance.context()
     override fun registerPlace(
         keywordNumber: Int,
         name: String,
         address: String,
         openingTime: String,
         phoneNumber: String,
-        content: String
+        content: String,
+        callBack: PlaceCallBack
     ) {
-        //val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
-        val placeResponse = PlaceResponse(
-            1,
-            keywordNumber,
-            name,
-            address,
-            openingTime,
-            phoneNumber,
-            content,
-            "",
-            "",
-            ""
-        )
         val jsonObject = JsonObject().apply {
-            addProperty("keywordNumber", placeResponse.keywordNumber)
-            addProperty("name", placeResponse.name)
-            addProperty("address", placeResponse.address)
-            addProperty("openingTime", placeResponse.openingTime)
-            addProperty("phoneNumber", placeResponse.phoneNumber)
-            addProperty("content", placeResponse.content)
+            addProperty("keywordNumber", keywordNumber)
+            addProperty("name", name)
+            addProperty("address", address)
+            addProperty("openingTime", openingTime)
+            addProperty("phoneNumber", phoneNumber)
+            addProperty("content", content)
         }
 
         retrofitConnection.placeService.placeRegister(jsonObject).enqueue(object :
-            Callback<PlaceResponse> {
+            Callback<ResponseBody> {
             override fun onResponse(
-                call: Call<PlaceResponse>,
-                response: Response<PlaceResponse>
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
-                    Toast.makeText(context, "장소 등록 성공", Toast.LENGTH_LONG)
-                        .show()
-                }
+                callBack.onSuccess("장소 등록 성공")
             }
 
-            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
         })
@@ -76,7 +57,8 @@ class PlaceRemoteDataSourceImpl private constructor() :
     }
 
     companion object {
-        fun getInstance(): PlaceRemoteDataSource = PlaceRemoteDataSourceImpl()
+        fun getInstance(retrofitConnection: RetrofitConnection): PlaceRemoteDataSource =
+            PlaceRemoteDataSourceImpl(retrofitConnection)
     }
 
 }
