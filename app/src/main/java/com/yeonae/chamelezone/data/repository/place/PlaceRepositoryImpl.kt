@@ -10,7 +10,8 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         address: String,
         openingTime: String,
         phoneNumber: String,
-        content: String
+        content: String,
+        callBack: PlaceCallBack
     ) {
         remoteDataSource.registerPlace(
             keywordNumber,
@@ -18,7 +19,8 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
             address,
             openingTime,
             phoneNumber,
-            content
+            content,
+            callBack
         )
     }
 

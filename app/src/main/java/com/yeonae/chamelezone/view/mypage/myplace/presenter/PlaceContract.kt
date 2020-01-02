@@ -4,7 +4,7 @@ interface PlaceContract {
 
     interface View {
         var presenter: Presenter
-        fun place()
+        fun place(message: String)
     }
 
     interface Presenter {

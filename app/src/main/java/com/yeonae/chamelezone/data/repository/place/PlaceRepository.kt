@@ -7,7 +7,8 @@ interface PlaceRepository {
         address: String,
         openingTime: String,
         phoneNumber: String,
-        content: String
+        content: String,
+        callBack: PlaceCallBack
     )
 
     fun getPlace()

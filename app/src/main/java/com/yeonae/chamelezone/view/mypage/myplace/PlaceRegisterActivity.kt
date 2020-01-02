@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.kroegerama.imgpicker.BottomSheetImagePicker
@@ -17,6 +18,7 @@ import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
 import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
+import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
@@ -24,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_place_register.*
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
+    private val retrofitConnection = RetrofitConnection
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
         imageContainer.removeAllViews()
@@ -38,8 +41,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
     }
 
-    override fun place() {
-
+    override fun place(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG)
+            .show()
     }
 
     override lateinit var presenter: PlaceContract.Presenter
@@ -51,7 +55,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
         presenter = PlacePresenter(
             PlaceRepositoryImpl.getInstance(
-                PlaceRemoteDataSourceImpl.getInstance()
+                PlaceRemoteDataSourceImpl.getInstance(retrofitConnection)
             ), this
         )
 

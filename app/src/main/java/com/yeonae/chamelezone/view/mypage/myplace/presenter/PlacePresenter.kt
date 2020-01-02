@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myplace.presenter
 
+import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 
 class PlacePresenter(
@@ -20,8 +21,17 @@ class PlacePresenter(
             address,
             openingTime,
             phoneNumber,
-            content
+            content,
+            object : PlaceCallBack{
+                override fun onSuccess(message: String) {
+                    placeView.place(message)
+                }
+
+                override fun onFailure(message: String) {
+
+                }
+
+            }
         )
-        placeView.place()
     }
 }
