@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="30dp"
-                    android:text="사진"
+                    android:text="@string/image"
                     android:layout_weight="1"
                     android:textSize="15sp" />
 
@@ -124,7 +124,7 @@
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/selected_btn_background_basic"
-                    android:text="사진 등록"
+                    android:text="@string/image_register"
                     android:textColor="@drawable/selected_btn_text_basic" />
 
                 <Button
@@ -134,7 +134,7 @@
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/selected_btn_background_basic"
-                    android:text="리셋"
+                    android:text="@string/reset"
                     android:textColor="@drawable/selected_btn_text_basic" />
 
             </LinearLayout>
