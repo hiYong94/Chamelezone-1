@@ -17,12 +17,14 @@ import kotlinx.android.synthetic.main.fragment_join.*
 import java.util.regex.Pattern
 
 class JoinFragment : Fragment(), JoinContract.View {
-    override fun join() {
-
+    override fun join(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG)
+            .show()
     }
 
     val testEmail = "heimish_08@naver.com"
     val testNickname = "yeonvely"
+    private val retrofitConnection = RetrofitConnection
     override lateinit var presenter: JoinContract.Presenter
 
     override fun onCreateView(
@@ -38,7 +40,7 @@ class JoinFragment : Fragment(), JoinContract.View {
 
         presenter = JoinPresenter(
             MemberRepositoryImpl.getInstance(
-                MemberRemoteDataSourceImpl.getInstance()
+                MemberRemoteDataSourceImpl.getInstance(retrofitConnection)
             ), this
         )
 

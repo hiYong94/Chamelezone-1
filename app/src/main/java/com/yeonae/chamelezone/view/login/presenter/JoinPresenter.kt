@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.login.presenter
 
+import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 
 class JoinPresenter(
@@ -10,10 +11,18 @@ class JoinPresenter(
         email: String,
         password: String,
         name: String,
-        nickname: String,
+        nickName: String,
         phone: String
     ) {
-        memberRepository.createMember(email, password, name, nickname, phone)
-        joinView.join()
+        memberRepository.createMember(email, password, name, nickName, phone, object : MemberCallBack{
+            override fun onSuccess(message: String) {
+                joinView.join(message)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
     }
 }
