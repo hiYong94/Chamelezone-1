@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_my_course.view.*
 class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Adapter<MyCourseRvAdapter.MyCourseViewHolder>() {
 
     //private var items = mutableListOf<Like>()
-    private var onClickListener: OnClickListener? = null
+    private lateinit var onClickListener: OnClickListener
     private lateinit var locationListener: GetLocationListener
 
     interface OnClickListener {
