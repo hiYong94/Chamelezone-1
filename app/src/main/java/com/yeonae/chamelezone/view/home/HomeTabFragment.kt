@@ -33,42 +33,42 @@ class HomeTabFragment : Fragment() {
                 "전시회, 카페",
                 "서울 용산구 독서당로 85",
                 "7km",
-                "backward"
+                "place1"
             ),
             Place(
                 "론리드프로젝트",
                 "빨래방, 카페",
                 "서울 용산구 신흥로 78",
                 "10km",
-                "course"
+                "place2"
             ),
             Place(
                 "하나은행X북바이북",
                 "은행, 서점",
                 "서울 종로구 새문안로5길 19",
                 "13km",
-                "home"
+                "place3"
             ),
             Place(
                 "구슬모아당구장",
                 "전시회, 카페",
                 "서울 용산구 독서당로 85",
                 "7km",
-                "backward"
+                "place1"
             ),
             Place(
                 "론리드프로젝트",
                 "빨래방, 카페",
                 "서울 용산구 신흥로 78",
                 "10km",
-                "course"
+                "place2"
             ),
             Place(
                 "하나은행X북바이북",
                 "은행, 서점",
                 "서울 종로구 새문안로5길 19",
                 "13km",
-                "home"
+                "place3"
             )
         )
         Log.d("tag", placeList.size.toString())
