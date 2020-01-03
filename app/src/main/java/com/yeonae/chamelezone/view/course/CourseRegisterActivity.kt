@@ -1,17 +1,41 @@
 package com.yeonae.chamelezone.view.course
 
+import android.net.Uri
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.kroegerama.imgpicker.BottomSheetImagePicker
+import com.kroegerama.imgpicker.ButtonType
+import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import kotlinx.android.synthetic.main.activity_course_register.*
 
-class CourseRegisterActivity : AppCompatActivity() {
+class CourseRegisterActivity : AppCompatActivity(),
+    BottomSheetImagePicker.OnImagesSelectedListener {
+    override fun onImagesSelected(uris: List<Uri>, tag: String?) {
+        toast("$tag")
+        imageContainer.removeAllViews()
+        uris.forEach { uri ->
+            val iv = LayoutInflater.from(this).inflate(
+                R.layout.slider_item_image,
+                imageContainer,
+                false
+            ) as ImageView
+            imageContainer.addView(iv)
+            Glide.with(this).load(uri).into(iv)
+        }
+    }
+
     private val placeChoiceFragment = PlaceChoiceFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_register)
+
+        setupGUI()
 
         btn_back.setOnClickListener {
             finish()
@@ -141,10 +165,28 @@ class CourseRegisterActivity : AppCompatActivity() {
             }
         }
     }
-    fun replace(placeIndex: String){
+
+    fun replace(placeIndex: String) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_place_choice, placeChoiceFragment.newInstance(placeIndex))
             .addToBackStack(null)
             .commit()
     }
+
+    private fun pickSingle() {
+        BottomSheetImagePicker.Builder(getString(R.string.file_provider))
+            .cameraButton(ButtonType.Button)
+            .galleryButton(ButtonType.Button)
+            .singleSelectTitle(R.string.pick_single)
+            .peekHeight(R.dimen.peekHeight)
+            .columnSize(R.dimen.columnSize)
+            .requestTag("사진이 선택되었습니다.")
+            .show(supportFragmentManager)
+    }
+
+    private fun setupGUI() {
+        btn_image_create.setOnClickListener { pickSingle() }
+        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+    }
+
 }
