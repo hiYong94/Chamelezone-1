@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.mypage.myreview
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
@@ -24,6 +25,15 @@ class MyReviewActivity : AppCompatActivity() {
         myReviewRvAdapter.setOnClickListener(object : MyReviewRvAdapter.OnClickListener {
             override fun onClick(review: Review) {
 
+            }
+        })
+
+        myReviewRvAdapter.getLocation(object  :  MyReviewRvAdapter.GetLocationListener{
+            override fun getLocation(x: Float, y: Int, position: Int) {
+                popup_menu.visibility = View.VISIBLE
+                popup_menu.x = x - popup_menu.measuredWidth
+                popup_menu.y = y.toFloat() + 50
+                popup_menu.bringToFront()
             }
         })
 

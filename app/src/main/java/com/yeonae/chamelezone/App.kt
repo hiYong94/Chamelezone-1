@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone
 
 import android.app.Application
+import android.content.Context
 
 class App : Application() {
 
@@ -9,9 +10,9 @@ class App : Application() {
         instance = this
     }
 
-    fun context() = applicationContext
+    fun context(): Context = applicationContext
 
-    companion object{
+    companion object {
         lateinit var instance: App
             private set
 

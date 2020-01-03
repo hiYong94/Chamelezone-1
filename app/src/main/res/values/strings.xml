@@ -3,6 +3,7 @@
 
     <string name="file_provider" translatable="false">com.kroegerama.imgpicker.demo.fileprovider</string>
 
+    <string name="pick_single">Please select your image</string>
     <plurals name="pick_multi">
         <item quantity="one">1개의 이미지가 선택되었습니다.</item>
         <item quantity="other">%1$d개의 이미지가 선택되었습니다.</item>
