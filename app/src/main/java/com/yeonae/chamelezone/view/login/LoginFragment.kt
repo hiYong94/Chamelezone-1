@@ -53,6 +53,7 @@ class LoginFragment : Fragment() {
             if (email == testEmail) {
                 if (password == testPassword) {
                     Toast.makeText(context!!.applicationContext, "로그인 성공", Toast.LENGTH_LONG).show()
+
                 } else {
                     showDialog()
                 }
