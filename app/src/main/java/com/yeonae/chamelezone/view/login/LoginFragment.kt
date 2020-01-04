@@ -30,7 +30,7 @@ class LoginFragment : Fragment() {
             requireActivity().finish()
         }
         btn_find_email.setOnClickListener {
-            (activity as LoginActivity).replace(FindEmailFragment(), true)
+            (activity as? LoginActivity)?.replace(FindEmailFragment(), true)
         }
         btn_find_password.setOnClickListener {
             (activity as LoginActivity).replace(FindPasswordFragment(), true)
@@ -46,7 +46,7 @@ class LoginFragment : Fragment() {
 
     private fun loginCheck(email: String, password: String) {
         if (email.isEmpty()) {
-            Toast.makeText(context!!.applicationContext, "아이디를 입력해주세요!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "아이디를 입력해주세요!", Toast.LENGTH_SHORT).show()
         } else if (password.isEmpty()) {
             Toast.makeText(context!!.applicationContext, "비밀번호를 입력해주세요!", Toast.LENGTH_SHORT).show()
         } else {
