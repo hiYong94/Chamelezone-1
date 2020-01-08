@@ -1,17 +1,19 @@
 package com.yeonae.chamelezone.view.mypage.myreview.adapter
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
+import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
 import kotlinx.android.synthetic.main.item_my_review.view.*
 
 class MyReviewRvAdapter(private var items: ArrayList<Review>) :
     RecyclerView.Adapter<MyReviewRvAdapter.MyReviewViewHolder>() {
 
-    //private var items = mutableListOf<Review>()
+//    private var items = mutableListOf<Review>()
     private lateinit var onClickListener: OnClickListener
     private lateinit var locationListener: GetLocationListener
 
@@ -56,6 +58,9 @@ class MyReviewRvAdapter(private var items: ArrayList<Review>) :
             itemView.run {
                 setOnClickListener {
                     clickListener?.onClick(item)
+                    
+                    val intent = Intent(itemView.context, MyReviewDetailActivity::class.java)
+                    itemView.context.startActivity(intent)
                 }
                 tv_place_name.text = item.placeName
                 tv_review_content.text = item.reviewContent
