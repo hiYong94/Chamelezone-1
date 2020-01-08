@@ -3,6 +3,7 @@
 
     <string name="file_provider" translatable="false">com.kroegerama.imgpicker.demo.fileprovider</string>
 
+    <string name="pick_single">Please select your image</string>
     <plurals name="pick_multi">
         <item quantity="one">1개의 이미지가 선택되었습니다.</item>
         <item quantity="other">%1$d개의 이미지가 선택되었습니다.</item>
@@ -103,4 +104,7 @@
 
     <string name="search_word">검색어를 입력하세요.</string>
     <string name="place_name_test">구슬모아당구장</string>
+
+    <string name="intro">카멜레존(Chamelezone)은 카멜레온과 공간을 뜻하는 존(zone)을 합친 신조어로 원래의 용도와는 달리 상황에 맞게 변화하는 공간을 뜻합니다.
+        저희 어플은 이러한 공간들을 소개하고 사용자들이 보다 쉽게 찾고, 찾아갈 수 있도록 서비스를 제공하고자 합니다.</string>
 </resources>

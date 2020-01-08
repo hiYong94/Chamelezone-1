@@ -9,4 +9,6 @@
         android:width="2px"
         android:color="@color/colorGray" />
 
+    <corners android:radius="10dp" />
+
 </shape>

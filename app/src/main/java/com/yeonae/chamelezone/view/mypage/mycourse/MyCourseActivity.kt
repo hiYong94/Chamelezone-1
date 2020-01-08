@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.mypage.mycourse
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
@@ -38,6 +39,15 @@ class MyCourseActivity : AppCompatActivity() {
             override fun onClick(course: Course) {
                 val intent = Intent(this@MyCourseActivity, CourseDetailActivity::class.java)
                 startActivity(intent)
+            }
+        })
+
+        myCourseRvAdapter.getLocation(object  :  MyCourseRvAdapter.GetLocationListener{
+            override fun getLocation(x: Float, y: Int, position: Int) {
+                popup_menu.visibility = View.VISIBLE
+                popup_menu.x = x - popup_menu.measuredWidth
+                popup_menu.y = y.toFloat() + 50
+                popup_menu.bringToFront()
             }
         })
 

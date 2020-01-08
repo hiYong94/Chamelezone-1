@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.item_place_list.view.*
 
-class HomePlaceRvAdapter(var placeList: ArrayList<Place>) :
+class HomePlaceRvAdapter(private val placeList: ArrayList<Place>) :
     RecyclerView.Adapter<HomePlaceRvAdapter.Holder>() {
 
     interface OnItemClickListener {
