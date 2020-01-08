@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.activity_search.*
 class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelectedListener {
     override fun keywordSelected(keyword: String) {
         edt_search.setText(keyword)
+        edt_search.setSelection(edt_search.length())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
