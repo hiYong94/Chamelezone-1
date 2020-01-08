@@ -43,6 +43,7 @@ class SearchAddressActivity : AppCompatActivity() {
                     val dialog = Dialog(this@SearchAddressActivity)
                     dialog.setContentView(newWebView)
                     dialog.show()
+                    dialog.setOnCancelListener { finish() }
                     dialog.window?.setLayout(1400, 2500)
                     newWebView.webChromeClient = object : WebChromeClient() {
                         override fun onCloseWindow(window: WebView) {
@@ -72,3 +73,4 @@ class SearchAddressActivity : AppCompatActivity() {
         }
     }
 }
+
