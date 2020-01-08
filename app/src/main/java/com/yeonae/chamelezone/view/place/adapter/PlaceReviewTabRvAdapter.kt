@@ -1,52 +1,79 @@
 package com.yeonae.chamelezone.view.place.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Like
-import kotlinx.android.synthetic.main.item_like.view.*
+import com.yeonae.chamelezone.data.model.Review
+import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
+import kotlinx.android.synthetic.main.item_place_review.view.*
 
-class PlaceReviewTabRvAdapter : RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
+class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
+    RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
 
-    private var items = mutableListOf<Like>()
-    private var onClickListener: OnClickListener? = null
+//    private var onClickListener: OnClickListener? = null
 
-    interface OnClickListener {
-        fun onClick(productResponse: Like)
+    interface OnItemClickListener {
+        fun onItemClick(view: View, position: Int)
     }
 
-    fun setOnClickListener(listener: OnClickListener) {
-        onClickListener = listener
-    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceReviewViewHolder =
-        PlaceReviewViewHolder(parent)
+    class PlaceReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val placeReviewList: ArrayList<Review>? = null
+        private val itemClickListener: OnItemClickListener? = null
+        private val userId = itemView.tv_user_id
+        private val reviewDate = itemView.tv_review_date
+        private val reviewImg = itemView.iv_review_img
+        private val reviewContent = itemView.tv_review_content
 
-    override fun getItemCount(): Int =
-        items.size
+        fun bind(review: Review) {
+            if (review.reviewImage.isNotEmpty()) {
+                val resourceId = itemView.resources.getIdentifier(
+                    review.reviewImage,
+                    "drawable",
+                    itemView.context.packageName
+                )
+                reviewImg.setImageResource(resourceId)
+            } else {
+                reviewImg.setImageResource(R.mipmap.ic_launcher)
+            }
+            userId.text = review.userId
+            reviewDate.text = review.reviewDate
+            reviewContent.text = review.reviewContent
 
-    override fun onBindViewHolder(holder: PlaceReviewViewHolder, position: Int) =
-        holder.bind(items[position], onClickListener)
+            itemView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = placeReviewList?.get(position)
+                    itemClickListener?.onItemClick(itemView, position)
+                    placeReviewList?.set(position, review)
 
-    fun addData(addDataList: List<Like>) {
-        items.clear()
-        items.addAll(addDataList)
-        notifyDataSetChanged()
-    }
-
-    class PlaceReviewViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_place_review, parent, false)
-    ) {
-        fun bind(item: Like, listener: OnClickListener?) {
-            itemView.run {
-                setOnClickListener {
-                    listener?.onClick(item)
+                    val intent = Intent(itemView.context, MyReviewDetailActivity::class.java)
+                    itemView.context.startActivity(intent)
                 }
-                tv_place_name.text = item.placeName
-                tv_place_keyword.text = item.placeKeyword
-                tv_place_address.text = item.placeAddress
             }
         }
     }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceReviewViewHolder {
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_place_review, parent, false)
+
+        return PlaceReviewViewHolder(view)
+    }
+
+    override fun getItemCount(): Int =
+        reviewList.size
+
+    override fun onBindViewHolder(holder: PlaceReviewViewHolder, position: Int) =
+        holder.bind(reviewList[position])
+
+    fun addData(addDataList: List<Review>) {
+        reviewList.clear()
+        reviewList.addAll(addDataList)
+        notifyDataSetChanged()
+    }
+
 }
