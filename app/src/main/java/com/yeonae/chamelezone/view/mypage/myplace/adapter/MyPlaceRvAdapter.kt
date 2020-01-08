@@ -22,7 +22,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
     }
 
     interface GetLocationListener {
-        fun getLocation(x: Float, y: Int, position: Int)
+        fun getLocation()
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -64,13 +64,13 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
                 tv_place_address.text = item.placeAddress
 
                 btn_more.setOnClickListener {
-                    val originalPos = IntArray(2)
-                    itemView.getLocationInWindow(originalPos)
-                    val x = originalPos[0]
-                    val y = originalPos[1]
-                    val realX = layout_01.width + btn_more.x + btn_more.width
-                    Log.d("tag", "$x & $y & $realX")
-                    locationListener.getLocation(realX, y, layoutPosition)
+//                    val originalPos = IntArray(2)
+//                    itemView.getLocationInWindow(originalPos)
+//                    val x = originalPos[0]
+//                    val y = originalPos[1]
+//                    val realX = layout_01.width + btn_more.x + btn_more.width
+//                    Log.d("tag", "$x & $y & $realX")
+                    locationListener.getLocation()
                 }
             }
         }
