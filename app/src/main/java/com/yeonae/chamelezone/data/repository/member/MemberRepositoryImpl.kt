@@ -4,7 +4,6 @@ import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSource
 
 class MemberRepositoryImpl private constructor(private val remoteDataSource: MemberRemoteDataSource) :
     MemberRepository {
-
     override fun createMember(
         email: String,
         password: String,
@@ -14,6 +13,10 @@ class MemberRepositoryImpl private constructor(private val remoteDataSource: Mem
         callBack: MemberCallBack
     ) {
         remoteDataSource.createMember(email, password, name, nickName, phone, callBack)
+    }
+
+    override fun login(email: String, password: String, callBack: MemberCallBack) {
+        remoteDataSource.login(email, password, callBack)
     }
 
     override fun getMember() {
