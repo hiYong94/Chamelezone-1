@@ -12,17 +12,18 @@ import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.network.model.MemberResponse
-import com.yeonae.chamelezone.network.room.entity.User
 import com.yeonae.chamelezone.network.room.database.UserDatabase
+import com.yeonae.chamelezone.network.room.entity.User
 import kotlinx.android.synthetic.main.fragment_login.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class LoginFragment : Fragment() {
     private val retrofitConnection = RetrofitConnection
-    private var userDatabase : UserDatabase? = null
+    private val userDatabase by lazy {
+        UserDatabase.getInstance(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,8 +56,16 @@ class LoginFragment : Fragment() {
 
     private fun loginCheck(email: String, password: String) {
         when {
-            email.isEmpty() -> Toast.makeText(requireContext(), "아이디를 입력해주세요!", Toast.LENGTH_SHORT).show()
-            password.isEmpty() -> Toast.makeText(context!!.applicationContext, "비밀번호를 입력해주세요!", Toast.LENGTH_SHORT).show()
+            email.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "아이디를 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
+            password.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "비밀번호를 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
             else -> {
                 val jsonObject = JsonObject().apply {
                     addProperty("email", email)
@@ -69,7 +78,6 @@ class LoginFragment : Fragment() {
                         call: Call<MemberResponse>,
                         response: Response<MemberResponse>
                     ) {
-                        userDatabase = context?.let { UserDatabase.getInstance(it) }
                         val r = Runnable {
                             val newUser = User(
                                 response.body()!!.memberNumber,
