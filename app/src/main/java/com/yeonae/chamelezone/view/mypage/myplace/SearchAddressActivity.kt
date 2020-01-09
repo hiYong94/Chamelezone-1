@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebView
@@ -44,7 +45,9 @@ class SearchAddressActivity : AppCompatActivity() {
                     dialog.setContentView(newWebView)
                     dialog.show()
                     dialog.setOnCancelListener { finish() }
-                    dialog.window?.setLayout(1400, 2500)
+                    dialog.window?.setLayout(web_view.width, web_view.height)
+                    Log.d("tag", web_view.width.toString())
+                    Log.d("tag", web_view.height.toString())
                     newWebView.webChromeClient = object : WebChromeClient() {
                         override fun onCloseWindow(window: WebView) {
                             dialog.dismiss()
