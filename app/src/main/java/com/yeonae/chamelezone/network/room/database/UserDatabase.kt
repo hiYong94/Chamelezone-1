@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.yeonae.chamelezone.network.room.entity.User
 import com.yeonae.chamelezone.network.room.dao.UserDao
+import com.yeonae.chamelezone.network.room.entity.User
 
 @Database(entities = [User::class], version = 1)
 abstract class UserDatabase : RoomDatabase() {
@@ -16,14 +16,12 @@ abstract class UserDatabase : RoomDatabase() {
 
         fun getInstance(context: Context): UserDatabase? {
             if (INSTANCE == null) {
-                synchronized(UserDatabase::class) {
-                    INSTANCE = Room.databaseBuilder(
-                        context.applicationContext,
-                        UserDatabase::class.java, "user"
-                    )
-                        .fallbackToDestructiveMigration()
-                        .build()
-                }
+                INSTANCE = Room.databaseBuilder(
+                    context.applicationContext,
+                    UserDatabase::class.java, "user"
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
             }
             return INSTANCE
         }
