@@ -7,16 +7,12 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
 import kotlinx.android.synthetic.main.slider_image.view.*
 
 class ReviewImageVpAdapter : PagerAdapter() {
 
-    val images = intArrayOf(
-        R.drawable.img1,
-        R.drawable.img2,
-        R.drawable.img3,
-        R.drawable.img4
-    )
+    private val images = MyReviewDetailActivity().images
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean =
         view == `object`
