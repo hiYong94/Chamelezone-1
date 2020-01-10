@@ -3,13 +3,14 @@ package com.yeonae.chamelezone.data.source.remote.place
 import android.util.Log
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
-import com.yeonae.chamelezone.network.api.RetrofitConnection
+import com.yeonae.chamelezone.network.api.PlaceApi
+import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class PlaceRemoteDataSourceImpl private constructor(private val retrofitConnection: RetrofitConnection) :
+class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceApi) :
     PlaceRemoteDataSource {
     override fun registerPlace(
         keywordNumber: Int,
@@ -29,7 +30,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val retrofitConnecti
             addProperty("content", content)
         }
 
-        retrofitConnection.placeService.placeRegister(jsonObject).enqueue(object :
+        placeService.placeRegister(jsonObject).enqueue(object :
             Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
@@ -57,8 +58,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val retrofitConnecti
     }
 
     companion object {
-        fun getInstance(retrofitConnection: RetrofitConnection): PlaceRemoteDataSource =
-            PlaceRemoteDataSourceImpl(retrofitConnection)
+        fun getInstance(placeApi: PlaceApi): PlaceRemoteDataSource =
+            PlaceRemoteDataSourceImpl(placeApi)
     }
 
 }

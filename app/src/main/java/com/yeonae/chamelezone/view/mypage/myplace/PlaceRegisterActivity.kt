@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_place_register.*
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
-    private val retrofitConnection = RetrofitConnection
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
         imageContainer.removeAllViews()
@@ -55,7 +54,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
         presenter = PlacePresenter(
             PlaceRepositoryImpl.getInstance(
-                PlaceRemoteDataSourceImpl.getInstance(retrofitConnection)
+                PlaceRemoteDataSourceImpl.getInstance(RetrofitConnection.placeService)
             ), this
         )
 

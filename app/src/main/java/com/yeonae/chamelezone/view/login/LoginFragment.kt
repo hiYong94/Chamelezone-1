@@ -24,12 +24,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginFragment : Fragment() , JoinContract.View {
-    override fun join(message: String) {
+    override fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG)
             .show()
     }
 
-    private val retrofitConnection = RetrofitConnection
     override lateinit var presenter: JoinContract.Presenter
 
     override fun onCreateView(
@@ -44,7 +43,7 @@ class LoginFragment : Fragment() , JoinContract.View {
         super.onActivityCreated(savedInstanceState)
         presenter = JoinPresenter(
             MemberRepositoryImpl.getInstance(
-                MemberRemoteDataSourceImpl.getInstance(retrofitConnection)
+                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService)
             ), this
         )
 
