@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myreview
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
+import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
 import kotlinx.android.synthetic.main.activity_my_review.*
 
 class MyReviewActivity : AppCompatActivity() {
@@ -31,7 +33,8 @@ class MyReviewActivity : AppCompatActivity() {
 
         myReviewRvAdapter.setOnClickListener(object : MyReviewRvAdapter.OnClickListener {
             override fun onClick(review: Review) {
-
+                val intent = Intent(this@MyReviewActivity, MyReviewDetailActivity::class.java)
+                this@MyReviewActivity.startActivity(intent)
             }
         })
 

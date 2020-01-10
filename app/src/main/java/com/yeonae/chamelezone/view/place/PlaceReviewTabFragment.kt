@@ -3,13 +3,16 @@ package com.yeonae.chamelezone.view.place
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
+import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 
@@ -40,6 +43,23 @@ class PlaceReviewTabFragment : Fragment() {
 
         setAdapter()
 
+        recycler_place_review.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+
+            override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+                val intent = Intent(context, MyReviewDetailActivity::class.java)
+                context?.startActivity(intent)
+
+                return false
+            }
+
+            override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
+
+            }
+
+            override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+
+            }
+        })
     }
 
     private fun setAdapter() {
@@ -47,7 +67,5 @@ class PlaceReviewTabFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = placeReviewRvAdapter
         }
-
-
     }
 }
