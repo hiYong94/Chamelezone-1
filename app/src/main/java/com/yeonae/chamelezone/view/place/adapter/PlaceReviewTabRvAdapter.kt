@@ -42,9 +42,14 @@ class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
             itemView.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val item = placeReviewList?.get(position)
-                    itemClickListener?.onItemClick(itemView, position)
-                    placeReviewList?.set(position, review)
+                    val item = placeReviewList[position]
+
+                    if(::itemClickListener.isInitialized){
+                        itemClickListener.onItemClick(itemView, position)
+                    }
+                    if (::placeReviewList.isInitialized){
+                        placeReviewList[position] = review
+                    }
                 }
             }
         }
