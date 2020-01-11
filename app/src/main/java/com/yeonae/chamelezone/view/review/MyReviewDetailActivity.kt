@@ -23,7 +23,7 @@ class MyReviewDetailActivity : AppCompatActivity() {
             finish()
         }
 
-        val imageAdapter = ReviewImageVpAdapter()
+        val imageAdapter = ReviewImageVpAdapter(images)
         view.adapter = imageAdapter
         tab_layout.setupWithViewPager(view, true)
     }

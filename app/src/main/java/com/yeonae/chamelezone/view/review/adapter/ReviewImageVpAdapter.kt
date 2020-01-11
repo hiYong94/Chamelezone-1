@@ -7,19 +7,17 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
 import kotlinx.android.synthetic.main.slider_image.view.*
 
-class ReviewImageVpAdapter : PagerAdapter() {
+class ReviewImageVpAdapter(private val images: IntArray) : PagerAdapter() {
 
-    private val images = MyReviewDetailActivity().images
-
-    override fun isViewFromObject(view: View, `object`: Any): Boolean =
-        view == `object`
+    override fun isViewFromObject(view: View, obj: Any): Boolean =
+        view == obj
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view =
-            LayoutInflater.from(container.context).inflate(R.layout.slider_item_myreview_image, container, false)
+            LayoutInflater.from(container.context)
+                .inflate(R.layout.slider_item_myreview_image, container, false)
 
         view.post {
             Log.d("size defi", "gggggggggg  ${view.measuredWidth} ${view.measuredHeight}")
@@ -34,7 +32,7 @@ class ReviewImageVpAdapter : PagerAdapter() {
         return view
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) =
+    override fun destroyItem(container: ViewGroup, position: Int, obj: Any) =
         container.invalidate()
 
     override fun getCount(): Int =
