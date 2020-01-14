@@ -14,6 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mypage"
+            android:textColor="@color/colorBlack"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -151,14 +152,13 @@
         android:background="@color/lightGray" />
 
     <TextView
+        android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
         android:padding="10dp"
-
         android:text="@string/logout"
-
         android:textSize="15dp" />
 
     <ImageView

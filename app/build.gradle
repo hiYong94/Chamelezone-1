@@ -62,4 +62,11 @@ dependencies {
 
     // toast message Library
     implementation 'com.kroegerama:android-kaiteki:2.7.1'
+
+    // room
+    implementation "androidx.room:room-runtime:2.2.3"
+    annotationProcessor "androidx.room:room-compiler:2.2.3"
+
+    //swipe
+    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 }

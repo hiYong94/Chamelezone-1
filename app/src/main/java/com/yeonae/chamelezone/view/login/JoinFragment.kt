@@ -1,6 +1,9 @@
 package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,15 +20,12 @@ import kotlinx.android.synthetic.main.fragment_join.*
 import java.util.regex.Pattern
 
 class JoinFragment : Fragment(), JoinContract.View {
-    override fun join(message: String) {
+    override lateinit var presenter: JoinContract.Presenter
+
+    override fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG)
             .show()
     }
-
-    val testEmail = "heimish_08@naver.com"
-    val testNickname = "yeonvely"
-    private val retrofitConnection = RetrofitConnection
-    override lateinit var presenter: JoinContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,96 +37,59 @@ class JoinFragment : Fragment(), JoinContract.View {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        join_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
+        join_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = JoinPresenter(
             MemberRepositoryImpl.getInstance(
-                MemberRemoteDataSourceImpl.getInstance(retrofitConnection)
+                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService)
             ), this
         )
 
-        join_email.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-            override fun onFocusChange(view: View?, hasFocus: Boolean) {
-                if (hasFocus) {
-                    val p =
-                        Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")// 정규식 변수 이름 바꾸기
-                    val m = p.matcher(join_email.text.toString())
+        join_email.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
 
-                    if (!m.matches()) {
-                        Toast.makeText(
-                            context!!.applicationContext,
-                            "이메일 형식이 올바르지 않습니다.",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    } else {
-                        if (testEmail == "${join_email.text}") {
-                            Toast.makeText(
-                                context!!.applicationContext,
-                                "이미 존재하는 이메일 입니다.",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        } else {
-                            Toast.makeText(
-                                context!!.applicationContext,
-                                "사용 가능한 이메일 입니다.",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
-                    }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
+                val m = p.matcher(join_email.text.toString())
+                if (!m.matches()) {
+                    email_layout.error = "이메일 형식이 올바르지 않습니다."
+                } else {
+                    email_layout.isErrorEnabled = false
                 }
             }
         })
 
-        join_password.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-            override fun onFocusChange(view: View?, hasFocus: Boolean) {
-                if (hasFocus) {
-                    val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
-                    val m = p.matcher(join_password.text.toString())
+        join_password.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
 
-                    if (!m.matches()) {
-                        Toast.makeText(
-                            context!!.applicationContext,
-                            "영문, 숫자 포함 8~16자로 입력해주세요.",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
+                val m = p.matcher(join_password.text.toString())
+                if (!m.matches()) {
+                    password_layout.error = "영문, 숫자 조합 8~16자로 입력해주세요."
+                } else {
+                    password_layout.isErrorEnabled = false
                 }
             }
         })
 
-        join_nickname.setOnFocusChangeListener(object : View.OnFocusChangeListener {
-            override fun onFocusChange(view: View?, hasFocus: Boolean) {
-                if (hasFocus) {
-                    val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,20}")
-                    val m = p.matcher(join_nickname.text.toString())
+        join_nickname.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
 
-                    if (!m.matches()) {
-                        Toast.makeText(
-                            context!!.applicationContext,
-                            "한글, 영문, 숫자 포함 1~20자로 입력해주세요.",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                    } else {
-                        if (testNickname == "${join_nickname.text}") {
-                            Toast.makeText(
-                                context!!.applicationContext,
-                                "이미 존재하는 닉네임 입니다.",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        } else {
-                            Toast.makeText(
-                                context!!.applicationContext,
-                                "사용 가능한 닉네임 입니다.",
-                                Toast.LENGTH_SHORT
-                            )
-                                .show()
-                        }
-                    }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
+                val m = p.matcher(join_nickname.text.toString())
+                if (!m.matches()) {
+                    nickname_layout.error = "한글, 영문, 숫자 포함 1~10자로 입력해주세요."
+                } else {
+                    nickname_layout.isErrorEnabled = false
                 }
             }
         })
