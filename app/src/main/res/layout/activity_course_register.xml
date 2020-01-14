@@ -33,6 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="코스 등록"
+                    android:textColor="@color/colorBlack"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -141,6 +142,7 @@
 
                                 <Button
                                     android:id="@+id/btn_image_create"
+                                    style="@style/ButtonStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:background="@drawable/selected_btn_background_basic"
@@ -149,6 +151,7 @@
 
                                 <Button
                                     android:id="@+id/btn_image_clear"
+                                    style="@style/ButtonStyle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="10dp"
@@ -189,6 +192,7 @@
 
                         <Button
                             android:id="@+id/btn_place1"
+                            style="@style/ButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
                             android:background="@color/transparent"

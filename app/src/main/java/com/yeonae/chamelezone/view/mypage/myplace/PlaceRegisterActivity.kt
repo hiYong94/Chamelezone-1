@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_place_register.*
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
-    private val retrofitConnection = RetrofitConnection
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
         imageContainer.removeAllViews()
@@ -55,7 +54,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
         presenter = PlacePresenter(
             PlaceRepositoryImpl.getInstance(
-                PlaceRemoteDataSourceImpl.getInstance(retrofitConnection)
+                PlaceRemoteDataSourceImpl.getInstance(RetrofitConnection.placeService)
             ), this
         )
 
@@ -86,13 +85,13 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         close_spinner3.adapter = closeAdapter
 
         btn_add1.setOnClickListener {
-            layout_open_time2.visibility = View.VISIBLE
+            swipe_layout2.visibility = View.VISIBLE
             btn_add1.visibility = View.GONE
             btn_add2.visibility = View.VISIBLE
         }
 
         btn_add2.setOnClickListener {
-            layout_open_time3.visibility = View.VISIBLE
+            swipe_layout3.visibility = View.VISIBLE
             btn_add2.visibility = View.GONE
         }
 
@@ -120,6 +119,16 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 "${edt_place_phone.text}",
                 "${edt_place_text.text}"
             )
+        }
+
+        delete_layout1.setOnClickListener {
+            swipe_layout1.visibility = View.GONE
+            btn_add1.visibility = View.VISIBLE
+        }
+
+        delete_layout2.setOnClickListener {
+            swipe_layout2.visibility = View.GONE
+            btn_add2.visibility = View.VISIBLE
         }
 
     }

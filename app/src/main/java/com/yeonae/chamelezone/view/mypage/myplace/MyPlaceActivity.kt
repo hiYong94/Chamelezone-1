@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myplace.adapter.MyPlaceRvAdapter
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_my_place.*
@@ -34,11 +35,12 @@ class MyPlaceActivity : AppCompatActivity() {
         })
 
         myPlaceRvAdapter.getLocation(object  :  MyPlaceRvAdapter.GetLocationListener{
-            override fun getLocation(x: Float, y: Int, position: Int) {
-                popup_menu.visibility = View.VISIBLE
-                popup_menu.x = x - popup_menu.measuredWidth
-                popup_menu.y = y.toFloat() + 50
-                popup_menu.bringToFront()
+            override fun getLocation() {
+//                popup_menu.visibility = View.VISIBLE
+//                popup_menu.x = x - popup_menu.measuredWidth
+//                popup_menu.y = y.toFloat() + 50
+//                popup_menu.bringToFront()
+                bottomSheet()
             }
         })
 
@@ -58,6 +60,11 @@ class MyPlaceActivity : AppCompatActivity() {
             val intent = Intent(this, PlaceRegisterActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun bottomSheet(){
+        val bottomSheetDialogFragment = MoreButtonFragment()
+        bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
     }
 
     private fun setAdapter() {
