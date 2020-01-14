@@ -4,7 +4,7 @@ interface JoinContract {
 
     interface View {
         var presenter: Presenter
-        fun join(message: String)
+        fun showMessage(message: String)
     }
 
     interface Presenter {
@@ -14,6 +14,11 @@ interface JoinContract {
             name: String,
             nickName: String,
             phone: String
+        )
+
+        fun userLogin(
+            email: String,
+            password: String
         )
     }
 }

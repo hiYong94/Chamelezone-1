@@ -10,6 +10,7 @@ interface MemberRepository {
         callBack: MemberCallBack
     )
 
+    fun login(email: String, password: String, callBack: MemberCallBack)
     fun getMember()
     fun deleteMember()
     fun updateMember()

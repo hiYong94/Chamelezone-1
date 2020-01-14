@@ -1,19 +1,35 @@
 package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.google.gson.JsonObject
 import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
+import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceImpl
+import com.yeonae.chamelezone.network.api.RetrofitConnection
+import com.yeonae.chamelezone.network.model.MemberResponse
+import com.yeonae.chamelezone.network.room.database.UserDatabase
+import com.yeonae.chamelezone.network.room.entity.User
+import com.yeonae.chamelezone.view.login.presenter.JoinContract
+import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_login.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
+class LoginFragment : Fragment() , JoinContract.View {
+    override fun showMessage(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_LONG)
+            .show()
+    }
 
-class LoginFragment : Fragment() {
-    private val testEmail = "heimish_08@naver.com"
-    private val testPassword = "1234"
+    override lateinit var presenter: JoinContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +41,11 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        presenter = JoinPresenter(
+            MemberRepositoryImpl.getInstance(
+                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService)
+            ), this
+        )
 
         btn_back.setOnClickListener {
             requireActivity().finish()
@@ -45,20 +66,19 @@ class LoginFragment : Fragment() {
     }
 
     private fun loginCheck(email: String, password: String) {
-        if (email.isEmpty()) {
-            Toast.makeText(requireContext(), "아이디를 입력해주세요!", Toast.LENGTH_SHORT).show()
-        } else if (password.isEmpty()) {
-            Toast.makeText(context!!.applicationContext, "비밀번호를 입력해주세요!", Toast.LENGTH_SHORT).show()
-        } else {
-            if (email == testEmail) {
-                if (password == testPassword) {
-                    Toast.makeText(context!!.applicationContext, "로그인 성공", Toast.LENGTH_LONG).show()
-
-                } else {
-                    showDialog()
-                }
-            } else {
-                showDialog()
+        when {
+            email.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "아이디를 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
+            password.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "비밀번호를 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
+            else -> {
+                presenter.userLogin(email, password)
             }
         }
     }
