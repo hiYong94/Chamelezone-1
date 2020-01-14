@@ -40,5 +40,6 @@
         <activity android:name=".view.login.UserModifyActivity"/>
         <activity android:name=".view.mypage.IntroActivity"/>
         <activity android:name=".view.mypage.PersonaInfoActivity"/>
+        <activity android:name=".view.review.MyReviewDetailActivity"/>
     </application>
 </manifest>
