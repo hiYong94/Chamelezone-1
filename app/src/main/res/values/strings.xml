@@ -1,24 +1,18 @@
 <resources>
     <string name="app_name">Chamelezone</string>
-
     <string name="file_provider" translatable="false">com.kroegerama.imgpicker.demo.fileprovider</string>
-
     <string name="pick_single">Please select your image</string>
     <plurals name="pick_multi">
         <item quantity="one">1개의 이미지가 선택되었습니다.</item>
         <item quantity="other">%1$d개의 이미지가 선택되었습니다.</item>
     </plurals>
-
     <plurals name="pick_multi_more">
         <item quantity="one">1개의 이미지를 더 선택해주세요.</item>
         <item quantity="other">%1$d개의 이미지를 더 선택해주세요.</item>
     </plurals>
-
     <string name="pick_multi_limit">최대 %1$d개의 이미지를 선택해주세요.</string>
-
     <string name="rationale_title">권한이 필요합니다.</string>
     <string name="rationale_message"><b>위치정보</b>에 접근하기 위해 권한이 필요합니다.</string>
-
     <string-array name = "keyword">
         <item>"카페"</item>
         <item>"전시회"</item>
@@ -31,7 +25,6 @@
         <item>"식물원"</item>
         <item>"레스토랑"</item>
     </string-array>
-
     <string name="create">등록</string>
     <string name="selected">선택</string>
     <string name="search">검색</string>
@@ -39,17 +32,14 @@
     <string name="join">가입</string>
     <string name="image">사진</string>
     <string name="completion">완료</string>
-
     <string name="like">좋아요</string>
     <string name="map">지도</string>
     <string name="mypage">마이페이지</string>
-
     <string name="review_create">리뷰 등록</string>
     <string name="review_modify">리뷰 수정</string>
     <string name="review_create_message">리뷰를 남겨주세요</string>
     <string name="image_register">사진 등록</string>
     <string name="reset">리셋</string>
-    
     <string name="course_share">코스 공유</string>
     <string name="course_title">코스 제목</string>
     <string name="course_first">첫번째 코스</string>
@@ -64,14 +54,11 @@
     <string name="place_selected_second">두번째 장소 선택</string>
     <string name="place_selected_third">세번째 장소 선택</string>
     <string name="course_modify">코스 수정</string>
-
     <string name="my_course">나의 코스</string>
     <string name="my_place">나의 장소</string>
     <string name="my_review">나의 리뷰</string>
-
     <string name="information">정보</string>
     <string name="review">리뷰</string>
-
     <string name="place_create">장소 등록</string>
     <string name="place_modify">장소 수정</string>
     <string name="place_name">장소명</string>
@@ -86,7 +73,6 @@
     <string name="detail_address_hint">상세주소를 입력하세요</string>
     <string name="place_phone_number_hint">- 없이 번호만 입력하세요</string>
     <string name="place_detail_description_hint">장소에 대한 설명을 입력하세요</string>
-
     <string name="member_join">회원가입</string>
     <string name="member_info_modify">회원정보 수정</string>
     <string name="email">이메일</string>
@@ -98,13 +84,10 @@
     <string name="password_search">비밀번호 찾기</string>
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
-
     <string name="chamelezone_info">카멜레존 소개</string>
     <string name="privacy">개인정보 수집 및 이용</string>
-
-    <string name="search_word">검색어를 입력하세요.</string>
+    <string name="search_word">장소 검색</string>
     <string name="place_name_test">구슬모아당구장</string>
-
     <string name="intro">카멜레존(Chamelezone)은 카멜레온과 공간을 뜻하는 존(zone)을 합친 신조어로 원래의 용도와는 달리 상황에 맞게 변화하는 공간을 뜻합니다.
         저희 어플은 이러한 공간들을 소개하고 사용자들이 보다 쉽게 찾고, 찾아갈 수 있도록 서비스를 제공하고자 합니다.</string>
 </resources>
