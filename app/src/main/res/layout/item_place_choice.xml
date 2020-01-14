@@ -60,27 +60,17 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1.3"
-                            android:gravity="center"
-                            android:weightSum="5">
-
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.7"/>
+                            android:gravity="center">
 
                             <CheckBox
                                 android:id="@+id/btn_check"
-                                android:layout_width="0dp"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="4"
-                                android:button="@drawable/btn_check"
+                                android:button="@null"
+                                android:drawableStart="@drawable/btn_check"
                                 android:padding="10dp"
                                 android:layout_gravity="center"/>
 
-                            <View
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.3"/>
                         </LinearLayout>
                     </LinearLayout>
 
