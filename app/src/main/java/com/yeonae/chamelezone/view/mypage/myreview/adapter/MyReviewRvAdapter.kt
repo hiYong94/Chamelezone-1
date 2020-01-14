@@ -10,7 +10,8 @@ import kotlinx.android.synthetic.main.item_my_review.view.*
 
 class MyReviewRvAdapter(private var items: ArrayList<Review>) :
     RecyclerView.Adapter<MyReviewRvAdapter.MyReviewViewHolder>() {
-    //private var items = mutableListOf<Review>()
+
+//    private var items = mutableListOf<Review>()
     private lateinit var onClickListener: OnClickListener
     private lateinit var locationListener: GetLocationListener
 

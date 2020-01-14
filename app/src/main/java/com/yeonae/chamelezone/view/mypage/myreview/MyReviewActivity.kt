@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myreview
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -7,13 +8,21 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
+import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
 import kotlinx.android.synthetic.main.activity_my_review.*
 
 class MyReviewActivity : AppCompatActivity() {
+    private val sub = 1001
+
     private val myReviewList = arrayListOf(
-        Review("구슬모아당구장", "여기 진짜 존예ㅠㅠ 다음에 또 방문할 예정이에요."),
-        Review("커피빈 강남오토스퀘어점", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ" +
-                "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+        Review("", "", "", "여기 진짜 존예ㅠㅠ 다음에 또 방문할 예정이에요.", "구슬모아당구장"),
+        Review(
+            "",
+            "",
+            "",
+            "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ ",
+            "커피빈 강남오토스퀘어점"
+        )
     )
     private val myReviewRvAdapter = MyReviewRvAdapter(myReviewList)
 
@@ -24,11 +33,12 @@ class MyReviewActivity : AppCompatActivity() {
 
         myReviewRvAdapter.setOnClickListener(object : MyReviewRvAdapter.OnClickListener {
             override fun onClick(review: Review) {
-
+                val intent = Intent(this@MyReviewActivity, MyReviewDetailActivity::class.java)
+                this@MyReviewActivity.startActivity(intent)
             }
         })
 
-        myReviewRvAdapter.getLocation(object  :  MyReviewRvAdapter.GetLocationListener{
+        myReviewRvAdapter.getLocation(object : MyReviewRvAdapter.GetLocationListener {
             override fun getLocation(x: Float, y: Int, position: Int) {
                 popup_menu.visibility = View.VISIBLE
                 popup_menu.x = x - popup_menu.measuredWidth
@@ -40,7 +50,9 @@ class MyReviewActivity : AppCompatActivity() {
         btn_back.setOnClickListener {
             finish()
         }
+
     }
+
     private fun setAdapter() {
         recycler_my_review.layoutManager = LinearLayoutManager(this)
         recycler_my_review.adapter = myReviewRvAdapter
