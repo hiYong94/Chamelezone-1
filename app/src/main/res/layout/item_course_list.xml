@@ -16,6 +16,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/course_img"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:background="@color/colorBlack" />
