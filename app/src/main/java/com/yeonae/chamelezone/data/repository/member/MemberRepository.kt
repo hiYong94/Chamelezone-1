@@ -1,5 +1,7 @@
 package com.yeonae.chamelezone.data.repository.member
 
+import com.yeonae.chamelezone.network.model.MemberResponse
+
 interface MemberRepository {
     fun createMember(
         email: String,
@@ -7,10 +9,10 @@ interface MemberRepository {
         name: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack
+        callBack: MemberCallBack<String>
     )
 
-    fun login(email: String, password: String, callBack: MemberCallBack)
+    fun login(email: String, password: String, callBack: MemberCallBack<MemberResponse>)
     fun getMember()
     fun deleteMember()
     fun updateMember()
