@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.view.mypage.mycourse.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,26 +7,27 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
 import kotlinx.android.synthetic.main.item_my_course.view.*
 
-class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Adapter<MyCourseRvAdapter.MyCourseViewHolder>() {
+class MyCourseRvAdapter(private var items: ArrayList<Course>) :
+    RecyclerView.Adapter<MyCourseRvAdapter.MyCourseViewHolder>() {
 
     //private var items = mutableListOf<Like>()
     private lateinit var onClickListener: OnClickListener
-    private lateinit var locationListener: GetLocationListener
+    private lateinit var moreButtonListener: MoreButtonListener
 
     interface OnClickListener {
         fun onClick(course: Course)
     }
 
-    interface GetLocationListener {
-        fun getLocation(x: Float, y: Int, position: Int)
+    interface MoreButtonListener {
+        fun bottomSheetDialog()
     }
 
     fun setOnClickListener(listener: OnClickListener) {
         onClickListener = listener
     }
 
-    fun getLocation(listener: GetLocationListener){
-        locationListener = listener
+    fun setMoreButtonListener(listener: MoreButtonListener) {
+        moreButtonListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyCourseViewHolder =
@@ -37,8 +37,8 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
         items.size
 
     override fun onBindViewHolder(holder: MyCourseViewHolder, position: Int) {
-        if(::locationListener.isInitialized) {
-            holder.bind(items[position], onClickListener, locationListener)
+        if (::moreButtonListener.isInitialized) {
+            holder.bind(items[position], onClickListener, moreButtonListener)
         }
     }
 
@@ -51,7 +51,11 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
     class MyCourseViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_course, parent, false)
     ) {
-        fun bind(item: Course, clickListener: OnClickListener?, locationListener: GetLocationListener) {
+        fun bind(
+            item: Course,
+            clickListener: OnClickListener?,
+            moreButtonListener: MoreButtonListener
+        ) {
             itemView.run {
                 setOnClickListener {
                     clickListener?.onClick(item)
@@ -60,13 +64,7 @@ class MyCourseRvAdapter(private var items : ArrayList<Course>) : RecyclerView.Ad
                 tv_course_content.text = item.courseText
 
                 btn_more.setOnClickListener {
-                    val originalPos = IntArray(2)
-                    itemView.getLocationInWindow(originalPos)
-                    val x = originalPos[0]
-                    val y = originalPos[1]
-                    val realX = layout_01.width + btn_more.x + btn_more.width
-                    Log.d("tag", "$x & $y & $realX")
-                    locationListener.getLocation(realX, y, layoutPosition)
+                    moreButtonListener.bottomSheetDialog()
                 }
             }
         }

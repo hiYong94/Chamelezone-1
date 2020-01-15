@@ -2,12 +2,12 @@ package com.yeonae.chamelezone.view.mypage.mycourse
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
 import com.yeonae.chamelezone.view.course.CourseDetailActivity
+import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.mycourse.adapter.MyCourseRvAdapter
 import kotlinx.android.synthetic.main.activity_my_course.*
 
@@ -42,18 +42,20 @@ class MyCourseActivity : AppCompatActivity() {
             }
         })
 
-        myCourseRvAdapter.getLocation(object  :  MyCourseRvAdapter.GetLocationListener{
-            override fun getLocation(x: Float, y: Int, position: Int) {
-                popup_menu.visibility = View.VISIBLE
-                popup_menu.x = x - popup_menu.measuredWidth
-                popup_menu.y = y.toFloat() + 50
-                popup_menu.bringToFront()
+        myCourseRvAdapter.setMoreButtonListener(object : MyCourseRvAdapter.MoreButtonListener {
+            override fun bottomSheetDialog() {
+                bottomSheet()
             }
         })
 
         btn_back.setOnClickListener {
             finish()
         }
+    }
+
+    private fun bottomSheet() {
+        val bottomSheetDialogFragment = MoreButtonFragment()
+        bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
     }
 
     private fun setAdapter() {
