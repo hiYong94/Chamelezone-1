@@ -13,6 +13,7 @@
     <string name="pick_multi_limit">최대 %1$d개의 이미지를 선택해주세요.</string>
     <string name="rationale_title">권한이 필요합니다.</string>
     <string name="rationale_message"><b>위치정보</b>에 접근하기 위해 권한이 필요합니다.</string>
+    <string name="album_rationale_message"><b>앨범</b>에 접근하기 위해 권한이 필요합니다.</string>
     <string-array name = "keyword">
         <item>"카페"</item>
         <item>"전시회"</item>
@@ -88,7 +89,6 @@
     <string name="chamelezone_info">카멜레존 소개</string>
     <string name="privacy">개인정보 수집 및 이용</string>
 
-    <string name="search_word">검색어를 입력하세요.</string>
     <string name="search_word">장소 검색</string>
     <string name="place_name_test">구슬모아당구장</string>
 
