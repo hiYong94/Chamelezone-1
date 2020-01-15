@@ -1,13 +1,10 @@
 package com.yeonae.chamelezone.view.mypage.myplace.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
-import kotlinx.android.synthetic.main.activity_my_place.view.*
 import kotlinx.android.synthetic.main.item_my_place.view.*
 
 class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
@@ -15,22 +12,22 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
 
     //private var items = mutableListOf<Place>()
     private lateinit var onClickListener: OnClickListener
-    private lateinit var locationListener: GetLocationListener
+    private lateinit var moreButtonListener: MoreButtonListener
 
     interface OnClickListener {
         fun onClick(place: Place)
     }
 
-    interface GetLocationListener {
-        fun getLocation()
+    interface MoreButtonListener {
+        fun bottomSheetDialog()
     }
 
     fun setOnClickListener(listener: OnClickListener) {
         onClickListener = listener
     }
 
-    fun getLocation(listener: GetLocationListener){
-        locationListener = listener
+    fun setMoreButtonListener(listener: MoreButtonListener) {
+        moreButtonListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyPlaceViewHolder =
@@ -40,11 +37,10 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
         items.size
 
     override fun onBindViewHolder(holder: MyPlaceViewHolder, position: Int) {
-        if(::locationListener.isInitialized) {
-            holder.bind(items[position], onClickListener, locationListener)
+        if (::moreButtonListener.isInitialized) {
+            holder.bind(items[position], onClickListener, moreButtonListener)
         }
     }
-
     fun addData(addDataList: List<Place>) {
         items.clear()
         items.addAll(addDataList)
@@ -54,7 +50,11 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
     class MyPlaceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_place, parent, false)
     ) {
-        fun bind(item: Place, clickListener: OnClickListener?, locationListener: GetLocationListener) {
+        fun bind(
+            item: Place,
+            clickListener: OnClickListener?,
+            moreButtonListener: MoreButtonListener
+        ) {
             itemView.run {
                 setOnClickListener {
                     clickListener?.onClick(item)
@@ -64,13 +64,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
                 tv_place_address.text = item.placeAddress
 
                 btn_more.setOnClickListener {
-//                    val originalPos = IntArray(2)
-//                    itemView.getLocationInWindow(originalPos)
-//                    val x = originalPos[0]
-//                    val y = originalPos[1]
-//                    val realX = layout_01.width + btn_more.x + btn_more.width
-//                    Log.d("tag", "$x & $y & $realX")
-                    locationListener.getLocation()
+                    moreButtonListener.bottomSheetDialog()
                 }
             }
         }
