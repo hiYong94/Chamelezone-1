@@ -15,8 +15,8 @@ interface MemberApi {
         @Body user: JsonObject
     ): Call<ResponseBody>
 
-    @GET("/user/login")
+    @POST("/user/login")
     fun login(
         @Body user: JsonObject
-    ): Call<MemberResponse>
+    ): Call<List<MemberResponse>>
 }
