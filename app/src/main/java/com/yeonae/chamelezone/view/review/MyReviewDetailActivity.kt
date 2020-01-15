@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_myreview_detail.*
 
 class MyReviewDetailActivity : AppCompatActivity() {
 
-    val images = intArrayOf(
+    private val images = intArrayOf(
         R.drawable.img1,
         R.drawable.img2,
         R.drawable.img3,
