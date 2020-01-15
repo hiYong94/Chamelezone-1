@@ -2,17 +2,16 @@ package com.yeonae.chamelezone.view.mypage.myreview
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
+import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
 import kotlinx.android.synthetic.main.activity_my_review.*
 
 class MyReviewActivity : AppCompatActivity() {
-    private val sub = 1001
 
     private val myReviewList = arrayListOf(
         Review("", "", "", "여기 진짜 존예ㅠㅠ 다음에 또 방문할 예정이에요.", "구슬모아당구장"),
@@ -38,12 +37,9 @@ class MyReviewActivity : AppCompatActivity() {
             }
         })
 
-        myReviewRvAdapter.getLocation(object : MyReviewRvAdapter.GetLocationListener {
-            override fun getLocation(x: Float, y: Int, position: Int) {
-                popup_menu.visibility = View.VISIBLE
-                popup_menu.x = x - popup_menu.measuredWidth
-                popup_menu.y = y.toFloat() + 50
-                popup_menu.bringToFront()
+        myReviewRvAdapter.setMoreButtonListener(object : MyReviewRvAdapter.MoreButtonListener {
+            override fun bottomSheetDialog() {
+                bottomSheet()
             }
         })
 
@@ -51,6 +47,11 @@ class MyReviewActivity : AppCompatActivity() {
             finish()
         }
 
+    }
+
+    private fun bottomSheet() {
+        val bottomSheetDialogFragment = MoreButtonFragment()
+        bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
     }
 
     private fun setAdapter() {
