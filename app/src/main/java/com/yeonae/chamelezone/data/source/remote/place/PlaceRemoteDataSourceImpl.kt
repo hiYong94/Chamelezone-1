@@ -58,7 +58,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                callBack.onSuccess(response.body()!!)
+                response.body()?.let { callBack.onSuccess(it) }
+                Log.d("search", response.body().toString())
             }
 
             override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
