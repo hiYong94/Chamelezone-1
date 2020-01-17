@@ -160,10 +160,10 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             DialogInterface.OnClickListener { dialog, id ->
                 var str = ""
                 for (i in selectedItems.indices) {
-                    if (i == 0) {
-                        str = str + "" + selectedItems[i]
+                    str += if (i == 0) {
+                        "" + selectedItems[i]
                     } else {
-                        str = str + " " + selectedItems[i]
+                        " " + selectedItems[i]
                     }
                 }
                 tv_place_keyword.text = str
