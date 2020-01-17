@@ -94,4 +94,8 @@
 
     <string name="intro">카멜레존(Chamelezone)은 카멜레온과 공간을 뜻하는 존(zone)을 합친 신조어로 원래의 용도와는 달리 상황에 맞게 변화하는 공간을 뜻합니다.
         저희 어플은 이러한 공간들을 소개하고 사용자들이 보다 쉽게 찾고, 찾아갈 수 있도록 서비스를 제공하고자 합니다.</string>
+
+    <string name="permission_msg">만약 권한 허가를 거부한다면, 이 서비스를 사용할 수 없습니다. [설정] > [사용 권한]에서 사용 권한을 설정하십시오.</string>
+    <string name="Permission_denied">권한 거부</string>
+    <string name="setting">설정</string>
 </resources>

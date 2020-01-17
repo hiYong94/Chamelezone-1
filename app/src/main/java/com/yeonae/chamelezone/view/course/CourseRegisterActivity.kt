@@ -213,16 +213,14 @@ class CourseRegisterActivity : AppCompatActivity(),
         btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
     }
 
-    private fun checkPermission(){
+    private fun checkPermission() {
         TedPermission.with(this)
             .setPermissionListener(permissionListener)
             .setRationaleTitle(R.string.rationale_title)
             .setRationaleMessage(R.string.album_rationale_message)
-            .setDeniedTitle("권한 거부")
-            .setDeniedMessage(
-                "만약 권한 허가를 거부한다면, 이 서비스를 사용할 수 없습니다.\n\n[설정] > [사용 권한]에서 사용 권한을 설정하십시오."
-            )
-            .setGotoSettingButtonText("설정")
+            .setDeniedTitle(R.string.Permission_denied)
+            .setDeniedMessage(R.string.permission_msg)
+            .setGotoSettingButtonText(R.string.setting)
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
     }
