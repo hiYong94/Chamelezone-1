@@ -8,7 +8,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
 import kotlinx.android.synthetic.main.item_course_list.view.*
 
-class CourseTabRvAdapter(var courseList: ArrayList<Course>) :
+class CourseTabRvAdapter(private val courseList: ArrayList<Course>) :
     RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
 
     private var onClickListener: OnClickListener? = null
