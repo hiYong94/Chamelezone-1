@@ -46,12 +46,11 @@ class JoinFragment : Fragment(), JoinContract.View {
                 MemberLocalDataSourceImpl.getInstance()
             ), this
         )
+        checkType()
 
         btn_back.setOnClickListener {
             (activity as LoginActivity).back(this)
         }
-
-        join()
 
         btn_join.setOnClickListener {
             presenter.userRegister(
@@ -64,7 +63,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         }
     }
 
-    private fun join() {
+    private fun checkType() {
         join_email.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
