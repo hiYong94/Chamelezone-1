@@ -44,7 +44,7 @@ class MyCourseActivity : AppCompatActivity() {
 
         myCourseRvAdapter.setMoreButtonListener(object : MyCourseRvAdapter.MoreButtonListener {
             override fun bottomSheetDialog() {
-                bottomSheet()
+                showBottomSheet()
             }
         })
 
@@ -53,7 +53,7 @@ class MyCourseActivity : AppCompatActivity() {
         }
     }
 
-    private fun bottomSheet() {
+    private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
     }

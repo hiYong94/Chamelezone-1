@@ -39,7 +39,7 @@ class MyReviewActivity : AppCompatActivity() {
 
         myReviewRvAdapter.setMoreButtonListener(object : MyReviewRvAdapter.MoreButtonListener {
             override fun bottomSheetDialog() {
-                bottomSheet()
+                showBottomSheet()
             }
         })
 
@@ -49,7 +49,7 @@ class MyReviewActivity : AppCompatActivity() {
 
     }
 
-    private fun bottomSheet() {
+    private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
     }

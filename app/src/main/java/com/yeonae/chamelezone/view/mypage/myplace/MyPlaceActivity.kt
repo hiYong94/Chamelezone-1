@@ -35,7 +35,7 @@ class MyPlaceActivity : AppCompatActivity() {
 
         myPlaceRvAdapter.setMoreButtonListener(object : MyPlaceRvAdapter.MoreButtonListener {
             override fun bottomSheetDialog() {
-                bottomSheet()
+                showBottomSheet()
             }
         })
 
@@ -57,7 +57,7 @@ class MyPlaceActivity : AppCompatActivity() {
         }
     }
 
-    private fun bottomSheet() {
+    private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
     }
