@@ -41,6 +41,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
             holder.bind(items[position], onClickListener, moreButtonListener)
         }
     }
+
     fun addData(addDataList: List<Place>) {
         items.clear()
         items.addAll(addDataList)
@@ -52,7 +53,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
     ) {
         fun bind(
             item: Place,
-            clickListener: OnClickListener?,
+            clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {
             itemView.run {

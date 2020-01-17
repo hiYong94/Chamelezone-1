@@ -53,7 +53,7 @@ class MyReviewRvAdapter(private var items: ArrayList<Review>) :
     ) {
         fun bind(
             item: Review,
-            clickListener: OnClickListener?,
+            clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {
             itemView.run {

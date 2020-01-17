@@ -53,7 +53,7 @@ class MyCourseRvAdapter(private var items: ArrayList<Course>) :
     ) {
         fun bind(
             item: Course,
-            clickListener: OnClickListener?,
+            clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {
             itemView.run {
