@@ -95,21 +95,23 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_register.setOnClickListener {
-            val latitude = findLatLng(applicationContext, "${tv_place_address.text}").latitude
-            val longitude = findLatLng(applicationContext, "${tv_place_address.text}").longitude
+            val latitude = findLatLng(applicationContext, "${tv_place_address.text}")?.latitude
+            val longitude = findLatLng(applicationContext, "${tv_place_address.text}")?.longitude
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
             val keyword = "${tv_place_keyword.text}".replace(" ", "|")
             Log.d("Keyword", keyword)
-            presenter.placeRegister(
-                keyword,
-                "${edt_place_name.text}",
-                realAddress,
-                "평일 11:00 ~ 20:00",
-                "${edt_place_phone.text}",
-                "${edt_place_text.text}",
-                latitude,
-                longitude
-            )
+            if (latitude != null && longitude != null) {
+                presenter.placeRegister(
+                    keyword,
+                    "${edt_place_name.text}",
+                    realAddress,
+                    "평일 11:00 ~ 20:00",
+                    "${edt_place_phone.text}",
+                    "${edt_place_text.text}",
+                    latitude,
+                    longitude
+                )
+            }
         }
         openingHours()
     }
@@ -123,10 +125,10 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
     }
 
-    private fun findLatLng(context: Context, address: String): LatLng {
+    private fun findLatLng(context: Context, address: String): LatLng? {
         val coder = Geocoder(context)
         var addresses: List<Address>? = null
-        lateinit var latLng: LatLng
+        var latLng: LatLng? = null
 
         try {
             addresses = coder.getFromLocationName(address, 5)
@@ -158,15 +160,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             })
         builder.setPositiveButton("확인",
             DialogInterface.OnClickListener { dialog, id ->
-                var str = ""
-                for (i in selectedItems.indices) {
-                    str += if (i == 0) {
-                        "" + selectedItems[i]
-                    } else {
-                        " " + selectedItems[i]
-                    }
-                }
-                tv_place_keyword.text = str
+                tv_place_keyword.text = selectedItems.joinToString(" ")
             })
         builder.setNegativeButton("취소",
             DialogInterface.OnClickListener { dialog, id ->
