@@ -47,7 +47,7 @@ class PlaceReviewTabFragment : Fragment() {
 
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
                 val intent = Intent(context, MyReviewDetailActivity::class.java)
-                context?.startActivity(intent)
+                startActivity(intent)
 
                 return false
             }

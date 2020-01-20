@@ -5,8 +5,8 @@ import com.google.gson.annotations.SerializedName
 data class PlaceResponse(
     @SerializedName("placeNumber")
     val placeNumber: Int,
-    @SerializedName("keywordNumber")
-    val keywordNumber: Int,
+    @SerializedName("keywordName")
+    val keywordName: String,
     @SerializedName("name")
     val name: String,
     @SerializedName("address")
@@ -17,6 +17,10 @@ data class PlaceResponse(
     val phoneNumber: String,
     @SerializedName("content")
     val content: String,
+    @SerializedName("latitude")
+    val latitude: Double,
+    @SerializedName("longitude")
+    val longitude: Double,
     @SerializedName("fileName")
     val fileName: String,
     @SerializedName("fileExtension")

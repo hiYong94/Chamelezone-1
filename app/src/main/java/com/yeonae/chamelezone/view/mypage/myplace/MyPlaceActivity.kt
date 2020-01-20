@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
@@ -34,13 +33,9 @@ class MyPlaceActivity : AppCompatActivity() {
             }
         })
 
-        myPlaceRvAdapter.getLocation(object  :  MyPlaceRvAdapter.GetLocationListener{
-            override fun getLocation() {
-//                popup_menu.visibility = View.VISIBLE
-//                popup_menu.x = x - popup_menu.measuredWidth
-//                popup_menu.y = y.toFloat() + 50
-//                popup_menu.bringToFront()
-                bottomSheet()
+        myPlaceRvAdapter.setMoreButtonListener(object : MyPlaceRvAdapter.MoreButtonListener {
+            override fun bottomSheetDialog() {
+                showBottomSheet()
             }
         })
 
@@ -62,7 +57,7 @@ class MyPlaceActivity : AppCompatActivity() {
         }
     }
 
-    private fun bottomSheet(){
+    private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
     }

@@ -8,6 +8,14 @@ interface PlaceContract {
     }
 
     interface Presenter {
-        fun placeRegister(keywordNumber:Int, name:String, address:String, openingTime:String, phoneNumber:String, content:String)
+        fun placeRegister(
+            keywordName: String,
+            name: String,
+            address: String,
+            openingTime: String,
+            phoneNumber: String,
+            content: String,
+            latitude: Double,
+            longitude: Double)
     }
 }
