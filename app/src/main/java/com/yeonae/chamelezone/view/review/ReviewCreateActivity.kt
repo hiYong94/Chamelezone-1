@@ -17,15 +17,17 @@ import kotlinx.android.synthetic.main.activity_review_create.*
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
-        imageContainer.removeAllViews()
+
         uris.forEach { uri ->
             val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
             ) as ImageView
-            imageContainer.addView(iv)
-            Glide.with(this).load(uri).into(iv)
+            if(imageContainer.childCount != 4){
+                imageContainer.addView(iv)
+                Glide.with(this).load(uri).into(iv)
+            }
         }
     }
 
