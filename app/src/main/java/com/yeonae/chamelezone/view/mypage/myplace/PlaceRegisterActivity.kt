@@ -1,11 +1,15 @@
 package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
@@ -13,6 +17,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
@@ -22,7 +27,7 @@ import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
-
+import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
@@ -72,29 +77,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         val closeAdapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, closeArray)
 
-        day_spinner1.adapter = dayAdapter
-        open_spinner1.adapter = openAdapter
-        close_spinner1.adapter = closeAdapter
-
-        day_spinner2.adapter = dayAdapter
-        open_spinner2.adapter = openAdapter
-        close_spinner2.adapter = closeAdapter
-
-        day_spinner3.adapter = dayAdapter
-        open_spinner3.adapter = openAdapter
-        close_spinner3.adapter = closeAdapter
-
-        btn_add1.setOnClickListener {
-            swipe_layout2.visibility = View.VISIBLE
-            btn_add1.visibility = View.GONE
-            btn_add2.visibility = View.VISIBLE
-        }
-
-        btn_add2.setOnClickListener {
-            swipe_layout3.visibility = View.VISIBLE
-            btn_add2.visibility = View.GONE
-        }
-
+//        day_spinner.adapter = dayAdapter
+//        open_spinner.adapter = openAdapter
+//        close_spinner.adapter = closeAdapter
 
         btn_back.setOnClickListener {
             finish()
@@ -110,27 +95,25 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_register.setOnClickListener {
+            val latitude = findLatLng(applicationContext, "${tv_place_address.text}")?.latitude
+            val longitude = findLatLng(applicationContext, "${tv_place_address.text}")?.longitude
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
-            presenter.placeRegister(
-                1,
-                "${edt_place_name.text}",
-                realAddress,
-                "평일 11:00 ~ 20:00",
-                "${edt_place_phone.text}",
-                "${edt_place_text.text}"
-            )
+            val keyword = "${tv_place_keyword.text}".replace(" ", "|")
+            Log.d("Keyword", keyword)
+            if (latitude != null && longitude != null) {
+                presenter.placeRegister(
+                    keyword,
+                    "${edt_place_name.text}",
+                    realAddress,
+                    "평일 11:00 ~ 20:00",
+                    "${edt_place_phone.text}",
+                    "${edt_place_text.text}",
+                    latitude,
+                    longitude
+                )
+            }
         }
-
-        delete_layout1.setOnClickListener {
-            swipe_layout1.visibility = View.GONE
-            btn_add1.visibility = View.VISIBLE
-        }
-
-        delete_layout2.setOnClickListener {
-            swipe_layout2.visibility = View.GONE
-            btn_add2.visibility = View.VISIBLE
-        }
-
+        openingHours()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -141,6 +124,25 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             }
         }
     }
+
+    private fun findLatLng(context: Context, address: String): LatLng? {
+        val coder = Geocoder(context)
+        var addresses: List<Address>? = null
+        var latLng: LatLng? = null
+
+        try {
+            addresses = coder.getFromLocationName(address, 5)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        if (addresses != null) {
+            for (i in addresses.indices) {
+                latLng = LatLng(addresses[i].latitude, addresses[i].longitude)
+            }
+        }
+        return latLng
+    }
+
 
     private fun categoryDialog() {
         val builder = AlertDialog.Builder(this)
@@ -158,11 +160,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             })
         builder.setPositiveButton("확인",
             DialogInterface.OnClickListener { dialog, id ->
-                var str = ""
-                for (i in selectedItems.indices) {
-                    str = str + " " + selectedItems[i]
-                }
-                tv_place_keyword.text = str
+                tv_place_keyword.text = selectedItems.joinToString(" ")
             })
         builder.setNegativeButton("취소",
             DialogInterface.OnClickListener { dialog, id ->
@@ -190,6 +188,26 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private fun setupGUI() {
         btn_image_create.setOnClickListener { pickMulti() }
         btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+    }
+
+
+    private fun openingHours() {
+        addOpeningHourLayout()
+
+        btn_add.setOnClickListener {
+            addOpeningHourLayout()
+        }
+    }
+
+    private val deleteLayoutList = mutableListOf<View>()
+    private fun addOpeningHourLayout() {
+        val layout = LayoutInflater.from(applicationContext)
+            .inflate(R.layout.item_opening_hours, opening_hours, false)
+        layout.findViewById<View>(R.id.delete_layout)
+            .setOnClickListener {
+                opening_hours.removeView(layout)
+            }
+        opening_hours.addView(layout)
     }
 
     companion object {

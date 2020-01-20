@@ -1,8 +1,12 @@
 package com.yeonae.chamelezone.data.repository.member
 
+import android.os.Message
+import android.util.Log
+import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSource
 import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSource
+import com.yeonae.chamelezone.network.model.MemberResponse
 
-class MemberRepositoryImpl private constructor(private val remoteDataSource: MemberRemoteDataSource) :
+class MemberRepositoryImpl private constructor(private val remoteDataSource: MemberRemoteDataSource, private val localDataSource: MemberLocalDataSource) :
     MemberRepository {
     override fun createMember(
         email: String,
@@ -10,13 +14,22 @@ class MemberRepositoryImpl private constructor(private val remoteDataSource: Mem
         name: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack
+        callBack: MemberCallBack<String>
     ) {
         remoteDataSource.createMember(email, password, name, nickName, phone, callBack)
     }
 
-    override fun login(email: String, password: String, callBack: MemberCallBack) {
-        remoteDataSource.login(email, password, callBack)
+    override fun login(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
+        remoteDataSource.login(email, password, object : MemberCallBack<MemberResponse>{
+            override fun onSuccess(response: MemberResponse) {
+                callBack.onSuccess(response)
+                localDataSource.loggedLogin(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+        })
     }
 
     override fun getMember() {
@@ -32,7 +45,7 @@ class MemberRepositoryImpl private constructor(private val remoteDataSource: Mem
     }
 
     companion object {
-        fun getInstance(remoteDataSource: MemberRemoteDataSource): MemberRepository =
-            MemberRepositoryImpl(remoteDataSource)
+        fun getInstance(remoteDataSource: MemberRemoteDataSource, localDataSource: MemberLocalDataSource): MemberRepository =
+            MemberRepositoryImpl(remoteDataSource, localDataSource)
     }
 }

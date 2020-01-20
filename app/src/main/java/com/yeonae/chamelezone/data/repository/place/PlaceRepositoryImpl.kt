@@ -1,27 +1,35 @@
 package com.yeonae.chamelezone.data.repository.place
 
 import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSource
+import com.yeonae.chamelezone.network.model.PlaceResponse
 
 class PlaceRepositoryImpl private constructor(private val remoteDataSource: PlaceRemoteDataSource) :
     PlaceRepository {
     override fun registerPlace(
-        keywordNumber: Int,
+        keywordName: String,
         name: String,
         address: String,
         openingTime: String,
         phoneNumber: String,
         content: String,
-        callBack: PlaceCallBack
+        latitude: Double,
+        longitude: Double,
+        callBack: PlaceCallBack<String>
     ) {
         remoteDataSource.registerPlace(
-            keywordNumber,
+            keywordName,
             name,
             address,
             openingTime,
             phoneNumber,
             content,
+            latitude,
+            longitude,
             callBack
         )
+    }
+    override fun searchPlace(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>){
+
     }
 
     override fun getPlace() {

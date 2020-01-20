@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
+import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSourceImpl
 import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceImpl
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
@@ -42,10 +42,28 @@ class JoinFragment : Fragment(), JoinContract.View {
 
         presenter = JoinPresenter(
             MemberRepositoryImpl.getInstance(
-                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService)
+                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService),
+                MemberLocalDataSourceImpl.getInstance()
             ), this
         )
+        checkType()
 
+        btn_back.setOnClickListener {
+            (activity as LoginActivity).back(this)
+        }
+
+        btn_join.setOnClickListener {
+            presenter.userRegister(
+                "${join_email.text}",
+                "${join_password.text}",
+                "${join_name.text}",
+                "${join_nickname.text}",
+                "${join_phone.text}"
+            )
+        }
+    }
+
+    private fun checkType() {
         join_email.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
@@ -56,11 +74,29 @@ class JoinFragment : Fragment(), JoinContract.View {
                 val m = p.matcher(join_email.text.toString())
                 if (!m.matches()) {
                     email_layout.error = "이메일 형식이 올바르지 않습니다."
+                } else if ("${join_email.text}".isEmpty()) {
+                    email_layout.error = "이메일을 입력해주세요."
                 } else {
                     email_layout.isErrorEnabled = false
                 }
             }
         })
+
+//        join_email.setOnFocusChangeListener { view, hasFocus ->
+//            if (hasFocus) {
+//                email_layout.isErrorEnabled = false
+//            } else {
+//                val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
+//                val m = p.matcher(join_email.text.toString())
+//                if (!m.matches() && "${join_email.text}".isNotEmpty()) {
+//                    email_layout.error = "이메일 형식이 올바르지 않습니다."
+//                } else if ("${join_email.text}".isEmpty()) {
+//                    email_layout.error = "이메일을 입력해주세요."
+//                } else {
+//                    email_layout.isErrorEnabled = false
+//                }
+//            }
+//        }
 
         join_password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -72,6 +108,8 @@ class JoinFragment : Fragment(), JoinContract.View {
                 val m = p.matcher(join_password.text.toString())
                 if (!m.matches()) {
                     password_layout.error = "영문, 숫자 조합 8~16자로 입력해주세요."
+                } else if ("${join_password.text}".isEmpty()) {
+                    password_layout.error = "비밀번호를 입력해주세요."
                 } else {
                     password_layout.isErrorEnabled = false
                 }
@@ -88,38 +126,12 @@ class JoinFragment : Fragment(), JoinContract.View {
                 val m = p.matcher(join_nickname.text.toString())
                 if (!m.matches()) {
                     nickname_layout.error = "한글, 영문, 숫자 포함 1~10자로 입력해주세요."
+                } else if ("${join_nickname.text}".isEmpty()) {
+                    nickname_layout.error = "닉네임을 입력해주세요."
                 } else {
                     nickname_layout.isErrorEnabled = false
                 }
             }
         })
-
-        btn_back.setOnClickListener {
-            (activity as LoginActivity).back(this)
-        }
-
-        btn_join.setOnClickListener {
-            when {
-                "${join_email.text}".isEmpty() -> showDialog("아이디를 입력해주세요.")
-                "${join_password.text}".isEmpty() -> showDialog("비밀번호를 입력해주세요.")
-                "${join_name.text}".isEmpty() -> showDialog("이름을 입력해주세요.")
-                "${join_nickname.text}".isEmpty() -> showDialog("닉네임을 입력해주세요.")
-                "${join_phone.text}".isEmpty() -> showDialog("핸드폰 번호를 입력해주세요.")
-                else -> presenter.userRegister(
-                    "${join_email.text}",
-                    "${join_password.text}",
-                    "${join_name.text}",
-                    "${join_nickname.text}",
-                    "${join_phone.text}"
-                )
-            }
-        }
-    }
-
-    private fun showDialog(message: String) {
-        val newFragment = AlertDialogFragment.newInstance(
-            message
-        )
-        newFragment.show(fragmentManager!!, "dialog")
     }
 }

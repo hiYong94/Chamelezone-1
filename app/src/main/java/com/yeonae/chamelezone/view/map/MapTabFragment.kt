@@ -26,11 +26,22 @@ import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
+import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
+import com.yeonae.chamelezone.network.api.RetrofitConnection
+import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.home.HomeActivity
+import com.yeonae.chamelezone.view.map.presenter.MapContract
+import com.yeonae.chamelezone.view.map.presenter.MapPresenter
 import kotlinx.android.synthetic.main.fragment_map_tab.*
 import java.util.*
 
-class MapTabFragment : Fragment(), OnMapReadyCallback {
+class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
+    override fun placeInfo(placeList: List<PlaceResponse>) {
+
+    }
+
+    override lateinit var presenter: MapContract.Presenter
     private var markerInfoFragment = MarkerInfoFragment()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -76,13 +87,20 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState)
         map_view.onCreate(savedInstanceState)
 
+        presenter = MapPresenter(
+            PlaceRepositoryImpl.getInstance(
+                PlaceRemoteDataSourceImpl.getInstance(RetrofitConnection.placeService)
+            ), this
+        )
+
         checkPermission()
 
         btn_search.setOnClickListener {
             if (edt_search.text.toString().isEmpty()) {
                 showDialog()
             } else {
-                getSearchLocation()
+
+                //getSearchLocation()
             }
         }
 
@@ -90,7 +108,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
 
     }
 
-    private fun checkPermission(){
+    private fun checkPermission() {
         TedPermission.with(activity)
             .setPermissionListener(permissionListener)
             .setRationaleTitle(R.string.rationale_title)
@@ -156,7 +174,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
         val addresses = geoCoder.getFromLocationName(
             edt_search.text.toString(),
-            10
+            5
         )
 
         if (addresses != null) {
@@ -224,7 +242,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback {
         val newFragment = AlertDialogFragment.newInstance(
             "검색어를 입력해주세요"
         )
-        fragmentManager?.let{
+        fragmentManager?.let {
             newFragment.show(it, "dialog")
         }
     }
