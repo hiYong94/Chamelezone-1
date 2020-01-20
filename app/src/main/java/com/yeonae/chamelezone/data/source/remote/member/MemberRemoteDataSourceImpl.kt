@@ -16,9 +16,6 @@ import retrofit2.Response
 
 class MemberRemoteDataSourceImpl private constructor(private val memberApi: MemberApi) :
     MemberRemoteDataSource {
-    private val userDatabase by lazy {
-        UserDatabase.getInstance(App.instance.context())
-    }
 
     override fun createMember(
         email: String,
@@ -26,7 +23,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         name: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack
+        callBack: MemberCallBack<String>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("email", email)
@@ -42,7 +39,10 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                callBack.onSuccess("회원가입 성공")
+                if (response.isSuccessful){
+                    callBack.onSuccess("회원가입 성공")
+                }
+                Log.d("err", response.code().toString())
                 Log.d("tag", response.body().toString())
             }
 
@@ -53,35 +53,25 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
     }
 
-    override fun login(email: String, password: String, callBack: MemberCallBack) {
+    override fun login(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
         val jsonObject = JsonObject().apply {
             addProperty("email", email)
             addProperty("password", password)
         }
 
         memberService.login(jsonObject).enqueue(object :
-            Callback<MemberResponse> {
+            Callback<List<MemberResponse>> {
             override fun onResponse(
-                call: Call<MemberResponse>,
-                response: Response<MemberResponse>
+                call: Call<List<MemberResponse>>,
+                response: Response<List<MemberResponse>>
             ) {
-                val r = Runnable {
-                    val newUser = User(
-                        response.body()?.memberNumber,
-                        response.body()?.email,
-                        response.body()?.name,
-                        response.body()?.nickName,
-                        response.body()?.phoneNumber
-                    )
-                    userDatabase?.userDao()?.insertAll(newUser)
-                    Log.d("user", userDatabase?.userDao()?.getAll().toString())
+                if (response.isSuccessful){
+                    Log.d("MyCall", response.body().toString())
+                    callBack.onSuccess(response.body()!![0])
                 }
-                val thread = Thread(r)
-                thread.start()
-                callBack.onSuccess("로그인 성공")
             }
 
-            override fun onFailure(call: Call<MemberResponse>, t: Throwable) {
+            override fun onFailure(call: Call<List<MemberResponse>>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
         })

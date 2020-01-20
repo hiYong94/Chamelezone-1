@@ -53,7 +53,9 @@ class PlaceReviewTabFragment : Fragment() {
         recycler_place_review.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
 
             override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+
                 val intent = Intent(context, ReviewImageActivity::class.java)
+
                 startActivity(intent)
 
                 return false

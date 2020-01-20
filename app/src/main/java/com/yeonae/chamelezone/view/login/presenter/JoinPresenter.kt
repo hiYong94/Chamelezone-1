@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.login.presenter
 
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
+import com.yeonae.chamelezone.network.model.MemberResponse
 
 class JoinPresenter(
     private val memberRepository: MemberRepository,
@@ -14,7 +15,7 @@ class JoinPresenter(
         nickName: String,
         phone: String
     ) {
-        memberRepository.createMember(email, password, name, nickName, phone, object : MemberCallBack{
+        memberRepository.createMember(email, password, name, nickName, phone, object : MemberCallBack<String>{
             override fun onSuccess(message: String) {
                 joinView.showMessage(message)
             }
@@ -27,9 +28,9 @@ class JoinPresenter(
     }
 
     override fun userLogin(email: String, password: String) {
-        memberRepository.login(email, password, object : MemberCallBack{
-            override fun onSuccess(message: String) {
-                joinView.showMessage(message)
+        memberRepository.login(email, password, object : MemberCallBack<MemberResponse>{
+            override fun onSuccess(response: MemberResponse) {
+                joinView.showMessage(response.nickName + "환영합니다.")
             }
 
             override fun onFailure(message: String) {

@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.network.api
 
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.network.model.MemberResponse
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -15,8 +14,8 @@ interface MemberApi {
         @Body user: JsonObject
     ): Call<ResponseBody>
 
-    @GET("/user/login")
+    @POST("/user/login")
     fun login(
         @Body user: JsonObject
-    ): Call<MemberResponse>
+    ): Call<List<MemberResponse>>
 }

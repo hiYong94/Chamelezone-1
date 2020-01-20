@@ -11,6 +11,7 @@ import com.google.gson.JsonObject
 import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
+import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSourceImpl
 import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceImpl
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.network.model.MemberResponse
@@ -43,7 +44,7 @@ class LoginFragment : Fragment() , JoinContract.View {
         super.onActivityCreated(savedInstanceState)
         presenter = JoinPresenter(
             MemberRepositoryImpl.getInstance(
-                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService)
+                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService), MemberLocalDataSourceImpl.getInstance()
             ), this
         )
 
