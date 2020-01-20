@@ -3,15 +3,14 @@ package com.yeonae.chamelezone.view.course.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
 import kotlinx.android.synthetic.main.item_course_list.view.*
-import kotlinx.android.synthetic.main.item_my_course.view.tv_course_name
-import kotlinx.android.synthetic.main.item_place_review.view.tv_user_id
 
-class CourseTabRvAdapter(var items : ArrayList<Course>) : RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
+class CourseTabRvAdapter(private val courseList: ArrayList<Course>) :
+    RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
 
-    //private var items = mutableListOf<Course>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
@@ -26,14 +25,14 @@ class CourseTabRvAdapter(var items : ArrayList<Course>) : RecyclerView.Adapter<C
         CourseViewHolder(parent)
 
     override fun getItemCount(): Int =
-        items.size
+        courseList.size
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) =
-        holder.bind(items[position], onClickListener)
+        holder.bind(courseList[position], onClickListener)
 
     fun addData(addDataList: List<Course>) {
-        items.clear()
-        items.addAll(addDataList)
+        courseList.clear()
+        courseList.addAll(addDataList)
         notifyDataSetChanged()
     }
 
@@ -45,6 +44,17 @@ class CourseTabRvAdapter(var items : ArrayList<Course>) : RecyclerView.Adapter<C
                 setOnClickListener {
                     listener?.onClick(item)
                 }
+                Glide.with(itemView.context)
+                    .load(
+                        itemView.resources.getIdentifier(
+                            item.courseImg,
+                            "drawable",
+                            itemView.context.packageName
+                        )
+                    )
+                    .override(itemView.measuredWidth, itemView.measuredHeight)
+                    .centerCrop()
+                    .into(itemView.course_img)
                 tv_course_name.text = item.courseName
                 tv_register_date.text = item.registerDate
                 tv_user_id.text = item.userId

@@ -15,9 +15,9 @@ import kotlinx.android.synthetic.main.fragment_like_tab.*
 
 class LikeTabFragment : Fragment() {
     private val likeList = arrayListOf(
-        Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85"),
-        Place("론리드프로젝트", "빨래방, 카페", "서울 용산구 신흥로 78"),
-        Place("하나은행X북바이북", "은행, 서점", "서울 종로구 새문안로5길 19")
+        Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85", "", "place1"),
+        Place("론리드프로젝트", "빨래방, 카페", "서울 용산구 신흥로 78", "", "place2"),
+        Place("하나은행X북바이북", "은행, 서점", "서울 종로구 새문안로5길 19", "", "place3")
     )
     private val likeTabRvAdapter = LikeTabRvAdapter(likeList)
 

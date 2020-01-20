@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
@@ -27,12 +28,17 @@ class HomePlaceRvAdapter(private val placeList: ArrayList<Place>) :
 
         fun bind(place: Place) {
             if (place.placeImg.isNotEmpty()) {
-                val resourceId = itemView.resources.getIdentifier(
-                    place.placeImg,
-                    "drawable",
-                    itemView.context.packageName
-                )
-                placeImg.setImageResource(resourceId)
+                Glide.with(itemView.context)
+                    .load(
+                        itemView.resources.getIdentifier(
+                            place.placeImg,
+                            "drawable",
+                            itemView.context.packageName
+                        )
+                    )
+                    .override(itemView.measuredWidth, itemView.measuredHeight)
+                    .centerCrop()
+                    .into(itemView.place_img)
             } else {
                 placeImg.setImageResource(R.mipmap.ic_launcher)
             }

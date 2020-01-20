@@ -14,9 +14,9 @@ import kotlinx.android.synthetic.main.fragment_course_tab.*
 
 class CourseTabFragment : Fragment() {
     private val courseList = arrayListOf(
-        Course("익선동 데이트 코스", "2019-11-29", "yeonjae22"),
-        Course("용권이의 코스", "2019-11-28", "hiyong"),
-        Course("책을 좋아하는 사람을 위한 코스", "2019-11-27", "Lsunae")
+        Course("익선동 데이트 코스", "2019-11-29", "yeonjae22", "", "place1"),
+        Course("용권이의 코스", "2019-11-28", "hiyong", "", "place2"),
+        Course("책을 좋아하는 사람을 위한 코스", "2019-11-27", "Lsunae", "", "place3")
     )
     private val courseTabRvAdapter = CourseTabRvAdapter(courseList)
 
