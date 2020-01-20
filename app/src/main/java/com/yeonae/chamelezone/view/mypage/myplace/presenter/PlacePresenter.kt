@@ -8,21 +8,25 @@ class PlacePresenter(
     private val placeView: PlaceContract.View
 ) : PlaceContract.Presenter {
     override fun placeRegister(
-        keywordNumber: Int,
+        keywordName: String,
         name: String,
         address: String,
         openingTime: String,
         phoneNumber: String,
-        content: String
+        content: String,
+        latitude: Double,
+        longitude: Double
     ) {
         placeRepository.registerPlace(
-            keywordNumber,
+            keywordName,
             name,
             address,
             openingTime,
             phoneNumber,
             content,
-            object : PlaceCallBack{
+            latitude,
+            longitude,
+            object : PlaceCallBack<String> {
                 override fun onSuccess(message: String) {
                     placeView.place(message)
                 }

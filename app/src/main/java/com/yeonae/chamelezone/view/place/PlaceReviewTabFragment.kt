@@ -51,7 +51,9 @@ class PlaceReviewTabFragment : Fragment() {
 
         placeReviewRvAdapter.setItemClickListener(object : PlaceReviewTabRvAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int) {
+
                 val intent = Intent(context, ReviewImageActivity::class.java)
+
                 startActivity(intent)
             }
         })
