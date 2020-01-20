@@ -1,10 +1,14 @@
 package com.yeonae.chamelezone.view.review
+import android.Manifest
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
@@ -36,6 +40,22 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
         setupGUI()
     }
+
+    private val permissionListener: PermissionListener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            Toast.makeText(this@ReviewCreateActivity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: List<String>) {
+            Toast.makeText(
+                this@ReviewCreateActivity,
+                "권한이 거부되었습니다\n$deniedPermissions",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+    }
+
     private fun pickMulti() {
         BottomSheetImagePicker.Builder(getString(R.string.file_provider))
             .multiSelect(2, 4)
@@ -50,8 +70,23 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             .show(supportFragmentManager)
     }
     private fun setupGUI() {
-        btn_image_create.setOnClickListener { pickMulti() }
+        btn_image_create.setOnClickListener {
+            checkPermission()
+            pickMulti()
+        }
         btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+    }
+
+    private fun checkPermission(){
+        TedPermission.with(this)
+            .setPermissionListener(permissionListener)
+            .setRationaleTitle(R.string.rationale_title)
+            .setRationaleMessage(R.string.album_rationale_message)
+            .setDeniedTitle(R.string.Permission_denied)
+            .setDeniedMessage(R.string.permission_msg)
+            .setGotoSettingButtonText(R.string.setting)
+            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .check()
     }
 
 }
