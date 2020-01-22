@@ -14,8 +14,8 @@ class PlacePresenter(
         openingTime: String,
         phoneNumber: String,
         content: String,
-        latitude: Double,
-        longitude: Double
+        latitude: String,
+        longitude: String
     ) {
         placeRepository.registerPlace(
             keywordName,

@@ -109,6 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:padding="10dp"
                         android:text="선택" />
 
                 </LinearLayout>
@@ -144,6 +145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:padding="10dp"
                         android:text="검색" />
 
                 </LinearLayout>
@@ -182,6 +184,7 @@
                 android:weightSum="10">
 
                 <TextView
+                    android:id="@+id/test"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -215,6 +218,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:padding="10dp"
                     android:text="추가" />
             </LinearLayout>
 
@@ -290,11 +294,12 @@
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="150dp"
+                        android:layout_marginLeft="50dp"
                         android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/btn_image_create"
+                            style="@style/ButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/selected_btn_background_basic"
@@ -303,6 +308,7 @@
 
                         <Button
                             android:id="@+id/btn_image_clear"
+                            style="@style/ButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
