@@ -14,6 +14,7 @@ import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.catchFocus
 import kotlinx.android.synthetic.main.activity_review_create.*
+
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
@@ -39,7 +40,6 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         btn_back.setOnClickListener {
             finish()
         }
-
         setupGUI()
     }
 
@@ -90,5 +90,4 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
     }
-
 }
