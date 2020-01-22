@@ -27,7 +27,8 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/selected_btn_background"
                     android:text="@string/review_create_message"
-                    android:textColor="@drawable/selected_btn_text" />
+                    android:textColor="@drawable/selected_btn_text"
+                    style="@style/ButtonStyle"/>
 
             </LinearLayout>
 
