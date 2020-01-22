@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.AlertDialogFragment
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
 import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSourceImpl
@@ -44,7 +45,8 @@ class LoginFragment : Fragment() , JoinContract.View {
         super.onActivityCreated(savedInstanceState)
         presenter = JoinPresenter(
             MemberRepositoryImpl.getInstance(
-                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService), MemberLocalDataSourceImpl.getInstance()
+                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService),
+                MemberLocalDataSourceImpl.getInstance(UserDatabase.getInstance(requireContext()))
             ), this
         )
 
