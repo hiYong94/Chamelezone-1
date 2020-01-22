@@ -1,8 +1,17 @@
 package com.yeonae.chamelezone.data.repository.review
 
-class ReviewRepositoryImpl private constructor(private val reviewRepository: ReviewRepository) : ReviewRepository{
-    override fun createReview() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+import com.yeonae.chamelezone.data.source.remote.review.ReviewRemoteDataSource
+
+class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSource: ReviewRemoteDataSource) :
+    ReviewRepository {
+    override fun createReview(
+        placeName: String,
+        nickname: String,
+        reviewImg: String,
+        content: String,
+        callBack: ReviewCallBack<String>
+    ) {
+        reviewRemoteDataSource.createReview(placeName, nickname, reviewImg, content, callBack)
     }
 
     override fun getReview() {
