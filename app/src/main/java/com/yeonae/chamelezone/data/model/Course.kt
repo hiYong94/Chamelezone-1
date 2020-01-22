@@ -6,5 +6,6 @@ data class Course @JvmOverloads constructor(
     val courseName: String = "",
     val registerDate: String = "",
     val userId: String = "",
-    val courseText : String = ""
+    val courseText : String = "",
+    val courseImg : String = ""
 ) : Serializable
