@@ -2,13 +2,10 @@ package com.yeonae.chamelezone.data.source.remote.member
 
 import android.util.Log
 import com.google.gson.JsonObject
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.network.api.MemberApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.memberService
 import com.yeonae.chamelezone.network.model.MemberResponse
-import com.yeonae.chamelezone.network.room.database.UserDatabase
-import com.yeonae.chamelezone.network.room.entity.User
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -33,13 +30,13 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
             addProperty("phoneNumber", phone)
         }
 
-        memberService.userRegister(jsonObject).enqueue(object :
+        memberService.createMember(jsonObject).enqueue(object :
             Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     callBack.onSuccess("회원가입 성공")
                 }
                 Log.d("err", response.code().toString())
@@ -53,39 +50,41 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
     }
 
-    override fun login(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
+    override fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
         val jsonObject = JsonObject().apply {
             addProperty("email", email)
             addProperty("password", password)
         }
 
-        memberService.login(jsonObject).enqueue(object :
-            Callback<List<MemberResponse>> {
+        memberService.getMember(jsonObject).enqueue(object :
+            Callback<MemberResponse> {
             override fun onResponse(
-                call: Call<List<MemberResponse>>,
-                response: Response<List<MemberResponse>>
+                call: Call<MemberResponse>,
+                response: Response<MemberResponse>
             ) {
-                if (response.isSuccessful){
+                if (response.isSuccessful) {
                     Log.d("MyCall", response.body().toString())
-                    callBack.onSuccess(response.body()!![0])
+                    callBack.onSuccess(response.body()!!)
                 }
             }
 
-            override fun onFailure(call: Call<List<MemberResponse>>, t: Throwable) {
+            override fun onFailure(call: Call<MemberResponse>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
         })
     }
 
-    override fun getMember() {
+    override fun updateMember(
+        memberNumber: Int,
+        password: String,
+        nickName: String,
+        phone: String,
+        callBack: MemberCallBack<String>
+    ) {
 
     }
 
-    override fun deleteMember() {
-
-    }
-
-    override fun updateMember() {
+    override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {
 
     }
 

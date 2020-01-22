@@ -1,12 +1,13 @@
 package com.yeonae.chamelezone.data.repository.member
 
-import android.os.Message
-import android.util.Log
 import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSource
 import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSource
 import com.yeonae.chamelezone.network.model.MemberResponse
 
-class MemberRepositoryImpl private constructor(private val remoteDataSource: MemberRemoteDataSource, private val localDataSource: MemberLocalDataSource) :
+class MemberRepositoryImpl private constructor(
+    private val remoteDataSource: MemberRemoteDataSource,
+    private val localDataSource: MemberLocalDataSource
+) :
     MemberRepository {
     override fun createMember(
         email: String,
@@ -19,8 +20,8 @@ class MemberRepositoryImpl private constructor(private val remoteDataSource: Mem
         remoteDataSource.createMember(email, password, name, nickName, phone, callBack)
     }
 
-    override fun login(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
-        remoteDataSource.login(email, password, object : MemberCallBack<MemberResponse>{
+    override fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
+        remoteDataSource.getMember(email, password, object : MemberCallBack<MemberResponse> {
             override fun onSuccess(response: MemberResponse) {
                 callBack.onSuccess(response)
                 localDataSource.loggedLogin(response)
@@ -32,20 +33,25 @@ class MemberRepositoryImpl private constructor(private val remoteDataSource: Mem
         })
     }
 
-    override fun getMember() {
-
+    override fun updateMember(
+        memberNumber: Int,
+        password: String,
+        nickName: String,
+        phone: String,
+        callBack: MemberCallBack<String>
+    ) {
+        remoteDataSource.updateMember(memberNumber, password, nickName, phone, callBack)
     }
 
-    override fun deleteMember() {
-
-    }
-
-    override fun updateMember() {
-
+    override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {
+        remoteDataSource.deleteMember(memberNumber, callBack)
     }
 
     companion object {
-        fun getInstance(remoteDataSource: MemberRemoteDataSource, localDataSource: MemberLocalDataSource): MemberRepository =
+        fun getInstance(
+            remoteDataSource: MemberRemoteDataSource,
+            localDataSource: MemberLocalDataSource
+        ): MemberRepository =
             MemberRepositoryImpl(remoteDataSource, localDataSource)
     }
 }
