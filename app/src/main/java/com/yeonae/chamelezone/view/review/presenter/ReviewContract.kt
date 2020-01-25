@@ -10,7 +10,8 @@ interface ReviewContract {
             placeName: String,
             nickname: String,
             reviewImg: String,
-            content: String
+            content: String,
+            result: String
         )
     }
 }

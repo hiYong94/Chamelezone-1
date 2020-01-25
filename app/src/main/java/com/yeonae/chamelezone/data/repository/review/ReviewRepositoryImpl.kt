@@ -9,9 +9,10 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
         nickname: String,
         reviewImg: String,
         content: String,
+        result: String,
         callBack: ReviewCallBack<String>
     ) {
-        reviewRemoteDataSource.createReview(placeName, nickname, reviewImg, content, callBack)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getReview() {

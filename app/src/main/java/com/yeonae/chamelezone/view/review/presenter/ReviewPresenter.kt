@@ -5,7 +5,8 @@ class ReviewPresenter(private val reviewView: ReviewContract.View): ReviewContra
         placeName: String,
         nickname: String,
         reviewImg: String,
-        content: String
+        content: String,
+        result: String
     ) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

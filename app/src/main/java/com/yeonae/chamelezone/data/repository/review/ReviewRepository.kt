@@ -6,6 +6,7 @@ interface ReviewRepository {
         nickname: String,
         reviewImg: String,
         content: String,
+        result: String,
         callBack: ReviewCallBack<String>
     )
 
