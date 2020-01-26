@@ -30,7 +30,7 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
     }
 
     override fun getSearchByMap(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
-        remoteDataSource.searchPlace(placeName, callBack)
+        remoteDataSource.getSearchByMap(placeName, callBack)
     }
 
     override fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>) {

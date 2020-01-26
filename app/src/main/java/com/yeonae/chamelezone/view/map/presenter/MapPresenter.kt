@@ -9,7 +9,7 @@ class MapPresenter(
     private val mapView: MapContract.View
 ) : MapContract.Presenter {
     override fun searchPlace(placeName: String) {
-        placeRepository.searchPlace(placeName, object : PlaceCallBack<List<PlaceResponse>>{
+        placeRepository.getSearchByMap(placeName, object : PlaceCallBack<List<PlaceResponse>>{
             override fun onSuccess(response: List<PlaceResponse>) {
                 mapView.placeInfo(response)
             }
