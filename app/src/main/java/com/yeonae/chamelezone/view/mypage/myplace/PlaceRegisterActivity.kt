@@ -17,7 +17,6 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
@@ -83,24 +82,22 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_register.setOnClickListener {
-            val latitude =
-                findLatLng(applicationContext, "${tv_place_address.text}")?.latitude.toString()
-            val longitude =
-                findLatLng(applicationContext, "${tv_place_address.text}")?.longitude.toString()
+            val latlng = findLatLng(applicationContext, "${tv_place_address.text}")
+            val latitude = latlng?.latitude.toString()
+            val longitude = latlng?.longitude.toString()
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
             val keyword = "${tv_place_keyword.text}".replace(" ", "|")
-            if (latitude != null && longitude != null) {
-                presenter.placeRegister(
-                    keyword,
-                    "${edt_place_name.text}",
-                    realAddress,
-                    "평일 11:00 ~ 20:00",
-                    "${edt_place_phone.text}",
-                    "${edt_place_text.text}",
-                    latitude,
-                    longitude
-                )
-            }
+
+            presenter.placeRegister(
+                keyword,
+                "${edt_place_name.text}",
+                realAddress,
+                "평일 11:00 ~ 20:00",
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}",
+                latitude,
+                longitude
+            )
         }
         openingHours()
     }
