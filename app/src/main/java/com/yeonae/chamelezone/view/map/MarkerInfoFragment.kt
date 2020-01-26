@@ -20,22 +20,25 @@ class MarkerInfoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        tv_place_name.text = arguments!!.getString("placeName")
-        tv_place_keyword.text = arguments!!.getString("placeKeyword")
-        tv_place_address.text = arguments!!.getString("placeAddress")
-
+        arguments?.run {
+            tv_place_name.text = getString(PLACE_NAME)
+            tv_place_keyword.text = getString(PLACE_KEYWORD)
+            tv_place_address.text = getString(PLACE_ADDRESS)
+        }
     }
 
     companion object {
+        private const val PLACE_NAME = "placeName"
+        private const val PLACE_KEYWORD = "placeKeyword"
+        private const val PLACE_ADDRESS = "placeAddress"
         fun newInstance(
             placeInfo: PlaceResponse
         ) = MarkerInfoFragment().apply {
             arguments = Bundle().apply {
-                putString("placeName", placeInfo.name)
-                putString("placeKeyword", placeInfo.keywordName)
-                putString("placeAddress", placeInfo.address)
+                putString(PLACE_NAME, placeInfo.name)
+                putString(PLACE_KEYWORD, placeInfo.keywordName)
+                putString(PLACE_ADDRESS, placeInfo.address)
             }
-
         }
     }
 }
