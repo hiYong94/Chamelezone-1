@@ -1,13 +1,23 @@
 package com.yeonae.chamelezone.view.review.presenter
 
-class ReviewPresenter(private val reviewView: ReviewContract.View): ReviewContract.Presenter{
+import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.data.repository.review.ReviewRepository
+
+class ReviewPresenter(private val reviewRepository: ReviewRepository, private val reviewView: ReviewContract.View): ReviewContract.Presenter{
     override fun reviewCreate(
         placeName: String,
         nickname: String,
         reviewImg: String,
-        content: String,
-        result: String
+        content: String
     ) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        reviewRepository.createReview(placeName, nickname, reviewImg, content, object : ReviewCallBack<String> {
+            override fun onSuccess(response: String) {
+                reviewView.review(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+        })
     }
 }
