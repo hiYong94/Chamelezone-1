@@ -10,11 +10,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
+import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
+import com.yeonae.chamelezone.network.api.RetrofitConnection
+import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
+import com.yeonae.chamelezone.view.search.presenter.SearchContract
+import com.yeonae.chamelezone.view.search.presenter.SearchPresenter
 import kotlinx.android.synthetic.main.fragment_keyword_tab.*
 
-class KeywordTabFragment : Fragment() {
+class KeywordTabFragment : Fragment(), SearchContract.View {
+    override fun showPlaceList(placeList: List<PlaceResponse>) {
+
+    }
+
+    override lateinit var presenter: SearchContract.Presenter
     private val searchList = arrayListOf(
         Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85", "7km"),
         Place("론리드프로젝트", "빨래방, 카페", "서울 용산구 신흥로 78", "10km"),
@@ -50,7 +61,11 @@ class KeywordTabFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        presenter = SearchPresenter(
+            PlaceRepositoryImpl.getInstance(
+                PlaceRemoteDataSourceImpl.getInstance(RetrofitConnection.placeService)
+            ), this
+        )
         setAdapter()
 
         btn_cafe.setOnClickListener {

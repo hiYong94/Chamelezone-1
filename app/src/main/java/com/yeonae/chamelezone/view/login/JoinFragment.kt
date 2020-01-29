@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
+import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +15,7 @@ import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
 import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSourceImpl
 import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceImpl
 import com.yeonae.chamelezone.network.api.RetrofitConnection
+import com.yeonae.chamelezone.network.room.database.UserDatabase
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_join.*
@@ -43,7 +45,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         presenter = JoinPresenter(
             MemberRepositoryImpl.getInstance(
                 MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService),
-                MemberLocalDataSourceImpl.getInstance()
+                MemberLocalDataSourceImpl.getInstance(UserDatabase.getInstance(requireContext()))
             ), this
         )
         checkType()
@@ -63,6 +65,20 @@ class JoinFragment : Fragment(), JoinContract.View {
         }
     }
 
+    private fun checkEmail(){
+        val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
+        val m = p.matcher(join_email.text.toString())
+        if (!m.matches()) {
+            email_layout.error = "이메일 형식이 올바르지 않습니다."
+        } else if ("${join_email.text}".isEmpty()) {
+            email_layout.error = "이메일을 입력해주세요."
+        } else {
+            email_layout.isErrorEnabled = false
+        }
+    }
+
+    var lastInputTime = 0L
+
     private fun checkType() {
         join_email.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -70,33 +86,16 @@ class JoinFragment : Fragment(), JoinContract.View {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
-                val m = p.matcher(join_email.text.toString())
-                if (!m.matches()) {
-                    email_layout.error = "이메일 형식이 올바르지 않습니다."
-                } else if ("${join_email.text}".isEmpty()) {
-                    email_layout.error = "이메일을 입력해주세요."
-                } else {
-                    email_layout.isErrorEnabled = false
-                }
+
+                val inputTime = System.currentTimeMillis()
+                lastInputTime = inputTime
+                Handler().postDelayed({
+                    if(lastInputTime == inputTime){
+                        checkEmail()
+                    }
+                }, 500)
             }
         })
-
-//        join_email.setOnFocusChangeListener { view, hasFocus ->
-//            if (hasFocus) {
-//                email_layout.isErrorEnabled = false
-//            } else {
-//                val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
-//                val m = p.matcher(join_email.text.toString())
-//                if (!m.matches() && "${join_email.text}".isNotEmpty()) {
-//                    email_layout.error = "이메일 형식이 올바르지 않습니다."
-//                } else if ("${join_email.text}".isEmpty()) {
-//                    email_layout.error = "이메일을 입력해주세요."
-//                } else {
-//                    email_layout.isErrorEnabled = false
-//                }
-//            }
-//        }
 
         join_password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}

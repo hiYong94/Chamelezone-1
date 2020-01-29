@@ -9,15 +9,11 @@ import com.yeonae.chamelezone.view.search.PlaceNameTabFragment
 
 class SearchTabAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
-    private val placeNameTabFragment = PlaceNameTabFragment()
-    private val areaNameTabFragment = AddressTabFragment()
-    private val keywordTabFragment = KeywordTabFragment()
-
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> placeNameTabFragment
-            1 -> areaNameTabFragment
-            else -> keywordTabFragment
+            0 -> PlaceNameTabFragment()
+            1 -> AddressTabFragment()
+            else -> KeywordTabFragment()
         }
     }
 

@@ -203,6 +203,8 @@
                         android:id="@+id/layout_course1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/draw"
                         android:orientation="vertical"
                         android:visibility="gone">
 
@@ -290,6 +292,7 @@
                         android:visibility="gone">
 
                         <Button
+                            style="@style/ButtonStyle"
                             android:id="@+id/btn_place2"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
@@ -301,6 +304,8 @@
                         android:id="@+id/layout_course2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/draw"
                         android:orientation="vertical"
                         android:visibility="gone">
 
@@ -388,6 +393,7 @@
                         android:visibility="gone">
 
                         <Button
+                            style="@style/ButtonStyle"
                             android:id="@+id/btn_place3"
                             android:layout_width="match_parent"
                             android:layout_height="61dp"
@@ -399,6 +405,9 @@
                         android:id="@+id/layout_course3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/draw"
                         android:orientation="vertical"
                         android:visibility="gone">
 
@@ -478,8 +487,6 @@
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-
-
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

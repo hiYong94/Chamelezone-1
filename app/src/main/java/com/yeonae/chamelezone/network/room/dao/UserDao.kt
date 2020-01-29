@@ -9,11 +9,11 @@ import com.yeonae.chamelezone.network.room.entity.User
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    fun getAll(): List<User>
+    fun getUser(): List<User>
 
     @Insert
-    fun insertAll(user: User)
+    fun insertUser(user: User)
 
     @Delete
-    fun delete(user: User)
+    fun deleteUser(user: User)
 }

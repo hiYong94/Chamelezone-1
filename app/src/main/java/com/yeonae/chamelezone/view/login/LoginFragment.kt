@@ -1,28 +1,17 @@
 package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.gson.JsonObject
 import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
-import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSourceImpl
-import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceImpl
-import com.yeonae.chamelezone.network.api.RetrofitConnection
-import com.yeonae.chamelezone.network.model.MemberResponse
-import com.yeonae.chamelezone.network.room.database.UserDatabase
-import com.yeonae.chamelezone.network.room.entity.User
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_login.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class LoginFragment : Fragment() , JoinContract.View {
     override fun showMessage(message: String) {
@@ -43,9 +32,7 @@ class LoginFragment : Fragment() , JoinContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = JoinPresenter(
-            MemberRepositoryImpl.getInstance(
-                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService), MemberLocalDataSourceImpl.getInstance()
-            ), this
+            Injection.memberRepository(requireContext()), this
         )
 
         btn_back.setOnClickListener {

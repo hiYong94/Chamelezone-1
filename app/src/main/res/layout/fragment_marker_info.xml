@@ -1,62 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_marginStart="10dp"
-    android:layout_marginEnd="10dp"
-    android:layout_marginBottom="10dp"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_gravity="bottom"
-    android:orientation="vertical"
-    android:background="@color/colorWhite">
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="10dp"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <ImageView
-                android:background="@color/colorBlack"
                 android:id="@+id/iv_place_image"
                 android:layout_width="80dp"
-                android:layout_height="80dp" />
+                android:layout_height="80dp"
+                android:background="@color/colorBlack" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginStart="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:orientation="vertical">
 
             <TextView
-                android:textColor="@color/colorBlack"
-                android:textStyle="bold"
-                android:textSize="15sp"
-                android:text="파머스빈 구로직영점"
                 android:id="@+id/tv_place_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
             <TextView
-                android:layout_marginTop="5dp"
-                android:textSize="13sp"
-                android:text="카페"
                 android:id="@+id/tv_place_keyword"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="13sp" />
 
             <TextView
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:layout_marginTop="5dp"
-                android:textSize="13sp"
-                android:text="서울특별시 구로구 디지털로 273 1층 102호"
                 android:id="@+id/tv_place_address"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textSize="13sp" />
 
         </LinearLayout>
     </LinearLayout>

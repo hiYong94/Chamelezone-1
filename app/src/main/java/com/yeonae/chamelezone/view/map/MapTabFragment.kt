@@ -38,11 +38,30 @@ import java.util.*
 
 class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
     override fun placeInfo(placeList: List<PlaceResponse>) {
+        for (i in placeList.indices) {
+            val searchLatLng = LatLng(placeList[i].latitude.toDouble(), placeList[i].longitude.toDouble())
+            val markerOptions = MarkerOptions().apply {
+                position(searchLatLng)
+                title(placeList[i].name)
+                draggable(true)
+            }
 
+            map?.run {
+                addMarker(markerOptions)
+                setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
+                    override fun onMarkerClick(p0: Marker?): Boolean {
+                        (activity as? HomeActivity)?.back(MarkerInfoFragment())
+                        (activity as? HomeActivity)?.replace(MarkerInfoFragment.newInstance(placeList[i]), true)
+                        return false
+                    }
+
+                })
+                animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
+            }
+        }
     }
 
     override lateinit var presenter: MapContract.Presenter
-    private var markerInfoFragment = MarkerInfoFragment()
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
@@ -96,11 +115,10 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
         checkPermission()
 
         btn_search.setOnClickListener {
-            if (edt_search.text.toString().isEmpty()) {
+            if ("${edt_search.text}".isEmpty()) {
                 showDialog()
             } else {
-
-                //getSearchLocation()
+                presenter.searchPlace("${edt_search.text}")
             }
         }
 
@@ -167,40 +185,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
             locationCallBack,
             Looper.myLooper()
         )
-    }
-
-    private fun getSearchLocation() {
-        map?.clear()
-        val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
-        val addresses = geoCoder.getFromLocationName(
-            edt_search.text.toString(),
-            5
-        )
-
-        if (addresses != null) {
-            for (i in 0 until addresses.size) {
-                val searchLatLng = LatLng(addresses[i].latitude, addresses[i].longitude)
-                val markerTitle = getCurrentAddress(searchLatLng)
-                val markerOptions = MarkerOptions().apply {
-                    position(searchLatLng)
-                    title(markerTitle)
-                    draggable(true)
-                }
-
-                map?.run {
-                    addMarker(markerOptions)
-                    setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
-                        override fun onMarkerClick(p0: Marker?): Boolean {
-                            (activity as? HomeActivity)?.back(markerInfoFragment)
-                            (activity as? HomeActivity)?.replace(markerInfoFragment, true)
-                            return false
-                        }
-
-                    })
-                    animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
-                }
-            }
-        }
     }
 
     private fun getCurrentAddress(latLng: LatLng): String {
