@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.source.remote.review
 
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.network.model.ReviewResponse
 
 interface ReviewRemoteDataSource {
     fun createReview(
@@ -13,6 +14,7 @@ interface ReviewRemoteDataSource {
     )
 
     fun getReview()
+    fun getMyReviewList(userId: String, callBack: ReviewCallBack<List<ReviewResponse>>)
     fun updateReview()
     fun deleteReview()
 }

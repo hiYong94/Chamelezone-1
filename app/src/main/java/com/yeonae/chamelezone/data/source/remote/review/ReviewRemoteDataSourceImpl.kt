@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.source.remote.review
 
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.network.model.ReviewResponse
 
 class ReviewRemoteDataSourceImpl : ReviewRemoteDataSource {
     override fun createReview(
@@ -11,11 +12,15 @@ class ReviewRemoteDataSourceImpl : ReviewRemoteDataSource {
         result: String,
         callBack: ReviewCallBack<String>
     ) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun getReview() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+    }
+
+    override fun getMyReviewList(userId: String, callBack: ReviewCallBack<List<ReviewResponse>>) {
+
     }
 
     override fun updateReview() {
