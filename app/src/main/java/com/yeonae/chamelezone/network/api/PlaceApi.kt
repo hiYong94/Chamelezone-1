@@ -32,8 +32,8 @@ interface PlaceApi {
         @Path("keywordName") keyword: String
     ): Call<List<PlaceResponse>>
 
-    @GET("/place")
+    @GET("/place/{placeNumber}")
     fun getPlaceDetail(
-        @Query("placeNumber") placeNumber: String
+        @Path("placeNumber") placeNumber: Int
     ): Call<PlaceResponse>
 }

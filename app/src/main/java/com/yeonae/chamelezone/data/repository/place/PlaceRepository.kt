@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.data.repository.place
 
-import com.yeonae.chamelezone.data.repository.keyword.KeywordCallBack
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 

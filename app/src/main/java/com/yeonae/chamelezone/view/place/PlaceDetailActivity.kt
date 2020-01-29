@@ -10,10 +10,14 @@ import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
 import kotlinx.android.synthetic.main.activity_place_detail.*
 
 class PlaceDetailActivity : AppCompatActivity() {
-
+    private val PLACE_NAME = "placeName"
+    private val PLACE_NUMBER = "placeNumber"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
+        val placeName = intent.getStringExtra(PLACE_NAME)
+        val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
+        tv_place_name.text = placeName
 
         layout_visibility.bringToFront()
 
@@ -29,7 +33,7 @@ class PlaceDetailActivity : AppCompatActivity() {
         view.adapter = imageAdapter
         tab_layout.setupWithViewPager(view, true)
 
-        val fragmentAdapter = PlaceDetailPagerAdapter(supportFragmentManager)
+        val fragmentAdapter = PlaceDetailPagerAdapter(supportFragmentManager, placeNumber)
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
