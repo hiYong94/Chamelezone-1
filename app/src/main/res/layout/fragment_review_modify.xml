@@ -109,55 +109,69 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="30dp"
                     android:text="@string/image"
-                    android:layout_weight="1"
+                    android:layout_weight="0.5"
                     android:textSize="15sp" />
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"/>
+                    android:layout_weight="2.75"/>
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_image_create"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.7"
+                    android:src="@drawable/ic_icon"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/selected_btn_background_basic"
-                    android:text="@string/image_register"
-                    android:textColor="@drawable/selected_btn_text_basic" />
+                    android:background="@color/transparent"/>
 
-                <Button
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.15"/>
+
+                <ImageButton
                     android:id="@+id/btn_image_clear"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:background="@drawable/selected_btn_background_basic"
-                    android:text="@string/reset"
-                    android:textColor="@drawable/selected_btn_text_basic" />
+                    android:layout_weight="0.7"
+                    android:background="@color/transparent"
+                    android:src="@drawable/ic_x" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"/>
 
             </LinearLayout>
 
-            <HorizontalScrollView
-                android:id="@+id/scrollView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="3.5"
-                android:background="#eee"
-                android:clipToPadding="false"
-                android:paddingStart="8dp"
-                android:paddingTop="16dp"
-                android:paddingEnd="0dp"
-                android:paddingBottom="16dp"
-                android:scrollbarStyle="outsideOverlay">
+                android:background="@drawable/edge_rectangle">
 
-                <LinearLayout
-                    android:id="@+id/imageContainer"
-                    android:layout_width="wrap_content"
+                <HorizontalScrollView
+                    android:id="@+id/scrollView"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
+                    android:clipToPadding="false"
+                    android:paddingStart="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="16dp"
+                    android:scrollbarStyle="outsideOverlay">
+
+                    <LinearLayout
+                        android:id="@+id/imageContainer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" />
+                </HorizontalScrollView>
+
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
