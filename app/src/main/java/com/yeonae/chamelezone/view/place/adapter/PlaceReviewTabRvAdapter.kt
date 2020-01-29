@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
+import com.yeonae.chamelezone.ext.glideImageSet
 
 class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
     RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
@@ -16,43 +17,6 @@ class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int)
-    }
-
-    inner class PlaceReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val userId: TextView = itemView.findViewById(R.id.tv_user_id)
-        private val reviewDate: TextView = itemView.findViewById(R.id.tv_review_date)
-        private val reviewImg: ImageView = itemView.findViewById(R.id.iv_review_img)
-        private val reviewContent: TextView = itemView.findViewById(R.id.tv_review_content)
-
-        fun bind(review: Review) {
-            if (review.reviewImage.isNotEmpty()) {
-                val resourceId = itemView.resources.getIdentifier(
-                    review.reviewImage,
-                    "drawable",
-                    itemView.context.packageName
-                )
-                reviewImg.setImageResource(resourceId)
-            } else {
-                reviewImg.setImageResource(R.mipmap.ic_launcher)
-            }
-            userId.text = review.userId
-            reviewDate.text = review.reviewDate
-            reviewContent.text = review.reviewContent
-
-            itemView.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val item = placeReviewList[position]
-
-                    if(::itemClickListener.isInitialized){
-                        itemClickListener.onItemClick(itemView, position)
-                    }
-                    if (::placeReviewList.isInitialized){
-                        placeReviewList[position] = review
-                    }
-                }
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceReviewViewHolder {
@@ -74,4 +38,45 @@ class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
         notifyDataSetChanged()
     }
 
+    fun setItemClickListener(clickListener: OnItemClickListener){
+        itemClickListener = clickListener
+    }
+
+
+
+    inner class PlaceReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val userId: TextView = itemView.findViewById(R.id.tv_user_id)
+        private val reviewDate: TextView = itemView.findViewById(R.id.tv_review_date)
+        private val reviewImg: ImageView = itemView.findViewById(R.id.iv_review_img)
+        private val reviewContent: TextView = itemView.findViewById(R.id.tv_review_content)
+
+        fun bind(review: Review) {
+            if (review.reviewImage.isNotEmpty()) {
+                val resourceId = itemView.resources.getIdentifier(
+                    review.reviewImage,
+                    "drawable",
+                    itemView.context.packageName
+                )
+                reviewImg.glideImageSet(resourceId, reviewImg.measuredWidth, reviewImg.measuredHeight)
+            } else {
+                reviewImg.setImageResource(R.mipmap.ic_launcher)
+            }
+            userId.text = review.userId
+            reviewDate.text = review.reviewDate
+            reviewContent.text = review.reviewContent
+
+            reviewImg.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+
+                    if(::itemClickListener.isInitialized){
+                        itemClickListener.onItemClick(itemView, position)
+                    }
+                    if (::placeReviewList.isInitialized){
+                        placeReviewList[position] = review
+                    }
+                }
+            }
+        }
+    }
 }

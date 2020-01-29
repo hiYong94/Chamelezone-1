@@ -11,9 +11,9 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
-import kotlinx.android.synthetic.main.fragment_area_name_tab.*
+import kotlinx.android.synthetic.main.fragment_address_tab.*
 
-class AreaNameTabFragment : Fragment() {
+class AddressTabFragment : Fragment() {
     private val searchList = arrayListOf(
         Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85", "7km"),
         Place("론리드프로젝트", "빨래방, 카페", "서울 용산구 신흥로 78", "10km"),
@@ -29,7 +29,7 @@ class AreaNameTabFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_area_name_tab, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_address_tab, container, false)
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

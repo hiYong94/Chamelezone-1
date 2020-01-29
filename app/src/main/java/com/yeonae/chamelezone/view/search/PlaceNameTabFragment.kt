@@ -11,7 +11,6 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
-import kotlinx.android.synthetic.main.fragment_area_name_tab.*
 import kotlinx.android.synthetic.main.fragment_place_name_tab.*
 
 class PlaceNameTabFragment : Fragment() {

@@ -3,9 +3,9 @@ package com.yeonae.chamelezone.view.course.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
+import com.yeonae.chamelezone.ext.glideImageSet
 import kotlinx.android.synthetic.main.item_course_list.view.*
 
 class CourseTabRvAdapter(private val courseList: ArrayList<Course>) :
@@ -44,17 +44,13 @@ class CourseTabRvAdapter(private val courseList: ArrayList<Course>) :
                 setOnClickListener {
                     listener?.onClick(item)
                 }
-                Glide.with(itemView.context)
-                    .load(
-                        itemView.resources.getIdentifier(
-                            item.courseImg,
-                            "drawable",
-                            itemView.context.packageName
-                        )
-                    )
-                    .override(itemView.measuredWidth, itemView.measuredHeight)
-                    .centerCrop()
-                    .into(itemView.course_img)
+                course_img.glideImageSet(
+                    itemView.resources.getIdentifier(
+                        item.courseImg,
+                        "drawable",
+                        itemView.context.packageName
+                    ), itemView.measuredWidth, itemView.measuredHeight
+                )
                 tv_course_name.text = item.courseName
                 tv_register_date.text = item.registerDate
                 tv_user_id.text = item.userId
