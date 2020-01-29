@@ -11,13 +11,16 @@ interface PlaceRemoteDataSource {
         openingTime: String,
         phoneNumber: String,
         content: String,
-        latitude: Double,
-        longitude: Double,
+        latitude: String,
+        longitude: String,
         callBack: PlaceCallBack<String>
     )
 
-    fun searchPlace(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getPlace()
+    fun getSearchByMap(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun getSearchByAddress(address: String, callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun getSearchByKeyword(keyword: String, callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun getPlaceDetail(placeNumber: String, callBack: PlaceCallBack<PlaceResponse>)
     fun deletePlace()
     fun modifyPlace()
 }

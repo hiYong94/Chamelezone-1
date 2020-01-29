@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -48,6 +49,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     override fun place(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG)
             .show()
+        finish()
     }
 
     override lateinit var presenter: PlaceContract.Presenter
@@ -66,21 +68,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
         edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
-        val dayArray = resources.getStringArray(R.array.day_array)
-        val openArray = resources.getStringArray(R.array.open_array)
-        val closeArray = resources.getStringArray(R.array.close_array)
-
-        val dayAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, dayArray)
-        val openAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, openArray)
-        val closeAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, closeArray)
-
-//        day_spinner.adapter = dayAdapter
-//        open_spinner.adapter = openAdapter
-//        close_spinner.adapter = closeAdapter
-
         btn_back.setOnClickListener {
             finish()
         }
@@ -95,23 +82,22 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_register.setOnClickListener {
-            val latitude = findLatLng(applicationContext, "${tv_place_address.text}")?.latitude
-            val longitude = findLatLng(applicationContext, "${tv_place_address.text}")?.longitude
+            val latlng = findLatLng(applicationContext, "${tv_place_address.text}")
+            val latitude = latlng?.latitude.toString()
+            val longitude = latlng?.longitude.toString()
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
             val keyword = "${tv_place_keyword.text}".replace(" ", "|")
-            Log.d("Keyword", keyword)
-            if (latitude != null && longitude != null) {
-                presenter.placeRegister(
-                    keyword,
-                    "${edt_place_name.text}",
-                    realAddress,
-                    "평일 11:00 ~ 20:00",
-                    "${edt_place_phone.text}",
-                    "${edt_place_text.text}",
-                    latitude,
-                    longitude
-                )
-            }
+
+            presenter.placeRegister(
+                keyword,
+                "${edt_place_name.text}",
+                realAddress,
+                "평일 11:00 ~ 20:00",
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}",
+                latitude,
+                longitude
+            )
         }
         openingHours()
     }
@@ -190,24 +176,52 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
     }
 
-
     private fun openingHours() {
         addOpeningHourLayout()
 
         btn_add.setOnClickListener {
             addOpeningHourLayout()
         }
+
     }
 
-    private val deleteLayoutList = mutableListOf<View>()
     private fun addOpeningHourLayout() {
+        val dayArray = resources.getStringArray(R.array.day_array)
+        val openArray = resources.getStringArray(R.array.open_array)
+        val closeArray = resources.getStringArray(R.array.close_array)
+
+        val dayAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, dayArray)
+        val openAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, openArray)
+        val closeAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, closeArray)
+
         val layout = LayoutInflater.from(applicationContext)
             .inflate(R.layout.item_opening_hours, opening_hours, false)
+
+        val count = opening_hours.childCount
+        Log.d("count_call", count.toString())
+
+        opening_hours.addView(layout)
+        Log.d("count_call_1", count.toString())
         layout.findViewById<View>(R.id.delete_layout)
             .setOnClickListener {
                 opening_hours.removeView(layout)
+                Log.d("count_call", count.toString())
+                if (count <= 2) {
+                    btn_add.visibility = View.VISIBLE
+                }
             }
-        opening_hours.addView(layout)
+
+        if (count > 1) {
+            btn_add.visibility = View.GONE
+        }
+
+        layout.findViewById<Spinner>(R.id.day_spinner).adapter = dayAdapter
+        layout.findViewById<Spinner>(R.id.open_spinner).adapter = openAdapter
+        layout.findViewById<Spinner>(R.id.close_spinner).adapter = closeAdapter
+
     }
 
     companion object {

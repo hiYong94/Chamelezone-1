@@ -16,8 +16,8 @@ class JoinPresenter(
         phone: String
     ) {
         memberRepository.createMember(email, password, name, nickName, phone, object : MemberCallBack<String>{
-            override fun onSuccess(message: String) {
-                joinView.showMessage(message)
+            override fun onSuccess(response: String) {
+                joinView.showMessage(response)
             }
 
             override fun onFailure(message: String) {
@@ -28,7 +28,7 @@ class JoinPresenter(
     }
 
     override fun userLogin(email: String, password: String) {
-        memberRepository.login(email, password, object : MemberCallBack<MemberResponse>{
+        memberRepository.getMember(email, password, object : MemberCallBack<MemberResponse>{
             override fun onSuccess(response: MemberResponse) {
                 joinView.showMessage(response.nickName + "환영합니다.")
             }

@@ -53,7 +53,6 @@ class PlaceReviewTabFragment : Fragment() {
             override fun onItemClick(view: View, position: Int) {
 
                 val intent = Intent(context, ReviewImageActivity::class.java)
-
                 startActivity(intent)
             }
         })

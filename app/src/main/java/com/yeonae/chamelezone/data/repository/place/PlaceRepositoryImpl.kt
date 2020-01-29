@@ -12,8 +12,8 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         openingTime: String,
         phoneNumber: String,
         content: String,
-        latitude: Double,
-        longitude: Double,
+        latitude: String,
+        longitude: String,
         callBack: PlaceCallBack<String>
     ) {
         remoteDataSource.registerPlace(
@@ -28,12 +28,25 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
             callBack
         )
     }
-    override fun searchPlace(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>){
 
+    override fun getSearchByMap(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
+        remoteDataSource.getSearchByMap(placeName, callBack)
     }
 
-    override fun getPlace() {
+    override fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
+        remoteDataSource.getSearchByName(name, callBack)
+    }
 
+    override fun getSearchByAddress(address: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
+        remoteDataSource.getSearchByAddress(address, callBack)
+    }
+
+    override fun getSearchByKeyword(keyword: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
+        remoteDataSource.getSearchByKeyword(keyword, callBack)
+    }
+
+    override fun getPlaceDetail(placeNumber: String, callBack: PlaceCallBack<PlaceResponse>) {
+        remoteDataSource.getPlaceDetail(placeNumber, callBack)
     }
 
     override fun deletePlace() {
