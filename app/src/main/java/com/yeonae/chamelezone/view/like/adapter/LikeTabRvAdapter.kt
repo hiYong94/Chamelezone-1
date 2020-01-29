@@ -3,12 +3,13 @@ package com.yeonae.chamelezone.view.like.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.ext.glideImageSet
 import kotlinx.android.synthetic.main.item_like.view.*
 
-class LikeTabRvAdapter(private var items : ArrayList<Place>) : RecyclerView.Adapter<LikeTabRvAdapter.LikeViewHolder>() {
+class LikeTabRvAdapter(private var items: ArrayList<Place>) :
+    RecyclerView.Adapter<LikeTabRvAdapter.LikeViewHolder>() {
 
     //private var items = mutableListOf<Place>()
     private var onClickListener: OnClickListener? = null
@@ -44,17 +45,13 @@ class LikeTabRvAdapter(private var items : ArrayList<Place>) : RecyclerView.Adap
                 setOnClickListener {
                     listener?.onClick(item)
                 }
-                Glide.with(itemView.context)
-                    .load(
-                        itemView.resources.getIdentifier(
-                            item.placeImg,
-                            "drawable",
-                            itemView.context.packageName
-                        )
-                    )
-                    .override(itemView.measuredWidth, itemView.measuredHeight)
-                    .centerCrop()
-                    .into(itemView.like_img)
+                like_img.glideImageSet(
+                    itemView.resources.getIdentifier(
+                        item.placeImg,
+                        "drawable",
+                        itemView.context.packageName
+                    ), itemView.measuredWidth, itemView.measuredHeight
+                )
                 tv_place_name.text = item.placeName
                 tv_place_keyword.text = item.placeKeyword
                 tv_place_address.text = item.placeAddress
