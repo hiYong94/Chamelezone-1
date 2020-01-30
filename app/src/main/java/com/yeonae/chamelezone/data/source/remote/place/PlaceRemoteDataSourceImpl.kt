@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.api.PlaceApi
-import com.yeonae.chamelezone.network.api.RetrofitConnection
+import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
 import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -130,8 +130,9 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<PlaceResponse>,
                 response: Response<PlaceResponse>
             ) {
-                response.body()?.let { callBack.onSuccess(it) }
-                Log.d("yeon_detail", response.body().toString())
+                if (response.isSuccessful) {
+                    response.body()?.let { callBack.onSuccess(it) }
+                }
             }
 
             override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
@@ -140,8 +141,9 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
         })
     }
+
     override fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>) {
-        RetrofitConnection.keywordService.getKeywordList().enqueue(object : Callback<List<KeywordResponse>> {
+        keywordService.getKeywordList().enqueue(object : Callback<List<KeywordResponse>> {
             override fun onFailure(call: Call<List<KeywordResponse>>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
