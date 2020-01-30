@@ -1,7 +1,6 @@
 package com.yeonae.chamelezone.view.place
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,8 @@ import com.yeonae.chamelezone.view.place.presenter.PlaceInfoContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceInfoPresenter
 import kotlinx.android.synthetic.main.fragment_place_info_tab.*
 
-class PlaceInfoTabFragment(val placeNumber: Int) : Fragment(), PlaceInfoContract.View {
+class PlaceInfoTabFragment() : Fragment(), PlaceInfoContract.View {
+    private val PLACE_NUMBER = "placeNumber"
     override fun placeInfo(place: PlaceResponse) {
         tv_keyword.text = place.keywordName
         tv_address.text = place.address
@@ -37,7 +37,15 @@ class PlaceInfoTabFragment(val placeNumber: Int) : Fragment(), PlaceInfoContract
         presenter = PlaceInfoPresenter(
             Injection.placeRepository(requireContext()), this
         )
-        Log.d("placeNumber", placeNumber.toString())
-        presenter.placeDetail(placeNumber)
+
+        arguments?.getInt(PLACE_NUMBER)?.let { presenter.placeDetail(it) }
+    }
+
+    companion object {
+        fun newInstance(placeNumber: Int) = PlaceInfoTabFragment().apply {
+            arguments = Bundle().apply {
+                putInt(PLACE_NUMBER, placeNumber)
+            }
+        }
     }
 }

@@ -11,7 +11,7 @@ class PlaceDetailPagerAdapter(
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
         return when(position) {
-            0 -> {PlaceInfoTabFragment(placeNumber)}
+            0 -> {PlaceInfoTabFragment.newInstance(placeNumber)}
             else -> {PlaceReviewTabFragment()}
         }
     }
