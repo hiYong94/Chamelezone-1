@@ -4,15 +4,18 @@ import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
 import com.yeonae.chamelezone.data.repository.review.ReviewRepository
 import com.yeonae.chamelezone.network.model.ReviewResponse
 
-class MyReviewPresenter(private val reviewRepository: ReviewRepository, private val myReviewView: MyReviewContract.View) : MyReviewContract.Presenter {
+class MyReviewPresenter(
+    private val reviewRepository: ReviewRepository,
+    private val myReviewView: MyReviewContract.View
+) : MyReviewContract.Presenter {
     override fun userReview(userId: String) {
-        reviewRepository.getMyReview(userId, object : ReviewCallBack<List<ReviewResponse>>{
+        reviewRepository.getMyReviewList(userId, object : ReviewCallBack<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
                 myReviewView.showMyReviewList(response)
             }
 
             override fun onFailure(message: String) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
         })
     }
