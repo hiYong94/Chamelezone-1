@@ -31,6 +31,7 @@
                         android:src="@drawable/ic_keyword_research"/>
 
                     <TextView
+                        android:id="@+id/tv_keyword"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -69,6 +70,7 @@
                         android:adjustViewBounds="true"/>
 
                     <TextView
+                        android:id="@+id/tv_address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -106,6 +108,7 @@
                         android:src="@drawable/ic_clock_circular_outline" />
 
                     <TextView
+                        android:id="@+id/tv_opening_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -143,6 +146,7 @@
                         android:src="@drawable/ic_smartphone" />
 
                     <TextView
+                        android:id="@+id/tv_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
@@ -183,6 +187,7 @@
                         android:textSize="18sp" />
 
                     <TextView
+                        android:id="@+id/tv_content"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
