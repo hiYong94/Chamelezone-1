@@ -11,4 +11,5 @@ object RetrofitConnection {
 
     val memberService = retrofit.create<MemberApi>(MemberApi::class.java)
     val placeService = retrofit.create<PlaceApi>(PlaceApi::class.java)
+    val reviewService = retrofit.create<ReviewApi>(ReviewApi::class.java)
 }
