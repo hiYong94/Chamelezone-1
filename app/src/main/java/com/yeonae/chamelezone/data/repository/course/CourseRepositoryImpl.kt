@@ -22,12 +22,21 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun getMyCourseList() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun deleteCourse() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun modifyCourse() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    companion object {
+        fun getInstance(remoteDataSource: CourseRemoteDataSource): CourseRepository =
+            CourseRepositoryImpl(remoteDataSource)
     }
 
 }
