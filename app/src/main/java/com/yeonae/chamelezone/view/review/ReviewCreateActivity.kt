@@ -12,21 +12,33 @@ import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.repository.review.ReviewRepositoryImpl
+import com.yeonae.chamelezone.data.source.remote.review.ReviewRemoteDataSourceImpl
 import com.yeonae.chamelezone.ext.catchFocus
+import com.yeonae.chamelezone.network.api.RetrofitConnection
+import com.yeonae.chamelezone.view.review.presenter.ReviewContract
+import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import kotlinx.android.synthetic.main.activity_review_create.*
 
-class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
+class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener, ReviewContract.View {
+    override lateinit var presenter: ReviewContract.Presenter
+
+    override fun review(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        finish()
+    }
+
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
 
         uris.forEach { uri ->
             val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
-                imageContainer,
+                image_container,
                 false
             ) as ImageView
-            if(imageContainer.childCount != 4){
-                imageContainer.addView(iv)
+            if(image_container.childCount != 4){
+                image_container.addView(iv)
                 Glide.with(this).load(uri).into(iv)
             }
         }
@@ -41,6 +53,18 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             finish()
         }
         setupGUI()
+
+        presenter = ReviewPresenter(
+            ReviewRepositoryImpl.getInstance(
+                ReviewRemoteDataSourceImpl.getInstance(RetrofitConnection.reviewService)
+            ), this
+        )
+
+        btn_register.setOnClickListener {
+            val content = "${edt_review.text}"
+
+            presenter.reviewCreate("", "", "", content)
+        }
     }
 
     private val permissionListener: PermissionListener = object : PermissionListener {
@@ -76,7 +100,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             checkPermission()
             pickMulti()
         }
-        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+        btn_image_clear.setOnClickListener { image_container.removeAllViews() }
     }
 
     private fun checkPermission(){

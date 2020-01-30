@@ -9,7 +9,6 @@ interface ReviewRemoteDataSource {
         nickname: String,
         reviewImg: String,
         content: String,
-        result: String,
         callBack: ReviewCallBack<String>
     )
 
