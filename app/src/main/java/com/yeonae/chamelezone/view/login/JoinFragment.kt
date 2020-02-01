@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
 import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSourceImpl
@@ -43,10 +44,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         join_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = JoinPresenter(
-            MemberRepositoryImpl.getInstance(
-                MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService),
-                MemberLocalDataSourceImpl.getInstance(UserDatabase.getInstance(requireContext()))
-            ), this
+            Injection.memberRepository(requireContext()), this
         )
         checkType()
 

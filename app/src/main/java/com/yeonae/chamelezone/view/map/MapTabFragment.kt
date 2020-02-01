@@ -25,10 +25,8 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.App
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
-import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
-import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.home.HomeActivity
 import com.yeonae.chamelezone.view.map.presenter.MapContract
@@ -39,7 +37,8 @@ import java.util.*
 class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
     override fun placeInfo(placeList: List<PlaceResponse>) {
         for (i in placeList.indices) {
-            val searchLatLng = LatLng(placeList[i].latitude.toDouble(), placeList[i].longitude.toDouble())
+            val searchLatLng =
+                LatLng(placeList[i].latitude.toDouble(), placeList[i].longitude.toDouble())
             val markerOptions = MarkerOptions().apply {
                 position(searchLatLng)
                 title(placeList[i].name)
@@ -51,7 +50,11 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
                 setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
                     override fun onMarkerClick(p0: Marker?): Boolean {
                         (activity as? HomeActivity)?.back(MarkerInfoFragment())
-                        (activity as? HomeActivity)?.replace(MarkerInfoFragment.newInstance(placeList[i]), true)
+                        (activity as? HomeActivity)?.replace(
+                            MarkerInfoFragment.newInstance(
+                                placeList[i]
+                            ), true
+                        )
                         return false
                     }
 
@@ -107,9 +110,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
         map_view.onCreate(savedInstanceState)
 
         presenter = MapPresenter(
-            PlaceRepositoryImpl.getInstance(
-                PlaceRemoteDataSourceImpl.getInstance(RetrofitConnection.placeService)
-            ), this
+            Injection.placeRepository(requireContext()), this
         )
 
         checkPermission()
@@ -185,16 +186,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
             locationCallBack,
             Looper.myLooper()
         )
-    }
-
-    private fun getCurrentAddress(latLng: LatLng): String {
-        val geoCoder = Geocoder(App.instance.context(), Locale.getDefault())
-        val addresses = geoCoder.getFromLocation(
-            latLng.latitude,
-            latLng.longitude,
-            1
-        )
-        return addresses[0].getAddressLine(0).toString()
     }
 
     private fun keyBoard() {

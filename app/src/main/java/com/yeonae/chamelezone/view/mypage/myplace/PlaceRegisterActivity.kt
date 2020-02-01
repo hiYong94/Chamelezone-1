@@ -21,10 +21,9 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
-import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
-import com.yeonae.chamelezone.network.api.RetrofitConnection
+import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
@@ -32,6 +31,16 @@ import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
+
+    private val array = mutableListOf<String>()
+    override fun showKeywordList(response: List<KeywordResponse>) {
+        Log.d("yeon_array1", response.toString())
+        for (i in response.indices) {
+            array.add(response[i].keywordName)
+            Log.d("yeon_array2", array.toString())
+        }
+    }
+
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
         imageContainer.removeAllViews()
@@ -60,10 +69,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         setupGUI()
 
         presenter = PlacePresenter(
-            PlaceRepositoryImpl.getInstance(
-                PlaceRemoteDataSourceImpl.getInstance(RetrofitConnection.placeService)
-            ), this
+            Injection.placeRepository(applicationContext), this
         )
+        presenter.getKeyword()
 
         edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
         edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -78,13 +86,13 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_category_choice.setOnClickListener {
-            categoryDialog()
+            categoryDialog(array.toTypedArray())
         }
 
         btn_register.setOnClickListener {
-            val latlng = findLatLng(applicationContext, "${tv_place_address.text}")
-            val latitude = latlng?.latitude.toString()
-            val longitude = latlng?.longitude.toString()
+            val latLng = findLatLng(applicationContext, "${tv_place_address.text}")
+            val latitude = latLng?.latitude.toString()
+            val longitude = latLng?.longitude.toString()
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
             val keyword = "${tv_place_keyword.text}".replace(" ", "|")
 
@@ -130,16 +138,14 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     }
 
 
-    private fun categoryDialog() {
+    private fun categoryDialog(items: Array<String>) {
         val builder = AlertDialog.Builder(this)
         val selectedItems = ArrayList<String>()
-        val items = resources.getStringArray(R.array.keyword)
-
         builder.setTitle("키워드")
-        builder.setMultiChoiceItems(R.array.keyword, null,
+        builder.setMultiChoiceItems(items, null,
             DialogInterface.OnMultiChoiceClickListener { dialog, which, isChecked ->
                 if (isChecked) {
-                    selectedItems.add(items[which])
+                    selectedItems.add(items[which]!!)
                 } else if (selectedItems.contains(items[which])) {
                     selectedItems.remove(items[which])
                 }
