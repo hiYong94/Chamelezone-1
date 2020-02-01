@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.repository.place
 
 import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSource
+import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 
 class PlaceRepositoryImpl private constructor(private val remoteDataSource: PlaceRemoteDataSource) :
@@ -45,8 +46,12 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.getSearchByKeyword(keyword, callBack)
     }
 
-    override fun getPlaceDetail(placeNumber: String, callBack: PlaceCallBack<PlaceResponse>) {
+    override fun getPlaceDetail(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
         remoteDataSource.getPlaceDetail(placeNumber, callBack)
+    }
+
+    override fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>) {
+        remoteDataSource.getKeyword(callBack)
     }
 
     override fun deletePlace() {
