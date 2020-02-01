@@ -1,10 +1,13 @@
 package com.yeonae.chamelezone.view.mypage.myplace.presenter
 
+import com.yeonae.chamelezone.network.model.KeywordResponse
+
 interface PlaceContract {
 
     interface View {
         var presenter: Presenter
         fun place(message: String)
+        fun showKeywordList(response: List<KeywordResponse>)
     }
 
     interface Presenter {
@@ -17,5 +20,7 @@ interface PlaceContract {
             content: String,
             latitude: String,
             longitude: String)
+
+        fun getKeyword()
     }
 }

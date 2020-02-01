@@ -1,9 +1,10 @@
-package com.yeonae.chamelezone.data.repository.course
+package com.yeonae.chamelezone.data.source.remote.course
 
-import com.yeonae.chamelezone.data.source.remote.course.CourseRemoteDataSource
+import com.yeonae.chamelezone.data.repository.course.CourseCallBack
+import com.yeonae.chamelezone.network.api.CourseApi
+import com.yeonae.chamelezone.network.api.RetrofitConnection.courseService
 
-class CourseRepositoryImpl private constructor(private val remoteDataSource: CourseRemoteDataSource) :
-    CourseRepository {
+class CourseRemoteDataSourceImpl private constructor(private val courseApi: CourseApi) : CourseRemoteDataSource {
     override fun registerCourse(
         memberNumber: Int,
         placeNumber: Int,
@@ -11,7 +12,7 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         content: String,
         callBack: CourseCallBack<String>
     ) {
-        remoteDataSource.registerCourse(memberNumber, placeNumber, title, content, callBack)
+
     }
 
     override fun getCourseList() {
@@ -22,21 +23,12 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getMyCourseList() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     override fun deleteCourse() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun modifyCourse() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    companion object {
-        fun getInstance(remoteDataSource: CourseRemoteDataSource): CourseRepository =
-            CourseRepositoryImpl(remoteDataSource)
     }
 
 }

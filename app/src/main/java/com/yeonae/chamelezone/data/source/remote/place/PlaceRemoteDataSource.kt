@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 
 interface PlaceRemoteDataSource {
@@ -20,7 +21,8 @@ interface PlaceRemoteDataSource {
     fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>)
     fun getSearchByAddress(address: String, callBack: PlaceCallBack<List<PlaceResponse>>)
     fun getSearchByKeyword(keyword: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getPlaceDetail(placeNumber: String, callBack: PlaceCallBack<PlaceResponse>)
+    fun getPlaceDetail(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>)
+    fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>)
     fun deletePlace()
     fun modifyPlace()
 }

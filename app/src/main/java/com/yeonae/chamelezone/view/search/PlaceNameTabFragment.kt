@@ -7,11 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
-import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
-import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
-import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
@@ -37,6 +35,7 @@ class PlaceNameTabFragment : Fragment(), SearchContract.View {
     override fun showPlaceList(placeList: List<PlaceResponse>) {
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,9 +46,7 @@ class PlaceNameTabFragment : Fragment(), SearchContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = SearchPresenter(
-            PlaceRepositoryImpl.getInstance(
-                PlaceRemoteDataSourceImpl.getInstance(RetrofitConnection.placeService)
-            ), this
+            Injection.placeRepository(requireContext()), this
         )
         setAdapter()
 

@@ -7,11 +7,11 @@ import com.yeonae.chamelezone.view.place.PlaceInfoTabFragment
 import com.yeonae.chamelezone.view.place.PlaceReviewTabFragment
 
 class PlaceDetailPagerAdapter(
-    fm: FragmentManager
+    fm: FragmentManager,  val placeNumber: Int
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
         return when(position) {
-            0 -> {PlaceInfoTabFragment()}
+            0 -> {PlaceInfoTabFragment.newInstance(placeNumber)}
             else -> {PlaceReviewTabFragment()}
         }
     }
