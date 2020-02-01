@@ -1,6 +1,8 @@
-package com.yeonae.chamelezone.data.repository.course
+package com.yeonae.chamelezone.data.source.remote.course
 
-interface CourseRepository {
+import com.yeonae.chamelezone.data.repository.course.CourseCallBack
+
+interface CourseRemoteDataSource {
     fun registerCourse(
         memberNumber: Int,
         placeNumber: Int,

@@ -4,5 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class KeywordResponse(
     @SerializedName("keywordNumber")
-    val keywordNumber: Int
+    val keywordNumber: Int,
+    @SerializedName("name")
+    val keywordName: String
 )
