@@ -30,14 +30,14 @@ class ReviewModifyFragment : Fragment(), BottomSheetImagePicker.OnImagesSelected
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
 
-        imageContainer.removeAllViews()
+        image_container.removeAllViews()
         uris.forEach { uri ->
             val iv = LayoutInflater.from(this.context).inflate(
                 R.layout.slider_item_image,
-                imageContainer,
+                image_container,
                 false
             ) as ImageView
-            imageContainer.addView(iv)
+            image_container.addView(iv)
             Glide.with(this).load(uri).into(iv)
         }
     }
@@ -58,6 +58,6 @@ class ReviewModifyFragment : Fragment(), BottomSheetImagePicker.OnImagesSelected
 
     private fun setupGUI() {
         btn_image_create.setOnClickListener { pickMulti() }
-        btn_image_create.setOnClickListener { imageContainer.removeAllViews() }
+        btn_image_create.setOnClickListener { image_container.removeAllViews() }
     }
 }
