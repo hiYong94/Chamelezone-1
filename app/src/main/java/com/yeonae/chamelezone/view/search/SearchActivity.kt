@@ -1,7 +1,10 @@
 package com.yeonae.chamelezone.view.search
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentStatePagerAdapter
+import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.tabs.TabLayout
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.search.adapter.SearchTabAdapter
@@ -44,5 +47,18 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
             finish()
         }
 
+        btn_search.setOnClickListener {
+            supportFragmentManager.fragments.forEach {
+                if(it is PlaceNameTabFragment){
+                    it.searchByName("${edt_search.text}")
+                }
+                if(it is AddressTabFragment){
+                    it.searchByAddress("${edt_search.text}")
+                }
+                if(it is KeywordTabFragment){
+                    it.searchByKeyword("${edt_search.text}")
+                }
+            }
+        }
     }
 }
