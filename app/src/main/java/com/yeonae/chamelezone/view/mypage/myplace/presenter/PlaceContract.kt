@@ -1,25 +1,26 @@
 package com.yeonae.chamelezone.view.mypage.myplace.presenter
 
 import com.yeonae.chamelezone.network.model.KeywordResponse
+import java.math.BigDecimal
 
 interface PlaceContract {
 
     interface View {
         var presenter: Presenter
-        fun place(message: String)
+        fun showMessage(message: String)
         fun showKeywordList(response: List<KeywordResponse>)
     }
 
     interface Presenter {
         fun placeRegister(
-            keywordName: String,
+            keywordName: MutableList<Int>,
             name: String,
             address: String,
-            openingTime: String,
+            openingTime: MutableList<String>,
             phoneNumber: String,
             content: String,
-            latitude: String,
-            longitude: String)
+            latitude: BigDecimal,
+            longitude: BigDecimal)
 
         fun getKeyword()
     }

@@ -3,33 +3,21 @@ package com.yeonae.chamelezone.view.mypage.myplace.presenter
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.network.model.KeywordResponse
+import java.math.BigDecimal
 
 class PlacePresenter(
     private val placeRepository: PlaceRepository,
     private val placeView: PlaceContract.View
 ) : PlaceContract.Presenter {
-    override fun getKeyword() {
-        placeRepository.getKeyword(object : PlaceCallBack<List<KeywordResponse>> {
-            override fun onSuccess(response: List<KeywordResponse>) {
-                placeView.showKeywordList(response)
-            }
-
-            override fun onFailure(message: String) {
-
-            }
-
-        })
-    }
-
     override fun placeRegister(
-        keywordName: String,
+        keywordName: MutableList<Int>,
         name: String,
         address: String,
-        openingTime: String,
+        openingTime: MutableList<String>,
         phoneNumber: String,
         content: String,
-        latitude: String,
-        longitude: String
+        latitude: BigDecimal,
+        longitude: BigDecimal
     ) {
         placeRepository.registerPlace(
             keywordName,
@@ -42,7 +30,7 @@ class PlacePresenter(
             longitude,
             object : PlaceCallBack<String> {
                 override fun onSuccess(message: String) {
-                    placeView.place(message)
+                    placeView.showMessage(message)
                 }
 
                 override fun onFailure(message: String) {
@@ -51,5 +39,18 @@ class PlacePresenter(
 
             }
         )
+    }
+
+    override fun getKeyword() {
+        placeRepository.getKeyword(object : PlaceCallBack<List<KeywordResponse>> {
+            override fun onSuccess(response: List<KeywordResponse>) {
+                placeView.showKeywordList(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
     }
 }
