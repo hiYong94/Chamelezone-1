@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.yeonae.chamelezone.network.room.dao.UserDao
-import com.yeonae.chamelezone.network.room.entity.User
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [UserEntity::class], version = 1)
 abstract class UserDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
 

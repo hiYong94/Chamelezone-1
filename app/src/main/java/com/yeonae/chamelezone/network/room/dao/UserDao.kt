@@ -1,19 +1,19 @@
 package com.yeonae.chamelezone.network.room.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import com.yeonae.chamelezone.network.room.entity.User
+import androidx.room.*
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 @Dao
 interface UserDao {
     @Query("SELECT * FROM user")
-    fun getUser(): List<User>
+    fun getUser(): UserEntity
 
-    @Insert
-    fun insertUser(user: User)
+    @Query("SELECT COUNT(*) FROM USER")
+    fun getUserCount(): Int
 
-    @Delete
-    fun deleteUser(user: User)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUser(userEntity: UserEntity)
+
+    @Query("DELETE FROM user")
+    fun deleteUser()
 }
