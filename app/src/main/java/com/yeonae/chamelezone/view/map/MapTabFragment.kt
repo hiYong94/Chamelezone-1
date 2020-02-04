@@ -53,7 +53,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
                         (activity as? HomeActivity)?.replace(
                             MarkerInfoFragment.newInstance(
                                 placeList[i]
-                            ), true
+                            ), false
                         )
                         return false
                     }
