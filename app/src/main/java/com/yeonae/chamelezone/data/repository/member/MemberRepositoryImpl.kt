@@ -20,7 +20,11 @@ class MemberRepositoryImpl private constructor(
         remoteDataSource.createMember(email, password, name, nickName, phone, callBack)
     }
 
-    override fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
+    override fun getMember(
+        email: String,
+        password: String,
+        callBack: MemberCallBack<MemberResponse>
+    ) {
         remoteDataSource.getMember(email, password, object : MemberCallBack<MemberResponse> {
             override fun onSuccess(response: MemberResponse) {
                 callBack.onSuccess(response)
@@ -31,6 +35,10 @@ class MemberRepositoryImpl private constructor(
 
             }
         })
+    }
+
+    override fun logout(callBack: MemberCallBack<String>) {
+        localDataSource.logout(callBack)
     }
 
     override fun updateMember(

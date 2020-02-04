@@ -14,6 +14,8 @@ interface MemberRepository {
 
     fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>)
 
+    fun logout(callBack: MemberCallBack<String>)
+
     fun updateMember(
         memberNumber: Int,
         password: String,
