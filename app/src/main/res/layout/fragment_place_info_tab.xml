@@ -5,9 +5,14 @@
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="800dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -223,9 +228,10 @@
                     android:textColor="@color/colorBlack"
                     android:textSize="18sp" />
 
-
             </LinearLayout>
 
         </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </LinearLayout>
