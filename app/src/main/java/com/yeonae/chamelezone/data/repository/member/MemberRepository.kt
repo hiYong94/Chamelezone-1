@@ -25,6 +25,8 @@ interface MemberRepository {
     )
 
     fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>)
+
+    fun checkLogin(callBack: MemberCallBack<Boolean>)
 }
 
 

@@ -6,5 +6,5 @@ import com.yeonae.chamelezone.network.model.MemberResponse
 interface MemberLocalDataSource {
     fun loggedLogin(memberResponse: MemberResponse)
     fun logout(callBack: MemberCallBack<String>)
-    fun isLogged(callBack: MemberCallBack<Boolean>):Boolean
+    fun isLogged(callBack: MemberCallBack<Boolean>)
 }

@@ -55,6 +55,10 @@ class MemberRepositoryImpl private constructor(
         remoteDataSource.deleteMember(memberNumber, callBack)
     }
 
+    override fun checkLogin(callBack: MemberCallBack<Boolean>) {
+        localDataSource.isLogged(callBack)
+    }
+
     companion object {
         fun getInstance(
             remoteDataSource: MemberRemoteDataSource,
