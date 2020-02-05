@@ -17,6 +17,7 @@ import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import kotlinx.android.synthetic.main.activity_course_register.*
+import kotlinx.android.synthetic.main.slider_item_image.*
 
 class CourseRegisterActivity : AppCompatActivity(),
     BottomSheetImagePicker.OnImagesSelectedListener {
@@ -30,7 +31,11 @@ class CourseRegisterActivity : AppCompatActivity(),
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            Glide.with(this).load(uri).into(iv)
+            Glide.with(this)
+                .load(uri)
+                .override(image_item.measuredWidth, image_item.measuredHeight)
+                .centerCrop()
+                .into(iv)
         }
     }
 
