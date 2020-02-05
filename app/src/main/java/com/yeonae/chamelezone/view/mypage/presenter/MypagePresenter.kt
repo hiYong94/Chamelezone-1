@@ -19,4 +19,17 @@ class MypagePresenter(
 
         })
     }
+
+    override fun checkLogin() {
+        repository.checkLogin(object : MemberCallBack<Boolean>{
+            override fun onSuccess(response: Boolean) {
+                view.showLoginView(response)
+            }
+
+            override fun onFailure(message: String) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
+    }
 }
