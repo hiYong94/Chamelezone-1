@@ -12,4 +12,5 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="lightGray">#D5D5D5</color>
     <color name="btn_corner">#EAEAEA</color>
+    <color name="gray">#FBFBFB</color>
 </resources>
