@@ -11,6 +11,7 @@ interface CourseRepository {
 
     fun getCourseList()
     fun getCourseDetail()
+    fun getMyCourseList()
     fun deleteCourse()
     fun modifyCourse()
 }

@@ -1,7 +1,6 @@
 package com.yeonae.chamelezone.data.source.local.member
 
 import android.util.Log
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.network.model.MemberResponse
 import com.yeonae.chamelezone.network.room.database.UserDatabase
 import com.yeonae.chamelezone.network.room.entity.User
