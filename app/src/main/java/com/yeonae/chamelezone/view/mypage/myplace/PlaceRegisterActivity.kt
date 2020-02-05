@@ -27,6 +27,7 @@ import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
+import kotlinx.android.synthetic.main.slider_item_image.*
 import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
@@ -51,7 +52,11 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            Glide.with(this).load(uri).into(iv)
+            Glide.with(this)
+                .load(uri)
+                .override(image_item.measuredWidth, image_item.measuredHeight)
+                .centerCrop()
+                .into(iv)
         }
     }
 
