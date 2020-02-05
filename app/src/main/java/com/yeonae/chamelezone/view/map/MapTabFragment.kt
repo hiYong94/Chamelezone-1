@@ -3,7 +3,6 @@ package com.yeonae.chamelezone.view.map
 import android.Manifest
 import android.content.ContentValues.TAG
 import android.graphics.Rect
-import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.os.Looper
@@ -24,15 +23,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.AlertDialogFragment
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.util.App
 import com.yeonae.chamelezone.view.home.HomeActivity
 import com.yeonae.chamelezone.view.map.presenter.MapContract
 import com.yeonae.chamelezone.view.map.presenter.MapPresenter
 import kotlinx.android.synthetic.main.fragment_map_tab.*
-import java.util.*
 
 class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
     override fun placeInfo(placeList: List<PlaceResponse>) {
