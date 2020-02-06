@@ -17,12 +17,12 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.glideImageUriSet
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
@@ -52,11 +52,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            Glide.with(this)
-                .load(uri)
-                .override(image_item.measuredWidth, image_item.measuredHeight)
-                .centerCrop()
-                .into(iv)
+            glideImageUriSet(this, uri, image_item.measuredWidth, image_item.measuredHeight, iv)
         }
     }
 

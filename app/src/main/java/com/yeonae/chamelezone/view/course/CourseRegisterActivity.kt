@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
@@ -16,6 +15,7 @@ import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.ext.glideImageUriSet
 import kotlinx.android.synthetic.main.activity_course_register.*
 import kotlinx.android.synthetic.main.slider_item_image.*
 
@@ -31,11 +31,7 @@ class CourseRegisterActivity : AppCompatActivity(),
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            Glide.with(this)
-                .load(uri)
-                .override(image_item.measuredWidth, image_item.measuredHeight)
-                .centerCrop()
-                .into(iv)
+            glideImageUriSet(this, uri, image_item.measuredWidth, image_item.measuredHeight, iv)
         }
     }
 
