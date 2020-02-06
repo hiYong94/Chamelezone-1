@@ -15,6 +15,8 @@ import retrofit2.Response
 import java.io.File
 
 class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemoteDataSource {
+
+
     override fun createReview(
         placeName: String,
         nickname: String,
@@ -35,7 +37,8 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
 
         reviewService.reviewCreate(jsonObject, imageReq).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                callBack.onSuccess("리뷰 등록 성공")
+                if (response.isSuccessful)
+                    response.body().let { callBack.onSuccess("리뷰 등록 성공") }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -45,7 +48,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
     }
 
     override fun getReviewList(reviewNum: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
-        reviewService.getReviewList(reviewNum).enqueue(object : Callback<ReviewResponse>{
+        reviewService.getReviewList(reviewNum).enqueue(object : Callback<ReviewResponse> {
             override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
 
             }
