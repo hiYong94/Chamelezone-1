@@ -48,7 +48,7 @@ class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
 
     override fun onBindViewHolder(holder: PlaceReviewViewHolder, position: Int) {
         if (::moreButtonListener.isInitialized) {
-            holder.bind(reviewList[position], moreButtonListener)
+            holder.bind(reviewList[position])
         }
     }
 
@@ -65,7 +65,7 @@ class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
         private val reviewContent: TextView = itemView.findViewById(R.id.tv_review_content)
         private val moreReviewImg: LinearLayout = itemView.findViewById(R.id.iv_image)
 
-        fun bind(review: Review, moreButtonListener: MoreButtonListener) {
+        fun bind(review: Review) {
             if (review.reviewImage.isNotEmpty()) {
                 val resourceId = itemView.resources.getIdentifier(
                     review.reviewImage,

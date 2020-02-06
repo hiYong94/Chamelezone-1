@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.view.place
 
-import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +14,6 @@ import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import com.yeonae.chamelezone.view.review.ReviewImageActivity
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
-import kotlinx.android.synthetic.main.item_place_review.*
 
 class PlaceReviewTabFragment : Fragment() {
 
@@ -54,14 +52,8 @@ class PlaceReviewTabFragment : Fragment() {
 
         placeReviewRvAdapter.setItemClickListener(object : PlaceReviewTabRvAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int) {
-
                 val intent = Intent(context, ReviewImageActivity::class.java)
-                startActivityForResult(intent, REQUEST_CODE)
-
-                iv_image.setOnClickListener {
-                    val intent = Intent(context, ReviewImageActivity::class.java)
-                    startActivity(intent)
-                }
+                startActivity(intent)
             }
         })
 
@@ -79,21 +71,8 @@ class PlaceReviewTabFragment : Fragment() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE)
-            if (resultCode == RESULT_OK) {
-                val reviewImg = data?.getStringArrayExtra("imgResult")
-            }
-    }
-
     private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(childFragmentManager, bottomSheetDialogFragment.tag)
-    }
-
-    companion object {
-        const val REQUEST_CODE = 0
     }
 }
