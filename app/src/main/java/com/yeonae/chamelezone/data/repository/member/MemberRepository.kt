@@ -12,7 +12,7 @@ interface MemberRepository {
         callBack: MemberCallBack<String>
     )
 
-    fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>)
+    fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>, localCallBack: MemberCallBack<Boolean>)
 
     fun logout(callBack: MemberCallBack<String>)
 

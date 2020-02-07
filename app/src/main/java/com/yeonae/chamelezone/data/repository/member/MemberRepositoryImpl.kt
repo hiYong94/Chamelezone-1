@@ -23,12 +23,13 @@ class MemberRepositoryImpl private constructor(
     override fun getMember(
         email: String,
         password: String,
-        callBack: MemberCallBack<MemberResponse>
+        callBack: MemberCallBack<MemberResponse>,
+        localCallBack: MemberCallBack<Boolean>
     ) {
         remoteDataSource.getMember(email, password, object : MemberCallBack<MemberResponse> {
             override fun onSuccess(response: MemberResponse) {
                 callBack.onSuccess(response)
-                localDataSource.loggedLogin(response)
+                localDataSource.loggedLogin(response, localCallBack)
             }
 
             override fun onFailure(message: String) {
