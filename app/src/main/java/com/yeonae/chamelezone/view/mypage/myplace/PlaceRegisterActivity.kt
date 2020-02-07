@@ -52,7 +52,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            glideImageUriSet(this, uri, image_item.measuredWidth, image_item.measuredHeight, iv)
+            glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
         }
     }
 

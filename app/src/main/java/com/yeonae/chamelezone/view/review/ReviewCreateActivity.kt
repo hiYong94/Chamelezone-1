@@ -43,7 +43,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             ) as ImageView
             if (image_container.childCount < 4) {
                 image_container.addView(iv)
-                glideImageUriSet(this, uri, image_item.measuredWidth, image_item.measuredHeight, iv)
+                glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
             }
             if (image_container.childCount <= 4) {
                 btn_image_create.setOnClickListener {
@@ -51,7 +51,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
                     if (uris.isNotEmpty()) {
                         image_container.removeAllViews()
                         image_container.addView(iv)
-                        glideImageUriSet(this, uri, image_item.measuredWidth, image_item.measuredHeight, iv)
+                        glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
                     }
                 }
             }

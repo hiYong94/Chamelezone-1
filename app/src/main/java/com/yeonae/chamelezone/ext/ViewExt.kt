@@ -23,8 +23,8 @@ fun ImageView.glideImageSet(image: Int, width: Int, height: Int) {
         .into(this)
 }
 
-fun glideImageUriSet(view: Activity, image: Uri, width: Int, height: Int, imageView: ImageView) {
-    Glide.with(view)
+fun Activity.glideImageUriSet(image: Uri, width: Int, height: Int, imageView: ImageView) {
+    Glide.with(this)
         .load(image)
         .override(width, height)
         .centerCrop()
