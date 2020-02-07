@@ -17,7 +17,7 @@ class LoginFragment : Fragment(), JoinContract.View {
     override fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG)
             .show()
-        (activity as LoginActivity).finish()
+        (activity as? LoginActivity)?.finish()
     }
 
     override lateinit var presenter: JoinContract.Presenter
