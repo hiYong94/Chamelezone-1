@@ -32,7 +32,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
+                if (response.code() == 200) {
                     callBack.onSuccess("코스 등록 성공")
                 }
             }
@@ -50,7 +50,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 call: Call<List<CourseResponse>>,
                 response: Response<List<CourseResponse>>
             ) {
-                if (response.isSuccessful) {
+                if (response.code() == 200) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -67,7 +67,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 call: Call<CourseResponse>,
                 response: Response<CourseResponse>
             ) {
-                if (response.isSuccessful) {
+                if (response.code() == 200) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -89,7 +89,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     call: Call<List<CourseResponse>>,
                     response: Response<List<CourseResponse>>
                 ) {
-                    if (response.isSuccessful) {
+                    if (response.code() == 200) {
                         response.body()?.let { callBack.onSuccess(it) }
                     }
                 }
@@ -108,7 +108,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
+                if (response.code() == 200) {
                     callBack.onSuccess("코스 삭제 성공")
                 }
             }
