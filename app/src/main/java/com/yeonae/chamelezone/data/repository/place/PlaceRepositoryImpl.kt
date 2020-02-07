@@ -8,14 +8,15 @@ import java.math.BigDecimal
 class PlaceRepositoryImpl private constructor(private val remoteDataSource: PlaceRemoteDataSource) :
     PlaceRepository {
     override fun registerPlace(
-        keywordName: MutableList<Int>,
+        keywordName: List<Int>,
         name: String,
         address: String,
-        openingTime: MutableList<String>,
+        openingTime: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
+        images: String,
         callBack: PlaceCallBack<String>
     ) {
         remoteDataSource.registerPlace(
@@ -27,6 +28,7 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
             content,
             latitude,
             longitude,
+            images,
             callBack
         )
     }

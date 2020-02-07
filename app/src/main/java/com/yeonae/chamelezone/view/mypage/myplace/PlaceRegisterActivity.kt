@@ -12,7 +12,10 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ImageView
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import com.bumptech.glide.Glide
@@ -29,6 +32,7 @@ import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
+    private var imageUri = arrayListOf<String>()
     private val openingTime = mutableListOf<String>()
     private val keywordMap = hashMapOf<Int, String>()
     private val keyword = mutableListOf<Int>()
@@ -50,7 +54,14 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             ) as ImageView
             imageContainer.addView(iv)
             Glide.with(this).load(uri).into(iv)
+            Log.d("placeRegisterUri", uri.toString())
+            Log.d("placeRegisterUri", uri.path)
         }
+        for (i in uris.indices) {
+            uris[i].path?.let { imageUri.add(it) }
+            Log.d("placeRegisterUri", uris[i].path)
+        }
+        Log.d("placeRegisterUri", imageUri.toString())
     }
 
     override fun showMessage(message: String) {
@@ -94,6 +105,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
             Log.d("latitude", latitude.toString())
             Log.d("longitude", longitude.toString())
+            Log.d("uri", imageUri.toString())
 
             if (latitude != null && longitude != null) {
                 presenter.placeRegister(
@@ -104,7 +116,8 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                     "${edt_place_phone.text}",
                     "${edt_place_text.text}",
                     latitude,
-                    longitude
+                    longitude,
+                    imageUri.toString()
                 )
             }
         }
@@ -177,7 +190,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
     private fun pickMulti() {
         BottomSheetImagePicker.Builder(getString(R.string.file_provider))
-            .multiSelect(2, 4)
+            .multiSelect(1, 4)
             .multiSelectTitles(
                 R.plurals.pick_multi,
                 R.plurals.pick_multi_more,
@@ -240,16 +253,16 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         layout.findViewById<Spinner>(R.id.open_spinner).adapter = openAdapter
         layout.findViewById<Spinner>(R.id.close_spinner).adapter = closeAdapter
 
-        test.setOnClickListener {
-            opening_hours.forEach {
-                val day = it.findViewById<Spinner>(R.id.day_spinner).selectedItem
-                val open = it.findViewById<Spinner>(R.id.open_spinner).selectedItem
-                val close = it.findViewById<Spinner>(R.id.close_spinner).selectedItem
-                Log.d("Spinner value is", "$day $open ${"~"} $close")
-                openingTime.add("$day $open ${"~"} $close")
-            }
-            Log.d("Spinner value is", "$openingTime")
+
+        opening_hours.forEach {
+            val day = it.findViewById<Spinner>(R.id.day_spinner).selectedItem
+            val open = it.findViewById<Spinner>(R.id.open_spinner).selectedItem
+            val close = it.findViewById<Spinner>(R.id.close_spinner).selectedItem
+            Log.d("Spinner value is", "$day $open ${"~"} $close")
+            openingTime.add("$day $open ${"~"} $close")
         }
+        Log.d("Spinner value is", "$openingTime")
+
     }
 
     companion object {

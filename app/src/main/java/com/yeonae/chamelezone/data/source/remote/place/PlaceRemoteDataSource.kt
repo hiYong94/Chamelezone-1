@@ -7,14 +7,15 @@ import java.math.BigDecimal
 
 interface PlaceRemoteDataSource {
     fun registerPlace(
-        keywordName: MutableList<Int>,
+        keywordName: List<Int>,
         name: String,
         address: String,
-        openingTime: MutableList<String>,
+        openingTime: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
+        images: String,
         callBack: PlaceCallBack<String>
     )
 

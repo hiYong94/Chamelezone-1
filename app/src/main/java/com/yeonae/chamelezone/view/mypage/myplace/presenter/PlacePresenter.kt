@@ -10,14 +10,15 @@ class PlacePresenter(
     private val placeView: PlaceContract.View
 ) : PlaceContract.Presenter {
     override fun placeRegister(
-        keywordName: MutableList<Int>,
+        keywordName: List<Int>,
         name: String,
         address: String,
-        openingTime: MutableList<String>,
+        openingTime: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
-        longitude: BigDecimal
+        longitude: BigDecimal,
+        images: String
     ) {
         placeRepository.registerPlace(
             keywordName,
@@ -28,6 +29,7 @@ class PlacePresenter(
             content,
             latitude,
             longitude,
+            images,
             object : PlaceCallBack<String> {
                 override fun onSuccess(message: String) {
                     placeView.showMessage(message)

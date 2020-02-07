@@ -13,14 +13,15 @@ interface PlaceContract {
 
     interface Presenter {
         fun placeRegister(
-            keywordName: MutableList<Int>,
+            keywordName: List<Int>,
             name: String,
             address: String,
-            openingTime: MutableList<String>,
+            openingTime: List<String>,
             phoneNumber: String,
             content: String,
             latitude: BigDecimal,
-            longitude: BigDecimal)
+            longitude: BigDecimal,
+            images: String)
 
         fun getKeyword()
     }
