@@ -20,7 +20,7 @@ class ConfirmEmailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val email = arguments!!.getString(EMAIL)
+        val email = arguments?.getString(EMAIL).orEmpty()
         tv_email.text = email
         btn_find_password.setOnClickListener {
             (activity as LoginActivity).replace(FindPasswordFragment(), true)
