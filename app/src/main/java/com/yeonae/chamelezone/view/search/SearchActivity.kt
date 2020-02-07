@@ -52,10 +52,10 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
                 if(it is PlaceNameTabFragment){
                     it.searchByName("${edt_search.text}")
                 }
-                if(it is AddressTabFragment){
+                else if(it is AddressTabFragment){
                     it.searchByAddress("${edt_search.text}")
                 }
-                if(it is KeywordTabFragment){
+                else if(it is KeywordTabFragment){
                     it.searchByKeyword("${edt_search.text}")
                 }
             }
