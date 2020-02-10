@@ -24,10 +24,12 @@ import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.glideImageUriSet
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
+import kotlinx.android.synthetic.main.slider_item_image.*
 import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
@@ -53,7 +55,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            Glide.with(this).load(uri).into(iv)
+            glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
             Log.d("placeRegisterUri", uri.toString())
             Log.d("placeRegisterUri", uri.path)
         }
