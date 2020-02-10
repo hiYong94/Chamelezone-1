@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
-import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.glideTransformations
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
 class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
@@ -72,7 +72,8 @@ class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
                     "drawable",
                     itemView.context.packageName
                 )
-                reviewImg.glideImageSet(resourceId, reviewImg.measuredWidth, reviewImg.measuredHeight)
+                reviewImg.
+                    glideTransformations(resourceId, reviewImg.measuredWidth, reviewImg.measuredHeight)
             } else {
                 reviewImg.setImageResource(R.mipmap.ic_launcher)
             }
