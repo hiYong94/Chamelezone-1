@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
+import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import com.yeonae.chamelezone.view.review.ReviewImageActivity
@@ -51,9 +52,14 @@ class PlaceReviewTabFragment : Fragment() {
 
         placeReviewRvAdapter.setItemClickListener(object : PlaceReviewTabRvAdapter.OnItemClickListener{
             override fun onItemClick(view: View, position: Int) {
-
                 val intent = Intent(context, ReviewImageActivity::class.java)
                 startActivity(intent)
+            }
+        })
+
+        placeReviewRvAdapter.setMoreButtonListener(object : PlaceReviewTabRvAdapter.MoreButtonListener{
+            override fun bottomSheetDialog() {
+                showBottomSheet()
             }
         })
     }
@@ -63,5 +69,10 @@ class PlaceReviewTabFragment : Fragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = placeReviewRvAdapter
         }
+    }
+
+    private fun showBottomSheet() {
+        val bottomSheetDialogFragment = MoreButtonFragment()
+        bottomSheetDialogFragment.show(childFragmentManager, bottomSheetDialogFragment.tag)
     }
 }

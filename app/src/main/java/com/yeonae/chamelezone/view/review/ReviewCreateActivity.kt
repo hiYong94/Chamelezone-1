@@ -1,4 +1,5 @@
 package com.yeonae.chamelezone.view.review
+
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
@@ -6,7 +7,6 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
@@ -15,13 +15,17 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.review.ReviewRepositoryImpl
 import com.yeonae.chamelezone.data.source.remote.review.ReviewRemoteDataSourceImpl
 import com.yeonae.chamelezone.ext.catchFocus
+import com.yeonae.chamelezone.ext.glideImageUriSet
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import kotlinx.android.synthetic.main.activity_review_create.*
+import kotlinx.android.synthetic.main.slider_item_image.*
 
-class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener, ReviewContract.View {
+class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener,
+    ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
+
 
     override fun review(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
@@ -37,11 +41,25 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
                 image_container,
                 false
             ) as ImageView
-            if(image_container.childCount != 4){
+            if (image_container.childCount < 4) {
                 image_container.addView(iv)
-                Glide.with(this).load(uri).into(iv)
+                glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
+            }
+            if (image_container.childCount <= 4) {
+                btn_image_create.setOnClickListener {
+                    pickMulti()
+                    if (uris.isNotEmpty()) {
+                        image_container.removeAllViews()
+                        image_container.addView(iv)
+                        glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
+                    }
+                }
             }
         }
+//
+//        val intent = Intent()
+//        intent.putExtra("imgResult", uris.toString())
+//        setResult(Activity.RESULT_OK, intent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,6 +113,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             .requestTag("사진이 선택되었습니다.")
             .show(supportFragmentManager)
     }
+
     private fun setupGUI() {
         btn_image_create.setOnClickListener {
             checkPermission()
@@ -103,7 +122,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         btn_image_clear.setOnClickListener { image_container.removeAllViews() }
     }
 
-    private fun checkPermission(){
+    private fun checkPermission() {
         TedPermission.with(this)
             .setPermissionListener(permissionListener)
             .setRationaleTitle(R.string.rationale_title)
