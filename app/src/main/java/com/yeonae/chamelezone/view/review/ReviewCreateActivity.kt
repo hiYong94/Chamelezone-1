@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.view.review
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.Toast
@@ -15,7 +16,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.review.ReviewRepositoryImpl
 import com.yeonae.chamelezone.data.source.remote.review.ReviewRemoteDataSourceImpl
 import com.yeonae.chamelezone.ext.catchFocus
-import com.yeonae.chamelezone.ext.glideImageUriSet
+import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.slider_item_image.*
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener,
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
-
+    var uriList = arrayListOf<Uri>()
 
     override fun review(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
@@ -35,6 +36,8 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
 
+        image_container.removeAllViews()
+
         uris.forEach { uri ->
             val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
@@ -42,24 +45,12 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
                 false
             ) as ImageView
             if (image_container.childCount < 4) {
-                image_container.addView(iv)
-                glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
-            }
-            if (image_container.childCount <= 4) {
-                btn_image_create.setOnClickListener {
-                    pickMulti()
-                    if (uris.isNotEmpty()) {
-                        image_container.removeAllViews()
-                        image_container.addView(iv)
-                        glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
-                    }
-                }
+            image_container.addView(iv)
+            iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
             }
         }
-//
-//        val intent = Intent()
-//        intent.putExtra("imgResult", uris.toString())
-//        setResult(Activity.RESULT_OK, intent)
+        uriList = uris as ArrayList<Uri>
+        Log.d("dddd", uriList.toString())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
