@@ -23,7 +23,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.AlertDialogFragment
-import com.yeonae.chamelezone.util.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -193,21 +192,28 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     val r = Rect()
-                    contentView.getWindowVisibleDisplayFrame(r)
-                    val screenHeight = contentView.rootView.height
-                    val keypadHeight = screenHeight - r.bottom
-                    Log.d(TAG, "keypadHeight = $keypadHeight")
-                    if (keypadHeight > screenHeight * 0.15) {
-                        if (!isKeyboardShowing) {
-                            isKeyboardShowing = true
-                            (activity as HomeActivity).tabGone()
+                    try {
+                        contentView.getWindowVisibleDisplayFrame(r)
+                        val screenHeight = contentView.rootView.height
+                        val keypadHeight = screenHeight - r.bottom
+
+                        Log.d(TAG, "keypadHeight = $keypadHeight")
+                        if (keypadHeight > screenHeight * 0.15) {
+                            if (!isKeyboardShowing) {
+                                isKeyboardShowing = true
+                                (activity as HomeActivity).tabGone()
+                            }
+                        } else {
+                            if (isKeyboardShowing) {
+                                isKeyboardShowing = false
+                                (activity as HomeActivity).tabVisible()
+                            }
                         }
-                    } else {
-                        if (isKeyboardShowing) {
-                            isKeyboardShowing = false
-                            (activity as HomeActivity).tabVisible()
-                        }
+                    } catch (e: Exception) {
+                        Log.d("MapTabFragment", "$e")
                     }
+
+
                 }
             })
     }
