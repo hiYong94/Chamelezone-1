@@ -37,6 +37,15 @@ class JoinPresenter(
 
             }
 
+        }, object :MemberCallBack<Boolean>{
+            override fun onSuccess(response: Boolean) {
+
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
         })
     }
 }

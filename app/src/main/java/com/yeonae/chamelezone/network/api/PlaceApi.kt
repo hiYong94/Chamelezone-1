@@ -12,28 +12,43 @@ interface PlaceApi {
         @Body place: JsonObject
     ): Call<ResponseBody>
 
-    @GET("/search/{name}")
+    @GET("/map/place/{name}")
     fun getPlaceListByMap(
         @Path("name") placeName: String
     ): Call<List<PlaceResponse>>
 
-    @GET("/search/{name}")
+    @GET("/search/place/{name}")
     fun getPlaceListByName(
         @Path("name") placeName: String
     ): Call<List<PlaceResponse>>
 
-    @GET("/search/{address}")
+    @GET("/search/area/{name}")
     fun getPlaceListByAddress(
-        @Path("address") address: String
+        @Path("name") address: String
     ): Call<List<PlaceResponse>>
 
-    @GET("/search/{keywordName}")
+    @GET("/search/keyword/{name}")
     fun getPlaceListByKeyword(
-        @Path("keywordName") keyword: String
+        @Path("name") keyword: String
     ): Call<List<PlaceResponse>>
 
     @GET("/place/{placeNumber}")
     fun getPlaceDetail(
         @Path("placeNumber") placeNumber: Int
     ): Call<PlaceResponse>
+
+    @GET("/place/{MemberNumber}")
+    fun getMyPlaceList(
+        @Path("MemberNumber") memberNumber: Int
+    ): Call<List<PlaceResponse>>
+
+    @PUT("/place/{placeNumber}")
+    fun updatePlace(
+        @Path("placeNumber") placeNumber: Int
+    ): Call<PlaceResponse>
+
+    @DELETE("/place/{placeNumber}")
+    fun deletePlace(
+        @Path("placeNumber") placeNumber: Int
+    ): Call<ResponseBody>
 }

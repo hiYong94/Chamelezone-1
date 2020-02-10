@@ -23,17 +23,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp">
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_marginStart="30dp" />
-
         <TextView
             android:id="@+id/btn_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:padding="10dp"
             android:text="@string/login"
             android:textSize="18sp" />
     </LinearLayout>
@@ -151,19 +147,27 @@
         android:layout_marginTop="5dp"
         android:background="@color/lightGray" />
 
-    <TextView
-        android:id="@+id/btn_logout"
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/layout_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:padding="10dp"
-        android:text="@string/logout"
-        android:textSize="15dp" />
+        android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/lightGray" />
+        <TextView
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:padding="10dp"
+            android:text="@string/logout"
+            android:textSize="15dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/lightGray" />
+    </LinearLayout>
 </LinearLayout>

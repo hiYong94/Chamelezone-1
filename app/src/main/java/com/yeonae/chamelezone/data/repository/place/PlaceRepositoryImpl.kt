@@ -3,18 +3,20 @@ package com.yeonae.chamelezone.data.repository.place
 import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSource
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import java.math.BigDecimal
 
 class PlaceRepositoryImpl private constructor(private val remoteDataSource: PlaceRemoteDataSource) :
     PlaceRepository {
     override fun registerPlace(
-        keywordName: String,
+        keywordName: List<Int>,
         name: String,
         address: String,
-        openingTime: String,
+        openingTime: List<String>,
         phoneNumber: String,
         content: String,
-        latitude: String,
-        longitude: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
+        images: String,
         callBack: PlaceCallBack<String>
     ) {
         remoteDataSource.registerPlace(
@@ -26,6 +28,7 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
             content,
             latitude,
             longitude,
+            images,
             callBack
         )
     }
@@ -50,18 +53,21 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.getPlaceDetail(placeNumber, callBack)
     }
 
+    override fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>) {
+        remoteDataSource.getMyPlaceList(memberNumber, callBack)
+    }
+
     override fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>) {
         remoteDataSource.getKeyword(callBack)
     }
 
-    override fun deletePlace() {
-
-    }
-
     override fun modifyPlace() {
-
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    override fun deletePlace(placeNumber: Int, callBack: PlaceCallBack<String>) {
+        remoteDataSource.deletePlace(placeNumber, callBack)
+    }
 
     companion object {
         fun getInstance(remoteDataSource: PlaceRemoteDataSource): PlaceRepository =
