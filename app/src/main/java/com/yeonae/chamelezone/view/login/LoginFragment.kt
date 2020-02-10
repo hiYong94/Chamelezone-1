@@ -7,16 +7,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.AlertDialogFragment
-import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.Injection
+import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : Fragment() , JoinContract.View {
+class LoginFragment : Fragment(), JoinContract.View {
     override fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG)
             .show()
+        (activity as? LoginActivity)?.finish()
     }
 
     override lateinit var presenter: JoinContract.Presenter

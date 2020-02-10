@@ -10,12 +10,13 @@ import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceIm
 import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.network.room.database.UserDatabase
+import com.yeonae.chamelezone.util.AppExecutors
 
 object Injection {
     fun memberRepository(context: Context): MemberRepository {
         return MemberRepositoryImpl.getInstance(
             MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService),
-            MemberLocalDataSourceImpl.getInstance(UserDatabase.getInstance(context))
+            MemberLocalDataSourceImpl.getInstance(AppExecutors(), UserDatabase.getInstance(context))
         )
     }
     fun placeRepository(context: Context) : PlaceRepository {
