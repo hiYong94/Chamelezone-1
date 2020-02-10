@@ -117,7 +117,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                     "${edt_place_text.text}",
                     latitude,
                     longitude,
-                    imageUri.toString()
+                    imageUri
                 )
             }
         }
