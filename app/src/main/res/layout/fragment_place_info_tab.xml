@@ -12,7 +12,8 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="800dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -174,6 +175,14 @@
                 android:paddingBottom="15dp">
 
                 <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/detail_description"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/tv_content"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -219,8 +228,7 @@
                     android:id="@+id/place_info_map"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-              
             </FrameLayout>
         </LinearLayout>
-   </androidx.core.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
