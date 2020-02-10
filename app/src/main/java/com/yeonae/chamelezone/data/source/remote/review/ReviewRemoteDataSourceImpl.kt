@@ -16,7 +16,6 @@ import java.io.File
 
 class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemoteDataSource {
 
-
     override fun createReview(
         placeName: String,
         nickname: String,
@@ -37,7 +36,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
 
         reviewService.reviewCreate(jsonObject, imageReq).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful)
+                if (response.code() == 200)
                     response.body().let { callBack.onSuccess("리뷰 등록 성공") }
             }
 
