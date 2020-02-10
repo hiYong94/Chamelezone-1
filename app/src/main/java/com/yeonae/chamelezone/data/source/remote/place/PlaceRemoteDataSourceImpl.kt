@@ -1,13 +1,16 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
+import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.api.PlaceApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
 import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import okhttp3.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import okio.Buffer
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,52 +32,18 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         images: String,
         callBack: PlaceCallBack<String>
     ) {
-        val map = hashMapOf<String, RequestBody>()
-        val name = RequestBody.create(
-            MediaType.parse("text/plain"), name
-        )
-        val keywordName = RequestBody.create(
-            MediaType.parse("text/plain"), keywordName.toString()
-        )
-        val address = RequestBody.create(
-            MediaType.parse("text/plain"), address
-        )
-        val openingTime = RequestBody.create(
-            MediaType.parse("text/plain"), openingTime.toString()
-        )
-        val phoneNumber = RequestBody.create(
-            MediaType.parse("text/plain"), phoneNumber
-        )
-        val content = RequestBody.create(
-            MediaType.parse("text/plain"), content
-        )
-        val latitude = RequestBody.create(
-            MediaType.parse("text/plain"), latitude.toString()
-        )
-        val longitude = RequestBody.create(
-            MediaType.parse("text/plain"), longitude.toString()
-        )
-        val images = RequestBody.create(
-            MediaType.parse("image/*"), images
-        )
+        val jsonObject = JsonObject().apply {
+            addProperty("keywordName", keywordName.toString())
+            addProperty("name", name)
+            addProperty("address", address)
+            addProperty("openingTime", openingTime.toString())
+            addProperty("phoneNumber", phoneNumber)
+            addProperty("content", content)
+            addProperty("latitude", latitude)
+            addProperty("longitude", longitude)
+        }
 
-        map["name"] = name
-        map["address"] = address
-        map["keywordName"] = keywordName
-        map["openingTime"] = openingTime
-        map["phoneNumber"] = phoneNumber
-        map["content"] = content
-        map["latitude"] = latitude
-        map["longitude"] = longitude
-        map["images"] = images
-
-//        val images = MultipartBody.Part.createFormData(
-//            "images",
-//            images,
-//            RequestBody.create(MediaType.parse("image/*"), images)
-//        )
-
-        placeService.placeRegister(map).enqueue(object :
+        placeService.placeRegister(jsonObject).enqueue(object :
             Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,

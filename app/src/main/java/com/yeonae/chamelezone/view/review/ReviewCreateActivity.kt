@@ -45,8 +45,8 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
                 false
             ) as ImageView
             if (image_container.childCount < 4) {
-            image_container.addView(iv)
-            iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
+                image_container.addView(iv)
+                iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
             }
         }
         uriList = uris as ArrayList<Uri>
