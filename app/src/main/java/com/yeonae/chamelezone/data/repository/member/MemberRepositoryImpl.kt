@@ -20,17 +20,26 @@ class MemberRepositoryImpl private constructor(
         remoteDataSource.createMember(email, password, name, nickName, phone, callBack)
     }
 
-    override fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
+    override fun getMember(
+        email: String,
+        password: String,
+        callBack: MemberCallBack<MemberResponse>,
+        localCallBack: MemberCallBack<Boolean>
+    ) {
         remoteDataSource.getMember(email, password, object : MemberCallBack<MemberResponse> {
             override fun onSuccess(response: MemberResponse) {
                 callBack.onSuccess(response)
-                localDataSource.loggedLogin(response)
+                localDataSource.loggedLogin(response, localCallBack)
             }
 
             override fun onFailure(message: String) {
 
             }
         })
+    }
+
+    override fun logout(callBack: MemberCallBack<String>) {
+        localDataSource.logout(callBack)
     }
 
     override fun updateMember(
@@ -45,6 +54,10 @@ class MemberRepositoryImpl private constructor(
 
     override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {
         remoteDataSource.deleteMember(memberNumber, callBack)
+    }
+
+    override fun checkLogin(callBack: MemberCallBack<Boolean>) {
+        localDataSource.isLogged(callBack)
     }
 
     companion object {

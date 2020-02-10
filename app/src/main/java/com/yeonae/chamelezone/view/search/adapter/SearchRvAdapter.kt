@@ -4,19 +4,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
-import kotlinx.android.synthetic.main.item_like.view.tv_place_address
-import kotlinx.android.synthetic.main.item_like.view.tv_place_keyword
-import kotlinx.android.synthetic.main.item_like.view.tv_place_name
-import kotlinx.android.synthetic.main.item_search.view.*
+import com.yeonae.chamelezone.network.model.PlaceResponse
+import kotlinx.android.synthetic.main.item_like.view.*
 
-class SearchRvAdapter(var items : ArrayList<Place>) : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>() {
+class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>() {
 
-    //private var items = mutableListOf<Place>()
+    private var items = mutableListOf<PlaceResponse>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
-        fun onClick(like: Place)
+        fun onClick(place: PlaceResponse)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -32,7 +29,7 @@ class SearchRvAdapter(var items : ArrayList<Place>) : RecyclerView.Adapter<Searc
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) =
         holder.bind(items[position], onClickListener)
 
-    fun addData(addDataList: List<Place>) {
+    fun addData(addDataList: List<PlaceResponse>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
@@ -41,15 +38,14 @@ class SearchRvAdapter(var items : ArrayList<Place>) : RecyclerView.Adapter<Searc
     class SearchViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_search, parent, false)
     ) {
-        fun bind(item: Place, listener: OnClickListener?) {
+        fun bind(item: PlaceResponse, listener: OnClickListener?) {
             itemView.run {
                 setOnClickListener {
                     listener?.onClick(item)
                 }
-                tv_place_name.text = item.placeName
-                tv_place_keyword.text = item.placeKeyword
-                tv_place_address.text = item.placeAddress
-                tv_place_distance.text = item.placeDistance
+                tv_place_name.text = item.name
+                tv_place_keyword.text = item.keywordName
+                tv_place_address.text = item.address
             }
         }
     }

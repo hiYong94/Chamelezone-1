@@ -11,7 +11,7 @@ interface SearchContract {
 
     interface Presenter {
         fun searchByName(placeName: String)
-        fun searchByAddress(address:String)
+        fun searchByAddress(address: String)
         fun searchByKeyword(keyword: String)
     }
 }

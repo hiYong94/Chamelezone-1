@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.forEach
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
@@ -31,13 +32,14 @@ import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
-
-    private val array = mutableListOf<String>()
+    private var imageUri = arrayListOf<String>()
+    private val openingTime = mutableListOf<String>()
+    private val keywordMap = hashMapOf<Int, String>()
+    private val keyword = mutableListOf<Int>()
+    private val selectedItems = ArrayList<String>()
     override fun showKeywordList(response: List<KeywordResponse>) {
-        Log.d("yeon_array1", response.toString())
         for (i in response.indices) {
-            array.add(response[i].keywordName)
-            Log.d("yeon_array2", array.toString())
+            keywordMap[response[i].keywordNumber] = response[i].keywordName
         }
     }
 
@@ -52,10 +54,17 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             ) as ImageView
             imageContainer.addView(iv)
             Glide.with(this).load(uri).into(iv)
+            Log.d("placeRegisterUri", uri.toString())
+            Log.d("placeRegisterUri", uri.path)
         }
+        for (i in uris.indices) {
+            uris[i].path?.let { imageUri.add(it) }
+            Log.d("placeRegisterUri", uris[i].path)
+        }
+        Log.d("placeRegisterUri", imageUri.toString())
     }
 
-    override fun place(message: String) {
+    override fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG)
             .show()
         finish()
@@ -86,26 +95,31 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_category_choice.setOnClickListener {
-            categoryDialog(array.toTypedArray())
+            categoryDialog(keywordMap.values.toTypedArray())
         }
 
         btn_register.setOnClickListener {
             val latLng = findLatLng(applicationContext, "${tv_place_address.text}")
-            val latitude = latLng?.latitude.toString()
-            val longitude = latLng?.longitude.toString()
+            val latitude = latLng?.latitude?.toBigDecimal()
+            val longitude = latLng?.longitude?.toBigDecimal()
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
-            val keyword = "${tv_place_keyword.text}".replace(" ", "|")
+            Log.d("latitude", latitude.toString())
+            Log.d("longitude", longitude.toString())
+            Log.d("uri", imageUri.toString())
 
-            presenter.placeRegister(
-                keyword,
-                "${edt_place_name.text}",
-                realAddress,
-                "평일 11:00 ~ 20:00",
-                "${edt_place_phone.text}",
-                "${edt_place_text.text}",
-                latitude,
-                longitude
-            )
+            if (latitude != null && longitude != null) {
+                presenter.placeRegister(
+                    keyword,
+                    "${edt_place_name.text}",
+                    realAddress,
+                    openingTime,
+                    "${edt_place_phone.text}",
+                    "${edt_place_text.text}",
+                    latitude,
+                    longitude,
+                    imageUri.toString()
+                )
+            }
         }
         openingHours()
     }
@@ -137,12 +151,12 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         return latLng
     }
 
-
+    private var booleanList: BooleanArray? = null
     private fun categoryDialog(items: Array<String>) {
+        keyword.clear()
         val builder = AlertDialog.Builder(this)
-        val selectedItems = ArrayList<String>()
         builder.setTitle("키워드")
-        builder.setMultiChoiceItems(items, null,
+        builder.setMultiChoiceItems(items, booleanList,
             DialogInterface.OnMultiChoiceClickListener { dialog, which, isChecked ->
                 if (isChecked) {
                     selectedItems.add(items[which]!!)
@@ -153,7 +167,18 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         builder.setPositiveButton("확인",
             DialogInterface.OnClickListener { dialog, id ->
                 tv_place_keyword.text = selectedItems.joinToString(" ")
+                for (i in selectedItems.indices) {
+                    Log.d("selectedItems", selectedItems.toString())
+                    for (j in 1..keywordMap.size) {
+                        if (selectedItems[i] == keywordMap.getValue(j)) {
+                            Log.d("keywordMap key", j.toString())
+                            keyword.add(j)
+                        }
+                    }
+                    Log.d("keyword", keyword.toString())
+                }
             })
+
         builder.setNegativeButton("취소",
             DialogInterface.OnClickListener { dialog, id ->
                 dialog.cancel()
@@ -165,7 +190,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
     private fun pickMulti() {
         BottomSheetImagePicker.Builder(getString(R.string.file_provider))
-            .multiSelect(2, 4)
+            .multiSelect(1, 4)
             .multiSelectTitles(
                 R.plurals.pick_multi,
                 R.plurals.pick_multi_more,
@@ -211,7 +236,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
         opening_hours.addView(layout)
         Log.d("count_call_1", count.toString())
-        layout.findViewById<View>(R.id.delete_layout)
+        layout.findViewById<View>(R.id.btn_close)
             .setOnClickListener {
                 opening_hours.removeView(layout)
                 Log.d("count_call", count.toString())
@@ -227,6 +252,16 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         layout.findViewById<Spinner>(R.id.day_spinner).adapter = dayAdapter
         layout.findViewById<Spinner>(R.id.open_spinner).adapter = openAdapter
         layout.findViewById<Spinner>(R.id.close_spinner).adapter = closeAdapter
+
+
+        opening_hours.forEach {
+            val day = it.findViewById<Spinner>(R.id.day_spinner).selectedItem
+            val open = it.findViewById<Spinner>(R.id.open_spinner).selectedItem
+            val close = it.findViewById<Spinner>(R.id.close_spinner).selectedItem
+            Log.d("Spinner value is", "$day $open ${"~"} $close")
+            openingTime.add("$day $open ${"~"} $close")
+        }
+        Log.d("Spinner value is", "$openingTime")
 
     }
 
