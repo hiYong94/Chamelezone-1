@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
@@ -18,22 +17,9 @@ import com.yeonae.chamelezone.view.search.presenter.SearchPresenter
 import kotlinx.android.synthetic.main.fragment_address_tab.*
 
 class AddressTabFragment : Fragment(), SearchContract.View {
-    override fun showPlaceList(placeList: List<PlaceResponse>) {
-
-    }
-
+    private val searchRvAdapter = SearchRvAdapter()
     override lateinit var presenter: SearchContract.Presenter
-    private val searchList = arrayListOf(
-        Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85", "7km"),
-        Place("론리드프로젝트", "빨래방, 카페", "서울 용산구 신흥로 78", "10km"),
-        Place(
-            "하나은행X북바이북",
-            "은행, 서점",
-            "서울 종로구 새문안로5길 19",
-            "13km"
-        )
-    )
-    private val searchRvAdapter = SearchRvAdapter(searchList)
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,15 +34,31 @@ class AddressTabFragment : Fragment(), SearchContract.View {
         setAdapter()
 
         searchRvAdapter.setOnClickListener(object : SearchRvAdapter.OnClickListener {
-            override fun onClick(place: Place) {
-                val intent = Intent(context, PlaceDetailActivity::class.java)
+            override fun onClick(place: PlaceResponse) {
+                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
+                intent.putExtra(PLACE_NAME, place.name)
+                intent.putExtra(PLACE_NUMBER, place.placeNumber)
                 startActivity(intent)
             }
         })
     }
 
+    override fun showPlaceList(placeList: List<PlaceResponse>) {
+        searchRvAdapter.addData(placeList)
+    }
+
     private fun setAdapter() {
         recycler_address_tab.layoutManager = LinearLayoutManager(context)
         recycler_address_tab.adapter = searchRvAdapter
+    }
+
+    fun searchByAddress(address: String) {
+        presenter.searchByAddress(address)
+    }
+
+    companion object {
+        private const val PLACE_NAME = "placeName"
+        private const val PLACE_NUMBER = "placeNumber"
+        fun newInstance() = AddressTabFragment()
     }
 }

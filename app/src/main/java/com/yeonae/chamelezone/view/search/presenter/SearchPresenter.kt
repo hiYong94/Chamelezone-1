@@ -9,7 +9,7 @@ class SearchPresenter(
     private val searchView: SearchContract.View
 ) : SearchContract.Presenter {
     override fun searchByName(placeName: String) {
-        placeRepository.getSearchByName(placeName, object : PlaceCallBack<List<PlaceResponse>>{
+        placeRepository.getSearchByName(placeName, object : PlaceCallBack<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
                 searchView.showPlaceList(response)
             }
@@ -22,7 +22,7 @@ class SearchPresenter(
     }
 
     override fun searchByAddress(address: String) {
-        placeRepository.getSearchByAddress(address, object : PlaceCallBack<List<PlaceResponse>>{
+        placeRepository.getSearchByAddress(address, object : PlaceCallBack<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
                 searchView.showPlaceList(response)
             }
@@ -35,7 +35,7 @@ class SearchPresenter(
     }
 
     override fun searchByKeyword(keyword: String) {
-        placeRepository.getSearchByKeyword(keyword, object : PlaceCallBack<List<PlaceResponse>>{
+        placeRepository.getSearchByKeyword(keyword, object : PlaceCallBack<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
                 searchView.showPlaceList(response)
             }

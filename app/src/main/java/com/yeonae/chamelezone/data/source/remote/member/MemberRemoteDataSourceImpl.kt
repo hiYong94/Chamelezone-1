@@ -36,7 +36,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful) {
+                if (response.code() == 200) {
                     callBack.onSuccess("회원가입 성공")
                 }
                 Log.d("err", response.code().toString())
@@ -62,7 +62,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 call: Call<MemberResponse>,
                 response: Response<MemberResponse>
             ) {
-                if (response.isSuccessful) {
+                if (response.code() == 200) {
                     Log.d("MyCall", response.body().toString())
                     callBack.onSuccess(response.body()!!)
                 }
