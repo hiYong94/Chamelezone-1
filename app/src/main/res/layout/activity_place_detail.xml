@@ -48,13 +48,12 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/transparent"
-                            android:minHeight="250dp">
+                            android:background="@color/transparent">
 
                             <androidx.viewpager.widget.ViewPager
-                                android:id="@+id/view"
+                                android:id="@+id/vp"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="wrap_content" />
 
                             <com.google.android.material.tabs.TabLayout
                                 android:id="@+id/tab_layout"
@@ -119,7 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/colorWhite"
-                    app:layout_collapseMode="pin" />
+                  />
 
             </LinearLayout>
 
