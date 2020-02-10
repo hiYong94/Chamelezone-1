@@ -15,8 +15,8 @@ interface ReviewApi {
         @Part("file\" filename=\"pp.png\" ") file: RequestBody
     ): Call<ResponseBody>
 
-    @GET("/review")
+    @GET("/user/{memberNumber}/review")
     fun getReviewList(
-        @Path("reviewNumber") reviewNumber: Int
+        @Path("memberNumber") memberNumber: Int
     ): Call<ReviewResponse>
 }
