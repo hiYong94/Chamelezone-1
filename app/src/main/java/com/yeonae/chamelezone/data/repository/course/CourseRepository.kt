@@ -10,7 +10,7 @@ interface CourseRepository {
         content: String,
         callBack: CourseCallBack<String>
     )
-
+  
     fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>)
     fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<CourseResponse>)
     fun getMyCourseList(memberNumber: Int, callBack: CourseCallBack<List<CourseResponse>>)

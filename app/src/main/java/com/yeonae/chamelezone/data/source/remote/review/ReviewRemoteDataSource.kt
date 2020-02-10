@@ -12,7 +12,7 @@ interface ReviewRemoteDataSource {
         callBack: ReviewCallBack<String>
     )
 
-    fun getReview()
+    fun getReviewList(reviewNum: Int, callBack: ReviewCallBack<List<ReviewResponse>>)
     fun getMyReviewList(userId: String, callBack: ReviewCallBack<List<ReviewResponse>>)
     fun updateReview()
     fun deleteReview()

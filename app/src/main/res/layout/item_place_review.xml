@@ -55,6 +55,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="right">
                             <ImageButton
+                                android:id="@+id/btn_more"
                                 android:layout_width="20dp"
                                 android:layout_height="20dp"
                                 android:background="@color/transparent"
@@ -63,12 +64,43 @@
                                 android:src="@drawable/more" />
                         </LinearLayout>
                     </LinearLayout>
-                    <ImageView
-                        android:id="@+id/iv_review_img"
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="3"
-                        android:layout_marginTop="5dp" />
+                        android:layout_marginTop="5dp"
+                        android:weightSum="5">
+
+                        <ImageView
+                            android:id="@+id/iv_review_img"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3.9"
+                            android:background="@drawable/edge_rectangle"/>
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.1"/>
+
+                        <LinearLayout
+                            android:id="@+id/iv_image"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@drawable/edge_rectangle"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_dots" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                     <TextView
                         android:id="@+id/tv_review_content"
                         android:layout_width="match_parent"

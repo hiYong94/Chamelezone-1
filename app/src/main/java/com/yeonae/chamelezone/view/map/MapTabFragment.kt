@@ -27,6 +27,7 @@ import com.yeonae.chamelezone.util.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.util.App
 import com.yeonae.chamelezone.view.home.HomeActivity
 import com.yeonae.chamelezone.view.map.presenter.MapContract
 import com.yeonae.chamelezone.view.map.presenter.MapPresenter
