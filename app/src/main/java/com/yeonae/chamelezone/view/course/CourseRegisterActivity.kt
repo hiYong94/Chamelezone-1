@@ -13,14 +13,21 @@ import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.ext.glideImageUriSet
+import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
+import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import kotlinx.android.synthetic.main.activity_course_register.*
 import kotlinx.android.synthetic.main.slider_item_image.*
 
-class CourseRegisterActivity : AppCompatActivity(),
+class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
+    override fun showMessage(message: String) {
+
+    }
+
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
         imageContainer.removeAllViews()
@@ -35,14 +42,18 @@ class CourseRegisterActivity : AppCompatActivity(),
         }
     }
 
+    override lateinit var presenter: CourseRegisterContract.Presenter
     private val placeChoiceFragment = PlaceChoiceFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_register)
 
         setupGUI()
 
-//        btn_image_create.setOnClickListener { checkPermission() }
+        presenter = CourseRegisterPresenter(
+            Injection.courseRepository(), this
+        )
 
         btn_back.setOnClickListener {
             finish()

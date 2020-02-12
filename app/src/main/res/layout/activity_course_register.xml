@@ -200,15 +200,17 @@
                     <LinearLayout
                         android:id="@+id/layout_place1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/draw">
 
-                        <Button
+                        <TextView
                             android:id="@+id/btn_place1"
                             style="@style/ButtonStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="61dp"
-                            android:background="@color/transparent"
-                            android:text="@string/place_selected_first" />
+                            android:layout_height="wrap_content"
+                            android:text="@string/place_selected_first"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -301,15 +303,17 @@
                         android:id="@+id/layout_place2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/draw"
                         android:visibility="gone">
 
-                        <Button
-                            style="@style/ButtonStyle"
+                        <TextView
                             android:id="@+id/btn_place2"
+                            style="@style/ButtonStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="61dp"
-                            android:background="@color/transparent"
-                            android:text="@string/place_selected_second" />
+                            android:layout_height="wrap_content"
+                            android:text="@string/place_selected_second"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -402,15 +406,17 @@
                         android:id="@+id/layout_place3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/draw"
                         android:visibility="gone">
 
-                        <Button
-                            style="@style/ButtonStyle"
+                        <TextView
                             android:id="@+id/btn_place3"
+                            style="@style/ButtonStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="61dp"
-                            android:background="@color/transparent"
-                            android:text="@string/place_selected_third" />
+                            android:layout_height="wrap_content"
+                            android:text="@string/place_selected_third"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout

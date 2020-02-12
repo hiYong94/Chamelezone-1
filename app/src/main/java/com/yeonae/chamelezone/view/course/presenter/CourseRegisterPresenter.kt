@@ -12,9 +12,10 @@ class CourseRegisterPresenter(
         memberNumber: Int,
         placeNumber: Int,
         title: String,
+        image: String,
         content: String
     ) {
-        repository.registerCourse(memberNumber, placeNumber, title, content, object : CourseCallBack<String>{
+        repository.registerCourse(memberNumber, placeNumber, title, content, image, object : CourseCallBack<String>{
             override fun onSuccess(response: String) {
                 view.showMessage(response)
             }

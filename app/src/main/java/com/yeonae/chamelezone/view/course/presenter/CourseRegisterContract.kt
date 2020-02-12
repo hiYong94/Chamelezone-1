@@ -12,6 +12,7 @@ interface CourseRegisterContract {
             memberNumber: Int,
             placeNumber: Int,
             title: String,
+            image: String,
             content: String)
     }
 }
