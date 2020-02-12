@@ -8,6 +8,7 @@ interface CourseRepository {
         placeNumber: Int,
         title: String,
         content: String,
+        image: String,
         callBack: CourseCallBack<String>
     )
   

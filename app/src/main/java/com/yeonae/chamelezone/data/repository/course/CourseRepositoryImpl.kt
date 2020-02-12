@@ -10,9 +10,10 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         placeNumber: Int,
         title: String,
         content: String,
+        image: String,
         callBack: CourseCallBack<String>
     ) {
-        remoteDataSource.registerCourse(memberNumber, placeNumber, title, content, callBack)
+        remoteDataSource.registerCourse(memberNumber, placeNumber, title, content, image, callBack)
     }
 
     override fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>) {
