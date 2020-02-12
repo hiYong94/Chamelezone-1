@@ -58,15 +58,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:hint="@string/email"
-            app:errorEnabled="true">
+            android:layout_weight="8">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/join_email"
+                android:id="@+id/user_email"
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:singleLine="true"
                 android:textColor="@color/colorBlack"
                 android:textSize="15sp" />
@@ -91,7 +90,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/join_password"
+                android:id="@+id/user_password"
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,14 +113,14 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="8"
-            android:hint="@string/name">
+            android:layout_weight="8">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/join_name"
+                android:id="@+id/user_name"
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:enabled="false"
                 android:singleLine="true"
                 android:textColor="@color/colorBlack"
                 android:textSize="15sp" />
@@ -145,7 +144,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/join_nickname"
+                android:id="@+id/user_nickname"
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -171,7 +170,7 @@
             android:hint="@string/phone_number">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/join_phone"
+                android:id="@+id/user_phone"
                 style="@style/EditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -190,7 +189,7 @@
         android:weightSum="10">
 
         <Button
-            android:id="@+id/btn_join"
+            android:id="@+id/btn_user_modify"
             style="@style/ButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
