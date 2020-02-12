@@ -29,7 +29,7 @@ class PlaceNameTabFragment : Fragment(), SearchContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = SearchPresenter(
-            Injection.placeRepository(requireContext()), this
+            Injection.placeRepository(), this
         )
         setAdapter()
 
