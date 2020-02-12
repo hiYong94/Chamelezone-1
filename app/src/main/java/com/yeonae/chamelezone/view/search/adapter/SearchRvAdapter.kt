@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import kotlinx.android.synthetic.main.item_like.view.*
+import kotlinx.android.synthetic.main.fragment_marker_info.view.*
 
 class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>() {
 
@@ -44,7 +44,7 @@ class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>()
                     listener?.onClick(item)
                 }
                 tv_place_name.text = item.name
-                tv_place_keyword.text = item.keywordName
+                tv_place_keyword.text = item.keywordName.replace(",", ", ")
                 tv_place_address.text = item.address
             }
         }
