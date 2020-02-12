@@ -8,16 +8,16 @@ class ReviewPresenter(
     private val reviewView: ReviewContract.View
 ) : ReviewContract.Presenter {
     override fun reviewCreate(
-        placeName: String,
-        nickname: String,
-        reviewImg: String,
-        content: String
+        memberNumber: Int,
+        placeNumber: Int,
+        content: String,
+        images: String
     ) {
         reviewRepository.createReview(
-            placeName,
-            nickname,
-            reviewImg,
+            memberNumber,
+            placeNumber,
             content,
+            images,
             object : ReviewCallBack<String> {
                 override fun onSuccess(response: String) {
                     reviewView.review(response)

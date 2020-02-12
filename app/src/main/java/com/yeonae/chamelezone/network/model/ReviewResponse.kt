@@ -7,6 +7,8 @@ data class ReviewResponse(
     val reviewNumber: Int,
     @SerializedName("memberNumber")
     val memberNumber: Int,
+    @SerializedName("placeNumber")
+    val placeNumber: Int,
     @SerializedName("nickName")
     val nickName: String,
     @SerializedName("content")
@@ -18,4 +20,3 @@ data class ReviewResponse(
     @SerializedName("fileExtension")
     val fileExtension: String
 )
-

@@ -7,10 +7,10 @@ interface ReviewContract {
     }
     interface Presenter {
         fun reviewCreate(
-            placeName: String,
-            nickname: String,
-            reviewImg: String,
-            content: String
+            memberNumber: Int,
+            placeNumber: Int,
+            content: String,
+            images: String
         )
     }
 }

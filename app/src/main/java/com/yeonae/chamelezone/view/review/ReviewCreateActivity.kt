@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.slider_item_image.*
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener,
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
-    var uriList = arrayListOf<Uri>()
+    private val uriList = arrayListOf<String>()
 
     override fun review(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
@@ -35,9 +35,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
-
         image_container.removeAllViews()
-
         uris.forEach { uri ->
             val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
@@ -49,18 +47,16 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
                 iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
             }
         }
-        uriList = uris as ArrayList<Uri>
-        Log.d("dddd", uriList.toString())
+        for (i in uris.indices) {
+            uris[i].path?.let { uriList.add(it) }
+            Log.d("dddd", uris[i].path)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_create)
 
-        tv_title.catchFocus(this)
-        btn_back.setOnClickListener {
-            finish()
-        }
         setupGUI()
 
         presenter = ReviewPresenter(
@@ -71,8 +67,10 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
+            val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
 
-            presenter.reviewCreate("", "", "", content)
+            presenter.reviewCreate(252, placeNumber, content, uriList.toString())
+
         }
     }
 
@@ -106,6 +104,11 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     }
 
     private fun setupGUI() {
+        tv_title.text = intent.getStringExtra("placeName")
+        tv_title.catchFocus(this)
+        btn_back.setOnClickListener {
+            finish()
+        }
         btn_image_create.setOnClickListener {
             checkPermission()
             pickMulti()
@@ -123,5 +126,9 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             .setGotoSettingButtonText(R.string.setting)
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
+    }
+
+    companion object{
+        private const val PLACE_NUMBER = "placeNumber"
     }
 }

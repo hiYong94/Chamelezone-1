@@ -4,15 +4,15 @@ import com.yeonae.chamelezone.network.model.ReviewResponse
 
 interface ReviewRepository {
     fun createReview(
-        placeName: String,
-        nickname: String,
-        reviewImg: String,
+        memberNumber: Int,
+        placeNumber: Int,
         content: String,
+        images: String,
         callBack: ReviewCallBack<String>
     )
 
-    fun getReviewList(reviewNum: Int, callBack: ReviewCallBack<List<ReviewResponse>>)
-    fun getMyReviewList(userId: String, callBack: ReviewCallBack<List<ReviewResponse>>)
+    fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>)
+    fun getMyReviewList(memberNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>)
     fun updateReview()
     fun deleteReview()
 }
