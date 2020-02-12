@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.view.login
+package com.yeonae.chamelezone.view.mypage
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
