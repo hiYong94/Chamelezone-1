@@ -1,9 +1,6 @@
 package com.yeonae.chamelezone.network.room.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 @Dao
@@ -17,6 +14,10 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(userEntity: UserEntity): Long
 
+    @Update
+    fun updateUser(userEntity: UserEntity): Int
+
     @Query("DELETE FROM user")
     fun deleteUser(): Int
+
 }
