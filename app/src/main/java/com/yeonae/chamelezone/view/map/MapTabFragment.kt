@@ -108,7 +108,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
         map_view.onCreate(savedInstanceState)
 
         presenter = MapPresenter(
-            Injection.placeRepository(requireContext()), this
+            Injection.placeRepository(), this
         )
 
         checkPermission()
