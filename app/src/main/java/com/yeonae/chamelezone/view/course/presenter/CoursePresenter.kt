@@ -2,20 +2,36 @@ package com.yeonae.chamelezone.view.course.presenter
 
 import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.data.repository.course.CourseRepository
+import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.model.CourseResponse
 
 class CoursePresenter(
-    private val repository: CourseRepository,
+    private val memberRepository: MemberRepository,
+    private val courseRepository: CourseRepository,
     private val view: CourseContract.View
 ) : CourseContract.Presenter {
+    override fun checkLogin() {
+        memberRepository.checkLogin(object : MemberCallBack<Boolean> {
+            override fun onSuccess(response: Boolean) {
+                view.showResultView(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
+
     override fun getCourseList() {
-        repository.getCourseList(object : CourseCallBack<List<CourseResponse>>{
+        courseRepository.getCourseList(object : CourseCallBack<List<CourseResponse>> {
             override fun onSuccess(response: List<CourseResponse>) {
                 view.showCourseList(response)
             }
 
             override fun onFailure(message: String) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
         })
