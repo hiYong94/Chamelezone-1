@@ -80,7 +80,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         setupGUI()
 
         presenter = PlacePresenter(
-            Injection.placeRepository(applicationContext), this
+            Injection.placeRepository(), this
         )
         presenter.getKeyword()
 
