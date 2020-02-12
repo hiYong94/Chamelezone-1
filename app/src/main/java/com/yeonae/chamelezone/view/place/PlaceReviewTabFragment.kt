@@ -13,6 +13,7 @@ import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import com.yeonae.chamelezone.view.review.ReviewImageActivity
+import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 
 class PlaceReviewTabFragment : Fragment() {
@@ -45,6 +46,7 @@ class PlaceReviewTabFragment : Fragment() {
 
         review.setOnClickListener {
             val intent = Intent(context, ReviewCreateActivity::class.java)
+            intent.putExtra("placeName", "$tv_place_name")
             startActivity(intent)
         }
 
