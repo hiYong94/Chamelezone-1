@@ -13,7 +13,7 @@ interface MemberRemoteDataSource {
         callBack: MemberCallBack<String>
     )
 
-    fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>)
+    fun login(email: String, password: String, callBack: MemberCallBack<MemberResponse>)
 
     fun updateMember(
         memberNumber: Int,

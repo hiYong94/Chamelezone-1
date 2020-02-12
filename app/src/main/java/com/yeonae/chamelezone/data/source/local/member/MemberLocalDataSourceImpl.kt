@@ -11,6 +11,24 @@ class MemberLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val userDatabase: UserDatabase
 ) : MemberLocalDataSource {
+    override fun deleteAll(callBack: MemberCallBack<Boolean>) {
+        appExecutors.diskIO.execute {
+            if (userDatabase.userDao().getUserCount() == 1) {
+                val deletedCount = userDatabase.userDao().deleteUser()
+                if (deletedCount == 1) {
+                    appExecutors.mainThread.execute {
+                        callBack.onSuccess(true)
+                    }
+                }
+            }
+            else{
+                appExecutors.mainThread.execute {
+                    callBack.onSuccess(true)
+                }
+            }
+        }
+    }
+
     override fun loggedLogin(response: MemberResponse, callBack: MemberCallBack<Boolean>) {
         appExecutors.diskIO.execute {
             val newUser = UserEntity(
@@ -24,7 +42,7 @@ class MemberLocalDataSourceImpl(
             Log.d("MyCall", insertedPk.toString())
             Log.d("MyCall", response.email)
             Log.d("MyCall", userDatabase.userDao().getUser().toString())
-            if(insertedPk == 0L){
+            if (insertedPk == 0L) {
                 appExecutors.mainThread.execute {
                     callBack.onSuccess(true)
                 }
@@ -54,6 +72,17 @@ class MemberLocalDataSourceImpl(
             } else {
                 appExecutors.mainThread.execute {
                     callBack.onSuccess(false)
+                }
+            }
+        }
+    }
+
+    override fun getMember(callBack: MemberCallBack<UserEntity>) {
+        appExecutors.diskIO.execute {
+            if (userDatabase.userDao().getUserCount() == 1) {
+                val user = userDatabase.userDao().getUser()
+                appExecutors.mainThread.execute {
+                    callBack.onSuccess(user)
                 }
             }
         }

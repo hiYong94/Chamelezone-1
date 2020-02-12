@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.repository.member
 
 import com.yeonae.chamelezone.network.model.MemberResponse
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 interface MemberRepository {
     fun createMember(
@@ -12,7 +13,14 @@ interface MemberRepository {
         callBack: MemberCallBack<String>
     )
 
-    fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>, localCallBack: MemberCallBack<Boolean>)
+    fun getMember(callBack: MemberCallBack<UserEntity>)
+
+    fun login(
+        email: String,
+        password: String,
+        callBack: MemberCallBack<MemberResponse>,
+        localCallBack: MemberCallBack<Boolean>
+    )
 
     fun logout(callBack: MemberCallBack<String>)
 
@@ -27,6 +35,8 @@ interface MemberRepository {
     fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>)
 
     fun checkLogin(callBack: MemberCallBack<Boolean>)
+
+    fun deleteLoginUser(callBack: MemberCallBack<Boolean>)
 }
 
 

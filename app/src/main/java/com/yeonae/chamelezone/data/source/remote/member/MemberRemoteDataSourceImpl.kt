@@ -13,7 +13,6 @@ import retrofit2.Response
 
 class MemberRemoteDataSourceImpl private constructor(private val memberApi: MemberApi) :
     MemberRemoteDataSource {
-
     override fun createMember(
         email: String,
         password: String,
@@ -50,7 +49,11 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
     }
 
-    override fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
+    override fun login(
+        email: String,
+        password: String,
+        callBack: MemberCallBack<MemberResponse>
+    ) {
         val jsonObject = JsonObject().apply {
             addProperty("email", email)
             addProperty("password", password)
@@ -65,6 +68,8 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 if (response.code() == 200) {
                     Log.d("MyCall", response.body().toString())
                     callBack.onSuccess(response.body()!!)
+                } else if (response.code() == 404) {
+                    callBack.onFailure("이메일과 비밀번호를 확인 후 다시 로그인해주세요.")
                 }
             }
 
@@ -81,6 +86,27 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         phone: String,
         callBack: MemberCallBack<String>
     ) {
+        val jsonObject = JsonObject().apply {
+            addProperty("memberNumber", memberNumber)
+            addProperty("password", password)
+            addProperty("nickName", nickName)
+            addProperty("phoneNumber", phone)
+        }
+        memberService.updateMember(memberNumber, jsonObject)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.code() == 200) {
+                        callBack.onSuccess("회원 정보 수정 완료")
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("tag", t.toString())
+                }
+            })
 
     }
 
