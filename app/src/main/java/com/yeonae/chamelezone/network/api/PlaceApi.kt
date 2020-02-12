@@ -1,15 +1,25 @@
 package com.yeonae.chamelezone.network.api
 
-import com.google.gson.JsonObject
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
 interface PlaceApi {
+    @Multipart
     @POST("/place")
     fun placeRegister(
-        @Body place: JsonObject
+        @Part image: ArrayList<MultipartBody.Part>,
+        @Part("keywordName") keywordName: ArrayList<RequestBody>,
+        @Part("name") name: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("openingTime") openingTime: ArrayList<RequestBody>,
+        @Part("phoneNumber") phoneNumber: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part("latitude") latitude: RequestBody,
+        @Part("longitude") longitude: RequestBody
     ): Call<ResponseBody>
 
     @GET("/map/place/{name}")

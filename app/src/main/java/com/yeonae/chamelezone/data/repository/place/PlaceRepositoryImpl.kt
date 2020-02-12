@@ -16,7 +16,7 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        images: String,
+        images: List<String>,
         callBack: PlaceCallBack<String>
     ) {
         remoteDataSource.registerPlace(
