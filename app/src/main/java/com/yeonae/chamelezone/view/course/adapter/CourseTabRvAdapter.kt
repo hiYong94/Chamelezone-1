@@ -4,17 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Course
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.network.model.CourseResponse
 import kotlinx.android.synthetic.main.item_course_list.view.*
 
-class CourseTabRvAdapter(private val courseList: ArrayList<Course>) :
+class CourseTabRvAdapter() :
     RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
-
+    private var items = mutableListOf<CourseResponse>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
-        fun onClick(course: Course)
+        fun onClick(course: CourseResponse)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -25,36 +25,44 @@ class CourseTabRvAdapter(private val courseList: ArrayList<Course>) :
         CourseViewHolder(parent)
 
     override fun getItemCount(): Int =
-        courseList.size
+        items.size
 
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) =
-        holder.bind(courseList[position], onClickListener)
+        holder.bind(items[position], onClickListener)
 
-    fun addData(addDataList: List<Course>) {
-        courseList.clear()
-        courseList.addAll(addDataList)
+    fun addData(addDataList: List<CourseResponse>) {
+        items.clear()
+        items.addAll(addDataList)
         notifyDataSetChanged()
     }
 
     class CourseViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_course_list, parent, false)
     ) {
-        fun bind(item: Course, listener: OnClickListener?) {
+        fun bind(item: CourseResponse, listener: OnClickListener?) {
             itemView.run {
                 setOnClickListener {
                     listener?.onClick(item)
                 }
-                course_img.glideImageSet(
-                    itemView.resources.getIdentifier(
-                        item.courseImg,
-                        "drawable",
-                        itemView.context.packageName
-                    ), itemView.measuredWidth, itemView.measuredHeight
+
+                tv_course_title.text = item.title
+                tv_register_date.text = item.regiDate.split("T").first()
+                tv_user_nickname.text = item.nickName
+                val placeImages = item.savedImageName.split(",")
+                val images = arrayListOf<String>()
+                for (i in placeImages.indices) {
+                    images.add(IMAGE_RESOURCE + placeImages[i])
+                }
+                iv_course_image.glideImageSet(
+                    images[0],
+                    itemView.measuredWidth,
+                    itemView.measuredHeight
                 )
-                tv_course_name.text = item.courseName
-                tv_register_date.text = item.registerDate
-                tv_user_id.text = item.userId
             }
+        }
+
+        companion object {
+            private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
         }
     }
 }

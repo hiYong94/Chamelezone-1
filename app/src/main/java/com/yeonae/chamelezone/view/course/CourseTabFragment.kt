@@ -33,16 +33,11 @@ class CourseTabFragment : Fragment(), CourseContract.View {
     }
 
     override fun showCourseList(courseList: List<CourseResponse>) {
-        //courseTabRvAdapter.addData(courseList)
+        courseTabRvAdapter.addData(courseList)
     }
 
     override lateinit var presenter: CourseContract.Presenter
-    private val courseList = arrayListOf(
-        Course("익선동 데이트 코스", "2019-11-29", "yeonjae22", "", "place1"),
-        Course("용권이의 코스", "2019-11-28", "hiyong", "", "place2"),
-        Course("책을 좋아하는 사람을 위한 코스", "2019-11-27", "Lsunae", "", "place3")
-    )
-    private val courseTabRvAdapter = CourseTabRvAdapter(courseList)
+    private val courseTabRvAdapter = CourseTabRvAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +55,7 @@ class CourseTabFragment : Fragment(), CourseContract.View {
         setAdapter()
 
         courseTabRvAdapter.setOnClickListener(object : CourseTabRvAdapter.OnClickListener {
-            override fun onClick(course: Course) {
+            override fun onClick(course: CourseResponse) {
                 val intent = Intent(requireContext(), CourseDetailActivity::class.java)
                 startActivity(intent)
             }

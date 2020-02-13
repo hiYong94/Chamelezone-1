@@ -7,18 +7,14 @@ data class CourseResponse(
     val courseNumber: Int,
     @SerializedName("placeNumber")
     val placeNumber: Int,
-    @SerializedName("memberNumber")
-    val memberNumber: Int,
     @SerializedName("nickName")
     val nickName: String,
     @SerializedName("title")
     val title: String,
     @SerializedName("content")
     val content: String,
+    @SerializedName("savedImageName")
+    val savedImageName: String,
     @SerializedName("regiDate")
-    val regiDate: String,
-    @SerializedName("fileName")
-    val fileName: String,
-    @SerializedName("fileExtension")
-    val fileExtension: String
+    val regiDate: String
 )
