@@ -35,7 +35,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     callBack.onSuccess("회원가입 성공")
                 }
                 Log.d("err", response.code().toString())
@@ -65,10 +65,10 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 call: Call<MemberResponse>,
                 response: Response<MemberResponse>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     Log.d("MyCall", response.body().toString())
-                    callBack.onSuccess(response.body()!!)
-                } else if (response.code() == 404) {
+                    response.body()?.let { callBack.onSuccess(it) }
+                } else if (response.code() == REQUEST_ERR) {
                     callBack.onFailure("이메일과 비밀번호를 확인 후 다시 로그인해주세요.")
                 }
             }
@@ -98,7 +98,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    if (response.code() == 200) {
+                    if (response.code() == SUCCESS) {
                         callBack.onSuccess("회원 정보 수정 완료")
                     }
                 }
@@ -115,6 +115,8 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
     }
 
     companion object {
+        private const val SUCCESS = 200
+        private const val REQUEST_ERR = 404
         fun getInstance(memberApi: MemberApi): MemberRemoteDataSource =
             MemberRemoteDataSourceImpl(memberApi)
     }
