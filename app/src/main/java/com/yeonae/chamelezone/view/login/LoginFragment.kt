@@ -18,7 +18,7 @@ class LoginFragment : Fragment(), LoginContract.View {
         val newFragment = AlertDialogFragment.newInstance(
             message
         )
-        newFragment.show(fragmentManager!!, "dialog")
+        fragmentManager?.let { newFragment.show(it, "dialog") }
     }
 
     override fun showMessage(message: String) {
