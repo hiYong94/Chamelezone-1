@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.fragment_marker_info.*
+import kotlinx.android.synthetic.main.item_search.view.*
 
 class MarkerInfoFragment : Fragment() {
 
@@ -26,6 +28,14 @@ class MarkerInfoFragment : Fragment() {
             tv_place_name.text = getString(PLACE_NAME)
             tv_place_keyword.text = getString(PLACE_KEYWORD)
             tv_place_address.text = getString(PLACE_ADDRESS)
+            val placeImages = getString(PLACE_IMAGE)?.split(",")
+            val images = arrayListOf<String>()
+            if (placeImages != null) {
+                for(i in placeImages.indices){
+                    images.add("http://13.209.136.122:3000/image/"+ placeImages[i])
+                }
+            }
+            iv_place_image.glideImageSet(images[0], 80, 80)
         }
         layout_info.setOnClickListener {
             val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
@@ -40,6 +50,7 @@ class MarkerInfoFragment : Fragment() {
         private const val PLACE_KEYWORD = "placeKeyword"
         private const val PLACE_ADDRESS = "placeAddress"
         private const val PLACE_NUMBER = "placeNumber"
+        private const val PLACE_IMAGE = "placeImage"
         fun newInstance(
             placeInfo: PlaceResponse
         ) = MarkerInfoFragment().apply {
@@ -48,6 +59,7 @@ class MarkerInfoFragment : Fragment() {
                 putString(PLACE_KEYWORD, placeInfo.keywordName)
                 putString(PLACE_ADDRESS, placeInfo.address)
                 putInt(PLACE_NUMBER, placeInfo.placeNumber)
+                putString(PLACE_IMAGE, placeInfo.savedImageName)
             }
         }
     }
