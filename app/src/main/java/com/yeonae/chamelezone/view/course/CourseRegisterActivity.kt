@@ -15,8 +15,8 @@ import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.ext.glideImageUriSet
+import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import kotlinx.android.synthetic.main.activity_course_register.*
@@ -59,15 +59,15 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             finish()
         }
 
-        btn_place1.setOnClickListener {
+        btn_place_add1.setOnClickListener {
             replace("1")
         }
 
-        btn_place2.setOnClickListener {
+        btn_place_add2.setOnClickListener {
             replace("2")
         }
 
-        btn_place3.setOnClickListener {
+        btn_place_add3.setOnClickListener {
             replace("3")
         }
 
@@ -75,56 +75,24 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             tv_place_name1.text = ""
             tv_place_keyword1.text = ""
             tv_place_address1.text = ""
-            layout_place1.visibility = View.VISIBLE
-            layout_place2.visibility = View.VISIBLE
             layout_course1.visibility = View.GONE
-            if (tv_place_name2.text != "") {
-                layout_place2.visibility = View.GONE
-            }
+            layout_place_add1.visibility = View.VISIBLE
         }
 
         btn_close2.setOnClickListener {
             tv_place_name2.text = ""
             tv_place_keyword2.text = ""
             tv_place_address2.text = ""
-            layout_place2.visibility = View.VISIBLE
             layout_course2.visibility = View.GONE
-            if (tv_place_name1.text != "") {
-                layout_place1.visibility = View.GONE
-                layout_course1.visibility = View.VISIBLE
-            } else {
-                layout_place1.visibility = View.VISIBLE
-                layout_course1.visibility = View.GONE
-            }
-            if (tv_place_name3.text != "") {
-                layout_place3.visibility = View.GONE
-                layout_course3.visibility = View.VISIBLE
-            } else {
-                layout_place3.visibility = View.VISIBLE
-                layout_course3.visibility = View.GONE
-            }
+            layout_place_add2.visibility = View.VISIBLE
         }
 
         btn_close3.setOnClickListener {
             tv_place_name3.text = ""
             tv_place_keyword3.text = ""
             tv_place_address3.text = ""
-            layout_place3.visibility = View.VISIBLE
             layout_course3.visibility = View.GONE
-            if (tv_place_name1.text != "") {
-                layout_place1.visibility = View.GONE
-                layout_course1.visibility = View.VISIBLE
-            } else {
-                layout_place1.visibility = View.VISIBLE
-                layout_course1.visibility = View.GONE
-            }
-            if (tv_place_name2.text != "") {
-                layout_place2.visibility = View.GONE
-                layout_course2.visibility = View.VISIBLE
-            } else {
-                layout_place2.visibility = View.VISIBLE
-                layout_course2.visibility = View.GONE
-            }
+            layout_place_add3.visibility = View.VISIBLE
         }
     }
 
@@ -143,58 +111,29 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
     }
 
-    fun getVisible(placeIndex: String, place: Place) {
+    fun getVisible(placeIndex: String, place: PlaceResponse) {
         when (placeIndex) {
             "1" -> {
-                tv_place_name1.text = place.placeName
-                tv_place_keyword1.text = place.placeKeyword
-                tv_place_address1.text = place.placeAddress
-                layout_place1.visibility = View.GONE
+                tv_place_name1.text = place.name
+                tv_place_keyword1.text = place.keywordName
+                tv_place_address1.text = place.address
+                layout_place_add1.visibility = View.GONE
                 layout_course1.visibility = View.VISIBLE
-                layout_place2.visibility = View.GONE
-                if (tv_place_name2.text == "") {
-                    layout_place2.visibility = View.VISIBLE
-                }
-
             }
             "2" -> {
-                tv_place_name2.text = place.placeName
-                tv_place_keyword2.text = place.placeKeyword
-                tv_place_address2.text = place.placeAddress
-                layout_place2.visibility = View.GONE
+                tv_place_name2.text = place.name
+                tv_place_keyword2.text = place.keywordName
+                tv_place_address2.text = place.address
+                layout_place_add2.visibility = View.GONE
                 layout_course2.visibility = View.VISIBLE
-                layout_place1.visibility = View.GONE
-                layout_course1.visibility = View.VISIBLE
-                layout_place3.visibility = View.GONE
-                layout_course3.visibility = View.VISIBLE
-                if (tv_place_name1.text == "") {
-                    layout_place1.visibility = View.VISIBLE
-                    layout_course1.visibility = View.GONE
-                }
-                if (tv_place_name3.text == "") {
-                    layout_place3.visibility = View.VISIBLE
-                    layout_course3.visibility = View.GONE
-                }
 
             }
             "3" -> {
-                tv_place_name3.text = place.placeName
-                tv_place_keyword3.text = place.placeKeyword
-                tv_place_address3.text = place.placeAddress
-                layout_place3.visibility = View.GONE
+                tv_place_name3.text = place.name
+                tv_place_keyword3.text = place.keywordName
+                tv_place_address3.text = place.address
+                layout_place_add3.visibility = View.GONE
                 layout_course3.visibility = View.VISIBLE
-                layout_place1.visibility = View.GONE
-                layout_course1.visibility = View.VISIBLE
-                layout_place2.visibility = View.GONE
-                layout_course2.visibility = View.VISIBLE
-                if (tv_place_name1.text == "") {
-                    layout_place1.visibility = View.VISIBLE
-                    layout_course1.visibility = View.GONE
-                }
-                if (tv_place_name2.text == "") {
-                    layout_place2.visibility = View.VISIBLE
-                    layout_course2.visibility = View.GONE
-                }
             }
         }
     }
