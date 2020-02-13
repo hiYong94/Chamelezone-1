@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.view.course
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -18,6 +19,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.glideImageUriSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import kotlinx.android.synthetic.main.activity_course_register.*
@@ -25,8 +27,21 @@ import kotlinx.android.synthetic.main.slider_item_image.*
 
 class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
-    override fun showMessage(message: String) {
+    private var imageUri = arrayListOf<String>()
+    var memberNumber: Int = 0
+    var firstPlaceNumber = mutableListOf<Int>()
+    var secondPlaceNumber = mutableListOf<Int>()
+    var thirdPlaceNumber = mutableListOf<Int>()
+    private val placeNumbers = mutableListOf<Int>()
+    override fun showUserInfo(user: UserEntity) {
+        memberNumber = user.userNumber!!
+    }
 
+    override fun showMessage(message: String) {
+        Log.d("courseRegister", message)
+        Toast.makeText(this, message, Toast.LENGTH_LONG)
+            .show()
+        finish()
     }
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
@@ -41,6 +56,9 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             imageContainer.addView(iv)
             glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
         }
+        for (i in uris.indices) {
+            uris[i].path?.let { imageUri.add(it) }
+        }
     }
 
     override lateinit var presenter: CourseRegisterContract.Presenter
@@ -53,8 +71,10 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         setupGUI()
 
         presenter = CourseRegisterPresenter(
-            Injection.courseRepository(), this
+            Injection.memberRepository(applicationContext), Injection.courseRepository(), this
         )
+
+        presenter.getUser()
 
         btn_back.setOnClickListener {
             finish()
@@ -73,6 +93,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_close1.setOnClickListener {
+            firstPlaceNumber.removeAt(0)
             tv_place_name1.text = ""
             tv_place_keyword1.text = ""
             tv_place_address1.text = ""
@@ -81,6 +102,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_close2.setOnClickListener {
+            secondPlaceNumber.removeAt(0)
             tv_place_name2.text = ""
             tv_place_keyword2.text = ""
             tv_place_address2.text = ""
@@ -89,11 +111,33 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_close3.setOnClickListener {
+            thirdPlaceNumber.removeAt(0)
             tv_place_name3.text = ""
             tv_place_keyword3.text = ""
             tv_place_address3.text = ""
             layout_course3.visibility = View.GONE
             layout_place_add3.visibility = View.VISIBLE
+        }
+
+        btn_register.setOnClickListener {
+            if (firstPlaceNumber.isNotEmpty()) {
+                placeNumbers.add(firstPlaceNumber[0])
+            }
+            if (secondPlaceNumber.isNotEmpty()) {
+                placeNumbers.add(secondPlaceNumber[0])
+            }
+            if (thirdPlaceNumber.isNotEmpty()) {
+                placeNumbers.add(thirdPlaceNumber[0])
+            }
+
+            presenter.registerCourse(
+                memberNumber,
+                placeNumbers,
+                "${edt_course_title.text}",
+                "${edt_course_content.text}",
+                imageUri
+            )
+            Log.d("courseImage", imageUri.toString())
         }
     }
 
@@ -112,11 +156,11 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
     }
 
-    private fun processImage(image: String): String{
+    private fun processImage(image: String): String {
         val placeImages = image.split(",")
         val images = arrayListOf<String>()
-        for(i in placeImages.indices){
-            images.add("http://13.209.136.122:3000/image/"+ placeImages[i])
+        for (i in placeImages.indices) {
+            images.add("http://13.209.136.122:3000/image/" + placeImages[i])
         }
         return images[0]
     }
@@ -124,6 +168,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     fun getVisible(placeIndex: String, place: PlaceResponse) {
         when (placeIndex) {
             "1" -> {
+                firstPlaceNumber.add(place.placeNumber)
                 tv_place_name1.text = place.name
                 tv_place_keyword1.text = place.keywordName
                 tv_place_address1.text = place.address
@@ -132,6 +177,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 layout_course1.visibility = View.VISIBLE
             }
             "2" -> {
+                secondPlaceNumber.add(place.placeNumber)
                 tv_place_name2.text = place.name
                 tv_place_keyword2.text = place.keywordName
                 tv_place_address2.text = place.address
@@ -141,6 +187,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
             }
             "3" -> {
+                thirdPlaceNumber.add(place.placeNumber)
                 tv_place_name3.text = place.name
                 tv_place_keyword3.text = place.keywordName
                 tv_place_address3.text = place.address

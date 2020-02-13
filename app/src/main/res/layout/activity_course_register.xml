@@ -74,7 +74,7 @@
                             android:background="@drawable/draw">
 
                             <EditText
-                                android:id="@+id/edt_course_name"
+                                android:id="@+id/edt_course_title"
                                 style="@style/EditTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                             android:background="@drawable/draw">
 
                             <EditText
-                                android:id="@+id/edt_course_text"
+                                android:id="@+id/edt_course_content"
                                 style="@style/EditTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

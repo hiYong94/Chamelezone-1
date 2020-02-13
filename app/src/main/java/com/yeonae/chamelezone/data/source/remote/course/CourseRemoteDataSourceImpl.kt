@@ -18,27 +18,33 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     CourseRemoteDataSource {
     override fun registerCourse(
         memberNumber: Int,
-        placeNumber: Int,
+        placeNumberList: List<Int>,
         title: String,
         content: String,
-        image: String,
+        images: List<String>,
         callBack: CourseCallBack<String>
     ) {
-        val image =
-            MultipartBody.Part.createFormData(
-                "images",
-                image,
-                RequestBody.create(MediaType.parse("image/*"), File(image))
+        val image = ArrayList<MultipartBody.Part>()
+        for (i in images.indices) {
+            val extends = images[i].split(".").lastOrNull() ?: "*"
+            image.add(
+                MultipartBody.Part.createFormData(
+                    "images",
+                    images[i],
+                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
+                )
             )
+        }
 
         val memberNumber = RequestBody.create(
             MediaType.parse("text/plain"), memberNumber.toString()
         )
-        var placeNumber = ArrayList<RequestBody>()
-        for (i in placeNumber.indices) {
+        val placeNumber = ArrayList<RequestBody>()
+
+        for (i in placeNumberList.indices) {
             placeNumber.add(
                 RequestBody.create(
-                    MediaType.parse("text/plain"), placeNumber[i].toString()
+                    MediaType.parse("text/plain"), placeNumberList[i].toString()
                 )
             )
         }
@@ -59,7 +65,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    if (response.code() == 200) {
+                    if (response.code() == SUCCESS) {
                         callBack.onSuccess("코스 등록 성공")
                     }
                 }
@@ -77,7 +83,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 call: Call<List<CourseResponse>>,
                 response: Response<List<CourseResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -94,7 +100,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 call: Call<CourseResponse>,
                 response: Response<CourseResponse>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -116,7 +122,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     call: Call<List<CourseResponse>>,
                     response: Response<List<CourseResponse>>
                 ) {
-                    if (response.code() == 200) {
+                    if (response.code() == SUCCESS) {
                         response.body()?.let { callBack.onSuccess(it) }
                     }
                 }
@@ -135,7 +141,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     callBack.onSuccess("코스 삭제 성공")
                 }
             }
@@ -144,6 +150,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     }
 
     companion object {
+        private const val SUCCESS = 200
         fun getInstance(courseApi: CourseApi): CourseRemoteDataSource =
             CourseRemoteDataSourceImpl(courseApi)
     }

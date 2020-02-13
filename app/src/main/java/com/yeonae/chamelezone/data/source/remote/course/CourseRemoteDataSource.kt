@@ -6,10 +6,10 @@ import com.yeonae.chamelezone.network.model.CourseResponse
 interface CourseRemoteDataSource {
     fun registerCourse(
         memberNumber: Int,
-        placeNumber: Int,
+        placeNumber: List<Int>,
         title: String,
         content: String,
-        image: String,
+        images: List<String>,
         callBack: CourseCallBack<String>
     )
 
