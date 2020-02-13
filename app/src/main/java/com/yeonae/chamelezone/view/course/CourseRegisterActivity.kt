@@ -15,6 +15,7 @@ import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.glideImageUriSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
@@ -111,12 +112,22 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
     }
 
+    private fun processImage(image: String): String{
+        val placeImages = image.split(",")
+        val images = arrayListOf<String>()
+        for(i in placeImages.indices){
+            images.add("http://13.209.136.122:3000/image/"+ placeImages[i])
+        }
+        return images[0]
+    }
+
     fun getVisible(placeIndex: String, place: PlaceResponse) {
         when (placeIndex) {
             "1" -> {
                 tv_place_name1.text = place.name
                 tv_place_keyword1.text = place.keywordName
                 tv_place_address1.text = place.address
+                iv_place_image1.glideImageSet(processImage(place.savedImageName), 80, 80)
                 layout_place_add1.visibility = View.GONE
                 layout_course1.visibility = View.VISIBLE
             }
@@ -124,6 +135,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name2.text = place.name
                 tv_place_keyword2.text = place.keywordName
                 tv_place_address2.text = place.address
+                iv_place_image2.glideImageSet(processImage(place.savedImageName), 80, 80)
                 layout_place_add2.visibility = View.GONE
                 layout_course2.visibility = View.VISIBLE
 
@@ -132,6 +144,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name3.text = place.name
                 tv_place_keyword3.text = place.keywordName
                 tv_place_address3.text = place.address
+                iv_place_image3.glideImageSet(processImage(place.savedImageName), 80, 80)
                 layout_place_add3.visibility = View.GONE
                 layout_course3.visibility = View.VISIBLE
             }
