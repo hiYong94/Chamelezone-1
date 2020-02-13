@@ -21,7 +21,7 @@ class UserModifyActivity() : AppCompatActivity(), UserModifyContract.View {
         user_name.hint = user.name
         user_nickname.text = nickname
         user_phone.text = phone
-        memberNumber = user.userNumber!!
+        memberNumber = user.userNumber ?: 0
     }
 
     override fun showMessage(message: String) {
