@@ -19,9 +19,10 @@ class MemberLocalDataSourceImpl(
                     appExecutors.mainThread.execute {
                         callBack.onSuccess(true)
                     }
+                } else {
+                    callBack.onSuccess(false)
                 }
-            }
-            else{
+            } else {
                 appExecutors.mainThread.execute {
                     callBack.onSuccess(true)
                 }
@@ -58,6 +59,8 @@ class MemberLocalDataSourceImpl(
                 appExecutors.mainThread.execute {
                     callBack.onSuccess("로그아웃 성공")
                 }
+            } else {
+                callBack.onSuccess("로그아웃 실패")
             }
             Log.d("MyCall", userDatabase.userDao().getUserCount().toString())
         }
