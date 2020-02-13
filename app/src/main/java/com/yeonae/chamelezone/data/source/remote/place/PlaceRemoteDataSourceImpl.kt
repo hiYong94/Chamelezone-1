@@ -25,7 +25,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         keywordName: List<Int>,
         name: String,
         address: String,
-        openingTime: List<String>,
+        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
@@ -34,7 +34,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         callBack: PlaceCallBack<String>
     ) {
 
-        var image = ArrayList<MultipartBody.Part>()
+        val image = ArrayList<MultipartBody.Part>()
         for (i in images.indices) {
             val extends = images[i].split(".").lastOrNull() ?: "*"
             image.add(
@@ -46,16 +46,16 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             )
         }
 
-        var opening = ArrayList<RequestBody>()
-        for (i in openingTime.indices) {
-            opening.add(
+        val openingTime = ArrayList<RequestBody>()
+        for (i in openingTimes.indices) {
+            openingTime.add(
                 RequestBody.create(
-                    MediaType.parse("text/plain"), openingTime[i]
+                    MediaType.parse("text/plain"), openingTimes[i]
                 )
             )
         }
 
-        var keyword = ArrayList<RequestBody>()
+        val keyword = ArrayList<RequestBody>()
         for (i in keywordName.indices) {
             keyword.add(
                 RequestBody.create(
@@ -88,7 +88,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             keyword,
             name,
             address,
-            opening,
+            openingTime,
             phoneNumber,
             content,
             latitude,
@@ -99,7 +99,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
                     (call.request().body() as MultipartBody).parts().forEach {
                         Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
@@ -134,7 +134,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -152,7 +152,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -170,7 +170,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -188,7 +188,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -205,7 +205,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<PlaceResponse>,
                 response: Response<PlaceResponse>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -227,7 +227,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -245,7 +245,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<KeywordResponse>>,
                 response: Response<List<KeywordResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -264,7 +264,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     callBack.onSuccess("장소 삭제 성공")
                 }
             }
@@ -273,6 +273,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     }
 
     companion object {
+        private const val SUCCESS = 200
         fun getInstance(placeApi: PlaceApi): PlaceRemoteDataSource =
             PlaceRemoteDataSourceImpl(placeApi)
     }
