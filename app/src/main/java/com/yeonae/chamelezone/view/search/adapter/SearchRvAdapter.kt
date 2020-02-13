@@ -1,11 +1,13 @@
 package com.yeonae.chamelezone.view.search.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import kotlinx.android.synthetic.main.fragment_marker_info.view.*
+import kotlinx.android.synthetic.main.item_search.view.*
 
 class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>() {
 
@@ -46,6 +48,12 @@ class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>()
                 tv_place_name.text = item.name
                 tv_place_keyword.text = item.keywordName.replace(",", ", ")
                 tv_place_address.text = item.address
+                val placeImages = item.savedImageName.split(",")
+                val images = arrayListOf<String>()
+                for(i in placeImages.indices){
+                    images.add("http://13.209.136.122:3000/image/"+ placeImages[i])
+                }
+                iv_place_image.glideImageSet(images[0], 80, 80)
             }
         }
     }
