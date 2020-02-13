@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.view.search.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +9,6 @@ import com.yeonae.chamelezone.network.model.PlaceResponse
 import kotlinx.android.synthetic.main.item_search.view.*
 
 class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>() {
-
     private var items = mutableListOf<PlaceResponse>()
     private var onClickListener: OnClickListener? = null
 
@@ -50,11 +48,18 @@ class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>()
                 tv_place_address.text = item.address
                 val placeImages = item.savedImageName.split(",")
                 val images = arrayListOf<String>()
-                for(i in placeImages.indices){
-                    images.add("http://13.209.136.122:3000/image/"+ placeImages[i])
+                for (i in placeImages.indices) {
+                    images.add(IMAGE_RESOURCE + placeImages[i])
                 }
-                iv_place_image.glideImageSet(images[0], 80, 80)
+                iv_place_image.glideImageSet(
+                    images[0], itemView.measuredWidth,
+                    itemView.measuredHeight
+                )
             }
+        }
+
+        companion object {
+            private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
         }
     }
 }

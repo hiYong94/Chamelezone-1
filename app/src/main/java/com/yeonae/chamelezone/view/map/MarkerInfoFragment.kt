@@ -11,7 +11,6 @@ import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.fragment_marker_info.*
-import kotlinx.android.synthetic.main.item_search.view.*
 
 class MarkerInfoFragment : Fragment() {
 
@@ -31,8 +30,8 @@ class MarkerInfoFragment : Fragment() {
             val placeImages = getString(PLACE_IMAGE)?.split(",")
             val images = arrayListOf<String>()
             if (placeImages != null) {
-                for(i in placeImages.indices){
-                    images.add("http://13.209.136.122:3000/image/"+ placeImages[i])
+                for (i in placeImages.indices) {
+                    images.add(IMAGE_RESOURCE + placeImages[i])
                 }
             }
             iv_place_image.glideImageSet(images[0], 80, 80)
@@ -46,6 +45,7 @@ class MarkerInfoFragment : Fragment() {
     }
 
     companion object {
+        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
         private const val PLACE_NAME = "placeName"
         private const val PLACE_KEYWORD = "placeKeyword"
         private const val PLACE_ADDRESS = "placeAddress"
