@@ -235,6 +235,24 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
+    override fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+        placeService.getPlaceDetailReview(placeNumber).enqueue(object : Callback<PlaceResponse> {
+            override fun onResponse(
+                call: Call<PlaceResponse>,
+                response: Response<PlaceResponse>
+            ) {
+                if (response.code() == 200) {
+                    response.body()?.let { callBack.onSuccess(it) }
+                }
+            }
+
+            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+
+        })
+    }
+
     companion object {
         fun getInstance(placeApi: PlaceApi): PlaceRemoteDataSource =
             PlaceRemoteDataSourceImpl(placeApi)

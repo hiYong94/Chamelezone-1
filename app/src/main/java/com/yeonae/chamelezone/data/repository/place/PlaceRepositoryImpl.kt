@@ -73,6 +73,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.getHomePlaceList(callBack)
     }
 
+    override fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+        remoteDataSource.getPlaceDetailReview(placeNumber, callBack)
+    }
+
     companion object {
         fun getInstance(remoteDataSource: PlaceRemoteDataSource): PlaceRepository =
             PlaceRepositoryImpl(remoteDataSource)
