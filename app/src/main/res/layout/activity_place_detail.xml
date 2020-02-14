@@ -53,7 +53,7 @@
                             android:background="@color/transparent">
 
                             <androidx.viewpager.widget.ViewPager
-                                android:id="@+id/vp"
+                                android:id="@+id/vp_image"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content" />
 
@@ -81,6 +81,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/ll_title"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:orientation="horizontal"
@@ -126,7 +127,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@color/colorWhite"
-                        android:visibility="gone"
+                        android:visibility="invisible"
                         app:layout_collapseMode="pin">
 
                         <ImageButton
