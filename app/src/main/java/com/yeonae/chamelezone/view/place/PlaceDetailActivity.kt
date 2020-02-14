@@ -17,8 +17,8 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceInfoContract.View {
         val placeImages = place.savedImageName.split(",")
         val images = arrayListOf<String>()
         Log.d("placeImages", placeImages.toString())
-        for(i in placeImages.indices){
-            images.add("http://13.209.136.122:3000/image/"+ placeImages[i])
+        for (i in placeImages.indices) {
+            images.add(IMAGE_RESOURCE + placeImages[i])
         }
         val imageAdapter = ImageViewPagerAdapter(images)
         view.adapter = imageAdapter
@@ -50,5 +50,9 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceInfoContract.View {
         val fragmentAdapter = PlaceDetailPagerAdapter(supportFragmentManager, placeNumber)
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
+    }
+
+    companion object {
+        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
     }
 }
