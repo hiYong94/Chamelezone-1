@@ -25,7 +25,7 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
         tv_keyword.text = place.keywordName.replace(",", ", ")
         tv_address.text = place.address
         tv_phone.text = place.phoneNumber
-        tv_opening_time.text = place.openingTime
+        tv_opening_time.text = place.openingTime.replace(",", "\n")
         tv_content.text = place.content
 
         val latLng = LatLng(place.latitude.toDouble(), place.longitude.toDouble())
