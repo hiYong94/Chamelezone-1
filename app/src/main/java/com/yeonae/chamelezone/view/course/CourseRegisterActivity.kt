@@ -160,14 +160,14 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         val placeImages = image.split(",")
         val images = arrayListOf<String>()
         for (i in placeImages.indices) {
-            images.add("http://13.209.136.122:3000/image/" + placeImages[i])
+            images.add(IMAGE_RESOURCE + placeImages[i])
         }
         return images[0]
     }
 
-    fun getVisible(placeIndex: String, place: PlaceResponse) {
+    fun getVisible(placeIndex: Int, place: PlaceResponse) {
         when (placeIndex) {
-            "1" -> {
+            1 -> {
                 firstPlaceNumber.add(place.placeNumber)
                 tv_place_name1.text = place.name
                 tv_place_keyword1.text = place.keywordName
@@ -180,20 +180,21 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 layout_place_add1.visibility = View.GONE
                 layout_course1.visibility = View.VISIBLE
             }
-            "2" -> {
+            2 -> {
                 secondPlaceNumber.add(place.placeNumber)
                 tv_place_name2.text = place.name
                 tv_place_keyword2.text = place.keywordName
                 tv_place_address2.text = place.address
                 iv_place_image2.glideImageSet(
-                    processImage(place.savedImageName), iv_place_image1.measuredWidth,
+                    processImage(place.savedImageName),
+                    iv_place_image1.measuredWidth,
                     iv_place_image1.measuredHeight
                 )
                 layout_place_add2.visibility = View.GONE
                 layout_course2.visibility = View.VISIBLE
 
             }
-            "3" -> {
+            3 -> {
                 thirdPlaceNumber.add(place.placeNumber)
                 tv_place_name3.text = place.name
                 tv_place_keyword3.text = place.keywordName
@@ -246,4 +247,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             .check()
     }
 
+    companion object {
+        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
+    }
 }
