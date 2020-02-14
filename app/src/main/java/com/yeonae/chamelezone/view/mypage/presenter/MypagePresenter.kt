@@ -46,4 +46,17 @@ class MypagePresenter(
 
         })
     }
+
+    override fun deleteUser(memberNumber: Int) {
+        repository.deleteMember(memberNumber, object : MemberCallBack<String>{
+            override fun onSuccess(response: String) {
+                view.showMessage(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
 }

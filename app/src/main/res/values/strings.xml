@@ -88,6 +88,7 @@
     <string name="logout">로그아웃</string>
     <string name="chamelezone_info">카멜레존 소개</string>
     <string name="privacy">개인정보 수집 및 이용</string>
+    <string name="member_delete">회원 탈퇴</string>
 
     <string name="search_word">장소 검색</string>
     <string name="place_name_test">구슬모아당구장</string>

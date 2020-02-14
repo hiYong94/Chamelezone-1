@@ -20,7 +20,7 @@ interface MemberRemoteDataSource {
         password: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callBack: MemberCallBack<Boolean>
     )
 
     fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>)

@@ -19,8 +19,10 @@ import com.yeonae.chamelezone.view.mypage.presenter.MypagePresenter
 import kotlinx.android.synthetic.main.fragment_mypage_tab.*
 
 class MypageTabFragment : Fragment(), MypageContract.View {
+    var memberNumber: Int = 0
     override fun showUserInfo(user: UserEntity) {
         btn_nick_name.text = user.nickname
+        memberNumber = user.userNumber ?: 0
     }
 
     override fun showResultView(response: Boolean) {
@@ -32,6 +34,7 @@ class MypageTabFragment : Fragment(), MypageContract.View {
             layout_my_place.visibility = View.VISIBLE
             layout_my_course.visibility = View.VISIBLE
             layout_logout.visibility = View.VISIBLE
+            layout_user_delete.visibility = View.VISIBLE
             presenter.getUser()
         }
     }
@@ -89,6 +92,19 @@ class MypageTabFragment : Fragment(), MypageContract.View {
             startActivity(intent)
         }
 
+        btn_user_delete.setOnClickListener {
+            presenter.deleteUser(memberNumber)
+            presenter.logout()
+            layout_nick_name.visibility = View.GONE
+            btn_login.visibility = View.VISIBLE
+            layout_user_modify.visibility = View.GONE
+            layout_my_review.visibility = View.GONE
+            layout_my_place.visibility = View.GONE
+            layout_my_course.visibility = View.GONE
+            layout_logout.visibility = View.GONE
+            layout_user_delete.visibility = View.GONE
+        }
+
         btn_logout.setOnClickListener {
             presenter.logout()
             layout_nick_name.visibility = View.GONE
@@ -98,6 +114,7 @@ class MypageTabFragment : Fragment(), MypageContract.View {
             layout_my_place.visibility = View.GONE
             layout_my_course.visibility = View.GONE
             layout_logout.visibility = View.GONE
+            layout_user_delete.visibility = View.GONE
         }
     }
 

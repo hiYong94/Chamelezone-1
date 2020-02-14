@@ -84,7 +84,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         password: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callBack: MemberCallBack<Boolean>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("memberNumber", memberNumber)
@@ -99,7 +99,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == SUCCESS) {
-                        callBack.onSuccess("회원 정보 수정 완료")
+                        callBack.onSuccess(true)
                     }
                 }
 
@@ -111,7 +111,17 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
     }
 
     override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {
+        memberService.deleteMember(memberNumber).enqueue(object : Callback<ResponseBody>{
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == SUCCESS) {
+                    callBack.onSuccess("회원 탈퇴 성공")
+                }
+            }
 
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+
+            }
+        })
     }
 
     companion object {

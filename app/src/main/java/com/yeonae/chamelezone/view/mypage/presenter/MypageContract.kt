@@ -15,5 +15,6 @@ interface MypageContract {
         fun logout()
         fun checkLogin()
         fun getUser()
+        fun deleteUser(memberNumber: Int)
     }
 }
