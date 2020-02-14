@@ -14,9 +14,6 @@ data class ReviewResponse(
     @SerializedName("content")
     val content: String,
     @SerializedName("regiDate")
-    val regiDate: String,
-    @SerializedName("fileName")
-    val fileName: String,
-    @SerializedName("fileExtension")
-    val fileExtension: String
+    val regiDate: String
+
 )
