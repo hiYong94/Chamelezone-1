@@ -1,21 +1,20 @@
 package com.yeonae.chamelezone.view.course.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.CourseItem
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.model.CourseResponse
 import kotlinx.android.synthetic.main.item_course_list.view.*
 
 class CourseTabRvAdapter() :
     RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
-    private val items = mutableListOf<CourseResponse>()
+    private val items = mutableListOf<CourseItem>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
-        fun onClick(course: CourseResponse)
+        fun onClick(course: CourseItem)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -31,7 +30,7 @@ class CourseTabRvAdapter() :
     override fun onBindViewHolder(holder: CourseViewHolder, position: Int) =
         holder.bind(items[position], onClickListener)
 
-    fun addData(addDataList: List<CourseResponse>) {
+    fun addData(addDataList: List<CourseItem>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
@@ -40,17 +39,16 @@ class CourseTabRvAdapter() :
     class CourseViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_course_list, parent, false)
     ) {
-        fun bind(item: CourseResponse, listener: OnClickListener?) {
+        fun bind(item: CourseItem, listener: OnClickListener?) {
             itemView.run {
                 setOnClickListener {
                     listener?.onClick(item)
                 }
-                val courseItem = item.toCourseItem(item)
-                tv_course_title.text = courseItem.title
-                tv_register_date.text = courseItem.regiDate
-                tv_user_nickname.text = courseItem.nickName
+                tv_course_title.text = item.title
+                tv_register_date.text = item.regiDate
+                tv_user_nickname.text = item.nickName
                 iv_course_image.glideImageSet(
-                    courseItem.savedImageName,
+                    item.savedImageName,
                     itemView.measuredWidth,
                     itemView.measuredHeight
                 )

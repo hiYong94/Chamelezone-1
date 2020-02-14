@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.course.presenter
 
+import com.yeonae.chamelezone.data.model.CourseItem
 import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.data.repository.course.CourseRepository
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
@@ -27,7 +28,11 @@ class CoursePresenter(
     override fun getCourseList() {
         courseRepository.getCourseList(object : CourseCallBack<List<CourseResponse>> {
             override fun onSuccess(response: List<CourseResponse>) {
-                view.showCourseList(response)
+                val courseItem = mutableListOf<CourseItem>()
+                for(i in response.indices){
+                    courseItem.add(response[i].toCourseItem(response[i]))
+                }
+                view.showCourseList(courseItem)
             }
 
             override fun onFailure(message: String) {

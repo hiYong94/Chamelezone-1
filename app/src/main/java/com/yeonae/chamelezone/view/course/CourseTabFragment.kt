@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
+import com.yeonae.chamelezone.data.model.CourseItem
 import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.view.course.adapter.CourseTabRvAdapter
 import com.yeonae.chamelezone.view.course.presenter.CourseContract
@@ -32,7 +33,7 @@ class CourseTabFragment : Fragment(), CourseContract.View {
         }
     }
 
-    override fun showCourseList(courseList: List<CourseResponse>) {
+    override fun showCourseList(courseList: List<CourseItem>) {
         courseTabRvAdapter.addData(courseList)
     }
 
@@ -55,7 +56,7 @@ class CourseTabFragment : Fragment(), CourseContract.View {
         setAdapter()
 
         courseTabRvAdapter.setOnClickListener(object : CourseTabRvAdapter.OnClickListener {
-            override fun onClick(course: CourseResponse) {
+            override fun onClick(course: CourseItem) {
                 val intent = Intent(requireContext(), CourseDetailActivity::class.java)
                 startActivity(intent)
             }
