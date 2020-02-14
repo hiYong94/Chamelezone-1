@@ -9,7 +9,7 @@ import com.yeonae.chamelezone.network.model.PlaceResponse
 import kotlinx.android.synthetic.main.item_search.view.*
 
 class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>() {
-    private var items = mutableListOf<PlaceResponse>()
+    private val items = mutableListOf<PlaceResponse>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
