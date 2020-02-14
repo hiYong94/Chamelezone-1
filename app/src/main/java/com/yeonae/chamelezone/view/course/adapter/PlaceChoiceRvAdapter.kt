@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import kotlinx.android.synthetic.main.item_place_choice.view.*
@@ -60,11 +59,18 @@ class PlaceChoiceRvAdapter() :
                 tv_place_address.text = item.address
                 val placeImages = item.savedImageName.split(",")
                 val images = arrayListOf<String>()
-                for(i in placeImages.indices){
-                    images.add("http://13.209.136.122:3000/image/"+ placeImages[i])
+                for (i in placeImages.indices) {
+                    images.add(IMAGE_RESOURCE + placeImages[i])
                 }
-                iv_place_image.glideImageSet(images[0], 80, 80)
+                iv_place_image.glideImageSet(
+                    images[0], iv_place_image.measuredWidth,
+                    iv_place_image.measuredHeight
+                )
             }
         }
+    }
+
+    companion object {
+        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
     }
 }

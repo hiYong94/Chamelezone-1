@@ -34,7 +34,10 @@ class MarkerInfoFragment : Fragment() {
                     images.add(IMAGE_RESOURCE + placeImages[i])
                 }
             }
-            iv_place_image.glideImageSet(images[0], 80, 80)
+            iv_place_image.glideImageSet(
+                images[0], iv_place_image.measuredWidth,
+                iv_place_image.measuredHeight
+            )
         }
         layout_info.setOnClickListener {
             val intent = Intent(requireContext(), PlaceDetailActivity::class.java)

@@ -172,7 +172,11 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name1.text = place.name
                 tv_place_keyword1.text = place.keywordName
                 tv_place_address1.text = place.address
-                iv_place_image1.glideImageSet(processImage(place.savedImageName), 80, 80)
+                iv_place_image1.glideImageSet(
+                    processImage(place.savedImageName),
+                    iv_place_image1.measuredWidth,
+                    iv_place_image1.measuredHeight
+                )
                 layout_place_add1.visibility = View.GONE
                 layout_course1.visibility = View.VISIBLE
             }
@@ -181,7 +185,10 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name2.text = place.name
                 tv_place_keyword2.text = place.keywordName
                 tv_place_address2.text = place.address
-                iv_place_image2.glideImageSet(processImage(place.savedImageName), 80, 80)
+                iv_place_image2.glideImageSet(
+                    processImage(place.savedImageName), iv_place_image1.measuredWidth,
+                    iv_place_image1.measuredHeight
+                )
                 layout_place_add2.visibility = View.GONE
                 layout_course2.visibility = View.VISIBLE
 
@@ -191,7 +198,10 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name3.text = place.name
                 tv_place_keyword3.text = place.keywordName
                 tv_place_address3.text = place.address
-                iv_place_image3.glideImageSet(processImage(place.savedImageName), 80, 80)
+                iv_place_image3.glideImageSet(
+                    processImage(place.savedImageName), iv_place_image1.measuredWidth,
+                    iv_place_image1.measuredHeight
+                )
                 layout_place_add3.visibility = View.GONE
                 layout_course3.visibility = View.VISIBLE
             }
