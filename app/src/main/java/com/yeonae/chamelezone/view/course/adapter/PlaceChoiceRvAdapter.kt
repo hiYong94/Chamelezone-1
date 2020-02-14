@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_place_choice.view.*
 class PlaceChoiceRvAdapter() :
     RecyclerView.Adapter<PlaceChoiceRvAdapter.PlaceChoiceViewHolder>() {
     private var selectedPosition = -1
-    private var items = mutableListOf<PlaceResponse>()
+    private val items = mutableListOf<PlaceResponse>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
