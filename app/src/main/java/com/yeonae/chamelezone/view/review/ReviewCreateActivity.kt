@@ -51,6 +51,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             uris[i].path?.let { uriList.add(it) }
             Log.d("dddd", uris[i].path)
         }
+        Log.d("uriList", uriList.toString())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,12 +66,14 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             ), this
         )
 
+        val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
+        Log.d("placeNumber", placeNumber.toString())
+
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
-            val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
 
-            presenter.reviewCreate(252, placeNumber, content, uriList.toString())
-
+            presenter.reviewCreate(252, placeNumber, content, uriList)
+            Log.d("uriList", uriList.toString())
         }
     }
 
@@ -105,7 +108,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
     private fun setupGUI() {
         tv_title.text = intent.getStringExtra("placeName")
-        tv_title.catchFocus(this)
+        tv_title.catchFocus()
         btn_back.setOnClickListener {
             finish()
         }

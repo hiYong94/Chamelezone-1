@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,15 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Review
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
+import com.yeonae.chamelezone.view.place.presenter.PlaceInfoContract
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import com.yeonae.chamelezone.view.review.ReviewImageActivity
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 
 class PlaceReviewTabFragment : Fragment() {
+    lateinit var presenter: PlaceInfoContract.Presenter
+    private val PLACE_NUMBER = "placeNumber"
 
     private val placeReviewList = arrayListOf(
         Review("yeonjae22", "어제", "place1", "여기 진짜 분위기 이뻐요"),
@@ -44,26 +48,31 @@ class PlaceReviewTabFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        review.setOnClickListener {
-            val intent = Intent(context, ReviewCreateActivity::class.java)
-            intent.putExtra("placeName", "$tv_place_name")
-            startActivity(intent)
-        }
-
         setAdapter()
 
-        placeReviewRvAdapter.setItemClickListener(object : PlaceReviewTabRvAdapter.OnItemClickListener{
+        placeReviewRvAdapter.setItemClickListener(object :
+            PlaceReviewTabRvAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int) {
                 val intent = Intent(context, ReviewImageActivity::class.java)
                 startActivity(intent)
             }
         })
 
-        placeReviewRvAdapter.setMoreButtonListener(object : PlaceReviewTabRvAdapter.MoreButtonListener{
+        placeReviewRvAdapter.setMoreButtonListener(object :
+            PlaceReviewTabRvAdapter.MoreButtonListener {
             override fun bottomSheetDialog() {
                 showBottomSheet()
             }
         })
+
+        val placeNumber = arguments?.getInt(PLACE_NUMBER)
+        Log.d("placeNumber", placeNumber.toString())
+        review.setOnClickListener {
+            val intent = Intent(context, ReviewCreateActivity::class.java)
+            intent.putExtra("placeName", "$tv_place_name")
+            intent.putExtra(PLACE_NUMBER, placeNumber)
+            startActivity(intent)
+        }
     }
 
     private fun setAdapter() {
@@ -76,5 +85,13 @@ class PlaceReviewTabFragment : Fragment() {
     private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(childFragmentManager, bottomSheetDialogFragment.tag)
+    }
+
+    companion object {
+        fun newInstance(placeNumber: Int) = PlaceReviewTabFragment().apply {
+            arguments = Bundle().apply {
+                putInt(PLACE_NUMBER, placeNumber)
+            }
+        }
     }
 }

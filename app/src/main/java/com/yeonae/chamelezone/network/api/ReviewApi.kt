@@ -11,9 +11,10 @@ interface ReviewApi {
     @Multipart
     @POST("/place/{placeNumber}/review")
     fun reviewCreate(
-        @Part("review") review: RequestBody,
-        @Part file: MultipartBody.Part,
-        @Path("placeNumber") placeNumber: Int
+        @Part("memberNumber") memberNumber: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part file: ArrayList<MultipartBody.Part>,
+        @Path ("placeNumber") placeNumber: Int
     ): Call<ResponseBody>
 
     @GET("/user/{memberNumber}/review")

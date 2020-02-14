@@ -7,7 +7,7 @@ interface ReviewRepository {
         memberNumber: Int,
         placeNumber: Int,
         content: String,
-        images: String,
+        images: List<String>,
         callBack: ReviewCallBack<String>
     )
 

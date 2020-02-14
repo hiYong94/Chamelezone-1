@@ -9,7 +9,7 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
         memberNumber: Int,
         placeNumber: Int,
         content: String,
-        images: String,
+        images: List<String>,
         callBack: ReviewCallBack<String>
     ) {
         reviewRemoteDataSource.createReview(memberNumber, placeNumber, content, images, callBack)

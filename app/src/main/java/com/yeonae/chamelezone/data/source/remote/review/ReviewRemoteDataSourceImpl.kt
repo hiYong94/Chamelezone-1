@@ -1,7 +1,6 @@
 package com.yeonae.chamelezone.data.source.remote.review
 
 import android.util.Log
-import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
 import com.yeonae.chamelezone.network.api.RetrofitConnection.reviewService
 import com.yeonae.chamelezone.network.api.ReviewApi
@@ -21,32 +20,45 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         memberNumber: Int,
         placeNumber: Int,
         content: String,
-        images: String,
+        images: List<String>,
         callBack: ReviewCallBack<String>
     ) {
-        val jsonObject = JsonObject().apply {
-            addProperty("content", content)
+        val memberNumber = RequestBody.create(MediaType.parse("text/plain"), memberNumber.toString())
+
+        val content = RequestBody.create(MediaType.parse("text/plain"), content)
+
+        val file = ArrayList<MultipartBody.Part>()
+
+        for (i in images.indices) {
+            file.add(
+                MultipartBody.Part.createFormData(
+                    "images",
+                    images[i],
+                    RequestBody.create(MediaType.parse("image/*"), File(images[i]))
+                )
+            )
         }
 
-        val review   = RequestBody.create(MediaType.parse("text/plain"), jsonObject.toString())
+        Log.d("create tag placeNum", placeNumber.toString())
+        Log.d("create tag memberNum", memberNumber.toString())
+        Log.d("create tag content", content.toString())
+        Log.d("create tag file", file.toString())
 
-        val file = File(images)
-        val imageReq = RequestBody.create(
-            MediaType.parse("image/*"),
-            file
-        )
-        val body = MultipartBody.Part.createFormData("multipart/form-data", file.name, imageReq)
+        reviewService.reviewCreate(memberNumber, content, file, placeNumber)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.code() == 200)
+                        response.body().let { callBack.onSuccess("리뷰 등록 성공") }
+                }
 
-        reviewService.reviewCreate(review, body, placeNumber).enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == 200)
-                    response.body().let { callBack.onSuccess("리뷰 등록 성공") }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("create tag", t.toString())
-            }
-        })
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.d("create tag", t.toString())
+                    Log.d("create tag", (call.request().toString()))
+                }
+            })
     }
 
     override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
@@ -64,7 +76,10 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         })
     }
 
-    override fun getMyReviewList(memberNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
+    override fun getMyReviewList(
+        memberNumber: Int,
+        callBack: ReviewCallBack<List<ReviewResponse>>
+    ) {
 
     }
 
