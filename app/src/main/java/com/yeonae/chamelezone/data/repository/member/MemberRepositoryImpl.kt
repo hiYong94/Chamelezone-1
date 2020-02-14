@@ -52,9 +52,27 @@ class MemberRepositoryImpl private constructor(
         password: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callBack: MemberCallBack<Boolean>,
+        localCallBack: MemberCallBack<Boolean>
     ) {
-        remoteDataSource.updateMember(memberNumber, password, nickName, phone, callBack)
+        remoteDataSource.updateMember(
+            memberNumber,
+            password,
+            nickName,
+            phone,
+            object : MemberCallBack<Boolean> {
+                override fun onSuccess(response: Boolean) {
+                    callBack.onSuccess(response)
+                    if (response) {
+                        localDataSource.updateMember(nickName, phone, localCallBack)
+                    }
+                }
+
+                override fun onFailure(message: String) {
+                    callBack.onFailure(message)
+                }
+
+            })
     }
 
     override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {

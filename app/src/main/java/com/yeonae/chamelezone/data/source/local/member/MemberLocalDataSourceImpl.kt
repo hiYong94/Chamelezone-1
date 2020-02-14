@@ -20,7 +20,7 @@ class MemberLocalDataSourceImpl(
                         callBack.onSuccess(true)
                     }
                 } else {
-                    callBack.onSuccess(false)
+                    callBack.onFailure("삭제 실패")
                 }
             } else {
                 appExecutors.mainThread.execute {
@@ -40,9 +40,6 @@ class MemberLocalDataSourceImpl(
                 phone = response.phoneNumber
             )
             val insertedPk = userDatabase.userDao().insertUser(newUser)
-            Log.d("MyCall", insertedPk.toString())
-            Log.d("MyCall", response.email)
-            Log.d("MyCall", userDatabase.userDao().getUser().toString())
             if (insertedPk == 0L) {
                 appExecutors.mainThread.execute {
                     callBack.onSuccess(true)
@@ -54,7 +51,6 @@ class MemberLocalDataSourceImpl(
     override fun logout(callBack: MemberCallBack<String>) {
         appExecutors.diskIO.execute {
             val deletedCount = userDatabase.userDao().deleteUser()
-            Log.d("MyCall", deletedCount.toString())
             if (deletedCount == 1) {
                 appExecutors.mainThread.execute {
                     callBack.onSuccess("로그아웃 성공")
@@ -62,7 +58,6 @@ class MemberLocalDataSourceImpl(
             } else {
                 callBack.onSuccess("로그아웃 실패")
             }
-            Log.d("MyCall", userDatabase.userDao().getUserCount().toString())
         }
     }
 
@@ -86,6 +81,18 @@ class MemberLocalDataSourceImpl(
                 val user = userDatabase.userDao().getUser()
                 appExecutors.mainThread.execute {
                     callBack.onSuccess(user)
+                }
+            }
+        }
+    }
+
+    override fun updateMember(nickname: String, phone: String, callBack: MemberCallBack<Boolean>) {
+        appExecutors.diskIO.execute {
+            val updateCount = userDatabase.userDao().updateUser(nickname, phone)
+            Log.d("updateMember1", updateCount.toString())
+            if (updateCount == 1) {
+                appExecutors.mainThread.execute {
+                    callBack.onSuccess(true)
                 }
             }
         }

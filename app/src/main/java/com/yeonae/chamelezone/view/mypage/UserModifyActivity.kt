@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.SpannableStringBuilder
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
@@ -24,8 +25,12 @@ class UserModifyActivity() : AppCompatActivity(), UserModifyContract.View {
         memberNumber = user.userNumber ?: 0
     }
 
-    override fun showMessage(message: String) {
-
+    override fun showMessage(response: Boolean) {
+        if (response) {
+            Toast.makeText(this, "회원 정보 수정 성공", Toast.LENGTH_LONG)
+                .show()
+            finish()
+        }
     }
 
     override lateinit var presenter: UserModifyContract.Presenter

@@ -7,7 +7,7 @@ interface UserModifyContract {
     interface View {
         var presenter: Presenter
         fun showUserInfo(user: UserEntity)
-        fun showMessage(message: String)
+        fun showMessage(response: Boolean)
     }
 
     interface Presenter {

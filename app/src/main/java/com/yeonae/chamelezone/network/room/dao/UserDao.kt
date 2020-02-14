@@ -5,7 +5,7 @@ import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM user")
+    @Query("SELECT * FROM USER")
     fun getUser(): UserEntity
 
     @Query("SELECT COUNT(*) FROM USER")
@@ -14,10 +14,10 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(userEntity: UserEntity): Long
 
-    @Update
-    fun updateUser(userEntity: UserEntity): Int
+    @Query("UPDATE USER SET nickname = :nickname, phone = :phone WHERE PK = 0")
+    fun updateUser(nickname: String, phone: String): Int
 
-    @Query("DELETE FROM user")
+    @Query("DELETE FROM USER")
     fun deleteUser(): Int
 
 }
