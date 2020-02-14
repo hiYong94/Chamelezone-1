@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
-import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
-import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
-import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
 import com.yeonae.chamelezone.view.home.presenter.HomeContract
@@ -101,9 +99,7 @@ class HomeTabFragment : Fragment(), HomeContract.View {
             startActivity(intent)
         }
         presenter = HomePresenter(
-            PlaceRepositoryImpl.getInstance(
-                PlaceRemoteDataSourceImpl.getInstance(RetrofitConnection.placeService)
-            ), this
+            Injection.placeRepository(requireContext()), this
         )
         presenter.getHomeList()
     }
