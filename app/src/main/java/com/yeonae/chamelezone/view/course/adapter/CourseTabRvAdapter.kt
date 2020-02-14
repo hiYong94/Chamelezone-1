@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.course.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,7 +11,7 @@ import kotlinx.android.synthetic.main.item_course_list.view.*
 
 class CourseTabRvAdapter() :
     RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
-    private var items = mutableListOf<CourseResponse>()
+    private val items = mutableListOf<CourseResponse>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
@@ -44,17 +45,12 @@ class CourseTabRvAdapter() :
                 setOnClickListener {
                     listener?.onClick(item)
                 }
-
-                tv_course_title.text = item.title
-                tv_register_date.text = item.regiDate.split("T").first()
-                tv_user_nickname.text = item.nickName
-                val placeImages = item.savedImageName.split(",")
-                val images = arrayListOf<String>()
-                for (i in placeImages.indices) {
-                    images.add(IMAGE_RESOURCE + placeImages[i])
-                }
+                val courseItem = item.toCourseItem(item)
+                tv_course_title.text = courseItem.title
+                tv_register_date.text = courseItem.regiDate
+                tv_user_nickname.text = courseItem.nickName
                 iv_course_image.glideImageSet(
-                    images[0],
+                    courseItem.savedImageName,
                     itemView.measuredWidth,
                     itemView.measuredHeight
                 )
