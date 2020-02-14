@@ -29,9 +29,9 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
     private var imageUri = arrayListOf<String>()
     var memberNumber: Int = 0
-    var firstPlaceNumber = mutableListOf<Int>()
-    var secondPlaceNumber = mutableListOf<Int>()
-    var thirdPlaceNumber = mutableListOf<Int>()
+    var firstPlaceNumber: Int = NOT_SELECTED
+    var secondPlaceNumber: Int = NOT_SELECTED
+    var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
     override fun showUserInfo(user: UserEntity) {
         memberNumber = user.userNumber!!
@@ -93,7 +93,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_close1.setOnClickListener {
-            firstPlaceNumber.removeAt(0)
+            firstPlaceNumber = NOT_SELECTED
             tv_place_name1.text = ""
             tv_place_keyword1.text = ""
             tv_place_address1.text = ""
@@ -102,7 +102,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_close2.setOnClickListener {
-            secondPlaceNumber.removeAt(0)
+            secondPlaceNumber = NOT_SELECTED
             tv_place_name2.text = ""
             tv_place_keyword2.text = ""
             tv_place_address2.text = ""
@@ -111,7 +111,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_close3.setOnClickListener {
-            thirdPlaceNumber.removeAt(0)
+            thirdPlaceNumber = NOT_SELECTED
             tv_place_name3.text = ""
             tv_place_keyword3.text = ""
             tv_place_address3.text = ""
@@ -120,14 +120,14 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_register.setOnClickListener {
-            if (firstPlaceNumber.isNotEmpty()) {
-                placeNumbers.add(firstPlaceNumber[0])
+            if (firstPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(firstPlaceNumber)
             }
-            if (secondPlaceNumber.isNotEmpty()) {
-                placeNumbers.add(secondPlaceNumber[0])
+            if (secondPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(secondPlaceNumber)
             }
-            if (thirdPlaceNumber.isNotEmpty()) {
-                placeNumbers.add(thirdPlaceNumber[0])
+            if (thirdPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(thirdPlaceNumber)
             }
 
             presenter.registerCourse(
@@ -168,7 +168,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     fun getVisible(placeIndex: Int, place: PlaceResponse) {
         when (placeIndex) {
             1 -> {
-                firstPlaceNumber.add(place.placeNumber)
+                firstPlaceNumber = place.placeNumber
                 tv_place_name1.text = place.name
                 tv_place_keyword1.text = place.keywordName
                 tv_place_address1.text = place.address
@@ -181,7 +181,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 layout_course1.visibility = View.VISIBLE
             }
             2 -> {
-                secondPlaceNumber.add(place.placeNumber)
+                secondPlaceNumber = place.placeNumber
                 tv_place_name2.text = place.name
                 tv_place_keyword2.text = place.keywordName
                 tv_place_address2.text = place.address
@@ -195,7 +195,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
             }
             3 -> {
-                thirdPlaceNumber.add(place.placeNumber)
+                thirdPlaceNumber = place.placeNumber
                 tv_place_name3.text = place.name
                 tv_place_keyword3.text = place.keywordName
                 tv_place_address3.text = place.address
@@ -249,5 +249,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     companion object {
         private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
+        private const val  NOT_SELECTED = -1
     }
 }
