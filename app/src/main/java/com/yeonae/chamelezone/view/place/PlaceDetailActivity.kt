@@ -25,8 +25,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceInfoContract.View {
     }
 
     override lateinit var presenter: PlaceInfoContract.Presenter
-    private val PLACE_NAME = "placeName"
-    private val PLACE_NUMBER = "placeNumber"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +51,8 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceInfoContract.View {
     }
 
     companion object {
+        private const val PLACE_NAME = "placeName"
+        private const val PLACE_NUMBER = "placeNumber"
         private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
     }
 }
