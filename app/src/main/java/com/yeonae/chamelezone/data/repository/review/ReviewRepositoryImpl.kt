@@ -6,29 +6,29 @@ import com.yeonae.chamelezone.network.model.ReviewResponse
 class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSource: ReviewRemoteDataSource) :
     ReviewRepository {
     override fun createReview(
-        placeName: String,
-        nickname: String,
-        reviewImg: String,
+        memberNumber: Int,
+        placeNumber: Int,
         content: String,
+        images: List<String>,
         callBack: ReviewCallBack<String>
     ) {
-        reviewRemoteDataSource.createReview(placeName, nickname, reviewImg, content, callBack)
+        reviewRemoteDataSource.createReview(memberNumber, placeNumber, content, images, callBack)
     }
 
-    override fun getReviewList(reviewNum: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
+    override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
 
     }
 
-    override fun getMyReviewList(userId: String, callBack: ReviewCallBack<List<ReviewResponse>>) {
-        reviewRemoteDataSource.getMyReviewList(userId, callBack)
+    override fun getMyReviewList(memberNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
+        reviewRemoteDataSource.getMyReviewList(memberNumber, callBack)
     }
 
     override fun updateReview() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun deleteReview() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     companion object {

@@ -54,7 +54,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
+            iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
         }
         for (i in uris.indices) {
             uris[i].path?.let { imageUri.add(it) }
