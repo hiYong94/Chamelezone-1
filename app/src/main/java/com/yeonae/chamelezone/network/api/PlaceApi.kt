@@ -51,4 +51,12 @@ interface PlaceApi {
     fun deletePlace(
         @Path("placeNumber") placeNumber: Int
     ): Call<ResponseBody>
+
+    @GET("/place")
+    fun getHomePlaceList(): Call<List<PlaceResponse>>
+
+    @GET("/place/{placeNumber}/review")
+    fun getPlaceDetailReview(
+        @Path("placeNumber") placeNumber: Int
+    ): Call<PlaceResponse>
 }

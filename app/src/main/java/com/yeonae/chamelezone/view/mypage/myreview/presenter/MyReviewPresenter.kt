@@ -8,8 +8,8 @@ class MyReviewPresenter(
     private val reviewRepository: ReviewRepository,
     private val myReviewView: MyReviewContract.View
 ) : MyReviewContract.Presenter {
-    override fun userReview(userId: String) {
-        reviewRepository.getMyReviewList(userId, object : ReviewCallBack<List<ReviewResponse>> {
+    override fun userReview(memberNumber: Int) {
+        reviewRepository.getMyReviewList(memberNumber, object : ReviewCallBack<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
                 myReviewView.showMyReviewList(response)
             }

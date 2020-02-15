@@ -15,7 +15,7 @@ import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
-import com.yeonae.chamelezone.ext.glideImageUriSet
+import com.yeonae.chamelezone.ext.glideImageSet
 import kotlinx.android.synthetic.main.activity_course_register.*
 import kotlinx.android.synthetic.main.slider_item_image.*
 
@@ -31,7 +31,7 @@ class CourseRegisterActivity : AppCompatActivity(),
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
+            iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
         }
     }
 

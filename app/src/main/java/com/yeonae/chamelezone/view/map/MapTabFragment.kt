@@ -23,7 +23,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.AlertDialogFragment
-import com.yeonae.chamelezone.util.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse

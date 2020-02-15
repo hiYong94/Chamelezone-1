@@ -9,6 +9,6 @@ interface MyReviewContract {
     }
 
     interface Presenter {
-        fun userReview(userId: String)
+        fun userReview(memberNumber: Int)
     }
 }

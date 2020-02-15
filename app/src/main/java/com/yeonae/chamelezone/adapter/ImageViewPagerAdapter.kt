@@ -28,9 +28,13 @@ class ImageViewPagerAdapter : PagerAdapter() {
 
 
         view.post {
-            Log.d("size defi", "gggggggggg  ${view.measuredWidth} ${view.measuredHeight}")
 
-            view.image_view.glideImageSet(images[position], view.measuredWidth, view.measuredHeight)
+            Log.d("size defi", "gggggggggg   ${view.measuredWidth} ${view.measuredHeight}")
+            view.image_view.glideImageSet(
+                images[position],
+                view.measuredWidth,
+                view.measuredHeight
+            )
         }
         container.addView(view)
         return view

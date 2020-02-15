@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.login.LoginActivity
-import com.yeonae.chamelezone.view.login.UserModifyActivity
 import com.yeonae.chamelezone.view.mypage.mycourse.MyCourseActivity
 import com.yeonae.chamelezone.view.mypage.myplace.MyPlaceActivity
 import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity

@@ -14,6 +14,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled false
+        renderscriptTargetApi 29
+        renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
@@ -26,6 +28,9 @@ android {
             //...
             maven { url 'https://jitpack.io' }
         }
+    }
+    repositories {
+        jcenter()
     }
 }
 

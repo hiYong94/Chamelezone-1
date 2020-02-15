@@ -37,7 +37,7 @@
         <activity android:name=".view.mypage.mycourse.MyCourseActivity"/>
         <activity android:name=".view.mypage.myreview.MyReviewActivity"/>
         <activity android:name=".view.login.LoginActivity"/>
-        <activity android:name=".view.login.UserModifyActivity"/>
+        <activity android:name=".view.mypage.UserModifyActivity"/>
         <activity android:name=".view.mypage.IntroActivity"/>
         <activity android:name=".view.mypage.PersonaInfoActivity"/>
         <activity android:name=".view.review.MyReviewDetailActivity"/>

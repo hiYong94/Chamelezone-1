@@ -27,4 +27,6 @@ interface PlaceRepository {
     fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>)
     fun modifyPlace()
     fun deletePlace(placeNumber: Int, callBack: PlaceCallBack<String>)
+    fun getHomePlaceList(callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>)
 }

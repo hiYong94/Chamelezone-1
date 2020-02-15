@@ -24,7 +24,7 @@ import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.glideImageUriSet
+import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
@@ -55,7 +55,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 false
             ) as ImageView
             imageContainer.addView(iv)
-            glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
+            iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
             Log.d("placeRegisterUri", uri.toString())
             Log.d("placeRegisterUri", uri.path)
         }

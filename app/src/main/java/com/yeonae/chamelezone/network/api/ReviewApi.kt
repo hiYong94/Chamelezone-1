@@ -1,7 +1,7 @@
 package com.yeonae.chamelezone.network.api
 
-import com.google.gson.JsonObject
 import com.yeonae.chamelezone.network.model.ReviewResponse
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -9,14 +9,16 @@ import retrofit2.http.*
 
 interface ReviewApi {
     @Multipart
-    @POST("/review")
+    @POST("/place/{placeNumber}/review")
     fun reviewCreate(
-        @Body review: JsonObject,
-        @Part("file\" filename=\"pp.png\" ") file: RequestBody
+        @Part("memberNumber") memberNumber: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part file: ArrayList<MultipartBody.Part>,
+        @Path ("placeNumber") placeNumber: Int
     ): Call<ResponseBody>
 
-    @GET("/review")
+    @GET("/user/{memberNumber}/review")
     fun getReviewList(
-        @Path("reviewNumber") reviewNumber: Int
+        @Path("memberNumber") memberNumber: Int
     ): Call<ReviewResponse>
 }
