@@ -108,7 +108,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
         map_view.onCreate(savedInstanceState)
 
         presenter = MapPresenter(
-            Injection.placeRepository(requireContext()), this
+            Injection.placeRepository(), this
         )
 
         checkPermission()
@@ -192,21 +192,28 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
                     val r = Rect()
-                    contentView.getWindowVisibleDisplayFrame(r)
-                    val screenHeight = contentView.rootView.height
-                    val keypadHeight = screenHeight - r.bottom
-                    Log.d(TAG, "keypadHeight = $keypadHeight")
-                    if (keypadHeight > screenHeight * 0.15) {
-                        if (!isKeyboardShowing) {
-                            isKeyboardShowing = true
-                            (activity as HomeActivity).tabGone()
+                    try {
+                        contentView.getWindowVisibleDisplayFrame(r)
+                        val screenHeight = contentView.rootView.height
+                        val keypadHeight = screenHeight - r.bottom
+
+                        Log.d(TAG, "keypadHeight = $keypadHeight")
+                        if (keypadHeight > screenHeight * 0.15) {
+                            if (!isKeyboardShowing) {
+                                isKeyboardShowing = true
+                                (activity as HomeActivity).tabGone()
+                            }
+                        } else {
+                            if (isKeyboardShowing) {
+                                isKeyboardShowing = false
+                                (activity as HomeActivity).tabVisible()
+                            }
                         }
-                    } else {
-                        if (isKeyboardShowing) {
-                            isKeyboardShowing = false
-                            (activity as HomeActivity).tabVisible()
-                        }
+                    } catch (e: Exception) {
+                        Log.d("MapTabFragment", "$e")
                     }
+
+
                 }
             })
     }

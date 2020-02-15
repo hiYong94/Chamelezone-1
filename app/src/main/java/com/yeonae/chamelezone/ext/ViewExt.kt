@@ -28,6 +28,14 @@ fun ImageView.glideImageSet(image: Int, width: Int, height: Int) {
         .into(this)
 }
 
+fun ImageView.glideImageSet(image: String, width: Int, height: Int) {
+    Glide.with(context)
+        .load(image)
+        .override(width, height)
+        .centerCrop()
+        .into(this)
+}
+
 fun ImageView.glideImageSet(image: Uri, width: Int, height: Int) {
     Glide.with(context)
         .load(image)

@@ -5,42 +5,79 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:name=".util.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
-        <activity android:name=".view.home.HomeActivity"
-            android:windowSoftInputMode="stateHidden">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".view.home.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.place.PlaceDetailActivity"/>
-        <activity android:name=".view.search.SearchActivity"/>
-        <activity android:name=".view.course.CourseDetailActivity"/>
-        <activity android:name=".view.course.CourseRegisterActivity"/>
-        <activity android:name=".view.review.ReviewCreateActivity"/>
-        <activity android:name=".view.mypage.myplace.MyPlaceActivity"/>
-        <activity android:name=".view.mypage.myplace.PlaceRegisterActivity"/>
-        <activity android:name=".view.mypage.myplace.SearchAddressActivity"/>
-        <activity android:name=".view.mypage.mycourse.MyCourseActivity"/>
-        <activity android:name=".view.mypage.myreview.MyReviewActivity"/>
-        <activity android:name=".view.login.LoginActivity"/>
-        <activity android:name=".view.mypage.UserModifyActivity"/>
-        <activity android:name=".view.mypage.IntroActivity"/>
-        <activity android:name=".view.mypage.PersonaInfoActivity"/>
-        <activity android:name=".view.review.MyReviewDetailActivity"/>
-        <activity android:name=".view.review.ReviewImageActivity"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
+
+        <activity
+            android:name=".view.home.HomeActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".view.place.PlaceDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.search.SearchActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.course.CourseDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.course.CourseRegisterActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.review.ReviewCreateActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.myplace.MyPlaceActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.myplace.PlaceRegisterActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.myplace.SearchAddressActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.mycourse.MyCourseActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.myreview.MyReviewActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.login.LoginActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.UserModifyActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.IntroActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.PersonaInfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.review.MyReviewDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.review.ReviewImageActivity"
+            android:launchMode="singleTask" />
     </application>
+
 </manifest>

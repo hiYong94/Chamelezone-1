@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.mypage.presenter
 
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 class MypagePresenter(
     private val repository: MemberRepository,
@@ -14,7 +15,7 @@ class MypagePresenter(
             }
 
             override fun onFailure(message: String) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
             }
 
         })
@@ -23,11 +24,37 @@ class MypagePresenter(
     override fun checkLogin() {
         repository.checkLogin(object : MemberCallBack<Boolean>{
             override fun onSuccess(response: Boolean) {
-                view.showLoginView(response)
+                view.showResultView(response)
             }
 
             override fun onFailure(message: String) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+            }
+
+        })
+    }
+
+    override fun getUser() {
+        repository.getMember(object : MemberCallBack<UserEntity>{
+            override fun onSuccess(response: UserEntity) {
+                view.showUserInfo(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
+
+    override fun deleteUser(memberNumber: Int) {
+        repository.deleteMember(memberNumber, object : MemberCallBack<String>{
+            override fun onSuccess(response: String) {
+                view.showMessage(response)
+            }
+
+            override fun onFailure(message: String) {
+
             }
 
         })

@@ -59,7 +59,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -73,7 +74,7 @@
                             android:background="@drawable/draw">
 
                             <EditText
-                                android:id="@+id/edt_course_name"
+                                android:id="@+id/edt_course_title"
                                 style="@style/EditTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -101,7 +102,7 @@
                             android:background="@drawable/draw">
 
                             <EditText
-                                android:id="@+id/edt_course_text"
+                                android:id="@+id/edt_course_content"
                                 style="@style/EditTextStyle"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -198,17 +199,19 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/layout_place1"
+                        android:id="@+id/layout_place_add1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/draw">
 
-                        <Button
-                            android:id="@+id/btn_place1"
+                        <TextView
+                            android:id="@+id/btn_place_add1"
                             style="@style/ButtonStyle"
                             android:layout_width="match_parent"
-                            android:layout_height="61dp"
-                            android:background="@color/transparent"
-                            android:text="@string/place_selected_first" />
+                            android:layout_height="wrap_content"
+                            android:text="@string/place_selected_first"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -229,6 +232,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/iv_place_image1"
                                     android:layout_width="80dp"
                                     android:layout_height="80dp"
                                     android:layout_marginHorizontal="10dp"
@@ -298,18 +302,19 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/layout_place2"
+                        android:id="@+id/layout_place_add2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone">
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/draw">
 
-                        <Button
+                        <TextView
+                            android:id="@+id/btn_place_add2"
                             style="@style/ButtonStyle"
-                            android:id="@+id/btn_place2"
                             android:layout_width="match_parent"
-                            android:layout_height="61dp"
-                            android:background="@color/transparent"
-                            android:text="@string/place_selected_second" />
+                            android:layout_height="wrap_content"
+                            android:text="@string/place_selected_second"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -330,6 +335,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/iv_place_image2"
                                     android:layout_width="80dp"
                                     android:layout_height="80dp"
                                     android:layout_marginHorizontal="10dp"
@@ -399,18 +405,20 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/layout_place3"
+                        android:id="@+id/layout_place_add3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone">
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp">
 
-                        <Button
+                        <TextView
+                            android:id="@+id/btn_place_add3"
                             style="@style/ButtonStyle"
-                            android:id="@+id/btn_place3"
                             android:layout_width="match_parent"
-                            android:layout_height="61dp"
-                            android:background="@color/transparent"
-                            android:text="@string/place_selected_third" />
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/draw"
+                            android:text="@string/place_selected_third"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -432,6 +440,7 @@
                                 android:layout_height="wrap_content">
 
                                 <ImageView
+                                    android:id="@+id/iv_place_image3"
                                     android:layout_width="80dp"
                                     android:layout_height="80dp"
                                     android:layout_marginHorizontal="10dp"

@@ -16,8 +16,29 @@ import com.yeonae.chamelezone.view.map.MapTabFragment
 import com.yeonae.chamelezone.view.mypage.MypageTabFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
-
 class HomeActivity : AppCompatActivity() {
+    private val tabList by lazy { listOf("홈", "코스", "지도", "즐겨찾기", "마이페이지") }
+
+    private val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
+        override fun getItem(position: Int): Fragment {
+            return when (position) {
+                0 -> {
+                    HomeTabFragment()
+                }
+                1 -> {
+                    CourseTabFragment()
+                }
+                2 -> {
+                    MapTabFragment()
+                }
+                3 -> {
+                    LikeTabFragment()
+                }
+                else -> MypageTabFragment()
+            }
+        }
+    }
+
     val drawableList = intArrayOf(
         R.drawable.home,
         R.drawable.course,
@@ -25,14 +46,6 @@ class HomeActivity : AppCompatActivity() {
         R.drawable.like,
         R.drawable.user
     )
-    //    val selectDrawableList = intArrayOf(
-//        R.drawable.home_orange,
-//        R.drawable.course_orange,
-//        R.drawable.map_orange,
-//        R.drawable.like_orange,
-//        R.drawable.user_orange
-//    )
-    private val tabList by lazy { listOf("홈", "코스", "지도", "즐겨찾기", "마이페이지") }
 
     //액션버튼 메뉴 액션바에 집어 넣기
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,27 +66,10 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setupView()
+    }
 
-        val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
-            override fun getItem(position: Int): Fragment {
-                return when (position) {
-                    0 -> {
-                        HomeTabFragment()
-                    }
-                    1 -> {
-                        CourseTabFragment()
-                    }
-                    2 -> {
-                        MapTabFragment()
-                    }
-                    3 -> {
-                        LikeTabFragment()
-                    }
-                    else -> MypageTabFragment()
-                }
-            }
-        }
-
+    private fun setupView() {
         with(viewPager) {
             adapter = tabPagerAdapter
             offscreenPageLimit = 5
@@ -141,6 +137,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+
     private fun setSelectedTabIcon(position: Int) {
         when (position) {
             0 -> tabLayout.getTabAt(0)?.setIcon(R.drawable.home_orange)
@@ -159,23 +156,24 @@ class HomeActivity : AppCompatActivity() {
     }
 
     fun replace(fragment: Fragment, isBackStack: Boolean = true) {
-        if(isBackStack){
-            supportFragmentManager.beginTransaction().replace(R.id.map_fragment, fragment).addToBackStack(null).commit()
-        }else{
+        if (isBackStack) {
+            supportFragmentManager.beginTransaction().replace(R.id.map_fragment, fragment)
+                .addToBackStack(null).commit()
+        } else {
             supportFragmentManager.beginTransaction().replace(R.id.map_fragment, fragment).commit()
         }
     }
 
-    fun back(fragment: Fragment){
+    fun back(fragment: Fragment) {
         supportFragmentManager.beginTransaction().remove(fragment).commit()
         //supportFragmentManager.popBackStack()
     }
 
-    fun tabVisible(){
+    fun tabVisible() {
         tabLayout.visibility = View.VISIBLE
     }
 
-    fun tabGone(){
+    fun tabGone() {
         tabLayout.visibility = View.GONE
     }
 }

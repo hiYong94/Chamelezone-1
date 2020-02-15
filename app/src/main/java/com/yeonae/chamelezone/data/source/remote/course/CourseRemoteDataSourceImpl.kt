@@ -1,43 +1,76 @@
 package com.yeonae.chamelezone.data.source.remote.course
 
 import android.util.Log
-import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.network.api.CourseApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.courseService
 import com.yeonae.chamelezone.network.model.CourseResponse
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 class CourseRemoteDataSourceImpl private constructor(private val courseApi: CourseApi) :
     CourseRemoteDataSource {
     override fun registerCourse(
         memberNumber: Int,
-        placeNumber: Int,
+        placeNumberList: List<Int>,
         title: String,
         content: String,
+        images: List<String>,
         callBack: CourseCallBack<String>
     ) {
-        val jsonObject = JsonObject().apply {
-            addProperty("memberNumber", memberNumber)
-            addProperty("placeNumber", placeNumber)
-            addProperty("title", title)
-            addProperty("content", content)
+        val image = ArrayList<MultipartBody.Part>()
+        for (i in images.indices) {
+            val extends = images[i].split(".").lastOrNull() ?: "*"
+            image.add(
+                MultipartBody.Part.createFormData(
+                    "images",
+                    images[i],
+                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
+                )
+            )
         }
-        courseService.courseRegister(jsonObject).enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("tag", t.toString())
-            }
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == 200) {
-                    callBack.onSuccess("코스 등록 성공")
+        val memberNumber = RequestBody.create(
+            MediaType.parse("text/plain"), memberNumber.toString()
+        )
+        val placeNumber = ArrayList<RequestBody>()
+
+        for (i in placeNumberList.indices) {
+            placeNumber.add(
+                RequestBody.create(
+                    MediaType.parse("text/plain"), placeNumberList[i].toString()
+                )
+            )
+        }
+        val title = RequestBody.create(
+            MediaType.parse("text/plain"), title
+        )
+        val content = RequestBody.create(
+            MediaType.parse("text/plain"), content
+        )
+
+        courseService.courseRegister(image, memberNumber, placeNumber, title, content)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("tag", t.toString())
                 }
-            }
 
-        })
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.code() == SUCCESS) {
+                        callBack.onSuccess("코스 등록 성공")
+                    }
+                }
+
+            })
     }
 
     override fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>) {
@@ -50,7 +83,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 call: Call<List<CourseResponse>>,
                 response: Response<List<CourseResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -67,7 +100,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 call: Call<CourseResponse>,
                 response: Response<CourseResponse>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -89,7 +122,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     call: Call<List<CourseResponse>>,
                     response: Response<List<CourseResponse>>
                 ) {
-                    if (response.code() == 200) {
+                    if (response.code() == SUCCESS) {
                         response.body()?.let { callBack.onSuccess(it) }
                     }
                 }
@@ -108,7 +141,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     callBack.onSuccess("코스 삭제 성공")
                 }
             }
@@ -117,6 +150,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     }
 
     companion object {
+        private const val SUCCESS = 200
         fun getInstance(courseApi: CourseApi): CourseRemoteDataSource =
             CourseRemoteDataSourceImpl(courseApi)
     }

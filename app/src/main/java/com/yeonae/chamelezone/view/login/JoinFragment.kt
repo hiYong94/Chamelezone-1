@@ -12,11 +12,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
-import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSourceImpl
-import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceImpl
-import com.yeonae.chamelezone.network.api.RetrofitConnection
-import com.yeonae.chamelezone.network.room.database.UserDatabase
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_join.*
@@ -28,6 +23,7 @@ class JoinFragment : Fragment(), JoinContract.View {
     override fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG)
             .show()
+        (activity as LoginActivity).back(this)
     }
 
     override fun onCreateView(
@@ -46,6 +42,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         presenter = JoinPresenter(
             Injection.memberRepository(requireContext()), this
         )
+
         checkType()
 
         btn_back.setOnClickListener {
@@ -53,7 +50,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         }
 
         btn_join.setOnClickListener {
-            presenter.userRegister(
+            joinCheck(
                 "${join_email.text}",
                 "${join_password.text}",
                 "${join_name.text}",
@@ -63,7 +60,50 @@ class JoinFragment : Fragment(), JoinContract.View {
         }
     }
 
-    private fun checkEmail(){
+    private fun joinCheck(
+        email: String,
+        password: String,
+        name: String,
+        nickName: String,
+        phone: String
+    ) {
+        when {
+            email.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "아이디를 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
+            password.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "비밀번호를 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
+            name.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "이름을 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
+            nickName.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "닉네임을 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
+            phone.isEmpty() -> Toast.makeText(
+                requireContext(),
+                "전화번호를 입력해주세요!",
+                Toast.LENGTH_SHORT
+            ).show()
+            else -> {
+                if (!email_layout.isErrorEnabled && !password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled) {
+                    presenter.userRegister(
+                        email, password, name, nickName, phone
+                    )
+                }
+            }
+        }
+    }
+
+    private fun checkEmail() {
         val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
         val m = p.matcher(join_email.text.toString())
         if (!m.matches()) {
@@ -72,6 +112,30 @@ class JoinFragment : Fragment(), JoinContract.View {
             email_layout.error = "이메일을 입력해주세요."
         } else {
             email_layout.isErrorEnabled = false
+        }
+    }
+
+    private fun checkPassword() {
+        val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
+        val m = p.matcher(join_password.text.toString())
+        if (!m.matches()) {
+            password_layout.error = "영문, 숫자 조합 8~16자로 입력해주세요."
+        } else if ("${join_password.text}".isEmpty()) {
+            password_layout.error = "비밀번호를 입력해주세요."
+        } else {
+            password_layout.isErrorEnabled = false
+        }
+    }
+
+    private fun checkNickName() {
+        val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
+        val m = p.matcher(join_nickname.text.toString())
+        if (!m.matches()) {
+            nickname_layout.error = "한글, 영문, 숫자 포함 1~10자로 입력해주세요."
+        } else if ("${join_nickname.text}".isEmpty()) {
+            nickname_layout.error = "닉네임을 입력해주세요."
+        } else {
+            nickname_layout.isErrorEnabled = false
         }
     }
 
@@ -84,11 +148,10 @@ class JoinFragment : Fragment(), JoinContract.View {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
                 val inputTime = System.currentTimeMillis()
                 lastInputTime = inputTime
                 Handler().postDelayed({
-                    if(lastInputTime == inputTime){
+                    if (lastInputTime == inputTime) {
                         checkEmail()
                     }
                 }, 500)
@@ -101,15 +164,13 @@ class JoinFragment : Fragment(), JoinContract.View {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
-                val m = p.matcher(join_password.text.toString())
-                if (!m.matches()) {
-                    password_layout.error = "영문, 숫자 조합 8~16자로 입력해주세요."
-                } else if ("${join_password.text}".isEmpty()) {
-                    password_layout.error = "비밀번호를 입력해주세요."
-                } else {
-                    password_layout.isErrorEnabled = false
-                }
+                val inputTime = System.currentTimeMillis()
+                lastInputTime = inputTime
+                Handler().postDelayed({
+                    if (lastInputTime == inputTime) {
+                        checkPassword()
+                    }
+                }, 500)
             }
         })
 
@@ -119,15 +180,13 @@ class JoinFragment : Fragment(), JoinContract.View {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
-                val m = p.matcher(join_nickname.text.toString())
-                if (!m.matches()) {
-                    nickname_layout.error = "한글, 영문, 숫자 포함 1~10자로 입력해주세요."
-                } else if ("${join_nickname.text}".isEmpty()) {
-                    nickname_layout.error = "닉네임을 입력해주세요."
-                } else {
-                    nickname_layout.isErrorEnabled = false
-                }
+                val inputTime = System.currentTimeMillis()
+                lastInputTime = inputTime
+                Handler().postDelayed({
+                    if (lastInputTime == inputTime) {
+                        checkNickName()
+                    }
+                }, 500)
             }
         })
     }

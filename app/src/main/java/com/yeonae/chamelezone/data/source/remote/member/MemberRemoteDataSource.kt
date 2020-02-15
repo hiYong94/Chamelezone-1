@@ -13,14 +13,14 @@ interface MemberRemoteDataSource {
         callBack: MemberCallBack<String>
     )
 
-    fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>)
+    fun login(email: String, password: String, callBack: MemberCallBack<MemberResponse>)
 
     fun updateMember(
         memberNumber: Int,
         password: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callBack: MemberCallBack<Boolean>
     )
 
     fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>)

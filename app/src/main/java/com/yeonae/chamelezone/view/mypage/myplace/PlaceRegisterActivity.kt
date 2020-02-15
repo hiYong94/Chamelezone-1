@@ -56,14 +56,10 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             ) as ImageView
             imageContainer.addView(iv)
             iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
-            Log.d("placeRegisterUri", uri.toString())
-            Log.d("placeRegisterUri", uri.path)
         }
         for (i in uris.indices) {
             uris[i].path?.let { imageUri.add(it) }
-            Log.d("placeRegisterUri", uris[i].path)
         }
-        Log.d("placeRegisterUri", imageUri.toString())
     }
 
     override fun showMessage(message: String) {
@@ -80,7 +76,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         setupGUI()
 
         presenter = PlacePresenter(
-            Injection.placeRepository(applicationContext), this
+            Injection.placeRepository(), this
         )
         presenter.getKeyword()
 
@@ -105,9 +101,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             val latitude = latLng?.latitude?.toBigDecimal()
             val longitude = latLng?.longitude?.toBigDecimal()
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
-            Log.d("latitude", latitude.toString())
-            Log.d("longitude", longitude.toString())
-            Log.d("uri", imageUri.toString())
 
             if (latitude != null && longitude != null) {
                 presenter.placeRegister(
@@ -119,7 +112,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                     "${edt_place_text.text}",
                     latitude,
                     longitude,
-                    imageUri.toString()
+                    imageUri
                 )
             }
         }
@@ -192,7 +185,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
     private fun pickMulti() {
         BottomSheetImagePicker.Builder(getString(R.string.file_provider))
-            .multiSelect(1, 4)
+            .multiSelect(2, 4)
             .multiSelectTitles(
                 R.plurals.pick_multi,
                 R.plurals.pick_multi_more,

@@ -13,7 +13,6 @@ import retrofit2.Response
 
 class MemberRemoteDataSourceImpl private constructor(private val memberApi: MemberApi) :
     MemberRemoteDataSource {
-
     override fun createMember(
         email: String,
         password: String,
@@ -36,7 +35,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     callBack.onSuccess("회원가입 성공")
                 }
                 Log.d("err", response.code().toString())
@@ -50,7 +49,11 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
     }
 
-    override fun getMember(email: String, password: String, callBack: MemberCallBack<MemberResponse>) {
+    override fun login(
+        email: String,
+        password: String,
+        callBack: MemberCallBack<MemberResponse>
+    ) {
         val jsonObject = JsonObject().apply {
             addProperty("email", email)
             addProperty("password", password)
@@ -62,9 +65,11 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 call: Call<MemberResponse>,
                 response: Response<MemberResponse>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     Log.d("MyCall", response.body().toString())
-                    callBack.onSuccess(response.body()!!)
+                    response.body()?.let { callBack.onSuccess(it) }
+                } else if (response.code() == REQUEST_ERR) {
+                    callBack.onFailure("이메일과 비밀번호를 확인 후 다시 로그인해주세요.")
                 }
             }
 
@@ -79,16 +84,49 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         password: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callBack: MemberCallBack<Boolean>
     ) {
+        val jsonObject = JsonObject().apply {
+            addProperty("memberNumber", memberNumber)
+            addProperty("password", password)
+            addProperty("nickName", nickName)
+            addProperty("phoneNumber", phone)
+        }
+        memberService.updateMember(memberNumber, jsonObject)
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onResponse(
+                    call: Call<ResponseBody>,
+                    response: Response<ResponseBody>
+                ) {
+                    if (response.code() == SUCCESS) {
+                        callBack.onSuccess(true)
+                    }
+                }
+
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("tag", t.toString())
+                }
+            })
 
     }
 
     override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {
+        memberService.deleteMember(memberNumber).enqueue(object : Callback<ResponseBody>{
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == SUCCESS) {
+                    callBack.onSuccess("회원 탈퇴 성공")
+                }
+            }
 
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+
+            }
+        })
     }
 
     companion object {
+        private const val SUCCESS = 200
+        private const val REQUEST_ERR = 404
         fun getInstance(memberApi: MemberApi): MemberRemoteDataSource =
             MemberRemoteDataSourceImpl(memberApi)
     }

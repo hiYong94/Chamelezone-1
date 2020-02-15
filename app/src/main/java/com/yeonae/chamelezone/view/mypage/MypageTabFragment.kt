@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.mypage
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.mycourse.MyCourseActivity
 import com.yeonae.chamelezone.view.mypage.myplace.MyPlaceActivity
@@ -19,11 +19,23 @@ import com.yeonae.chamelezone.view.mypage.presenter.MypagePresenter
 import kotlinx.android.synthetic.main.fragment_mypage_tab.*
 
 class MypageTabFragment : Fragment(), MypageContract.View {
-    override fun showLoginView(response: Boolean) {
-        Log.d("LoginView", response.toString())
+    var memberNumber: Int = 0
+    override fun showUserInfo(user: UserEntity) {
+        btn_nick_name.text = user.nickname
+        memberNumber = user.userNumber ?: 0
+    }
+
+    override fun showResultView(response: Boolean) {
         if (response) {
+            layout_nick_name.visibility = View.VISIBLE
             btn_login.visibility = View.GONE
+            layout_user_modify.visibility = View.VISIBLE
+            layout_my_review.visibility = View.VISIBLE
+            layout_my_place.visibility = View.VISIBLE
+            layout_my_course.visibility = View.VISIBLE
             layout_logout.visibility = View.VISIBLE
+            layout_user_delete.visibility = View.VISIBLE
+            presenter.getUser()
         }
     }
 
@@ -44,8 +56,6 @@ class MypageTabFragment : Fragment(), MypageContract.View {
         presenter = MypagePresenter(
             Injection.memberRepository(requireContext()), this
         )
-
-
 
         btn_login.setOnClickListener {
             val intent = Intent(requireContext(), LoginActivity::class.java)
@@ -82,10 +92,29 @@ class MypageTabFragment : Fragment(), MypageContract.View {
             startActivity(intent)
         }
 
+        btn_user_delete.setOnClickListener {
+            presenter.deleteUser(memberNumber)
+            presenter.logout()
+            layout_nick_name.visibility = View.GONE
+            btn_login.visibility = View.VISIBLE
+            layout_user_modify.visibility = View.GONE
+            layout_my_review.visibility = View.GONE
+            layout_my_place.visibility = View.GONE
+            layout_my_course.visibility = View.GONE
+            layout_logout.visibility = View.GONE
+            layout_user_delete.visibility = View.GONE
+        }
+
         btn_logout.setOnClickListener {
             presenter.logout()
+            layout_nick_name.visibility = View.GONE
             btn_login.visibility = View.VISIBLE
+            layout_user_modify.visibility = View.GONE
+            layout_my_review.visibility = View.GONE
+            layout_my_place.visibility = View.GONE
+            layout_my_course.visibility = View.GONE
             layout_logout.visibility = View.GONE
+            layout_user_delete.visibility = View.GONE
         }
     }
 
@@ -93,6 +122,5 @@ class MypageTabFragment : Fragment(), MypageContract.View {
         super.onResume()
         presenter.checkLogin()
     }
-
 
 }
