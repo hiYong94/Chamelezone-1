@@ -49,14 +49,10 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
 
         btn_search.setOnClickListener {
             supportFragmentManager.fragments.forEach {
-                if(it is PlaceNameTabFragment){
-                    it.searchByName("${edt_search.text}")
-                }
-                else if(it is AddressTabFragment){
-                    it.searchByAddress("${edt_search.text}")
-                }
-                else if(it is KeywordTabFragment){
-                    it.searchByKeyword("${edt_search.text}")
+                when (it) {
+                    is PlaceNameTabFragment -> it.searchByName("${edt_search.text}")
+                    is AddressTabFragment -> it.searchByAddress("${edt_search.text}")
+                    is KeywordTabFragment -> it.searchByKeyword("${edt_search.text}")
                 }
             }
         }

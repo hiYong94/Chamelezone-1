@@ -18,7 +18,7 @@ class PlacePresenter(
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        images: String
+        images: List<String>
     ) {
         placeRepository.registerPlace(
             keywordName,

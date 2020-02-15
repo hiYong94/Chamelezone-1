@@ -21,8 +21,9 @@ interface MemberApi {
 
     @PUT("/user/{memberNumber}")
     fun updateMember(
-        @Path("memberNumber") memberNumber: Int
-    ): Call<MemberResponse>
+        @Path("memberNumber") memberNumber: Int,
+        @Body user: JsonObject
+    ): Call<ResponseBody>
 
     @DELETE("/user/{memberNumber}")
     fun deleteMember(

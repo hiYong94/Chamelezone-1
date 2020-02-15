@@ -15,10 +15,5 @@ interface JoinContract {
             nickName: String,
             phone: String
         )
-
-        fun userLogin(
-            email: String,
-            password: String
-        )
     }
 }

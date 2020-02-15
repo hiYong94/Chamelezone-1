@@ -11,6 +11,25 @@ class MemberLocalDataSourceImpl(
     private val appExecutors: AppExecutors,
     private val userDatabase: UserDatabase
 ) : MemberLocalDataSource {
+    override fun deleteAll(callBack: MemberCallBack<Boolean>) {
+        appExecutors.diskIO.execute {
+            if (userDatabase.userDao().getUserCount() == 1) {
+                val deletedCount = userDatabase.userDao().deleteUser()
+                if (deletedCount == 1) {
+                    appExecutors.mainThread.execute {
+                        callBack.onSuccess(true)
+                    }
+                } else {
+                    callBack.onFailure("삭제 실패")
+                }
+            } else {
+                appExecutors.mainThread.execute {
+                    callBack.onSuccess(true)
+                }
+            }
+        }
+    }
+
     override fun loggedLogin(response: MemberResponse, callBack: MemberCallBack<Boolean>) {
         appExecutors.diskIO.execute {
             val newUser = UserEntity(
@@ -21,10 +40,7 @@ class MemberLocalDataSourceImpl(
                 phone = response.phoneNumber
             )
             val insertedPk = userDatabase.userDao().insertUser(newUser)
-            Log.d("MyCall", insertedPk.toString())
-            Log.d("MyCall", response.email)
-            Log.d("MyCall", userDatabase.userDao().getUser().toString())
-            if(insertedPk == 0L){
+            if (insertedPk == 0L) {
                 appExecutors.mainThread.execute {
                     callBack.onSuccess(true)
                 }
@@ -35,13 +51,13 @@ class MemberLocalDataSourceImpl(
     override fun logout(callBack: MemberCallBack<String>) {
         appExecutors.diskIO.execute {
             val deletedCount = userDatabase.userDao().deleteUser()
-            Log.d("MyCall", deletedCount.toString())
             if (deletedCount == 1) {
                 appExecutors.mainThread.execute {
                     callBack.onSuccess("로그아웃 성공")
                 }
+            } else {
+                callBack.onSuccess("로그아웃 실패")
             }
-            Log.d("MyCall", userDatabase.userDao().getUserCount().toString())
         }
     }
 
@@ -54,6 +70,29 @@ class MemberLocalDataSourceImpl(
             } else {
                 appExecutors.mainThread.execute {
                     callBack.onSuccess(false)
+                }
+            }
+        }
+    }
+
+    override fun getMember(callBack: MemberCallBack<UserEntity>) {
+        appExecutors.diskIO.execute {
+            if (userDatabase.userDao().getUserCount() == 1) {
+                val user = userDatabase.userDao().getUser()
+                appExecutors.mainThread.execute {
+                    callBack.onSuccess(user)
+                }
+            }
+        }
+    }
+
+    override fun updateMember(nickname: String, phone: String, callBack: MemberCallBack<Boolean>) {
+        appExecutors.diskIO.execute {
+            val updateCount = userDatabase.userDao().updateUser(nickname, phone)
+            Log.d("updateMember1", updateCount.toString())
+            if (updateCount == 1) {
+                appExecutors.mainThread.execute {
+                    callBack.onSuccess(true)
                 }
             }
         }
