@@ -17,7 +17,6 @@ import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.ext.glideImageUriSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract

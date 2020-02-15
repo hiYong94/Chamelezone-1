@@ -2,12 +2,11 @@ package com.yeonae.chamelezone.view.place
 
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
-import com.yeonae.chamelezone.Injection
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -16,7 +15,6 @@ import com.yeonae.chamelezone.view.place.presenter.PlaceInfoContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceInfoPresenter
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlin.math.abs
-
 
 class PlaceDetailActivity : AppCompatActivity(), PlaceInfoContract.View {
     override fun placeInfo(place: PlaceResponse) {
@@ -27,7 +25,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceInfoContract.View {
             images.add(IMAGE_RESOURCE + placeImages[i])
         }
         val imageAdapter = ImageViewPagerAdapter(images)
-        view.adapter = imageAdapter
+        vp_image.adapter = imageAdapter
     }
 
     override lateinit var presenter: PlaceInfoContract.Presenter
