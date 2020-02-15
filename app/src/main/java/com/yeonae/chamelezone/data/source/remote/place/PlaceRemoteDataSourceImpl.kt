@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
+import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.api.PlaceApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
@@ -267,6 +268,41 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == SUCCESS) {
                     callBack.onSuccess("장소 삭제 성공")
                 }
+            }
+
+        })
+    }
+
+    override fun getHomePlaceList(callBack: PlaceCallBack<List<PlaceResponse>>) {
+        placeService.getHomePlaceList().enqueue(object : Callback<List<PlaceResponse>> {
+            override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
+                Log.d("tag", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<List<PlaceResponse>>,
+                response: Response<List<PlaceResponse>>
+            ) {
+                if (response.code() == 200) {
+                    response.body()?.let { callBack.onSuccess(it) }
+                }
+            }
+        })
+    }
+
+    override fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+        placeService.getPlaceDetailReview(placeNumber).enqueue(object : Callback<PlaceResponse> {
+            override fun onResponse(
+                call: Call<PlaceResponse>,
+                response: Response<PlaceResponse>
+            ) {
+                if (response.code() == 200) {
+                    response.body()?.let { callBack.onSuccess(it) }
+                }
+            }
+
+            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
+                Log.e("tag", t.toString())
             }
 
         })

@@ -12,7 +12,7 @@ class PlaceDetailPagerAdapter(
     override fun getItem(position: Int): Fragment {
         return when(position) {
             0 -> {PlaceInfoTabFragment.newInstance(placeNumber)}
-            else -> {PlaceReviewTabFragment()}
+            else -> {PlaceReviewTabFragment.newInstance(placeNumber)}
         }
     }
 
