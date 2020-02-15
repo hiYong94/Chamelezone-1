@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view_review"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -23,12 +24,12 @@
 
                 <Button
                     android:id="@+id/review"
+                    style="@style/ButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/selected_btn_background"
                     android:text="@string/review_create_message"
-                    android:textColor="@drawable/selected_btn_text"
-                    style="@style/ButtonStyle"/>
+                    android:textColor="@drawable/selected_btn_text" />
 
             </LinearLayout>
 
@@ -36,8 +37,8 @@
                 android:id="@+id/recycler_place_review"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_place_review"
-                android:layout_marginHorizontal="10dp" />
+                android:layout_marginHorizontal="10dp"
+                tools:listitem="@layout/item_place_review" />
 
 
         </LinearLayout>

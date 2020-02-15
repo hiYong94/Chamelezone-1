@@ -20,9 +20,13 @@ override fun isViewFromObject(view: View, `object`: Any): Boolean {
             LayoutInflater.from(container.context).inflate(R.layout.slider_image, container, false)
 
         view.post {
-            Log.d("size defi", "gggggggggg  ${view.measuredWidth} ${view.measuredHeight}")
 
-            view.image_view.glideImageSet(images[position], view.measuredWidth, view.measuredHeight)
+            Log.d("size defi", "gggggggggg   ${view.measuredWidth} ${view.measuredHeight}")
+            view.image_view.glideImageSet(
+                images[position],
+                view.measuredWidth,
+                view.measuredHeight
+            )
         }
         container.addView(view)
         return view

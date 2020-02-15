@@ -8,13 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
+import com.yeonae.chamelezone.view.home.presenter.HomeContract
+import com.yeonae.chamelezone.view.home.presenter.HomePresenter
 import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
-class HomeTabFragment : Fragment() {
+class HomeTabFragment : Fragment(), HomeContract.View {
+    override lateinit var presenter: HomeContract.Presenter
+    override fun showHomeList(response: List<PlaceResponse>) {
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -90,5 +98,9 @@ class HomeTabFragment : Fragment() {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
+        presenter = HomePresenter(
+            Injection.placeRepository(requireContext()), this
+        )
+        presenter.getHomeList()
     }
 }

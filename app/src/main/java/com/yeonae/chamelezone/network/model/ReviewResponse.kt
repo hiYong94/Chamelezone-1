@@ -7,15 +7,13 @@ data class ReviewResponse(
     val reviewNumber: Int,
     @SerializedName("memberNumber")
     val memberNumber: Int,
+    @SerializedName("placeNumber")
+    val placeNumber: Int,
     @SerializedName("nickName")
     val nickName: String,
     @SerializedName("content")
     val content: String,
     @SerializedName("regiDate")
-    val regiDate: String,
-    @SerializedName("fileName")
-    val fileName: String,
-    @SerializedName("fileExtension")
-    val fileExtension: String
-)
+    val regiDate: String
 
+)

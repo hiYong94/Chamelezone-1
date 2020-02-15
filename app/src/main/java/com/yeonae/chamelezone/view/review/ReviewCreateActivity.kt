@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.view.review
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.Toast
@@ -15,7 +16,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.review.ReviewRepositoryImpl
 import com.yeonae.chamelezone.data.source.remote.review.ReviewRemoteDataSourceImpl
 import com.yeonae.chamelezone.ext.catchFocus
-import com.yeonae.chamelezone.ext.glideImageUriSet
+import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.slider_item_image.*
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener,
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
-
+    private val uriList = arrayListOf<String>()
 
     override fun review(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
@@ -34,7 +35,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
-
+        image_container.removeAllViews()
         uris.forEach { uri ->
             val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
@@ -43,33 +44,20 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             ) as ImageView
             if (image_container.childCount < 4) {
                 image_container.addView(iv)
-                glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
-            }
-            if (image_container.childCount <= 4) {
-                btn_image_create.setOnClickListener {
-                    pickMulti()
-                    if (uris.isNotEmpty()) {
-                        image_container.removeAllViews()
-                        image_container.addView(iv)
-                        glideImageUriSet(uri, image_item.measuredWidth, image_item.measuredHeight, iv)
-                    }
-                }
+                iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
             }
         }
-//
-//        val intent = Intent()
-//        intent.putExtra("imgResult", uris.toString())
-//        setResult(Activity.RESULT_OK, intent)
+        for (i in uris.indices) {
+            uris[i].path?.let { uriList.add(it) }
+            Log.d("dddd", uris[i].path)
+        }
+        Log.d("uriList", uriList.toString())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_create)
 
-        tv_title.catchFocus(this)
-        btn_back.setOnClickListener {
-            finish()
-        }
         setupGUI()
 
         presenter = ReviewPresenter(
@@ -78,10 +66,14 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             ), this
         )
 
+        val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
+        Log.d("placeNumber", placeNumber.toString())
+
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
 
-            presenter.reviewCreate("", "", "", content)
+            presenter.reviewCreate(252, placeNumber, content, uriList)
+            Log.d("uriList", uriList.toString())
         }
     }
 
@@ -115,6 +107,11 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     }
 
     private fun setupGUI() {
+        tv_title.text = intent.getStringExtra("placeName")
+        tv_title.catchFocus()
+        btn_back.setOnClickListener {
+            finish()
+        }
         btn_image_create.setOnClickListener {
             checkPermission()
             pickMulti()
@@ -132,5 +129,9 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             .setGotoSettingButtonText(R.string.setting)
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
+    }
+
+    companion object{
+        private const val PLACE_NUMBER = "placeNumber"
     }
 }
