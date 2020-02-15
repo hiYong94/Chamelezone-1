@@ -1,28 +1,24 @@
 package com.yeonae.chamelezone.view.course
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.course.adapter.PlaceChoiceRvAdapter
+import com.yeonae.chamelezone.view.search.presenter.SearchContract
+import com.yeonae.chamelezone.view.search.presenter.SearchPresenter
 import kotlinx.android.synthetic.main.fragment_place_choice.*
 
-class PlaceChoiceFragment : Fragment() {
-    private lateinit var lastCheckedPlace: Place
+class PlaceChoiceFragment : Fragment(), SearchContract.View {
+    override lateinit var presenter: SearchContract.Presenter
+    private lateinit var lastCheckedPlace: PlaceResponse
+    private val placeChoiceRvAdapter = PlaceChoiceRvAdapter()
 
-    private val placeChoiceList = arrayListOf(
-        Place("구슬모아당구장", "전시회, 카페", "서울 용산구 독서당로 85"),
-        Place(
-            "구슬모아당구장", "이연재이연재이연재이연재이연재이연재이연재이연재", "연재네 집은 서울시 강서로18아길 25-6 성재파크빌이다!" +
-                    "천안집은 천안시 동남구 문암로 92-27 신세대원룸이다."
-        )
-    )
-    private val placeChoiceRvAdapter = PlaceChoiceRvAdapter(placeChoiceList)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -32,20 +28,22 @@ class PlaceChoiceFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        presenter = SearchPresenter(
+            Injection.placeRepository(), this
+        )
         setAdapter()
 
         placeChoiceRvAdapter.setOnClickListener(object : PlaceChoiceRvAdapter.OnClickListener {
-            override fun onClick(place: Place) {
+            override fun onClick(place: PlaceResponse) {
                 lastCheckedPlace = place
             }
         })
 
         btn_ok.setOnClickListener {
             if (::lastCheckedPlace.isInitialized) {
-                val placeIndex = arguments!!.getString("placeIndex")
+                val placeIndex = arguments!!.getInt("placeIndex")
                 (activity as? CourseRegisterActivity)?.getVisible(
-                    placeIndex.toString(),
+                    placeIndex,
                     lastCheckedPlace
                 )
                 requireActivity().onBackPressed()
@@ -58,13 +56,17 @@ class PlaceChoiceFragment : Fragment() {
         }
 
         btn_search.setOnClickListener {
-
+            presenter.searchByName("${edt_search.text}")
         }
 
         btn_cancel.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
+    }
+
+    override fun showPlaceList(placeList: List<PlaceResponse>) {
+        placeChoiceRvAdapter.addData(placeList)
     }
 
     private fun setAdapter() {

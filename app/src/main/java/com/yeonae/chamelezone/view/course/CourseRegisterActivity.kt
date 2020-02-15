@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.view.course
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -13,14 +14,36 @@ import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.glideImageUriSet
+import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
+import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import kotlinx.android.synthetic.main.activity_course_register.*
 import kotlinx.android.synthetic.main.slider_item_image.*
 
-class CourseRegisterActivity : AppCompatActivity(),
+class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
+    private var imageUri = arrayListOf<String>()
+    var memberNumber: Int = 0
+    var firstPlaceNumber: Int = NOT_SELECTED
+    var secondPlaceNumber: Int = NOT_SELECTED
+    var thirdPlaceNumber: Int = NOT_SELECTED
+    private val placeNumbers = mutableListOf<Int>()
+    override fun showUserInfo(user: UserEntity) {
+        memberNumber = user.userNumber!!
+    }
+
+    override fun showMessage(message: String) {
+        Log.d("courseRegister", message)
+        Toast.makeText(this, message, Toast.LENGTH_LONG)
+            .show()
+        finish()
+    }
+
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
         imageContainer.removeAllViews()
@@ -33,87 +56,88 @@ class CourseRegisterActivity : AppCompatActivity(),
             imageContainer.addView(iv)
             iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
         }
+        for (i in uris.indices) {
+            uris[i].path?.let { imageUri.add(it) }
+        }
     }
 
+    override lateinit var presenter: CourseRegisterContract.Presenter
     private val placeChoiceFragment = PlaceChoiceFragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_register)
 
         setupGUI()
 
-//        btn_image_create.setOnClickListener { checkPermission() }
+        presenter = CourseRegisterPresenter(
+            Injection.memberRepository(applicationContext), Injection.courseRepository(), this
+        )
+
+        presenter.getUser()
 
         btn_back.setOnClickListener {
             finish()
         }
 
-        btn_place1.setOnClickListener {
+        btn_place_add1.setOnClickListener {
             replace("1")
         }
 
-        btn_place2.setOnClickListener {
+        btn_place_add2.setOnClickListener {
             replace("2")
         }
 
-        btn_place3.setOnClickListener {
+        btn_place_add3.setOnClickListener {
             replace("3")
         }
 
         btn_close1.setOnClickListener {
+            firstPlaceNumber = NOT_SELECTED
             tv_place_name1.text = ""
             tv_place_keyword1.text = ""
             tv_place_address1.text = ""
-            layout_place1.visibility = View.VISIBLE
-            layout_place2.visibility = View.VISIBLE
             layout_course1.visibility = View.GONE
-            if (tv_place_name2.text != "") {
-                layout_place2.visibility = View.GONE
-            }
+            layout_place_add1.visibility = View.VISIBLE
         }
 
         btn_close2.setOnClickListener {
+            secondPlaceNumber = NOT_SELECTED
             tv_place_name2.text = ""
             tv_place_keyword2.text = ""
             tv_place_address2.text = ""
-            layout_place2.visibility = View.VISIBLE
             layout_course2.visibility = View.GONE
-            if (tv_place_name1.text != "") {
-                layout_place1.visibility = View.GONE
-                layout_course1.visibility = View.VISIBLE
-            } else {
-                layout_place1.visibility = View.VISIBLE
-                layout_course1.visibility = View.GONE
-            }
-            if (tv_place_name3.text != "") {
-                layout_place3.visibility = View.GONE
-                layout_course3.visibility = View.VISIBLE
-            } else {
-                layout_place3.visibility = View.VISIBLE
-                layout_course3.visibility = View.GONE
-            }
+            layout_place_add2.visibility = View.VISIBLE
         }
 
         btn_close3.setOnClickListener {
+            thirdPlaceNumber = NOT_SELECTED
             tv_place_name3.text = ""
             tv_place_keyword3.text = ""
             tv_place_address3.text = ""
-            layout_place3.visibility = View.VISIBLE
             layout_course3.visibility = View.GONE
-            if (tv_place_name1.text != "") {
-                layout_place1.visibility = View.GONE
-                layout_course1.visibility = View.VISIBLE
-            } else {
-                layout_place1.visibility = View.VISIBLE
-                layout_course1.visibility = View.GONE
+            layout_place_add3.visibility = View.VISIBLE
+        }
+
+        btn_register.setOnClickListener {
+            if (firstPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(firstPlaceNumber)
             }
-            if (tv_place_name2.text != "") {
-                layout_place2.visibility = View.GONE
-                layout_course2.visibility = View.VISIBLE
-            } else {
-                layout_place2.visibility = View.VISIBLE
-                layout_course2.visibility = View.GONE
+            if (secondPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(secondPlaceNumber)
             }
+            if (thirdPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(thirdPlaceNumber)
+            }
+
+            presenter.registerCourse(
+                memberNumber,
+                placeNumbers,
+                "${edt_course_title.text}",
+                "${edt_course_content.text}",
+                imageUri
+            )
+            Log.d("courseImage", imageUri.toString())
         }
     }
 
@@ -132,58 +156,55 @@ class CourseRegisterActivity : AppCompatActivity(),
         }
     }
 
-    fun getVisible(placeIndex: String, place: Place) {
+    private fun processImage(image: String): String {
+        val placeImages = image.split(",")
+        val images = arrayListOf<String>()
+        for (i in placeImages.indices) {
+            images.add(IMAGE_RESOURCE + placeImages[i])
+        }
+        return images[0]
+    }
+
+    fun getVisible(placeIndex: Int, place: PlaceResponse) {
         when (placeIndex) {
-            "1" -> {
-                tv_place_name1.text = place.placeName
-                tv_place_keyword1.text = place.placeKeyword
-                tv_place_address1.text = place.placeAddress
-                layout_place1.visibility = View.GONE
+            1 -> {
+                firstPlaceNumber = place.placeNumber
+                tv_place_name1.text = place.name
+                tv_place_keyword1.text = place.keywordName
+                tv_place_address1.text = place.address
+                iv_place_image1.glideImageSet(
+                    processImage(place.savedImageName),
+                    iv_place_image1.measuredWidth,
+                    iv_place_image1.measuredHeight
+                )
+                layout_place_add1.visibility = View.GONE
                 layout_course1.visibility = View.VISIBLE
-                layout_place2.visibility = View.GONE
-                if (tv_place_name2.text == "") {
-                    layout_place2.visibility = View.VISIBLE
-                }
+            }
+            2 -> {
+                secondPlaceNumber = place.placeNumber
+                tv_place_name2.text = place.name
+                tv_place_keyword2.text = place.keywordName
+                tv_place_address2.text = place.address
+                iv_place_image2.glideImageSet(
+                    processImage(place.savedImageName),
+                    iv_place_image1.measuredWidth,
+                    iv_place_image1.measuredHeight
+                )
+                layout_place_add2.visibility = View.GONE
+                layout_course2.visibility = View.VISIBLE
 
             }
-            "2" -> {
-                tv_place_name2.text = place.placeName
-                tv_place_keyword2.text = place.placeKeyword
-                tv_place_address2.text = place.placeAddress
-                layout_place2.visibility = View.GONE
-                layout_course2.visibility = View.VISIBLE
-                layout_place1.visibility = View.GONE
-                layout_course1.visibility = View.VISIBLE
-                layout_place3.visibility = View.GONE
+            3 -> {
+                thirdPlaceNumber = place.placeNumber
+                tv_place_name3.text = place.name
+                tv_place_keyword3.text = place.keywordName
+                tv_place_address3.text = place.address
+                iv_place_image3.glideImageSet(
+                    processImage(place.savedImageName), iv_place_image1.measuredWidth,
+                    iv_place_image1.measuredHeight
+                )
+                layout_place_add3.visibility = View.GONE
                 layout_course3.visibility = View.VISIBLE
-                if (tv_place_name1.text == "") {
-                    layout_place1.visibility = View.VISIBLE
-                    layout_course1.visibility = View.GONE
-                }
-                if (tv_place_name3.text == "") {
-                    layout_place3.visibility = View.VISIBLE
-                    layout_course3.visibility = View.GONE
-                }
-
-            }
-            "3" -> {
-                tv_place_name3.text = place.placeName
-                tv_place_keyword3.text = place.placeKeyword
-                tv_place_address3.text = place.placeAddress
-                layout_place3.visibility = View.GONE
-                layout_course3.visibility = View.VISIBLE
-                layout_place1.visibility = View.GONE
-                layout_course1.visibility = View.VISIBLE
-                layout_place2.visibility = View.GONE
-                layout_course2.visibility = View.VISIBLE
-                if (tv_place_name1.text == "") {
-                    layout_place1.visibility = View.VISIBLE
-                    layout_course1.visibility = View.GONE
-                }
-                if (tv_place_name2.text == "") {
-                    layout_place2.visibility = View.VISIBLE
-                    layout_course2.visibility = View.GONE
-                }
             }
         }
     }
@@ -226,4 +247,8 @@ class CourseRegisterActivity : AppCompatActivity(),
             .check()
     }
 
+    companion object {
+        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
+        private const val  NOT_SELECTED = -1
+    }
 }

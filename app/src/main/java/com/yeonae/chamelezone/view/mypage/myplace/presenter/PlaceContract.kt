@@ -21,7 +21,8 @@ interface PlaceContract {
             content: String,
             latitude: BigDecimal,
             longitude: BigDecimal,
-            images: String)
+            images: List<String>
+        )
 
         fun getKeyword()
     }

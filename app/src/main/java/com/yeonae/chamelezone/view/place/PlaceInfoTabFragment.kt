@@ -19,13 +19,13 @@ import kotlinx.android.synthetic.main.fragment_place_info_tab.*
 
 class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallback {
     private lateinit var map: GoogleMap
-
     private val PLACE_NUMBER = "placeNumber"
+
     override fun placeInfo(place: PlaceResponse) {
-        tv_keyword.text = place.keywordName
+        tv_keyword.text = place.keywordName.replace(",", ", ")
         tv_address.text = place.address
         tv_phone.text = place.phoneNumber
-        tv_opening_time.text = place.openingTime
+        tv_opening_time.text = place.openingTime.replace(",", "\n")
         tv_content.text = place.content
 
         val latLng = LatLng(place.latitude.toDouble(), place.longitude.toDouble())
@@ -63,7 +63,7 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
         place_info_map.getMapAsync(this)
 
         presenter = PlaceInfoPresenter(
-            Injection.placeRepository(requireContext()), this
+            Injection.placeRepository(), this
         )
 
         arguments?.getInt(PLACE_NUMBER)?.let { presenter.placeDetail(it) }

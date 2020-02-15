@@ -9,18 +9,25 @@ import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.AlertDialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.view.login.presenter.JoinContract
-import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
+import com.yeonae.chamelezone.view.login.presenter.LoginContract
+import com.yeonae.chamelezone.view.login.presenter.LoginPresenter
 import kotlinx.android.synthetic.main.fragment_login.*
 
-class LoginFragment : Fragment(), JoinContract.View {
+class LoginFragment : Fragment(), LoginContract.View {
+    override fun showDialog(message: String) {
+        val newFragment = AlertDialogFragment.newInstance(
+            message
+        )
+        fragmentManager?.let { newFragment.show(it, "dialog") }
+    }
+
     override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG)
+        Toast.makeText(context, message + "환영합니다.", Toast.LENGTH_LONG)
             .show()
         (activity as? LoginActivity)?.finish()
     }
 
-    override lateinit var presenter: JoinContract.Presenter
+    override lateinit var presenter: LoginContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +39,7 @@ class LoginFragment : Fragment(), JoinContract.View {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        presenter = JoinPresenter(
+        presenter = LoginPresenter(
             Injection.memberRepository(requireContext()), this
         )
 
@@ -71,12 +78,4 @@ class LoginFragment : Fragment(), JoinContract.View {
             }
         }
     }
-
-    private fun showDialog() {
-        val newFragment = AlertDialogFragment.newInstance(
-            "입력하신 정보는 존재하지 않습니다."
-        )
-        newFragment.show(fragmentManager!!, "dialog")
-    }
-
 }

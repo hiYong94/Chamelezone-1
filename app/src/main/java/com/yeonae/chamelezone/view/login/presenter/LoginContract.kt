@@ -1,19 +1,17 @@
 package com.yeonae.chamelezone.view.login.presenter
 
-interface JoinContract {
+interface LoginContract {
 
     interface View {
         var presenter: Presenter
         fun showMessage(message: String)
+        fun showDialog(message: String)
     }
 
     interface Presenter {
-        fun userRegister(
+        fun userLogin(
             email: String,
-            password: String,
-            name: String,
-            nickName: String,
-            phone: String
+            password: String
         )
     }
 }

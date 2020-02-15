@@ -6,20 +6,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
+import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
+import com.yeonae.chamelezone.view.place.presenter.PlaceInfoContract
+import com.yeonae.chamelezone.view.place.presenter.PlaceInfoPresenter
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlin.math.abs
 
-
-class PlaceDetailActivity : AppCompatActivity() {
-
-
-    companion object{
-        private const val PLACE_NAME = "placeName"
-        private const val PLACE_NUMBER = "placeNumber"
+class PlaceDetailActivity : AppCompatActivity(), PlaceInfoContract.View {
+    override fun placeInfo(place: PlaceResponse) {
+        val placeImages = place.savedImageName.split(",")
+        val images = arrayListOf<String>()
+        Log.d("placeImages", placeImages.toString())
+        for (i in placeImages.indices) {
+            images.add(IMAGE_RESOURCE + placeImages[i])
+        }
+        val imageAdapter = ImageViewPagerAdapter(images)
+        vp_image.adapter = imageAdapter
     }
+
+    override lateinit var presenter: PlaceInfoContract.Presenter
+    private val PLACE_NAME = "placeName"
+    private val PLACE_NUMBER = "placeNumber"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
@@ -40,12 +52,16 @@ class PlaceDetailActivity : AppCompatActivity() {
         Log.d("placeNumber detail", placeNumber.toString())
         tv_place_name.text = placeName
 
+        presenter = PlaceInfoPresenter(
+            Injection.placeRepository(), this
+        )
+
+        presenter.placeDetail(placeNumber)
+
         btn_back.setOnClickListener {
             finish()
         }
 
-        val imageAdapter = ImageViewPagerAdapter()
-        vp_image.adapter = imageAdapter
         tab_layout.setupWithViewPager(vp_image, true)
 
         val fragmentAdapter = PlaceDetailPagerAdapter(supportFragmentManager, placeNumber)
@@ -72,5 +88,11 @@ class PlaceDetailActivity : AppCompatActivity() {
                 })
             }
         }
+    }
+
+    companion object {
+        private const val PLACE_NAME = "placeName"
+        private const val PLACE_NUMBER = "placeNumber"
+        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
     }
 }

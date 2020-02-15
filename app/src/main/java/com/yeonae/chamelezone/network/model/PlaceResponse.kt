@@ -21,10 +21,8 @@ data class PlaceResponse(
     val latitude: String,
     @SerializedName("longitude")
     val longitude: String,
-    @SerializedName("fileName")
-    val fileName: String,
-    @SerializedName("fileExtension")
-    val fileExtension: String,
+    @SerializedName("savedImageName")
+    val savedImageName: String,
     @SerializedName("regiDate")
     val regiDate: String
 )

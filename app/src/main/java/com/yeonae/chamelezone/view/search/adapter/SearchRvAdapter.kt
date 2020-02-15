@@ -4,12 +4,12 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import kotlinx.android.synthetic.main.item_like.view.*
+import kotlinx.android.synthetic.main.item_search.view.*
 
 class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>() {
-
-    private var items = mutableListOf<PlaceResponse>()
+    private val items = mutableListOf<PlaceResponse>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
@@ -44,9 +44,22 @@ class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>()
                     listener?.onClick(item)
                 }
                 tv_place_name.text = item.name
-                tv_place_keyword.text = item.keywordName
+                tv_place_keyword.text = item.keywordName.replace(",", ", ")
                 tv_place_address.text = item.address
+                val placeImages = item.savedImageName.split(",")
+                val images = arrayListOf<String>()
+                for (i in placeImages.indices) {
+                    images.add(IMAGE_RESOURCE + placeImages[i])
+                }
+                iv_place_image.glideImageSet(
+                    images[0], itemView.measuredWidth,
+                    itemView.measuredHeight
+                )
             }
+        }
+
+        companion object {
+            private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
         }
     }
 }

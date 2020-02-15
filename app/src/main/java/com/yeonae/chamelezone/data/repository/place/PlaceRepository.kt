@@ -14,7 +14,7 @@ interface PlaceRepository {
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        images: String,
+        images: List<String>,
         callBack: PlaceCallBack<String>
     )
 
