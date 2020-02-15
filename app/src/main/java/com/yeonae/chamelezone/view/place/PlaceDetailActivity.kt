@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
@@ -27,7 +26,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceInfoContract.View {
             images.add(IMAGE_RESOURCE + placeImages[i])
         }
         val imageAdapter = ImageViewPagerAdapter(images)
-        view.adapter = imageAdapter
+        vp_image.adapter = imageAdapter
     }
 
     override lateinit var presenter: PlaceInfoContract.Presenter
