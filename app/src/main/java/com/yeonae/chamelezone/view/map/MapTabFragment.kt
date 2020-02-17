@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.*
@@ -22,7 +23,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.yeonae.chamelezone.AlertDialogFragment
+import com.yeonae.chamelezone.DialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -112,6 +113,17 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
         )
 
         checkPermission()
+
+        edt_search.setOnEditorActionListener { textView, i, keyEvent ->
+            if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
+                if ("${edt_search.text}".isEmpty()) {
+                    showDialog()
+                } else {
+                    presenter.searchPlace("${edt_search.text}")
+                }
+            }
+            true
+        }
 
         btn_search.setOnClickListener {
             if ("${edt_search.text}".isEmpty()) {
@@ -219,7 +231,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
     }
 
     private fun showDialog() {
-        val newFragment = AlertDialogFragment.newInstance(
+        val newFragment = DialogFragment.newInstance(
             "검색어를 입력해주세요"
         )
         fragmentManager?.let {
