@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.AlertDialogFragment
+import com.yeonae.chamelezone.DialogFragment
 import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.fragment_find_password.*
 
@@ -30,7 +30,7 @@ class FindPasswordFragment : Fragment() {
         }
 
         btn_back.setOnClickListener {
-            (activity as LoginActivity).back(this)
+            (activity as LoginActivity).back()
         }
     }
 
@@ -52,7 +52,7 @@ class FindPasswordFragment : Fragment() {
     }
 
     private fun showDialog() {
-        val newFragment = AlertDialogFragment.newInstance(
+        val newFragment = DialogFragment.newInstance(
             "입력하신 정보는 존재하지 않습니다."
         )
         newFragment.show(fragmentManager!!, "dialog")

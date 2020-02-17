@@ -23,7 +23,7 @@ class JoinFragment : Fragment(), JoinContract.View {
     override fun showMessage(message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG)
             .show()
-        (activity as LoginActivity).back(this)
+        (activity as LoginActivity).back()
     }
 
     override fun onCreateView(
@@ -46,7 +46,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         checkType()
 
         btn_back.setOnClickListener {
-            (activity as LoginActivity).back(this)
+            (activity as LoginActivity).back()
         }
 
         btn_join.setOnClickListener {

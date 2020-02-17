@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.AlertDialogFragment
+import com.yeonae.chamelezone.DialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.login.presenter.LoginContract
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment(), LoginContract.View {
     override fun showDialog(message: String) {
-        val newFragment = AlertDialogFragment.newInstance(
+        val newFragment = DialogFragment.newInstance(
             message
         )
         fragmentManager?.let { newFragment.show(it, "dialog") }

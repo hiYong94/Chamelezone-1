@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.AlertDialogFragment
+import com.yeonae.chamelezone.DialogFragment
 import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.fragment_find_email.*
 
@@ -29,7 +29,7 @@ class FindEmailFragment : Fragment() {
             emailCheck("${edt_name.text}", "${edt_phone.text}")
         }
         btn_back.setOnClickListener {
-            (activity as LoginActivity).back(this)
+            (activity as LoginActivity).back()
         }
     }
 
@@ -48,7 +48,7 @@ class FindEmailFragment : Fragment() {
     }
 
     private fun showDialog() {
-        val newFragment = AlertDialogFragment.newInstance(
+        val newFragment = DialogFragment.newInstance(
             "입력하신 정보는 존재하지 않습니다."
         )
         newFragment.show(fragmentManager!!, "dialog")
