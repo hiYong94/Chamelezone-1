@@ -55,9 +55,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             imageContainer.addView(iv)
             iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
         }
-        for (i in uris.indices) {
-            uris[i].path?.let { imageUri.add(it) }
-        }
+        uris[0].path?.let { imageUri.add(it) }
     }
 
     override lateinit var presenter: CourseRegisterContract.Presenter
@@ -80,15 +78,15 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_place_add1.setOnClickListener {
-            replace("1")
+            replace(1)
         }
 
         btn_place_add2.setOnClickListener {
-            replace("2")
+            replace(2)
         }
 
         btn_place_add3.setOnClickListener {
-            replace("3")
+            replace(3)
         }
 
         btn_close1.setOnClickListener {
@@ -134,9 +132,8 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 placeNumbers,
                 "${edt_course_title.text}",
                 "${edt_course_content.text}",
-                imageUri
+                imageUri[0]
             )
-            Log.d("courseImage", imageUri.toString())
         }
     }
 
@@ -168,6 +165,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         when (placeIndex) {
             1 -> {
                 firstPlaceNumber = place.placeNumber
+                Log.d("firstPlaceNumber", firstPlaceNumber.toString())
                 tv_place_name1.text = place.name
                 tv_place_keyword1.text = place.keywordName
                 tv_place_address1.text = place.address
@@ -208,7 +206,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
     }
 
-    fun replace(placeIndex: String) {
+    fun replace(placeIndex: Int) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_place_choice, placeChoiceFragment.newInstance(placeIndex))
             .addToBackStack(null)
@@ -248,6 +246,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     companion object {
         private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
-        private const val  NOT_SELECTED = -1
+        private const val NOT_SELECTED = -1
     }
 }

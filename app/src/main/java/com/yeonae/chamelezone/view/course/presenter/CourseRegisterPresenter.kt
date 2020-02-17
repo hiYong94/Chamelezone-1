@@ -17,9 +17,9 @@ class CourseRegisterPresenter(
         placeNumber: List<Int>,
         title: String,
         content: String,
-        images: List<String>
+        image: String
     ) {
-        courseRepository.registerCourse(memberNumber, placeNumber, title, content, images, object : CourseCallBack<String>{
+        courseRepository.registerCourse(memberNumber, placeNumber, title, content, image, object : CourseCallBack<String>{
             override fun onSuccess(response: String) {
                 view.showMessage(response)
             }
