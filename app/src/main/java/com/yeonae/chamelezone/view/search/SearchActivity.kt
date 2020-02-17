@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.search
 
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.google.android.libraries.places.api.model.Place
@@ -27,6 +28,19 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         val searchTabAdapter = SearchTabAdapter(supportFragmentManager)
         search_view_pager.adapter = searchTabAdapter
         search_view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(search_tab))
+        
+        edt_search.setOnEditorActionListener { textView, i, keyEvent ->
+            if(i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO){
+                supportFragmentManager.fragments.forEach {
+                    when (it) {
+                        is PlaceNameTabFragment -> it.searchByName("${edt_search.text}")
+                        is AddressTabFragment -> it.searchByAddress("${edt_search.text}")
+                        is KeywordTabFragment -> it.searchByKeyword("${edt_search.text}")
+                    }
+                }
+            }
+            true
+        }
 
         search_tab.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
