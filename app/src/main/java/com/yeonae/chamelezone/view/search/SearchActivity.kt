@@ -33,6 +33,7 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
 
         search_tab.setupWithViewPager(search_view_pager)
         search_view_pager.adapter = tabPagerAdapter
+        search_view_pager.offscreenPageLimit = 2
         search_view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(search_tab))
 
         edt_search.setOnEditorActionListener { textView, i, keyEvent ->
