@@ -1,9 +1,5 @@
 package com.yeonae.chamelezone
 
-import android.app.AlertDialog
-import android.app.Dialog
-import androidx.fragment.app.DialogFragment
-import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -11,14 +7,12 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.DialogFragment
+import kotlinx.android.synthetic.main.fragment_dialog.*
 
-class AlertDialogFragment : DialogFragment() {
-
-
-    private var heightRatio = 0.3203125f  // default
+class DialogFragment : DialogFragment() {
+    private var heightRatio = 0.2403125f  // default
     private var widthRatio = 0.88888889f // default
-
 
     override fun onStart() {
         super.onStart()
@@ -41,8 +35,10 @@ class AlertDialogFragment : DialogFragment() {
             (dpMetrics.heightPixels * heightRatio).toInt()
         )
 
-
-        Toast.makeText(context, message.orEmpty(), Toast.LENGTH_SHORT).show()
+        tv_message.text = message
+        btn_ok.setOnClickListener {
+            dialog?.cancel()
+        }
     }
 
     override fun onCreateView(
@@ -50,17 +46,16 @@ class AlertDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home_tab, container, false)
+        return inflater.inflate(R.layout.fragment_dialog, container, false)
     }
-
 
     companion object {
         const val TAG_DIALOG = "TAG_DIALOG"
         const val DIALOG_NUM = "DIALOG_NUM"
         const val DIALOG_HEIGHT_RATIO = "DIALOG_HEIGHT_RATIO"
         const val DIALOG_WIDTH_RATIO = "DIALOG_WIDTH_RATIO"
-        fun newInstance(message: String): AlertDialogFragment {
-            val frag = AlertDialogFragment()
+        fun newInstance(message: String): com.yeonae.chamelezone.DialogFragment {
+            val frag = com.yeonae.chamelezone.DialogFragment()
             val args = Bundle()
             args.putString("message", message)
             frag.arguments = args
