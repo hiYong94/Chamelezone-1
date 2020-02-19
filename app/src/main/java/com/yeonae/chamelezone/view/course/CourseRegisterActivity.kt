@@ -32,12 +32,12 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     var secondPlaceNumber: Int = NOT_SELECTED
     var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
+
     override fun showUserInfo(user: UserEntity) {
-        memberNumber = user.userNumber!!
+        memberNumber = user.userNumber ?: 0
     }
 
     override fun showMessage(message: String) {
-        Log.d("courseRegister", message)
         Toast.makeText(this, message, Toast.LENGTH_LONG)
             .show()
         finish()
@@ -165,7 +165,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         when (placeIndex) {
             1 -> {
                 firstPlaceNumber = place.placeNumber
-                Log.d("firstPlaceNumber", firstPlaceNumber.toString())
                 tv_place_name1.text = place.name
                 tv_place_keyword1.text = place.keywordName
                 tv_place_address1.text = place.address
