@@ -39,7 +39,10 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
         placeNumber: Int,
         callBack: LikeCallBack<String>
     ) {
-        likeService.deleteLike(likeNumber, memberNumber, placeNumber).enqueue(object : Callback<ResponseBody>{
+        val jsonObject = JsonObject().apply {
+            addProperty("placeNumber", placeNumber)
+        }
+        likeService.deleteLike(likeNumber, memberNumber, jsonObject).enqueue(object : Callback<ResponseBody>{
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
             }

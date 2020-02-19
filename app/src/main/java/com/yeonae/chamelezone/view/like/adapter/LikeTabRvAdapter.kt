@@ -13,13 +13,22 @@ class LikeTabRvAdapter() :
 
     private val items = mutableListOf<PlaceResponse>()
     private var onClickListener: OnClickListener? = null
+    private var onLikeClickListener: OnLikeClickListener? = null
 
     interface OnClickListener {
         fun onClick(place: PlaceResponse)
     }
 
+    interface OnLikeClickListener {
+        fun onLikeClick(place: PlaceResponse)
+    }
+
     fun setOnClickListener(listener: OnClickListener) {
         onClickListener = listener
+    }
+
+    fun setOnLikeClickListener(listener: OnLikeClickListener) {
+        onLikeClickListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikeViewHolder =
@@ -29,7 +38,7 @@ class LikeTabRvAdapter() :
         items.size
 
     override fun onBindViewHolder(holder: LikeViewHolder, position: Int) =
-        holder.bind(items[position], onClickListener)
+        holder.bind(items[position], onClickListener, onLikeClickListener)
 
     fun addData(addDataList: List<PlaceResponse>) {
         items.clear()
@@ -40,7 +49,11 @@ class LikeTabRvAdapter() :
     class LikeViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_like, parent, false)
     ) {
-        fun bind(item: PlaceResponse, listener: OnClickListener?) {
+        fun bind(
+            item: PlaceResponse,
+            listener: OnClickListener?,
+            likeListener: OnLikeClickListener?
+        ) {
             itemView.run {
                 setOnClickListener {
                     listener?.onClick(item)
@@ -58,8 +71,11 @@ class LikeTabRvAdapter() :
                 tv_place_name.text = item.name
                 tv_place_keyword.text = item.keywordName
                 tv_place_address.text = item.address
-                if(item.likeNumber != null){
+                if (item.likeNumber != null) {
                     btn_like.isChecked = true
+                }
+                btn_like.setOnClickListener {
+                    likeListener?.onLikeClick(item)
                 }
             }
         }

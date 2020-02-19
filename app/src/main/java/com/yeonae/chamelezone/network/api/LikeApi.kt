@@ -13,11 +13,11 @@ interface LikeApi {
         @Body placeNumber: JsonObject
     ): Call<ResponseBody>
 
-    @DELETE("/user/{memberNumber}/like/{likeNumber}")
+    @HTTP(method = "DELETE", path = "/user/{memberNumber}/like/{likeNumber}", hasBody = true)
     fun deleteLike(
         @Path("likeNumber") likeNumber: Int,
         @Path("memberNumber") memberNumber: Int,
-        @Query("placeNumber") placeNumber: Int
+        @Body placeNumber: JsonObject
     ): Call<ResponseBody>
 
     @GET("/user/{memberNumber}/likes")

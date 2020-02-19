@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.like
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.like.adapter.LikeTabRvAdapter
@@ -73,6 +73,12 @@ class LikeTabFragment : Fragment(), LikeContract.View {
                 intent.putExtra(PLACE_NAME, place.name)
                 intent.putExtra(PLACE_NUMBER, place.placeNumber)
                 startActivity(intent)
+            }
+        })
+
+        likeTabRvAdapter.setOnLikeClickListener(object : LikeTabRvAdapter.OnLikeClickListener {
+            override fun onLikeClick(place: PlaceResponse) {
+                presenter.deleteLike(place.likeNumber ?: 0, place.memberNumber, place.placeNumber)
             }
         })
     }
