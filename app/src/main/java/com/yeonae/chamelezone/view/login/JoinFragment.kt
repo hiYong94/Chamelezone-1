@@ -18,6 +18,32 @@ import kotlinx.android.synthetic.main.fragment_join.*
 import java.util.regex.Pattern
 
 class JoinFragment : Fragment(), JoinContract.View {
+    var checkedEmail: Boolean = false
+    var checkedNickname: Boolean = false
+    override fun showNicknameMessage(response: Boolean) {
+        if(response){
+            Toast.makeText(context, "사용 가능한 닉네임입니다.", Toast.LENGTH_SHORT)
+                .show()
+            checkedNickname = true
+
+        }else if(!response){
+            Toast.makeText(context, "이미 가입된 닉네임입니다.", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
+    override fun showEmailMessage(response: Boolean) {
+        if(response){
+            Toast.makeText(context, "사용 가능한 이메일입니다.", Toast.LENGTH_SHORT)
+                .show()
+            checkedEmail = true
+
+        }else if(!response){
+            Toast.makeText(context, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
     override lateinit var presenter: JoinContract.Presenter
 
     override fun showMessage(message: String) {
@@ -58,6 +84,18 @@ class JoinFragment : Fragment(), JoinContract.View {
                 "${join_phone.text}"
             )
         }
+
+        join_email.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+            if (!b) {
+                presenter.checkEmail("${join_email.text}")
+            }
+        }
+
+        join_nickname.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+            if (!b) {
+                presenter.checkNickname("${join_nickname.text}")
+            }
+        }
     }
 
     private fun joinCheck(
@@ -94,7 +132,7 @@ class JoinFragment : Fragment(), JoinContract.View {
                 Toast.LENGTH_SHORT
             ).show()
             else -> {
-                if (!email_layout.isErrorEnabled && !password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled) {
+                if (!email_layout.isErrorEnabled && !password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled && checkedEmail && checkedNickname) {
                     presenter.userRegister(
                         email, password, name, nickName, phone
                     )

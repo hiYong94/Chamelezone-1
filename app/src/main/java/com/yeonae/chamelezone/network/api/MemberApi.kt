@@ -30,4 +30,13 @@ interface MemberApi {
         @Path("memberNumber") memberNumber: Int
     ): Call<ResponseBody>
 
+    @GET("/user/email/{email}")
+    fun checkEmail(
+        @Path("email") email: String
+    ): Call<ResponseBody>
+
+    @GET("/user/nick-name/{nickName}")
+    fun checkNickname(
+        @Path("nickName") nickname: String
+    ): Call<ResponseBody>
 }

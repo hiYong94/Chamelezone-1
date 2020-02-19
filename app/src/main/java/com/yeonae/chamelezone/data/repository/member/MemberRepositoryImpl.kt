@@ -87,6 +87,14 @@ class MemberRepositoryImpl private constructor(
         localDataSource.deleteAll(callBack)
     }
 
+    override fun checkEmail(email: String, callBack: MemberCallBack<Boolean>) {
+        remoteDataSource.checkEmail(email, callBack)
+    }
+
+    override fun checkNickname(nickname: String, callBack: MemberCallBack<Boolean>) {
+        remoteDataSource.checkNickname(nickname, callBack)
+    }
+
     companion object {
         fun getInstance(
             remoteDataSource: MemberRemoteDataSource,
