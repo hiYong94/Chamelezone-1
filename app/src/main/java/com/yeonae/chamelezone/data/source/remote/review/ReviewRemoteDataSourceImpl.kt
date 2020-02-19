@@ -23,7 +23,8 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         images: List<String>,
         callBack: ReviewCallBack<String>
     ) {
-        val memberNumber = RequestBody.create(MediaType.parse("text/plain"), memberNumber.toString())
+        val memberNumber =
+            RequestBody.create(MediaType.parse("text/plain"), memberNumber.toString())
 
         val content = RequestBody.create(MediaType.parse("text/plain"), content)
 
@@ -55,23 +56,26 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.d("create tag", t.toString())
-                    Log.d("create tag", (call.request().toString()))
+                    Log.d("create tag error", t.toString())
+                    Log.d("create tag error", (call.request().toString()))
                 }
             })
     }
 
     override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
-        reviewService.getReviewList(placeNumber).enqueue(object : Callback<ReviewResponse> {
-            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
-
+        reviewService.getReviewList(placeNumber).enqueue(object : Callback<List<ReviewResponse>> {
+            override fun onFailure(call: Call<List<ReviewResponse>>, t: Throwable) {
+                Log.d("review tag", t.toString())
             }
 
             override fun onResponse(
-                call: Call<ReviewResponse>,
-                response: Response<ReviewResponse>
+                call: Call<List<ReviewResponse>>,
+                response: Response<List<ReviewResponse>>
             ) {
-
+                if (response.code() == SUCCESS) {
+                    response.body()?.let { callBack.onSuccess(it) }
+                    Log.d("PlaceReviewList", "장소 리뷰 리스트 성공")
+                }
             }
         })
     }
@@ -80,7 +84,22 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         memberNumber: Int,
         callBack: ReviewCallBack<List<ReviewResponse>>
     ) {
+        reviewService.getMyReviewList(memberNumber)
+            .enqueue(object : Callback<List<ReviewResponse>> {
+                override fun onFailure(call: Call<List<ReviewResponse>>, t: Throwable) {
+                    Log.d("tag", t.toString())
+                }
 
+                override fun onResponse(
+                    call: Call<List<ReviewResponse>>,
+                    response: Response<List<ReviewResponse>>
+                ) {
+                    if (response.code() == SUCCESS) {
+                        response.body()?.let { callBack.onSuccess(it) }
+                        Log.d("HomePlaceList", "나의 리뷰 리스트 성공")
+                    }
+                }
+            })
     }
 
     override fun updateReview() {
@@ -92,6 +111,8 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
     }
 
     companion object {
+        private const val SUCCESS = 200
+
         fun getInstance(reviewApi: ReviewApi): ReviewRemoteDataSource =
             ReviewRemoteDataSourceImpl(reviewApi)
     }
