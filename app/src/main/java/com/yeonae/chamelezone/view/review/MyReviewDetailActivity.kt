@@ -22,6 +22,8 @@ class MyReviewDetailActivity : AppCompatActivity() {
         btn_back.setOnClickListener {
             finish()
         }
+        tv_place_name.text = intent.getStringExtra("placeName")
+        tv_review_content.text = intent.getStringExtra("content")
 
         val imageAdapter = ReviewImageVpAdapter(images)
         vp_image.adapter = imageAdapter
