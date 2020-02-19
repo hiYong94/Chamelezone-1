@@ -22,6 +22,7 @@ import java.math.BigDecimal
 class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceApi) :
     PlaceRemoteDataSource {
     override fun registerPlace(
+        memberNumber: Int,
         keywordName: List<Int>,
         name: String,
         address: String,
@@ -64,6 +65,10 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             )
         }
 
+        val memberNumber = RequestBody.create(
+            MediaType.parse("text/plain"), memberNumber.toString()
+        )
+
         val name = RequestBody.create(
             MediaType.parse("text/plain"), name
         )
@@ -85,6 +90,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
         placeService.placeRegister(
             image,
+            memberNumber,
             keyword,
             name,
             address,
@@ -207,8 +213,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun getPlaceDetail(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
-        placeService.getPlaceDetail(placeNumber).enqueue(object : Callback<PlaceResponse> {
+    override fun getPlaceDetail(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+        placeService.getPlaceDetail(placeNumber, memberNumber).enqueue(object : Callback<PlaceResponse> {
             override fun onResponse(
                 call: Call<PlaceResponse>,
                 response: Response<PlaceResponse>
