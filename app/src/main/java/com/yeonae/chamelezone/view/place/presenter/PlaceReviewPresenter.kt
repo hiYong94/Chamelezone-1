@@ -10,7 +10,7 @@ class PlaceReviewPresenter(private val reviewRepository: ReviewRepository,
     override fun placeDetailReview(placeNumber: Int) {
         reviewRepository.getReviewList(placeNumber, object : ReviewCallBack<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
-                placeReviewView.placeReview(response)
+                placeReviewView.showPlaceReview(response)
             }
 
             override fun onFailure(message: String) {

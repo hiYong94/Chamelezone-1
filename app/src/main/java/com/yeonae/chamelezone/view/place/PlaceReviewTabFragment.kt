@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     override lateinit var presenter: PlaceReviewContract.Presenter
 
-    override fun placeReview(reviewList: List<ReviewResponse>) {
+    override fun showPlaceReview(reviewList: List<ReviewResponse>) {
         placeReviewRvAdapter.addData(reviewList)
     }
 

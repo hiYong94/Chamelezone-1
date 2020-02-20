@@ -5,7 +5,7 @@ import com.yeonae.chamelezone.network.model.ReviewResponse
 interface PlaceReviewContract {
     interface View {
         var presenter: Presenter
-        fun placeReview(reviewList: List<ReviewResponse>)
+        fun showPlaceReview(reviewList: List<ReviewResponse>)
     }
 
     interface Presenter {
