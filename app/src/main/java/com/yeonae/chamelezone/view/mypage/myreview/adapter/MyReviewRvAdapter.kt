@@ -71,9 +71,11 @@ class MyReviewRvAdapter :
                 content.text = review.content
                 regiDate.text = dateSplit[0]
                 val images = review.savedImageName.split(",")
-                val imageList = arrayListOf<String>()
-                for (i in images.indices)
-                    imageList.add("http://13.209.136.122:3000/image/" + images[i])
+                val imageList = images.map {
+                    "http://13.209.136.122:3000/image/$it"
+                }
+//                for (i in images.indices)
+//                    imageList.add("http://13.209.136.122:3000/image/" + images[i])
                 placeImg.glideImageSet(imageList[0], placeImg.measuredWidth, placeImg.measuredHeight)
                 Log.d("imageList", images.toString())
                 Log.d("imageList", imageList.toString())

@@ -90,6 +90,6 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
     companion object {
         const val BOTTOM_SHEET = 100
         const val PLACE_NAME = "placeName"
-        const val REVIEW_CONTENT = "reviewContent"
+        const val REVIEW_CONTENT = "content"
     }
 }

@@ -32,6 +32,6 @@ class MyReviewDetailActivity : AppCompatActivity() {
 
     companion object {
         const val PLACE_NAME = "placeName"
-        const val REVIEW_CONTENT = "reviewContent"
+        const val REVIEW_CONTENT = "content"
     }
 }
