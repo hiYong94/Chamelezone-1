@@ -34,10 +34,10 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         callBack: PlaceCallBack<String>
     ) {
 
-        val image = ArrayList<MultipartBody.Part>()
+        val imageList = ArrayList<MultipartBody.Part>()
         for (i in images.indices) {
             val extends = images[i].split(".").lastOrNull() ?: "*"
-            image.add(
+            imageList.add(
                 MultipartBody.Part.createFormData(
                     "images",
                     images[i],
@@ -84,7 +84,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         )
 
         placeService.placeRegister(
-            image,
+            imageList,
             keyword,
             name,
             address,
