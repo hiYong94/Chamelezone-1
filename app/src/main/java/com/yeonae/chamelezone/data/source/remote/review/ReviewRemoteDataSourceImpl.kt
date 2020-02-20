@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.data.source.remote.review
 
 import android.util.Log
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.ext.SUCCESS
 import com.yeonae.chamelezone.network.api.RetrofitConnection.reviewService
 import com.yeonae.chamelezone.network.api.ReviewApi
 import com.yeonae.chamelezone.network.model.ReviewResponse
@@ -51,7 +52,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    if (response.code() == 200)
+                    if (response.code() == SUCCESS)
                         response.body().let { callBack.onSuccess("리뷰 등록 성공") }
                 }
 
@@ -111,8 +112,6 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
     }
 
     companion object {
-        private const val SUCCESS = 200
-
         fun getInstance(reviewApi: ReviewApi): ReviewRemoteDataSource =
             ReviewRemoteDataSourceImpl(reviewApi)
     }
