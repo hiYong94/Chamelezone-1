@@ -64,8 +64,8 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
                 if (resultCode == MoreButtonFragment.BTN_EDIT || resultCode == MoreButtonFragment.BTN_DELETE) {
                     Toast.makeText(this, "수정 받음", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ReviewModifyActivity::class.java)
-                    intent.putExtra("placeName", tv_place_name.text)
-                    intent.putExtra("content", tv_review_content.text)
+                    intent.putExtra(PLACE_NAME, tv_place_name.text)
+                    intent.putExtra(REVIEW_CONTENT, tv_review_content.text)
                     startActivity(intent)
 
                     Toast.makeText(this, "삭제 받음", Toast.LENGTH_SHORT).show()
@@ -89,5 +89,7 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
 
     companion object {
         const val BOTTOM_SHEET = 100
+        const val PLACE_NAME = "placeName"
+        const val REVIEW_CONTENT = "reviewContent"
     }
 }

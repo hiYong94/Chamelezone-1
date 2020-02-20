@@ -22,11 +22,16 @@ class MyReviewDetailActivity : AppCompatActivity() {
         btn_back.setOnClickListener {
             finish()
         }
-        tv_place_name.text = intent.getStringExtra("placeName")
-        tv_review_content.text = intent.getStringExtra("content")
+        tv_place_name.text = intent.getStringExtra(PLACE_NAME)
+        tv_review_content.text = intent.getStringExtra(REVIEW_CONTENT)
 
         val imageAdapter = ReviewImageVpAdapter(images)
         vp_image.adapter = imageAdapter
         tab_layout.setupWithViewPager(vp_image, true)
+    }
+
+    companion object {
+        const val PLACE_NAME = "placeName"
+        const val REVIEW_CONTENT = "reviewContent"
     }
 }
