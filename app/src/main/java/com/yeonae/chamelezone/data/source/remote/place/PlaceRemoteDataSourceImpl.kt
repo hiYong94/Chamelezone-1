@@ -214,7 +214,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     }
 
     override fun getPlaceDetail(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
-        placeService.getPlaceDetail(placeNumber, memberNumber).enqueue(object : Callback<PlaceResponse> {
+        placeService.getPlaceDetail(placeNumber, memberNumber)
+            .enqueue(object : Callback<PlaceResponse> {
             override fun onResponse(
                 call: Call<PlaceResponse>,
                 response: Response<PlaceResponse>
