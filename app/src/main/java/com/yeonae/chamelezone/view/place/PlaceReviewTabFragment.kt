@@ -69,7 +69,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         Log.d("placeNumber", placeNumber.toString())
         review.setOnClickListener {
             val intent = Intent(context, ReviewCreateActivity::class.java)
-            intent.putExtra("placeName", "$tv_place_name")
+            intent.putExtra(PLACE_NAME, "$tv_place_name")
             intent.putExtra(PLACE_NUMBER, placeNumber)
             intent.putExtra(PLACE_NAME, placeName)
             startActivity(intent)

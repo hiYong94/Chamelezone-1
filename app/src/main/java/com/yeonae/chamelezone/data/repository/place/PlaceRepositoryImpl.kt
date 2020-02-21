@@ -8,6 +8,7 @@ import java.math.BigDecimal
 class PlaceRepositoryImpl private constructor(private val remoteDataSource: PlaceRemoteDataSource) :
     PlaceRepository {
     override fun registerPlace(
+        memberNumber: Int,
         keywordName: List<Int>,
         name: String,
         address: String,
@@ -20,6 +21,7 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         callBack: PlaceCallBack<String>
     ) {
         remoteDataSource.registerPlace(
+            memberNumber,
             keywordName,
             name,
             address,
@@ -49,8 +51,8 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.getSearchByKeyword(keyword, callBack)
     }
 
-    override fun getPlaceDetail(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
-        remoteDataSource.getPlaceDetail(placeNumber, callBack)
+    override fun getPlaceDetail(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+        remoteDataSource.getPlaceDetail(placeNumber, memberNumber, callBack)
     }
 
     override fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>) {

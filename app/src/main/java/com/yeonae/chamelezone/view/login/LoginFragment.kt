@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.AlertDialogFragment
+import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.view.login.presenter.LoginContract
@@ -15,14 +15,14 @@ import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment : Fragment(), LoginContract.View {
     override fun showDialog(message: String) {
-        val newFragment = AlertDialogFragment.newInstance(
-            message
+        val newFragment = SingleDialogFragment.newInstance(
+            R.string.check_email_password_again
         )
         fragmentManager?.let { newFragment.show(it, "dialog") }
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(context, message + "환영합니다.", Toast.LENGTH_LONG)
+        Toast.makeText(context, message + "" +"환영합니다.", Toast.LENGTH_LONG)
             .show()
         (activity as? LoginActivity)?.finish()
     }
@@ -65,12 +65,12 @@ class LoginFragment : Fragment(), LoginContract.View {
         when {
             email.isEmpty() -> Toast.makeText(
                 requireContext(),
-                "아이디를 입력해주세요!",
+                R.string.enter_email,
                 Toast.LENGTH_SHORT
             ).show()
             password.isEmpty() -> Toast.makeText(
                 requireContext(),
-                "비밀번호를 입력해주세요!",
+                R.string.enter_password,
                 Toast.LENGTH_SHORT
             ).show()
             else -> {

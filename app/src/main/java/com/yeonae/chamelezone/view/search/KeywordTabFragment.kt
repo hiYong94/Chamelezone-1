@@ -99,7 +99,15 @@ class KeywordTabFragment : Fragment(), SearchContract.View {
     }
 
     override fun showPlaceList(placeList: List<PlaceResponse>) {
+        layout_no_search.visibility = View.GONE
+        layout_has_search.visibility = View.VISIBLE
         searchRvAdapter.addData(placeList)
+    }
+
+    override fun showMessage(message: String) {
+        layout_no_search.visibility = View.VISIBLE
+        layout_has_search.visibility = View.GONE
+        tv_message.text = message
     }
 
     private fun setAdapter() {
