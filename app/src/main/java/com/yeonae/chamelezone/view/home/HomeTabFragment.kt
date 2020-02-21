@@ -10,18 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
 import com.yeonae.chamelezone.view.home.presenter.HomeContract
 import com.yeonae.chamelezone.view.home.presenter.HomePresenter
+import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 class HomeTabFragment : Fragment(), HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
-    override fun showHomeList(response: List<PlaceResponse>) {
+    private val placeAdapter = HomePlaceRvAdapter()
 
+    override fun showHomeList(response: List<PlaceResponse>) {
+        placeAdapter.addData(response)
     }
 
     override fun onCreateView(
@@ -35,55 +37,7 @@ class HomeTabFragment : Fragment(), HomeContract.View {
     override fun onStart() {
         super.onStart()
 
-        val placeList = arrayListOf(
-            Place(
-                "구슬모아당구장",
-                "전시회, 카페",
-                "서울 용산구 독서당로 85",
-                "7km",
-                "place1"
-            ),
-            Place(
-                "론리드프로젝트",
-                "빨래방, 카페",
-                "서울 용산구 신흥로 78",
-                "10km",
-                "place2"
-            ),
-            Place(
-                "하나은행X북바이북",
-                "은행, 서점",
-                "서울 종로구 새문안로5길 19",
-                "13km",
-                "place3"
-            ),
-            Place(
-                "구슬모아당구장",
-                "전시회, 카페",
-                "서울 용산구 독서당로 85",
-                "7km",
-                "place1"
-            ),
-            Place(
-                "론리드프로젝트",
-                "빨래방, 카페",
-                "서울 용산구 신흥로 78",
-                "10km",
-                "place2"
-            ),
-            Place(
-                "하나은행X북바이북",
-                "은행, 서점",
-                "서울 종로구 새문안로5길 19",
-                "13km",
-                "place3"
-            )
-        )
-        Log.d("tag", placeList.size.toString())
-
         val gridlayout = GridLayoutManager(context, 2)
-
-        val placeAdapter = HomePlaceRvAdapter(placeList)
 
         recycler_view_place?.apply {
             layoutManager = gridlayout
@@ -102,5 +56,20 @@ class HomeTabFragment : Fragment(), HomeContract.View {
             Injection.placeRepository(), this
         )
         presenter.getHomeList()
+
+        placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
+            override fun onItemClick(place: PlaceResponse) {
+                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
+                intent.putExtra(PLACE_NAME, place.name)
+                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                Log.d("placeDetail name2", place.name)
+                Log.d("placeDetail number2", place.placeNumber.toString())
+                startActivity(intent)
+            }
+        })
+    }
+    companion object {
+        private const val PLACE_NAME = "placeName"
+        private const val PLACE_NUMBER = "placeNumber"
     }
 }

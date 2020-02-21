@@ -6,37 +6,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Review
+import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
-import com.yeonae.chamelezone.view.place.presenter.PlaceInfoContract
+import com.yeonae.chamelezone.view.place.presenter.PlaceReviewContract
+import com.yeonae.chamelezone.view.place.presenter.PlaceReviewPresenter
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import com.yeonae.chamelezone.view.review.ReviewImageActivity
+import com.yeonae.chamelezone.view.review.ReviewModifyActivity
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 
-class PlaceReviewTabFragment : Fragment() {
-    lateinit var presenter: PlaceInfoContract.Presenter
-    private val PLACE_NUMBER = "placeNumber"
+class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
+    override lateinit var presenter: PlaceReviewContract.Presenter
 
-    private val placeReviewList = arrayListOf(
-        Review("yeonjae22", "어제", "place1", "여기 진짜 분위기 이뻐요"),
-        Review("Lsunae", "이틀전", "place2", "다시 가고 싶은 곳이에요!"),
-        Review("hiyong", "일주일전", "place3", "혼자 가도 좋은거같아요")
-    )
+    override fun showPlaceReview(reviewList: List<ReviewResponse>) {
+        placeReviewRvAdapter.addData(reviewList)
+    }
 
-    private var isTouch = false
-    private val images = intArrayOf(
-        R.drawable.img1,
-        R.drawable.img2,
-        R.drawable.img3,
-        R.drawable.img4
-    )
-
-    private val placeReviewRvAdapter = PlaceReviewTabRvAdapter(placeReviewList)
+    private val placeReviewRvAdapter = PlaceReviewTabRvAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,8 +40,16 @@ class PlaceReviewTabFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        val placeNumber = arguments?.getInt(PLACE_NUMBER)
+        val placeName = arguments?.getString(PLACE_NAME)
 
         setAdapter()
+
+        presenter = PlaceReviewPresenter(
+            Injection.reviewRepository(), this
+        )
+
+        placeNumber?.let { presenter.placeDetailReview(it) }
 
         placeReviewRvAdapter.setItemClickListener(object :
             PlaceReviewTabRvAdapter.OnItemClickListener {
@@ -65,13 +66,31 @@ class PlaceReviewTabFragment : Fragment() {
             }
         })
 
-        val placeNumber = arguments?.getInt(PLACE_NUMBER)
         Log.d("placeNumber", placeNumber.toString())
         review.setOnClickListener {
             val intent = Intent(context, ReviewCreateActivity::class.java)
             intent.putExtra("placeName", "$tv_place_name")
             intent.putExtra(PLACE_NUMBER, placeNumber)
+            intent.putExtra(PLACE_NAME, placeName)
             startActivity(intent)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            BOTTOM_SHEET -> {
+                if (resultCode == MoreButtonFragment.BTN_EDIT || resultCode == MoreButtonFragment.BTN_DELETE) {
+                    Toast.makeText(context, "수정 받음", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(context, ReviewModifyActivity::class.java)
+                    startActivity(intent)
+
+                    Toast.makeText(context, "삭제 받음", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "수정 실패", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "삭제 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
 
@@ -84,13 +103,25 @@ class PlaceReviewTabFragment : Fragment() {
 
     private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
-        bottomSheetDialogFragment.show(childFragmentManager, bottomSheetDialogFragment.tag)
+        bottomSheetDialogFragment.setTargetFragment(this, BOTTOM_SHEET)
+        activity?.supportFragmentManager?.let {
+            bottomSheetDialogFragment.show(
+                it,
+                bottomSheetDialogFragment.tag
+            )
+        }
+
     }
 
     companion object {
-        fun newInstance(placeNumber: Int) = PlaceReviewTabFragment().apply {
+        const val BOTTOM_SHEET = 100
+        private const val PLACE_NUMBER = "placeNumber"
+        private const val PLACE_NAME = "placeName"
+
+        fun newInstance(placeNumber: Int, placeName: String) = PlaceReviewTabFragment().apply {
             arguments = Bundle().apply {
                 putInt(PLACE_NUMBER, placeNumber)
+                putString(PLACE_NAME, placeName)
             }
         }
     }

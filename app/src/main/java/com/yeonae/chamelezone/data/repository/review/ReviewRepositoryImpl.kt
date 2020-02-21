@@ -16,7 +16,7 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
     }
 
     override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
-
+        reviewRemoteDataSource.getReviewList(placeNumber, callBack)
     }
 
     override fun getMyReviewList(memberNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {

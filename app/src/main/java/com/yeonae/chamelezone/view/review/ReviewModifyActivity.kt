@@ -3,36 +3,34 @@ package com.yeonae.chamelezone.view.review
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.yeonae.chamelezone.R
-import kotlinx.android.synthetic.main.fragment_review_modify.*
+import kotlinx.android.synthetic.main.activity_review_modify.*
 
-class ReviewModifyFragment : Fragment(), BottomSheetImagePicker.OnImagesSelectedListener {
+class ReviewModifyActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_review_modify, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        setContentView(R.layout.activity_review_modify)
 
         tv_title.requestFocus()
+        btn_back.setOnClickListener {
+            finish()
+        }
         setupGUI()
+
+        tv_title.text = intent.getStringExtra("placeName")
     }
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
 
         image_container.removeAllViews()
         uris.forEach { uri ->
-            val iv = LayoutInflater.from(this.context).inflate(
+            val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
@@ -53,7 +51,7 @@ class ReviewModifyFragment : Fragment(), BottomSheetImagePicker.OnImagesSelected
             .peekHeight(R.dimen.peekHeight)
             .columnSize(R.dimen.columnSize)
             .requestTag("사진이 선택되었습니다.")
-            .show(childFragmentManager)
+            .show(supportFragmentManager)
     }
 
     private fun setupGUI() {

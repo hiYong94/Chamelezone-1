@@ -34,11 +34,10 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         images: List<String>,
         callBack: PlaceCallBack<String>
     ) {
-
-        val image = ArrayList<MultipartBody.Part>()
+        val imageList = ArrayList<MultipartBody.Part>()
         for (i in images.indices) {
             val extends = images[i].split(".").lastOrNull() ?: "*"
-            image.add(
+            imageList.add(
                 MultipartBody.Part.createFormData(
                     "images",
                     images[i],
@@ -89,7 +88,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         )
 
         placeService.placeRegister(
-            image,
+            imageList,
             memberNumber,
             keyword,
             name,
@@ -297,30 +296,31 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == 200) {
+                if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
+                    Log.d("HomePlaceList", "홈 장소 리스트 성공")
                 }
             }
         })
     }
-
-    override fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
-        placeService.getPlaceDetailReview(placeNumber).enqueue(object : Callback<PlaceResponse> {
-            override fun onResponse(
-                call: Call<PlaceResponse>,
-                response: Response<PlaceResponse>
-            ) {
-                if (response.code() == 200) {
-                    response.body()?.let { callBack.onSuccess(it) }
-                }
-            }
-
-            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
-                Log.e("tag", t.toString())
-            }
-
-        })
-    }
+//
+//    override fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+//        placeService.getPlaceDetailReview(placeNumber).enqueue(object : Callback<PlaceResponse> {
+//            override fun onResponse(
+//                call: Call<PlaceResponse>,
+//                response: Response<PlaceResponse>
+//            ) {
+//                if (response.code() == 200) {
+//                    response.body()?.let { callBack.onSuccess(it) }
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
+//                Log.e("tag", t.toString())
+//            }
+//
+//        })
+//    }
 
     companion object {
         private const val SUCCESS = 200

@@ -17,8 +17,13 @@ interface ReviewApi {
         @Path ("placeNumber") placeNumber: Int
     ): Call<ResponseBody>
 
-    @GET("/user/{memberNumber}/review")
+    @GET("/place/{placeNumber}/review")
     fun getReviewList(
+        @Path("placeNumber") placeNumber: Int
+    ): Call<List<ReviewResponse>>
+
+    @GET("/user/{memberNumber}/review")
+    fun getMyReviewList(
         @Path("memberNumber") memberNumber: Int
-    ): Call<ReviewResponse>
+    ): Call<List<ReviewResponse>>
 }
