@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
+import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.api.PlaceApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
@@ -213,23 +214,27 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun getPlaceDetail(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+    override fun getPlaceDetail(
+        placeNumber: Int,
+        memberNumber: Int,
+        callBack: PlaceCallBack<PlaceResponse>
+    ) {
         placeService.getPlaceDetail(placeNumber, memberNumber)
             .enqueue(object : Callback<PlaceResponse> {
-            override fun onResponse(
-                call: Call<PlaceResponse>,
-                response: Response<PlaceResponse>
-            ) {
-                if (response.code() == SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                override fun onResponse(
+                    call: Call<PlaceResponse>,
+                    response: Response<PlaceResponse>
+                ) {
+                    if (response.code() == SUCCESS) {
+                        response.body()?.let { callBack.onSuccess(it) }
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
-                Log.e("tag", t.toString())
-            }
+                override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
+                    Log.e("tag", t.toString())
+                }
 
-        })
+            })
     }
 
     override fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>) {
@@ -268,19 +273,38 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun modifyPlace() {
+    override fun modifyPlace(
+        memberNumber: Int,
+        keywordName: List<Int>,
+        name: String,
+        address: String,
+        openingTime: List<String>,
+        phoneNumber: String,
+        content: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
+        images: List<String>,
+        callBack: PlaceCallBack<Boolean>
+    ) {
 
     }
 
-    override fun deletePlace(placeNumber: Int, callBack: PlaceCallBack<String>) {
-        placeService.deletePlace(placeNumber).enqueue(object : Callback<ResponseBody> {
+    override fun deletePlace(
+        placeNumber: Int,
+        memberNumber: Int,
+        callBack: PlaceCallBack<Boolean>
+    ) {
+        val jsonObject = JsonObject().apply {
+            addProperty("memberNumber", memberNumber)
+        }
+        placeService.deletePlace(placeNumber, jsonObject).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess("장소 삭제 성공")
+                    callBack.onSuccess(true)
                 }
             }
 
