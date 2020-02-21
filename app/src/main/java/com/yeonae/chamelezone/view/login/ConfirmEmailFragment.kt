@@ -31,12 +31,12 @@ class ConfirmEmailFragment : Fragment() {
         }
 
         btn_back.setOnClickListener {
-            (activity as LoginActivity).back(this)
+            (activity as LoginActivity).back()
         }
     }
 
     companion object {
-        private val EMAIL = "email"
+        private const val EMAIL = "email"
         fun newInstance(email: String) = ConfirmEmailFragment().apply {
             arguments = Bundle().apply {
                 putString(EMAIL, email)

@@ -31,4 +31,30 @@ class JoinPresenter(
 
             })
     }
+
+    override fun checkEmail(email: String) {
+        memberRepository.checkEmail(email, object : MemberCallBack<Boolean>{
+            override fun onSuccess(response: Boolean) {
+                joinView.showEmailMessage(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
+
+    override fun checkNickname(nickName: String) {
+        memberRepository.checkNickname(nickName, object : MemberCallBack<Boolean>{
+            override fun onSuccess(response: Boolean) {
+                joinView.showNicknameMessage(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
 }

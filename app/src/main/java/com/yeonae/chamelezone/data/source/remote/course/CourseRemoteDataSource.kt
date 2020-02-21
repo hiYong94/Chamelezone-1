@@ -9,7 +9,7 @@ interface CourseRemoteDataSource {
         placeNumber: List<Int>,
         title: String,
         content: String,
-        images: List<String>,
+        image: String,
         callBack: CourseCallBack<String>
     )
 

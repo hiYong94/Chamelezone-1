@@ -2,12 +2,14 @@ package com.yeonae.chamelezone.view.mypage
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.Injection
+import com.yeonae.chamelezone.MultipleDialogFragment
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
@@ -20,6 +22,8 @@ import kotlinx.android.synthetic.main.fragment_mypage_tab.*
 
 class MypageTabFragment : Fragment(), MypageContract.View {
     var memberNumber: Int = 0
+    private val multipleDialogFragment = MultipleDialogFragment()
+
     override fun showUserInfo(user: UserEntity) {
         btn_nick_name.text = user.nickname
         memberNumber = user.userNumber ?: 0
@@ -93,16 +97,24 @@ class MypageTabFragment : Fragment(), MypageContract.View {
         }
 
         btn_user_delete.setOnClickListener {
-            presenter.deleteUser(memberNumber)
-            presenter.logout()
-            layout_nick_name.visibility = View.GONE
-            btn_login.visibility = View.VISIBLE
-            layout_user_modify.visibility = View.GONE
-            layout_my_review.visibility = View.GONE
-            layout_my_place.visibility = View.GONE
-            layout_my_course.visibility = View.GONE
-            layout_logout.visibility = View.GONE
-            layout_user_delete.visibility = View.GONE
+            val newFragment = MultipleDialogFragment.newInstance(
+                "정말 탈퇴하시겠습니까?", object :
+                    MultipleDialogFragment.OnClickListener {
+                    override fun onClick() {
+                        presenter.deleteUser(memberNumber)
+                        presenter.logout()
+                        layout_nick_name.visibility = View.GONE
+                        btn_login.visibility = View.VISIBLE
+                        layout_user_modify.visibility = View.GONE
+                        layout_my_review.visibility = View.GONE
+                        layout_my_place.visibility = View.GONE
+                        layout_my_course.visibility = View.GONE
+                        layout_logout.visibility = View.GONE
+                        layout_user_delete.visibility = View.GONE
+                    }
+                }
+            )
+            fragmentManager?.let { newFragment.show(it, "dialog") }
         }
 
         btn_logout.setOnClickListener {

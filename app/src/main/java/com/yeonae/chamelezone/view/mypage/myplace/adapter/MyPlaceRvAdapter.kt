@@ -4,18 +4,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
+import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.network.model.PlaceResponse
 import kotlinx.android.synthetic.main.item_my_place.view.*
 
-class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
+class MyPlaceRvAdapter() :
     RecyclerView.Adapter<MyPlaceRvAdapter.MyPlaceViewHolder>() {
 
-    //private var items = mutableListOf<Place>()
+    private val items = mutableListOf<PlaceResponse>()
     private lateinit var onClickListener: OnClickListener
     private lateinit var moreButtonListener: MoreButtonListener
 
     interface OnClickListener {
-        fun onClick(place: Place)
+        fun onClick(place: PlaceResponse)
     }
 
     interface MoreButtonListener {
@@ -42,7 +43,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
         }
     }
 
-    fun addData(addDataList: List<Place>) {
+    fun addData(addDataList: List<PlaceResponse>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
@@ -52,7 +53,7 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_place, parent, false)
     ) {
         fun bind(
-            item: Place,
+            item: PlaceResponse,
             clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {
@@ -60,14 +61,29 @@ class MyPlaceRvAdapter(private var items: ArrayList<Place>) :
                 setOnClickListener {
                     clickListener?.onClick(item)
                 }
-                tv_place_name.text = item.placeName
-                tv_place_keyword.text = item.placeKeyword
-                tv_place_address.text = item.placeAddress
+                tv_place_name.text = item.name
+                tv_place_keyword.text = item.keywordName
+                tv_place_address.text = item.address
+                val placeImages = item.savedImageName.split(",")
+                val images = arrayListOf<String>()
+                for (i in placeImages.indices) {
+                    images.add(IMAGE_RESOURCE + placeImages[i])
+                }
+                iv_place_image.glideImageSet(
+                    images[0],
+                    iv_place_image.measuredWidth,
+                    iv_place_image.measuredHeight
+                )
 
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog()
                 }
             }
         }
+
+        companion object {
+            private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
+        }
+
     }
 }

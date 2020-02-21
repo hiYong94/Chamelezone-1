@@ -21,20 +21,16 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         placeNumberList: List<Int>,
         title: String,
         content: String,
-        images: List<String>,
+        image: String,
         callBack: CourseCallBack<String>
     ) {
-        val image = ArrayList<MultipartBody.Part>()
-        for (i in images.indices) {
-            val extends = images[i].split(".").lastOrNull() ?: "*"
-            image.add(
-                MultipartBody.Part.createFormData(
-                    "images",
-                    images[i],
-                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
-                )
-            )
-        }
+
+        val extends = image.split(".").lastOrNull() ?: "*"
+        val image = MultipartBody.Part.createFormData(
+            "image",
+            image,
+            RequestBody.create(MediaType.parse("image/$extends"), File(image))
+        )
 
         val memberNumber = RequestBody.create(
             MediaType.parse("text/plain"), memberNumber.toString()
@@ -131,7 +127,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     }
 
     override fun modifyCourse() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun deleteCourse(courseNumber: Int, callBack: CourseCallBack<String>) {
