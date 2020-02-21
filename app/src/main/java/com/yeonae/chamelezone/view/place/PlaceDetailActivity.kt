@@ -80,7 +80,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             }
         }
     }
-
+  
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
@@ -122,8 +122,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         windowManager.defaultDisplay.getMetrics(outMetrics)
         val density = outMetrics.densityDpi
 
-        presenter.placeDetail(placeNumber, memberNumber)
-
         btn_back.setOnClickListener {
             finish()
         }
@@ -145,6 +143,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
                 layoutParams = tool_bar.layoutParams.apply {
                     height = nameBar + tabBar
                 }
+
                 app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                     if (abs(verticalOffset) - appBarLayout.totalScrollRange > 0) {
                         layout_visibility.visibility = View.VISIBLE
