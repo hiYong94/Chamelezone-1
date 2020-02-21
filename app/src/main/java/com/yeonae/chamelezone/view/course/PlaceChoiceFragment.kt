@@ -42,12 +42,14 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
 
         btn_ok.setOnClickListener {
             if (::lastCheckedPlace.isInitialized) {
-                val placeIndex = arguments!!.getInt(PLACE_INDEX)
+                val placeIndex = arguments?.getInt(PLACE_INDEX)
                 Log.d("placeIndex", placeIndex.toString())
-                (activity as? CourseRegisterActivity)?.getVisible(
-                    placeIndex,
-                    lastCheckedPlace
-                )
+                if (placeIndex != null) {
+                    (activity as? CourseRegisterActivity)?.getVisible(
+                        placeIndex,
+                        lastCheckedPlace
+                    )
+                }
                 requireActivity().onBackPressed()
             }
 
