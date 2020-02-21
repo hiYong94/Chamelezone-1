@@ -1,16 +1,16 @@
 package com.yeonae.chamelezone.view.place.presenter
 
-import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
-import com.yeonae.chamelezone.data.repository.place.PlaceRepository
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.data.repository.review.ReviewRepository
+import com.yeonae.chamelezone.network.model.ReviewResponse
 
-class PlaceReviewPresenter(private val placeRepository: PlaceRepository,
+class PlaceReviewPresenter(private val reviewRepository: ReviewRepository,
                            private val placeReviewView: PlaceReviewContract.View
 ) : PlaceReviewContract.Presenter {
     override fun placeDetailReview(placeNumber: Int) {
-        placeRepository.getPlaceDetailReview(placeNumber, object : PlaceCallBack<PlaceResponse> {
-            override fun onSuccess(response: PlaceResponse) {
-                placeReviewView.placeReview(response)
+        reviewRepository.getReviewList(placeNumber, object : ReviewCallBack<List<ReviewResponse>> {
+            override fun onSuccess(response: List<ReviewResponse>) {
+                placeReviewView.showPlaceReview(response)
             }
 
             override fun onFailure(message: String) {

@@ -9,11 +9,14 @@ import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.data.repository.member.MemberRepositoryImpl
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.data.repository.place.PlaceRepositoryImpl
+import com.yeonae.chamelezone.data.repository.review.ReviewRepository
+import com.yeonae.chamelezone.data.repository.review.ReviewRepositoryImpl
 import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSourceImpl
 import com.yeonae.chamelezone.data.source.remote.course.CourseRemoteDataSourceImpl
 import com.yeonae.chamelezone.data.source.remote.like.LikeRemoteDataSourceImpl
 import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSourceImpl
 import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl
+import com.yeonae.chamelezone.data.source.remote.review.ReviewRemoteDataSourceImpl
 import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.network.room.database.UserDatabase
 import com.yeonae.chamelezone.util.AppExecutors
@@ -39,6 +42,12 @@ object Injection {
             )
         )
     }
+
+    fun reviewRepository(): ReviewRepository {
+        return ReviewRepositoryImpl.getInstance(
+            ReviewRemoteDataSourceImpl.getInstance(
+                RetrofitConnection.reviewService
+            )
 
     fun likeRepository(): LikeRepository {
         return LikeRepositoryImpl.getInstance(

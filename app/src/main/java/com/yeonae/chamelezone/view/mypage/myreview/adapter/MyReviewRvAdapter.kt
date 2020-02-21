@@ -1,21 +1,23 @@
 package com.yeonae.chamelezone.view.mypage.myreview.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Review
+import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.network.model.ReviewResponse
 import kotlinx.android.synthetic.main.item_my_review.view.*
 
-class MyReviewRvAdapter(private var items: ArrayList<Review>) :
+class MyReviewRvAdapter :
     RecyclerView.Adapter<MyReviewRvAdapter.MyReviewViewHolder>() {
 
-    //private var items = mutableListOf<Review>()
     private lateinit var onClickListener: OnClickListener
     private lateinit var moreButtonListener: MoreButtonListener
+    private var items = ArrayList<ReviewResponse>()
 
     interface OnClickListener {
-        fun onClick(review: Review)
+        fun onClick(review: ReviewResponse)
     }
 
     interface MoreButtonListener {
@@ -42,7 +44,7 @@ class MyReviewRvAdapter(private var items: ArrayList<Review>) :
         }
     }
 
-    fun addData(addDataList: List<Review>) {
+    fun addData(addDataList: List<ReviewResponse>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
@@ -51,17 +53,33 @@ class MyReviewRvAdapter(private var items: ArrayList<Review>) :
     class MyReviewViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_review, parent, false)
     ) {
+        private val placeImg = itemView.iv_review_img
+        private val placeName = itemView.tv_place_name
+        private val content = itemView.tv_review_content
+        private val regiDate = itemView.tv_review_date
         fun bind(
-            item: Review,
+            review: ReviewResponse,
             clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {
             itemView.run {
                 setOnClickListener {
-                    clickListener?.onClick(item)
+                    clickListener?.onClick(review)
                 }
-                tv_place_name.text = item.placeName
-                tv_review_content.text = item.reviewContent
+                val dateSplit = review.regiDate.split("T")
+                placeName.text = review.name
+                content.text = review.content
+                regiDate.text = dateSplit[0]
+                val images = review.savedImageName.split(",")
+                val imageList = images.map {
+                    "http://13.209.136.122:3000/image/$it"
+                }
+//                for (i in images.indices)
+//                    imageList.add("http://13.209.136.122:3000/image/" + images[i])
+                placeImg.glideImageSet(imageList[0], placeImg.measuredWidth, placeImg.measuredHeight)
+                Log.d("imageList", images.toString())
+                Log.d("imageList", imageList.toString())
+
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog()
                 }

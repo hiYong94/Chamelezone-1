@@ -1,72 +1,68 @@
 package com.yeonae.chamelezone.view.home.adapter
 
-import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.view.place.PlaceDetailActivity
-import kotlinx.android.synthetic.main.item_place_list.view.*
+import com.yeonae.chamelezone.network.model.PlaceResponse
+import kotlinx.android.synthetic.main.item_place.view.*
 
-class HomePlaceRvAdapter(private val placeList: ArrayList<Place>) :
+class HomePlaceRvAdapter :
     RecyclerView.Adapter<HomePlaceRvAdapter.Holder>() {
+    private val placeList = arrayListOf<PlaceResponse>()
+    private lateinit var itemClickListener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onItemClick(view: View, position: Int)
+        fun onItemClick(place: PlaceResponse)
+    }
+
+    fun setItemClickListener(clickListener: OnItemClickListener) {
+        itemClickListener = clickListener
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val placeList: ArrayList<Place>? = null
-        private val itemClickListener: OnItemClickListener? = null
         private val placeImg = itemView.place_img
         private val placeName = itemView.place_name
-        private val distance = itemView.distance
         private val keyword = itemView.keyword
 
-        fun bind(place: Place) {
-            if (place.placeImg.isNotEmpty()) {
-                placeImg.glideImageSet(
-                    itemView.resources.getIdentifier(
-                        place.placeImg,
-                        "drawable",
-                        itemView.context.packageName
-                    ), itemView.measuredWidth, itemView.measuredHeight
-                )
-            } else {
-                placeImg.setImageResource(R.mipmap.ic_launcher)
-            }
-            placeName.text = place.placeName
-            distance.text = place.placeDistance
-            keyword.text = place.placeKeyword
+        fun bind(place: PlaceResponse, listener: OnItemClickListener) {
+            placeName.text = place.name
+            keyword.text = place.keywordName
+            val images = place.savedImageName.split(",")
+            val imageList = arrayListOf<String>()
+            for (i in images.indices)
+                imageList.add("http://13.209.136.122:3000/image/" + images[i])
+            Log.d("imageList", images.toString())
+            Log.d("imageList", imageList.toString())
+
+            placeImg.glideImageSet(imageList[0], placeImg.measuredWidth, placeImg.measuredHeight)
 
             itemView.setOnClickListener {
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val item = placeList?.get(position)
-                    itemClickListener?.onItemClick(itemView, position)
-                    placeList?.set(position, place)
-
-                    val intent = Intent(itemView.context, PlaceDetailActivity::class.java)
-                    itemView.context.startActivity(intent)
-                }
+                listener?.onItemClick(place)
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_place_list, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_place, parent, false)
         return Holder(view)
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(placeList[position])
+        holder.bind(placeList[position], itemClickListener)
     }
 
     override fun getItemCount(): Int {
         return placeList.size
+    }
+
+    fun addData(addDataList: List<PlaceResponse>) {
+        placeList.clear()
+        placeList.addAll(addDataList)
+        notifyDataSetChanged()
     }
 }

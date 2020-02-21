@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.data.source.remote.review
 
 import android.util.Log
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl.Network.SUCCESS
 import com.yeonae.chamelezone.network.api.RetrofitConnection.reviewService
 import com.yeonae.chamelezone.network.api.ReviewApi
 import com.yeonae.chamelezone.network.model.ReviewResponse
@@ -23,7 +24,8 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         images: List<String>,
         callBack: ReviewCallBack<String>
     ) {
-        val memberNumber = RequestBody.create(MediaType.parse("text/plain"), memberNumber.toString())
+        val memberNumber =
+            RequestBody.create(MediaType.parse("text/plain"), memberNumber.toString())
 
         val content = RequestBody.create(MediaType.parse("text/plain"), content)
 
@@ -50,28 +52,31 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    if (response.code() == 200)
+                    if (response.code() == SUCCESS)
                         response.body().let { callBack.onSuccess("리뷰 등록 성공") }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.d("create tag", t.toString())
-                    Log.d("create tag", (call.request().toString()))
+                    Log.d("create tag error", t.toString())
+                    Log.d("create tag error", (call.request().toString()))
                 }
             })
     }
 
     override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
-        reviewService.getReviewList(placeNumber).enqueue(object : Callback<ReviewResponse> {
-            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
-
+        reviewService.getReviewList(placeNumber).enqueue(object : Callback<List<ReviewResponse>> {
+            override fun onFailure(call: Call<List<ReviewResponse>>, t: Throwable) {
+                Log.d("review tag", t.toString())
             }
 
             override fun onResponse(
-                call: Call<ReviewResponse>,
-                response: Response<ReviewResponse>
+                call: Call<List<ReviewResponse>>,
+                response: Response<List<ReviewResponse>>
             ) {
-
+                if (response.code() == SUCCESS) {
+                    response.body()?.let { callBack.onSuccess(it) }
+                    Log.d("PlaceReviewList", "장소 리뷰 리스트 성공")
+                }
             }
         })
     }
@@ -80,7 +85,22 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         memberNumber: Int,
         callBack: ReviewCallBack<List<ReviewResponse>>
     ) {
+        reviewService.getMyReviewList(memberNumber)
+            .enqueue(object : Callback<List<ReviewResponse>> {
+                override fun onFailure(call: Call<List<ReviewResponse>>, t: Throwable) {
+                    Log.d("tag", t.toString())
+                }
 
+                override fun onResponse(
+                    call: Call<List<ReviewResponse>>,
+                    response: Response<List<ReviewResponse>>
+                ) {
+                    if (response.code() == SUCCESS) {
+                        response.body()?.let { callBack.onSuccess(it) }
+                        Log.d("HomePlaceList", "나의 리뷰 리스트 성공")
+                    }
+                }
+            })
     }
 
     override fun updateReview() {

@@ -1,11 +1,11 @@
 package com.yeonae.chamelezone.view.place.presenter
 
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.network.model.ReviewResponse
 
 interface PlaceReviewContract {
     interface View {
         var presenter: Presenter
-        fun placeReview(place: PlaceResponse)
+        fun showPlaceReview(reviewList: List<ReviewResponse>)
     }
 
     interface Presenter {

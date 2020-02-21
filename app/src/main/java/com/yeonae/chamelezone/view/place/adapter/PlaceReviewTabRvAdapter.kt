@@ -8,13 +8,14 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Review
 import com.yeonae.chamelezone.ext.glideTransformations
+import com.yeonae.chamelezone.network.model.ReviewResponse
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
-class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
+class PlaceReviewTabRvAdapter :
     RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
-    private lateinit var placeReviewList: ArrayList<Review>
+    //    private lateinit var placeReviewList: ArrayList<ReviewResponse>
+    private val reviewList = arrayListOf<ReviewResponse>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var moreButtonListener: MoreButtonListener
 //    private lateinit var moreImageBtnListener: MoreImageBtnListener
@@ -27,7 +28,7 @@ class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
         fun bottomSheetDialog()
     }
 
-    fun setItemClickListener(clickListener: OnItemClickListener){
+    fun setItemClickListener(clickListener: OnItemClickListener) {
         itemClickListener = clickListener
     }
 
@@ -52,65 +53,57 @@ class PlaceReviewTabRvAdapter(private val reviewList: ArrayList<Review>) :
         }
     }
 
-    fun addData(addDataList: List<Review>) {
-        reviewList.clear()
-        reviewList.addAll(addDataList)
-        notifyDataSetChanged()
-    }
-
     inner class PlaceReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val userId: TextView = itemView.findViewById(R.id.tv_user_id)
+        private val nickname: TextView = itemView.findViewById(R.id.tv_nickname)
         private val reviewDate: TextView = itemView.findViewById(R.id.tv_review_date)
         private val reviewImg: ImageView = itemView.findViewById(R.id.iv_review_img)
         private val reviewContent: TextView = itemView.findViewById(R.id.tv_review_content)
         private val moreReviewImg: LinearLayout = itemView.findViewById(R.id.iv_image)
+        private val reviewCount: TextView = itemView.findViewById(R.id.tv_image_count)
+//        private val moreDelete: LinearLayout = itemView.findViewById(R.id.btn_delete)
 
-        fun bind(review: Review) {
-            if (review.reviewImage.isNotEmpty()) {
-                val resourceId = itemView.resources.getIdentifier(
-                    review.reviewImage,
-                    "drawable",
-                    itemView.context.packageName
-                )
-                reviewImg.
-                    glideTransformations(resourceId, reviewImg.measuredWidth, reviewImg.measuredHeight)
-            } else {
-                reviewImg.setImageResource(R.mipmap.ic_launcher)
-            }
-            userId.text = review.userId
-            reviewDate.text = review.reviewDate
-            reviewContent.text = review.reviewContent
+        fun bind(review: ReviewResponse) {
+            nickname.text = review.nickName
+            reviewDate.text = review.regiDate
+            reviewContent.text = review.content
+            val images = review.savedImageName.split(",")
+            val imageList = arrayListOf<String>()
+            for (i in images.indices)
+                imageList.add("http://13.209.136.122:3000/image/" + images[i])
+            reviewImg.glideTransformations(imageList[0], reviewImg.measuredWidth, reviewImg.measuredHeight)
+            reviewCount.text = "+" + (imageList.size - 1)
 
             reviewImg.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-
-                    if(::itemClickListener.isInitialized){
-                        itemClickListener.onItemClick(itemView, position)
-                    }
-                    if (::placeReviewList.isInitialized){
-                        placeReviewList[position] = review
-                    }
+                    val item = reviewList?.get(position)
+                    itemClickListener.onItemClick(itemView, position)
+                    reviewList[position] = review
                 }
             }
+
             moreReviewImg.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
 
-                    if(::itemClickListener.isInitialized){
+                    if (::itemClickListener.isInitialized) {
                         itemClickListener.onItemClick(itemView, position)
                     }
-                    if (::placeReviewList.isInitialized){
-                        placeReviewList[position] = review
-                    }
+                    reviewList[position] = review
                 }
             }
+
             itemView.apply {
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog()
                 }
             }
-
         }
+    }
+
+    fun addData(addDataList: List<ReviewResponse>) {
+        reviewList.clear()
+        reviewList.addAll(addDataList)
+        notifyDataSetChanged()
     }
 }

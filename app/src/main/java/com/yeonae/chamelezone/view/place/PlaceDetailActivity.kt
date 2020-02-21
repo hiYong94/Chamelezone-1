@@ -2,12 +2,13 @@ package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
+import com.google.android.material.appbar.AppBarLayout
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
@@ -79,7 +80,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             }
         }
     }
-
+  
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
@@ -109,11 +110,30 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         }
 
     }
+    private fun setupView(){
+        val placeName = intent.getStringExtra(PLACE_NAME).orEmpty()
+        val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
+        Log.d("placeNumber detail", placeNumber.toString())
+        tv_place_name.text = placeName
+        tv_place_name_two.text = placeName
 
-    private fun setupView() {
+        val outMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(outMetrics)
+        val density = outMetrics.densityDpi
+
+        presenter = PlaceInfoPresenter(
+            Injection.placeRepository(), this
+        )
+
+        presenter.placeDetail(placeNumber)
+
+        btn_back.setOnClickListener {
+            finish()
+        }
+      
         tab_layout.setupWithViewPager(vp_image, true)
 
-        val fragmentAdapter = PlaceDetailPagerAdapter(supportFragmentManager, placeNumber)
+        val fragmentAdapter = PlaceDetailPagerAdapter(supportFragmentManager, placeNumber, placeName)
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
@@ -124,15 +144,17 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
                 Log.d("PlaceDetailActivity nameBar", nameBar.toString())
                 Log.d("PlaceDetailActivity tabBar", tabBar.toString())
+
                 layoutParams = tool_bar.layoutParams.apply {
                     height = nameBar + tabBar
                 }
 
-                app_bar.addOnOffsetChangedListener(OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                    if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
+                app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+                    if (abs(verticalOffset) - appBarLayout.totalScrollRange > 0) {
                         layout_visibility.visibility = View.VISIBLE
                     } else {
-                        layout_visibility.visibility = View.INVISIBLE
+                        Log.d("PlaceDetailActivity nameBar", nameBar.toString())
+                        layout_visibility.visibility = View.GONE
                     }
                 })
             }
