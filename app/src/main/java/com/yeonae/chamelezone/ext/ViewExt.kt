@@ -23,6 +23,7 @@ fun View.catchFocus() {
 fun ImageView.glideImageSet(image: Int, width: Int, height: Int) {
     Glide.with(context)
         .load(image)
+        .error(R.drawable.ic_x)
         .override(width, height)
         .centerCrop()
         .into(this)
@@ -31,6 +32,7 @@ fun ImageView.glideImageSet(image: Int, width: Int, height: Int) {
 fun ImageView.glideImageSet(image: String, width: Int, height: Int) {
     Glide.with(context)
         .load(image)
+        .error(R.drawable.ic_x)
         .override(width, height)
         .centerCrop()
         .into(this)
@@ -39,17 +41,19 @@ fun ImageView.glideImageSet(image: String, width: Int, height: Int) {
 fun ImageView.glideImageSet(image: Uri, width: Int, height: Int) {
     Glide.with(context)
         .load(image)
+        .error(R.drawable.ic_x)
         .override(width, height)
         .centerCrop()
         .into(this)
 }
 
-fun ImageView.glideTransformations(image: Int, width: Int, height: Int) {
+fun ImageView.glideTransformations(image: String, width: Int, height: Int) {
     val outMetrics = DisplayMetrics()
     val density = outMetrics.densityDpi
 
     Glide.with(context)
         .load(image)
+        .error(R.drawable.ic_x)
         .override(width, height)
         .centerCrop()
         .transform(

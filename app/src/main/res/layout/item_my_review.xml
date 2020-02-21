@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:toos="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
@@ -26,6 +28,7 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:id="@+id/iv_review_img"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:layout_margin="10dp" />
@@ -55,7 +58,8 @@
                                 android:layout_gravity="center"
                                 android:ellipsize="end"
                                 android:maxLines="1"
-                                android:textSize="15sp" />
+                                android:textSize="15sp"
+                                tools:text="장소이름" />
                         </LinearLayout>
 
                         <ImageButton
@@ -74,7 +78,16 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="4"
-                        android:textSize="13sp" />
+                        android:textSize="13sp"
+                        tools:text="내용" />
+
+                    <TextView
+                        android:id="@+id/tv_review_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:textSize="13sp"
+                        tools:text="내용" />
                 </LinearLayout>
             </LinearLayout>
 

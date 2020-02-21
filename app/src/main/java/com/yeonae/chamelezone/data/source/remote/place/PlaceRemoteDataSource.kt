@@ -43,5 +43,5 @@ interface PlaceRemoteDataSource {
 
     fun deletePlace(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<Boolean>)
     fun getHomePlaceList(callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>)
+//    fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>)
 }

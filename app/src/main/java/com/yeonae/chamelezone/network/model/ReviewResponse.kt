@@ -14,6 +14,9 @@ data class ReviewResponse(
     @SerializedName("content")
     val content: String,
     @SerializedName("regiDate")
-    val regiDate: String
-
+    val regiDate: String,
+    @SerializedName("name")
+    val name: String,
+    @SerializedName("savedImageName")
+    val savedImageName: String
 )

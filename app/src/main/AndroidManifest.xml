@@ -78,6 +78,9 @@
         <activity
             android:name=".view.review.ReviewImageActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".view.review.ReviewModifyActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

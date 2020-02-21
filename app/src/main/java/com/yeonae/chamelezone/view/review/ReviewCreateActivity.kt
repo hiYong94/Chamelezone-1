@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -22,6 +22,7 @@ import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import kotlinx.android.synthetic.main.activity_review_create.*
 import kotlinx.android.synthetic.main.slider_item_image.*
+import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener,
     ReviewContract.View {
@@ -35,21 +36,27 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
-        image_container.removeAllViews()
+//        image_container.removeAllViews()
         uris.forEach { uri ->
             val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
-            ) as ImageView
+            ) as RelativeLayout
             if (image_container.childCount < 4) {
                 image_container.addView(iv)
-                iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
+                iv.image_item.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
+                Log.d("childCount", (image_container.childCount).toString())
             }
-        }
-        for (i in uris.indices) {
-            uris[i].path?.let { uriList.add(it) }
-            Log.d("dddd", uris[i].path)
+
+            for (i in uris.indices) {
+                uris[i].path?.let { uriList.add(it) }
+                Log.d("dddd", uris[i].path)
+                Log.d("dddd childCount uriList", uriList[i])
+                btn_delete.setOnClickListener {
+                    image_container.removeView(iv)
+                }
+            }
         }
         Log.d("uriList", uriList.toString())
     }
@@ -72,7 +79,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
 
-            presenter.reviewCreate(252, placeNumber, content, uriList)
+            presenter.reviewCreate(2, placeNumber, content, uriList)
             Log.d("uriList", uriList.toString())
         }
     }
@@ -107,7 +114,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     }
 
     private fun setupGUI() {
-        tv_title.text = intent.getStringExtra("placeName")
+        tv_title.text = intent.getStringExtra(PLACE_NAME)
         tv_title.catchFocus()
         btn_back.setOnClickListener {
             finish()
@@ -131,7 +138,8 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             .check()
     }
 
-    companion object{
+    companion object {
         private const val PLACE_NUMBER = "placeNumber"
+        private const val PLACE_NAME = "placeName"
     }
 }
