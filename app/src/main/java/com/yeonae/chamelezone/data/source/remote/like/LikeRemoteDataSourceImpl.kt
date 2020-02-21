@@ -13,7 +13,7 @@ import retrofit2.Response
 
 class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi) :
     LikeRemoteDataSource {
-    override fun selectLike(memberNumber: Int, placeNumber: Int, callBack: LikeCallBack<String>) {
+    override fun selectLike(memberNumber: Int, placeNumber: Int, callBack: LikeCallBack<Boolean>) {
         val jsonObject = JsonObject().apply {
             addProperty("placeNumber", placeNumber)
         }
@@ -23,10 +23,8 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.d("LikeRemote", "좋아요")
-                Log.d("LikeRemote", response.code().toString())
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess("좋아요")
+                    callBack.onSuccess(true)
                 }
             }
 
@@ -37,7 +35,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
         likeNumber: Int,
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<String>
+        callBack: LikeCallBack<Boolean>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("placeNumber", placeNumber)
@@ -49,7 +47,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess("좋아요 취소")
+                    callBack.onSuccess(true)
                 }
             }
 

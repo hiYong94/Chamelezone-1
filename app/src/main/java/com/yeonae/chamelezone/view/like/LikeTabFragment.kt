@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.like
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,9 +42,11 @@ class LikeTabFragment : Fragment(), LikeContract.View {
         likeTabRvAdapter.addData(response)
     }
 
-    override fun showLikeState(response: String) {
-        Toast.makeText(context, response, Toast.LENGTH_LONG)
-            .show()
+    override fun showLikeState(response: Boolean) {
+        if (response) {
+            Toast.makeText(context, "좋아요 목록에서 삭제되었습니다", Toast.LENGTH_LONG)
+                .show()
+        }
     }
 
     override fun onCreateView(

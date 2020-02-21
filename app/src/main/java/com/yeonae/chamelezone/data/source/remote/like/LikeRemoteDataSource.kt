@@ -7,14 +7,14 @@ interface LikeRemoteDataSource {
     fun selectLike(
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<String>
+        callBack: LikeCallBack<Boolean>
     )
 
     fun deleteLike(
         likeNumber: Int,
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<String>
+        callBack: LikeCallBack<Boolean>
     )
 
     fun getMyLikeList(memberNumber: Int, callBack: LikeCallBack<List<PlaceResponse>>)

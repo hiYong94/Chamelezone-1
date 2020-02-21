@@ -8,7 +8,7 @@ interface LikeContract {
         var presenter: Presenter
         fun showResultView(response: Boolean)
         fun showUserInfo(user: UserEntity)
-        fun showLikeState(response: String)
+        fun showLikeState(response: Boolean)
         fun showMyLikeList(response: List<PlaceResponse>)
     }
 

@@ -21,16 +21,24 @@ import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlin.math.abs
 
 class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
+    override fun showLikeMessage(response: Boolean) {
+        if (response) {
+            Toast.makeText(applicationContext, "좋아요 목록에 추가되었습니다", Toast.LENGTH_LONG)
+                .show()
+        }
+    }
+
+    override fun showDeleteLikeMessage(response: Boolean) {
+        if (response) {
+            Toast.makeText(applicationContext, "좋아요 목록에서 삭제되었습니다", Toast.LENGTH_LONG)
+                .show()
+        }
+    }
+
     override lateinit var presenter: PlaceDetailContract.Presenter
     var memberNumber: Int = 0
     var placeNumber: Int = 0
     var likeNumber: Int? = null
-
-    override fun showLikeState(response: String) {
-        Toast.makeText(this, response, Toast.LENGTH_LONG)
-            .show()
-        Log.d("showLikeState", response)
-    }
 
     override fun showUserInfo(user: UserEntity) {
         memberNumber = user.userNumber ?: 0
@@ -44,7 +52,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             images.add(IMAGE_RESOURCE + placeImages[i])
         }
         likeNumber = place.likeNumber
-        if(likeNumber != null){
+        if (likeNumber != null) {
             btn_like.isChecked = true
         }
         val imageAdapter = ImageViewPagerAdapter(images)

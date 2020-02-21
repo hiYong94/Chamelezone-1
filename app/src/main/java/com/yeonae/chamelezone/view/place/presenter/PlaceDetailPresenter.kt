@@ -55,9 +55,9 @@ class PlaceDetailPresenter(
     }
 
     override fun selectLike(memberNumber: Int, placeNumber: Int) {
-        likeRepository.selectLike(memberNumber, placeNumber, object : LikeCallBack<String>{
-            override fun onSuccess(response: String) {
-                view.showLikeState(response)
+        likeRepository.selectLike(memberNumber, placeNumber, object : LikeCallBack<Boolean>{
+            override fun onSuccess(response: Boolean) {
+                view.showLikeMessage(response)
             }
 
             override fun onFailure(message: String) {
@@ -68,9 +68,9 @@ class PlaceDetailPresenter(
     }
 
     override fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int) {
-        likeRepository.deleteLike(likeNumber, memberNumber, placeNumber, object : LikeCallBack<String>{
-            override fun onSuccess(response: String) {
-                view.showLikeState(response)
+        likeRepository.deleteLike(likeNumber, memberNumber, placeNumber, object : LikeCallBack<Boolean>{
+            override fun onSuccess(response: Boolean) {
+                view.showDeleteLikeMessage(response)
             }
 
             override fun onFailure(message: String) {

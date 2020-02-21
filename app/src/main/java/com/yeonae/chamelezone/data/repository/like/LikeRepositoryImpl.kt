@@ -7,7 +7,7 @@ class LikeRepositoryImpl private constructor(
     private val remoteDataSource: LikeRemoteDataSource
 ) :
     LikeRepository {
-    override fun selectLike(memberNumber: Int, placeNumber: Int, callBack: LikeCallBack<String>) {
+    override fun selectLike(memberNumber: Int, placeNumber: Int, callBack: LikeCallBack<Boolean>) {
         remoteDataSource.selectLike(memberNumber, placeNumber, callBack)
     }
 
@@ -15,7 +15,7 @@ class LikeRepositoryImpl private constructor(
         likeNumber: Int,
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<String>
+        callBack: LikeCallBack<Boolean>
     ) {
         remoteDataSource.deleteLike(likeNumber, memberNumber, placeNumber, callBack)
     }

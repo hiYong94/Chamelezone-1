@@ -10,7 +10,8 @@ interface PlaceDetailContract {
         fun placeInfo(place: PlaceResponse)
         fun showResultView(response: Boolean)
         fun showUserInfo(user: UserEntity)
-        fun showLikeState(response: String)
+        fun showLikeMessage(response: Boolean)
+        fun showDeleteLikeMessage(response: Boolean)
     }
 
     interface Presenter {
