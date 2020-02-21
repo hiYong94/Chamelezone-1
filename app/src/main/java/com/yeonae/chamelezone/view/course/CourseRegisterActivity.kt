@@ -3,7 +3,6 @@ package com.yeonae.chamelezone.view.course
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -26,18 +25,18 @@ import kotlinx.android.synthetic.main.slider_item_image.*
 
 class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
-    private var imageUri = arrayListOf<String>()
+    var imageUri: String = ""
     var memberNumber: Int = 0
-    var firstPlaceNumber: Int = NOT_SELECTED
-    var secondPlaceNumber: Int = NOT_SELECTED
-    var thirdPlaceNumber: Int = NOT_SELECTED
+    private var firstPlaceNumber: Int = NOT_SELECTED
+    private var secondPlaceNumber: Int = NOT_SELECTED
+    private var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
+
     override fun showUserInfo(user: UserEntity) {
-        memberNumber = user.userNumber!!
+        memberNumber = user.userNumber ?: 0
     }
 
     override fun showMessage(message: String) {
-        Log.d("courseRegister", message)
         Toast.makeText(this, message, Toast.LENGTH_LONG)
             .show()
         finish()
@@ -55,8 +54,8 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             imageContainer.addView(iv)
             iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
         }
-        for (i in uris.indices) {
-            uris[i].path?.let { imageUri.add(it) }
+        if (!uris[0].path.isNullOrEmpty()) {
+            imageUri = uris[0].path.toString()
         }
     }
 
@@ -80,15 +79,15 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_place_add1.setOnClickListener {
-            replace("1")
+            replace(1)
         }
 
         btn_place_add2.setOnClickListener {
-            replace("2")
+            replace(2)
         }
 
         btn_place_add3.setOnClickListener {
-            replace("3")
+            replace(3)
         }
 
         btn_close1.setOnClickListener {
@@ -136,7 +135,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 "${edt_course_content.text}",
                 imageUri
             )
-            Log.d("courseImage", imageUri.toString())
         }
     }
 
@@ -208,7 +206,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
     }
 
-    fun replace(placeIndex: String) {
+    fun replace(placeIndex: Int) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment_place_choice, placeChoiceFragment.newInstance(placeIndex))
             .addToBackStack(null)
@@ -248,6 +246,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     companion object {
         private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
-        private const val  NOT_SELECTED = -1
+        private const val NOT_SELECTED = -1
     }
 }

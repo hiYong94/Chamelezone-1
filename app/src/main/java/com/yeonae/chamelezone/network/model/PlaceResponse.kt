@@ -24,5 +24,9 @@ data class PlaceResponse(
     @SerializedName("savedImageName")
     val savedImageName: String,
     @SerializedName("regiDate")
-    val regiDate: String
+    val regiDate: String,
+    @SerializedName("memberNumber")
+    val memberNumber: Int,
+    @SerializedName("likeNumber")
+    val likeNumber: Int? = null
 )

@@ -15,7 +15,7 @@ class SearchPresenter(
             }
 
             override fun onFailure(message: String) {
-
+                searchView.showMessage(message)
             }
 
         })
@@ -28,7 +28,7 @@ class SearchPresenter(
             }
 
             override fun onFailure(message: String) {
-
+                searchView.showMessage(message)
             }
 
         })
@@ -41,7 +41,7 @@ class SearchPresenter(
             }
 
             override fun onFailure(message: String) {
-
+                searchView.showMessage(message)
             }
 
         })

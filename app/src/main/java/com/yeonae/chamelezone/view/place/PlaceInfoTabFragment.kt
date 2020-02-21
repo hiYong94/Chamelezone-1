@@ -13,13 +13,19 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.place.presenter.PlaceInfoContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceInfoPresenter
 import kotlinx.android.synthetic.main.fragment_place_info_tab.*
 
 class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallback {
     private lateinit var map: GoogleMap
+    var placeNumber: Int = 0
     private val PLACE_NUMBER = "placeNumber"
+
+    override fun showUserInfo(user: UserEntity) {
+        user.userNumber?.let { presenter.placeDetail(placeNumber, it) }
+    }
 
     override fun placeInfo(place: PlaceResponse) {
         tv_keyword.text = place.keywordName.replace(",", ", ")
@@ -63,10 +69,10 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
         place_info_map.getMapAsync(this)
 
         presenter = PlaceInfoPresenter(
-            Injection.placeRepository(), this
+            Injection.placeRepository(), Injection.memberRepository(requireContext()), this
         )
-
-        arguments?.getInt(PLACE_NUMBER)?.let { presenter.placeDetail(it) }
+        placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
+        presenter.getUser()
     }
 
     companion object {

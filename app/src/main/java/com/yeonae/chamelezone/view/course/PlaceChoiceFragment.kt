@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.course
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,11 +42,14 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
 
         btn_ok.setOnClickListener {
             if (::lastCheckedPlace.isInitialized) {
-                val placeIndex = arguments!!.getInt("placeIndex")
-                (activity as? CourseRegisterActivity)?.getVisible(
-                    placeIndex,
-                    lastCheckedPlace
-                )
+                val placeIndex = arguments?.getInt(PLACE_INDEX)
+                Log.d("placeIndex", placeIndex.toString())
+                if (placeIndex != null) {
+                    (activity as? CourseRegisterActivity)?.getVisible(
+                        placeIndex,
+                        lastCheckedPlace
+                    )
+                }
                 requireActivity().onBackPressed()
             }
 
@@ -66,7 +70,15 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
     }
 
     override fun showPlaceList(placeList: List<PlaceResponse>) {
+        layout_no_search.visibility = View.GONE
+        layout_has_search.visibility = View.VISIBLE
         placeChoiceRvAdapter.addData(placeList)
+    }
+
+    override fun showMessage(message: String) {
+        layout_no_search.visibility = View.VISIBLE
+        layout_has_search.visibility = View.GONE
+        tv_message.text = message
     }
 
     private fun setAdapter() {
@@ -78,10 +90,10 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
         private const val PLACE_INDEX = "placeIndex"
 
         fun newInstance(
-            placeIndex: String
+            placeIndex: Int
         ) = PlaceChoiceFragment().apply {
             arguments = Bundle().apply {
-                putString(PLACE_INDEX, placeIndex)
+                putInt(PLACE_INDEX, placeIndex)
             }
 
         }

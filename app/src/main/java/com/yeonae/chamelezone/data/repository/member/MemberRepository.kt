@@ -39,6 +39,10 @@ interface MemberRepository {
     fun checkLogin(callBack: MemberCallBack<Boolean>)
 
     fun deleteLoginUser(callBack: MemberCallBack<Boolean>)
+
+    fun checkEmail(email: String, callBack: MemberCallBack<Boolean>)
+
+    fun checkNickname(nickname: String, callBack: MemberCallBack<Boolean>)
 }
 
 

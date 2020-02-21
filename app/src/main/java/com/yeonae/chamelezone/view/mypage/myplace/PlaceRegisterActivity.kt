@@ -18,7 +18,6 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
-import com.bumptech.glide.Glide
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
@@ -26,6 +25,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.KeywordResponse
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
@@ -34,11 +34,17 @@ import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
+    var memberNumber: Int = 0
     private var imageUri = arrayListOf<String>()
     private val openingTime = mutableListOf<String>()
     private val keywordMap = hashMapOf<Int, String>()
     private val keyword = mutableListOf<Int>()
     private val selectedItems = ArrayList<String>()
+
+    override fun showUserInfo(user: UserEntity) {
+        memberNumber = user.userNumber!!
+    }
+
     override fun showKeywordList(response: List<KeywordResponse>) {
         for (i in response.indices) {
             keywordMap[response[i].keywordNumber] = response[i].keywordName
@@ -76,8 +82,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         setupGUI()
 
         presenter = PlacePresenter(
-            Injection.placeRepository(), this
+            Injection.memberRepository(applicationContext), Injection.placeRepository(), this
         )
+        presenter.getUser()
         presenter.getKeyword()
 
         edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
@@ -104,6 +111,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
             if (latitude != null && longitude != null) {
                 presenter.placeRegister(
+                    memberNumber,
                     keyword,
                     "${edt_place_name.text}",
                     realAddress,
@@ -114,6 +122,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                     longitude,
                     imageUri
                 )
+                Log.d("placeRegister memberNumber", memberNumber.toString())
             }
         }
         openingHours()

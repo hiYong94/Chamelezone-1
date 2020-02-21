@@ -1,17 +1,33 @@
-package com.yeonae.chamelezone.view.like.presenter
+package com.yeonae.chamelezone.view.place.presenter
 
 import com.yeonae.chamelezone.data.repository.like.LikeCallBack
 import com.yeonae.chamelezone.data.repository.like.LikeRepository
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
+import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
-class LikePresenter(
+class PlaceDetailPresenter(
     private val memberRepository: MemberRepository,
+    private val placeRepository: PlaceRepository,
     private val likeRepository: LikeRepository,
-    private val view: LikeContract.View
-) : LikeContract.Presenter {
+    private val view: PlaceDetailContract.View
+) :PlaceDetailContract.Presenter {
+    override fun placeDetail(placeNumber: Int, memberNumber: Int) {
+        placeRepository.getPlaceDetail(placeNumber, memberNumber, object : PlaceCallBack<PlaceResponse>{
+            override fun onSuccess(response: PlaceResponse) {
+                view.placeInfo(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
+
     override fun checkLogin() {
         memberRepository.checkLogin(object : MemberCallBack<Boolean> {
             override fun onSuccess(response: Boolean) {
@@ -38,11 +54,10 @@ class LikePresenter(
         })
     }
 
-    override fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int) {
-        likeRepository.deleteLike(likeNumber, memberNumber, placeNumber, object :
-            LikeCallBack<Boolean> {
+    override fun selectLike(memberNumber: Int, placeNumber: Int) {
+        likeRepository.selectLike(memberNumber, placeNumber, object : LikeCallBack<Boolean>{
             override fun onSuccess(response: Boolean) {
-                view.showLikeState(response)
+                view.showLikeMessage(response)
             }
 
             override fun onFailure(message: String) {
@@ -52,10 +67,10 @@ class LikePresenter(
         })
     }
 
-    override fun getMyLikeList(memberNumber: Int) {
-        likeRepository.getMyLikeList(memberNumber, object : LikeCallBack<List<PlaceResponse>>{
-            override fun onSuccess(response: List<PlaceResponse>) {
-                view.showMyLikeList(response)
+    override fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int) {
+        likeRepository.deleteLike(likeNumber, memberNumber, placeNumber, object : LikeCallBack<Boolean>{
+            override fun onSuccess(response: Boolean) {
+                view.showDeleteLikeMessage(response)
             }
 
             override fun onFailure(message: String) {

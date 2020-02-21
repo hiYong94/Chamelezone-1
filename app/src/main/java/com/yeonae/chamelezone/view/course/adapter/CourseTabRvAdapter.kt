@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.CourseItem
 import com.yeonae.chamelezone.ext.glideImageSet
-import kotlinx.android.synthetic.main.item_course_list.view.*
+import kotlinx.android.synthetic.main.item_course.view.*
 
 class CourseTabRvAdapter() :
     RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
@@ -37,7 +37,7 @@ class CourseTabRvAdapter() :
     }
 
     class CourseViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_course_list, parent, false)
+        LayoutInflater.from(parent.context).inflate(R.layout.item_course, parent, false)
     ) {
         fun bind(item: CourseItem, listener: OnClickListener?) {
             itemView.run {
@@ -49,14 +49,10 @@ class CourseTabRvAdapter() :
                 tv_user_nickname.text = item.nickName
                 iv_course_image.glideImageSet(
                     item.savedImageName,
-                    itemView.measuredWidth,
-                    itemView.measuredHeight
+                    iv_course_image.measuredWidth,
+                    iv_course_image.measuredHeight
                 )
             }
-        }
-
-        companion object {
-            private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
         }
     }
 }

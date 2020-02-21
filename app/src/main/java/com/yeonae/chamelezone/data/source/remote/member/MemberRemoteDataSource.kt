@@ -24,4 +24,8 @@ interface MemberRemoteDataSource {
     )
 
     fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>)
+
+    fun checkEmail(email: String, callBack: MemberCallBack<Boolean>)
+
+    fun checkNickname(nickname: String, callBack: MemberCallBack<Boolean>)
 }

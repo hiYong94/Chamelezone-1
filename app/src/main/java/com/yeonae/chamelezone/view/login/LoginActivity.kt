@@ -10,8 +10,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val loginFragment = LoginFragment()
-        replace(loginFragment, false)
+        replace(LoginFragment(), false)
     }
 
     fun replace(fragment: Fragment, isBackStack: Boolean = true) {
@@ -19,13 +18,10 @@ class LoginActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().replace(R.id.login_fragment, fragment).addToBackStack(null).commit()
         }else{
             supportFragmentManager.beginTransaction().replace(R.id.login_fragment, fragment).commit()
-
         }
-
     }
 
-    fun back(fragment: Fragment){
-        supportFragmentManager.beginTransaction().remove(fragment).commit()
+    fun back(){
         supportFragmentManager.popBackStack()
     }
 
