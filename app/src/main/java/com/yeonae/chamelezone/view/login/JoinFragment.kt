@@ -22,24 +22,24 @@ class JoinFragment : Fragment(), JoinContract.View {
     var checkedNickname: Boolean = false
     override fun showNicknameMessage(response: Boolean) {
         if(response){
-            Toast.makeText(context, "사용 가능한 닉네임입니다.", Toast.LENGTH_SHORT)
+            Toast.makeText(context, R.string.available_nickname, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = true
 
         }else if(!response){
-            Toast.makeText(context, "이미 가입된 닉네임입니다.", Toast.LENGTH_SHORT)
+            Toast.makeText(context, R.string.registered_nickname, Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
     override fun showEmailMessage(response: Boolean) {
         if(response){
-            Toast.makeText(context, "사용 가능한 이메일입니다.", Toast.LENGTH_SHORT)
+            Toast.makeText(context, R.string.available_email, Toast.LENGTH_SHORT)
                 .show()
             checkedEmail = true
 
         }else if(!response){
-            Toast.makeText(context, "이미 가입된 이메일입니다.", Toast.LENGTH_SHORT)
+            Toast.makeText(context, R.string.registered_email, Toast.LENGTH_SHORT)
                 .show()
         }
     }
@@ -108,31 +108,35 @@ class JoinFragment : Fragment(), JoinContract.View {
         when {
             email.isEmpty() -> Toast.makeText(
                 requireContext(),
-                "아이디를 입력해주세요!",
+                R.string.enter_email,
                 Toast.LENGTH_SHORT
             ).show()
             password.isEmpty() -> Toast.makeText(
                 requireContext(),
-                "비밀번호를 입력해주세요!",
+                R.string.enter_password,
                 Toast.LENGTH_SHORT
             ).show()
             name.isEmpty() -> Toast.makeText(
                 requireContext(),
-                "이름을 입력해주세요!",
+                R.string.enter_name,
                 Toast.LENGTH_SHORT
             ).show()
             nickName.isEmpty() -> Toast.makeText(
                 requireContext(),
-                "닉네임을 입력해주세요!",
+                R.string.enter_nickname,
                 Toast.LENGTH_SHORT
             ).show()
             phone.isEmpty() -> Toast.makeText(
                 requireContext(),
-                "전화번호를 입력해주세요!",
+                R.string.enter_phone_number,
                 Toast.LENGTH_SHORT
             ).show()
             else -> {
-                if (!email_layout.isErrorEnabled && !password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled && checkedEmail && checkedNickname) {
+                if (!email_layout.isErrorEnabled &&
+                    !password_layout.isErrorEnabled &&
+                    !nickname_layout.isErrorEnabled &&
+                    checkedEmail &&
+                    checkedNickname) {
                     presenter.userRegister(
                         email, password, name, nickName, phone
                     )
@@ -145,9 +149,9 @@ class JoinFragment : Fragment(), JoinContract.View {
         val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
         val m = p.matcher(join_email.text.toString())
         if (!m.matches()) {
-            email_layout.error = "이메일 형식이 올바르지 않습니다."
+            email_layout.error = getString(R.string.email_format)
         } else if ("${join_email.text}".isEmpty()) {
-            email_layout.error = "이메일을 입력해주세요."
+            email_layout.error = getString(R.string.enter_email)
         } else {
             email_layout.isErrorEnabled = false
         }
@@ -157,9 +161,9 @@ class JoinFragment : Fragment(), JoinContract.View {
         val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
         val m = p.matcher(join_password.text.toString())
         if (!m.matches()) {
-            password_layout.error = "영문, 숫자 조합 8~16자로 입력해주세요."
+            password_layout.error = getString(R.string.password_format)
         } else if ("${join_password.text}".isEmpty()) {
-            password_layout.error = "비밀번호를 입력해주세요."
+            password_layout.error = getString(R.string.enter_password)
         } else {
             password_layout.isErrorEnabled = false
         }
@@ -169,9 +173,9 @@ class JoinFragment : Fragment(), JoinContract.View {
         val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
         val m = p.matcher(join_nickname.text.toString())
         if (!m.matches()) {
-            nickname_layout.error = "한글, 영문, 숫자 포함 1~10자로 입력해주세요."
+            nickname_layout.error = getString(R.string.nickname_format)
         } else if ("${join_nickname.text}".isEmpty()) {
-            nickname_layout.error = "닉네임을 입력해주세요."
+            nickname_layout.error = getString(R.string.enter_nickname)
         } else {
             nickname_layout.isErrorEnabled = false
         }

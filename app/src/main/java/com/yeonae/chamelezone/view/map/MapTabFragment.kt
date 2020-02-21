@@ -23,7 +23,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.yeonae.chamelezone.DialogFragment
+import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -231,8 +231,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
     }
 
     private fun showDialog() {
-        val newFragment = DialogFragment.newInstance(
-            "검색어를 입력해주세요"
+        val newFragment = SingleDialogFragment.newInstance(
+            R.string.enter_search
         )
         fragmentManager?.let {
             newFragment.show(it, "dialog")

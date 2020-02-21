@@ -10,13 +10,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_dialog.*
 
-class DialogFragment : DialogFragment() {
+class SingleDialogFragment : DialogFragment() {
     private var heightRatio = 0.2403125f  // default
     private var widthRatio = 0.88888889f // default
 
     override fun onStart() {
         super.onStart()
-        val message = arguments!!.getString("message")
+        val message = arguments!!.getInt("message")
         val dpMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(dpMetrics)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -35,7 +35,7 @@ class DialogFragment : DialogFragment() {
             (dpMetrics.heightPixels * heightRatio).toInt()
         )
 
-        tv_message.text = message
+        tv_message.text = getString(message)
         btn_ok.setOnClickListener {
             dialog?.cancel()
         }
@@ -54,10 +54,10 @@ class DialogFragment : DialogFragment() {
         const val DIALOG_NUM = "DIALOG_NUM"
         const val DIALOG_HEIGHT_RATIO = "DIALOG_HEIGHT_RATIO"
         const val DIALOG_WIDTH_RATIO = "DIALOG_WIDTH_RATIO"
-        fun newInstance(message: String): com.yeonae.chamelezone.DialogFragment {
-            val frag = com.yeonae.chamelezone.DialogFragment()
+        fun newInstance(message: Int): SingleDialogFragment {
+            val frag = SingleDialogFragment()
             val args = Bundle()
-            args.putString("message", message)
+            args.putInt("message", message)
             frag.arguments = args
             return frag
         }
