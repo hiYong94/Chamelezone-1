@@ -3,7 +3,6 @@ package com.yeonae.chamelezone.view.course
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -26,11 +25,11 @@ import kotlinx.android.synthetic.main.slider_item_image.*
 
 class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
-    private var imageUri = arrayListOf<String>()
+    var imageUri: String = ""
     var memberNumber: Int = 0
-    var firstPlaceNumber: Int = NOT_SELECTED
-    var secondPlaceNumber: Int = NOT_SELECTED
-    var thirdPlaceNumber: Int = NOT_SELECTED
+    private var firstPlaceNumber: Int = NOT_SELECTED
+    private var secondPlaceNumber: Int = NOT_SELECTED
+    private var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
 
     override fun showUserInfo(user: UserEntity) {
@@ -55,7 +54,9 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             imageContainer.addView(iv)
             iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
         }
-        uris[0].path?.let { imageUri.add(it) }
+        if (uris[0].path != null) {
+            imageUri = uris[0].path.toString()
+        }
     }
 
     override lateinit var presenter: CourseRegisterContract.Presenter
@@ -132,7 +133,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 placeNumbers,
                 "${edt_course_title.text}",
                 "${edt_course_content.text}",
-                imageUri[0]
+                imageUri
             )
         }
     }
