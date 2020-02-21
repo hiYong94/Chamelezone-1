@@ -52,8 +52,8 @@ class SearchRvAdapter : RecyclerView.Adapter<SearchRvAdapter.SearchViewHolder>()
                     images.add(IMAGE_RESOURCE + placeImages[i])
                 }
                 iv_place_image.glideImageSet(
-                    images[0], itemView.measuredWidth,
-                    itemView.measuredHeight
+                    images[0], iv_place_image.measuredWidth,
+                    iv_place_image.measuredHeight
                 )
             }
         }

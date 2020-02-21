@@ -111,7 +111,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
     }
 
     override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {
-        memberService.deleteMember(memberNumber).enqueue(object : Callback<ResponseBody>{
+        memberService.deleteMember(memberNumber).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
                     callBack.onSuccess("회원 탈퇴 성공")
@@ -119,14 +119,50 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-
+                Log.e("tag", t.toString())
             }
+        })
+    }
+
+    override fun checkEmail(email: String, callBack: MemberCallBack<Boolean>) {
+        memberService.checkEmail(email).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == SUCCESS) {
+                    callBack.onSuccess(true)
+                } else if (response.code() == CRASH_ERR) {
+                    callBack.onSuccess(false)
+                }
+                Log.d("checkEmail", response.code().toString())
+            }
+
+        })
+    }
+
+    override fun checkNickname(nickname: String, callBack: MemberCallBack<Boolean>) {
+        memberService.checkNickname(nickname).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == SUCCESS) {
+                    callBack.onSuccess(true)
+                } else if (response.code() == CRASH_ERR) {
+                    callBack.onSuccess(false)
+                }
+            }
+
         })
     }
 
     companion object {
         private const val SUCCESS = 200
         private const val REQUEST_ERR = 404
+        private const val CRASH_ERR = 409
         fun getInstance(memberApi: MemberApi): MemberRemoteDataSource =
             MemberRemoteDataSourceImpl(memberApi)
     }

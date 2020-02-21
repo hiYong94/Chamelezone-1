@@ -11,7 +11,7 @@ interface CourseApi {
     @Multipart
     @POST("/course")
     fun courseRegister(
-        @Part image: ArrayList<MultipartBody.Part>,
+        @Part image: MultipartBody.Part,
         @Part("memberNumber") memberNumber: RequestBody,
         @Part("placeNumber") placeNumber: ArrayList<RequestBody>,
         @Part("title") title: RequestBody,

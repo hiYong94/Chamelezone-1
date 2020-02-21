@@ -7,6 +7,7 @@ interface SearchContract {
     interface View {
         var presenter: Presenter
         fun showPlaceList(placeList: List<PlaceResponse>)
+        fun showMessage(message: String)
     }
 
     interface Presenter {

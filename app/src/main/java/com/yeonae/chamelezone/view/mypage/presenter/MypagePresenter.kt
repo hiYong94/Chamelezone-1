@@ -11,7 +11,7 @@ class MypagePresenter(
     override fun logout() {
         repository.logout(object : MemberCallBack<String>{
             override fun onSuccess(response: String) {
-                view.showMessage(response)
+
             }
 
             override fun onFailure(message: String) {

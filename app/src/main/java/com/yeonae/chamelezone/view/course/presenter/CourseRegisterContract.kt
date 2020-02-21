@@ -16,7 +16,8 @@ interface CourseRegisterContract {
             placeNumber: List<Int>,
             title: String,
             content: String,
-            images: List<String>)
+            image: String
+        )
 
         fun getUser()
     }

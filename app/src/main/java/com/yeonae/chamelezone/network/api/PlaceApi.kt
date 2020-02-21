@@ -12,6 +12,7 @@ interface PlaceApi {
     @POST("/place")
     fun placeRegister(
         @Part image: ArrayList<MultipartBody.Part>,
+        @Part("memberNumber") memberNumber: RequestBody,
         @Part("keywordName") keywordName: ArrayList<RequestBody>,
         @Part("name") name: RequestBody,
         @Part("address") address: RequestBody,
@@ -44,10 +45,11 @@ interface PlaceApi {
 
     @GET("/place/{placeNumber}")
     fun getPlaceDetail(
-        @Path("placeNumber") placeNumber: Int
+        @Path("placeNumber") placeNumber: Int,
+        @Query("memberNumber") memberNumber: Int
     ): Call<PlaceResponse>
 
-    @GET("/place/{MemberNumber}")
+    @GET("/user/{MemberNumber}/place")
     fun getMyPlaceList(
         @Path("MemberNumber") memberNumber: Int
     ): Call<List<PlaceResponse>>
