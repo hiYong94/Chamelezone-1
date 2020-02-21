@@ -16,7 +16,7 @@ class SingleDialogFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        val message = arguments!!.getInt("message")
+        val message = arguments?.getInt("message")
         val dpMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(dpMetrics)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -35,7 +35,7 @@ class SingleDialogFragment : DialogFragment() {
             (dpMetrics.heightPixels * heightRatio).toInt()
         )
 
-        tv_message.text = getString(message)
+        tv_message.text = message?.let { getString(it) }
         btn_ok.setOnClickListener {
             dialog?.cancel()
         }
