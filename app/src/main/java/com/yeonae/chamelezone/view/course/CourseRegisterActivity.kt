@@ -54,7 +54,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             imageContainer.addView(iv)
             iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
         }
-        if (uris[0].path != null) {
+        if (!uris[0].path.isNullOrEmpty()) {
             imageUri = uris[0].path.toString()
         }
     }
