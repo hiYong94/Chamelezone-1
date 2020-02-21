@@ -19,10 +19,10 @@
 
     <LinearLayout
         android:id="@+id/layout_before_login"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
@@ -30,23 +30,23 @@
             android:gravity="center"
             android:text="로그인 후 이용해주세요."
             android:textSize="20sp" />
+
         <Button
             android:id="@+id/btn_login"
             style="@style/ButtonStyle"
-            android:padding="10dp"
-            android:layout_marginTop="20dp"
-            android:text="로그인"
-            android:textSize="18sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:text="로그인"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/layout_after_login"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginHorizontal="10dp">
+        android:visibility="gone">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_like"

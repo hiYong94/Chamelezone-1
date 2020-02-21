@@ -99,4 +99,21 @@
     <string name="permission_msg">만약 권한 허가를 거부한다면, 이 서비스를 사용할 수 없습니다. [설정] > [사용 권한]에서 사용 권한을 설정하십시오.</string>
     <string name="Permission_denied">권한 거부</string>
     <string name="setting">설정</string>
+
+    <string name="information_not_exist">입력하신 정보는 존재하지 않습니다.</string>
+    <string name="available_email">사용 가능한 이메일입니다.</string>
+    <string name="registered_email">이미 가입된 이메일입니다.</string>
+    <string name="available_nickname">사용 가능한 닉네임입니다.</string>
+    <string name="registered_nickname">이미 가입된 닉네임입니다.</string>
+    <string name="email_format">이메일 형식이 올바르지 않습니다.</string>
+    <string name="password_format">영문, 숫자 조합 8~16자로 입력해주세요.</string>
+    <string name="nickname_format">한글, 영문, 숫자 포함 1~10자로 입력해주세요.</string>
+    <string name="enter_email">이메일을 입력해주세요.</string>
+    <string name="enter_password">비밀번호를 입력해주세요.</string>
+    <string name="enter_nickname">닉네임을 입력해주세요.</string>
+    <string name="enter_name">이름을 입력해주세요.</string>
+    <string name="enter_phone_number">전화번호를 입력해주세요.</string>
+    <string name="successful_member_info_modification">회원 정보 수정 성공</string>
+    <string name="enter_search">검색어를 입력해주세요</string>
+    <string name="check_email_password_again">이메일과 비밀번호를 확인 후 다시 로그인해주세요.</string>
 </resources>

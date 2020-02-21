@@ -7,9 +7,9 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitConnection {
     private val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(1, TimeUnit.MINUTES)
-        .readTimeout(100, TimeUnit.SECONDS)
-        .writeTimeout(50, TimeUnit.SECONDS)
+        .connectTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
         .build()
 
     private val retrofit = Retrofit.Builder()
@@ -23,4 +23,5 @@ object RetrofitConnection {
     val reviewService = retrofit.create<ReviewApi>(ReviewApi::class.java)
     val courseService = retrofit.create<CourseApi>(CourseApi::class.java)
     val keywordService = retrofit.create<KeywordApi>(KeywordApi::class.java)
+    val likeService = retrofit.create<LikeApi>(LikeApi::class.java)
 }

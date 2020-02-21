@@ -1,7 +1,6 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
-import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.api.PlaceApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
@@ -23,6 +22,7 @@ import java.math.BigDecimal
 class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceApi) :
     PlaceRemoteDataSource {
     override fun registerPlace(
+        memberNumber: Int,
         keywordName: List<Int>,
         name: String,
         address: String,
@@ -65,6 +65,10 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             )
         }
 
+        val memberNumber = RequestBody.create(
+            MediaType.parse("text/plain"), memberNumber.toString()
+        )
+
         val name = RequestBody.create(
             MediaType.parse("text/plain"), name
         )
@@ -86,6 +90,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
         placeService.placeRegister(
             image,
+            memberNumber,
             keyword,
             name,
             address,
@@ -137,6 +142,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             ) {
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
+                } else if (response.code() == REQUEST_ERR) {
+                    callBack.onFailure("검색하신 장소가 없습니다.")
                 }
             }
 
@@ -155,6 +162,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             ) {
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
+                } else if (response.code() == REQUEST_ERR) {
+                    callBack.onFailure("검색하신 장소가 없습니다.")
                 }
             }
 
@@ -173,6 +182,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             ) {
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
+                } else if (response.code() == REQUEST_ERR) {
+                    callBack.onFailure("검색하신 장소가 없습니다.")
                 }
             }
 
@@ -191,6 +202,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             ) {
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
+                } else if (response.code() == REQUEST_ERR) {
+                    callBack.onFailure("검색하신 장소가 없습니다.")
                 }
             }
 
@@ -200,8 +213,9 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun getPlaceDetail(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
-        placeService.getPlaceDetail(placeNumber).enqueue(object : Callback<PlaceResponse> {
+    override fun getPlaceDetail(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+        placeService.getPlaceDetail(placeNumber, memberNumber)
+            .enqueue(object : Callback<PlaceResponse> {
             override fun onResponse(
                 call: Call<PlaceResponse>,
                 response: Response<PlaceResponse>
@@ -255,7 +269,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     }
 
     override fun modifyPlace() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun deletePlace(placeNumber: Int, callBack: PlaceCallBack<String>) {
@@ -310,6 +324,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
     companion object {
         private const val SUCCESS = 200
+        private const val REQUEST_ERR = 404
         fun getInstance(placeApi: PlaceApi): PlaceRemoteDataSource =
             PlaceRemoteDataSourceImpl(placeApi)
     }

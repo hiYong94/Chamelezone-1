@@ -99,7 +99,7 @@ class HomeTabFragment : Fragment(), HomeContract.View {
             startActivity(intent)
         }
         presenter = HomePresenter(
-            Injection.placeRepository(requireContext()), this
+            Injection.placeRepository(), this
         )
         presenter.getHomeList()
     }

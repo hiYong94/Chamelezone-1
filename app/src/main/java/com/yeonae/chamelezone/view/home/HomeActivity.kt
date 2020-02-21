@@ -3,7 +3,6 @@ package com.yeonae.chamelezone.view.home
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -47,7 +46,6 @@ class HomeActivity : AppCompatActivity() {
         R.drawable.user
     )
 
-    //액션버튼 메뉴 액션바에 집어 넣기
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.home_menu, menu)
         return true
@@ -56,7 +54,6 @@ class HomeActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.action_search -> {
-                //검색 버튼 눌렀을 때
                 super.onOptionsItemSelected(item)
             }
             else -> super.onOptionsItemSelected(item)
@@ -146,13 +143,6 @@ class HomeActivity : AppCompatActivity() {
             3 -> tabLayout.getTabAt(3)?.setIcon(R.drawable.like_orange)
             4 -> tabLayout.getTabAt(4)?.setIcon(R.drawable.user_orange)
         }
-//        selectDrawableList.forEachIndexed { index, selectDrawable ->
-//            getTabAt(index)?.setIcon(selectDrawable)
-
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return super.onTouchEvent(event)
     }
 
     fun replace(fragment: Fragment, isBackStack: Boolean = true) {
@@ -166,7 +156,6 @@ class HomeActivity : AppCompatActivity() {
 
     fun back(fragment: Fragment) {
         supportFragmentManager.beginTransaction().remove(fragment).commit()
-        //supportFragmentManager.popBackStack()
     }
 
     fun tabVisible() {
@@ -176,6 +165,7 @@ class HomeActivity : AppCompatActivity() {
     fun tabGone() {
         tabLayout.visibility = View.GONE
     }
+
 }
 
 
