@@ -2,7 +2,7 @@ package com.yeonae.chamelezone.data.source.remote.review
 
 import android.util.Log
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
-import com.yeonae.chamelezone.ext.SUCCESS
+import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl.Network.SUCCESS
 import com.yeonae.chamelezone.network.api.RetrofitConnection.reviewService
 import com.yeonae.chamelezone.network.api.ReviewApi
 import com.yeonae.chamelezone.network.model.ReviewResponse

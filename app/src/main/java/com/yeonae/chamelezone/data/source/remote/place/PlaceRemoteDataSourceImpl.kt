@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl.Network.SUCCESS
 import com.yeonae.chamelezone.network.api.PlaceApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
 import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
@@ -309,8 +310,11 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 //    }
 
     companion object {
-        private const val SUCCESS = 200
         fun getInstance(placeApi: PlaceApi): PlaceRemoteDataSource =
             PlaceRemoteDataSourceImpl(placeApi)
+    }
+
+    object Network {
+        const val SUCCESS = 200
     }
 }
