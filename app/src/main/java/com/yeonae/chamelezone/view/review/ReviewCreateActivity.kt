@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.view.review
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.RelativeLayout
@@ -12,16 +13,13 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.repository.review.ReviewRepositoryImpl
-import com.yeonae.chamelezone.data.source.remote.review.ReviewRemoteDataSourceImpl
 import com.yeonae.chamelezone.ext.catchFocus
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.api.RetrofitConnection
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import kotlinx.android.synthetic.main.activity_review_create.*
-import kotlinx.android.synthetic.main.slider_item_image.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener,
@@ -37,26 +35,29 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
 //        image_container.removeAllViews()
-        uris.forEach { uri ->
-            val iv = LayoutInflater.from(this).inflate(
+        uris.forEachIndexed { index, uri ->
+            val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
             ) as RelativeLayout
+
             if (image_container.childCount < 4) {
-                image_container.addView(iv)
-                iv.image_item.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
+                image_container.addView(rl)
+                rl.image_item.run {
+                    glideImageSet(uri, measuredWidth, measuredHeight)
+                }
                 Log.d("childCount", (image_container.childCount).toString())
             }
 
-            for (i in uris.indices) {
-                uris[i].path?.let { uriList.add(it) }
-                Log.d("dddd", uris[i].path)
-                Log.d("dddd childCount uriList", uriList[i])
-                btn_delete.setOnClickListener {
-                    image_container.removeView(iv)
-                }
+            rl.btn_delete.setOnClickListener {
+                image_container.removeView(rl)
             }
+
+            uri.path?.let { uriList.add(it) }
+            Log.d("dddd", uri.path)
+            Log.d("dddd childCount uriList", uriList[index])
+
         }
         Log.d("uriList", uriList.toString())
     }
@@ -68,9 +69,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         setupGUI()
 
         presenter = ReviewPresenter(
-            ReviewRepositoryImpl.getInstance(
-                ReviewRemoteDataSourceImpl.getInstance(RetrofitConnection.reviewService)
-            ), this
+            Injection.reviewRepository(), this
         )
 
         val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
@@ -84,12 +83,16 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         }
     }
 
+    private var isCreated = false
+
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
             Toast.makeText(this@ReviewCreateActivity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+            pickMulti()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
+            isCreated = false
             Toast.makeText(
                 this@ReviewCreateActivity,
                 "권한이 거부되었습니다\n$deniedPermissions",
@@ -120,8 +123,13 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             finish()
         }
         btn_image_create.setOnClickListener {
-            checkPermission()
-            pickMulti()
+            if(!isCreated){
+                isCreated = true
+                checkPermission()
+            }
+            Handler().postDelayed({
+                isCreated = false
+            },1000)
         }
         btn_image_clear.setOnClickListener { image_container.removeAllViews() }
     }
