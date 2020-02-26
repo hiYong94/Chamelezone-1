@@ -1,7 +1,6 @@
 package com.yeonae.chamelezone.view.map
 
 import android.Manifest
-import android.content.ContentValues.TAG
 import android.graphics.Rect
 import android.location.Location
 import android.os.Bundle
@@ -10,7 +9,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -19,21 +17,28 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.yeonae.chamelezone.SingleDialogFragment
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import com.yeonae.chamelezone.util.App
 import com.yeonae.chamelezone.view.home.HomeActivity
 import com.yeonae.chamelezone.view.map.presenter.MapContract
 import com.yeonae.chamelezone.view.map.presenter.MapPresenter
 import kotlinx.android.synthetic.main.fragment_map_tab.*
 
 class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
+    override lateinit var presenter: MapContract.Presenter
+    private lateinit var map: GoogleMap
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    lateinit var currentLocation: Location
+    lateinit var currentLatLng: LatLng
+    private lateinit var locationCallBack: LocationCallback
+
     override fun placeInfo(placeList: List<PlaceResponse>) {
         for (i in placeList.indices) {
             val searchLatLng =
@@ -44,32 +49,21 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
                 draggable(true)
             }
 
-            map?.run {
+            map.run {
                 addMarker(markerOptions)
-                setOnMarkerClickListener(object : GoogleMap.OnMarkerClickListener {
-                    override fun onMarkerClick(p0: Marker?): Boolean {
-                        (activity as? HomeActivity)?.back(MarkerInfoFragment())
-                        (activity as? HomeActivity)?.replace(
-                            MarkerInfoFragment.newInstance(
-                                placeList[i]
-                            ), false
-                        )
-                        return false
-                    }
-
-                })
+                setOnMarkerClickListener {
+                    (activity as? HomeActivity)?.back(MarkerInfoFragment())
+                    (activity as? HomeActivity)?.replace(
+                        MarkerInfoFragment.newInstance(
+                            placeList[i]
+                        ), false
+                    )
+                    false
+                }
                 animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
             }
         }
     }
-
-    override lateinit var presenter: MapContract.Presenter
-    private lateinit var map: GoogleMap
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    lateinit var currentLocation: Location
-    lateinit var currentLatLng: LatLng
-    private lateinit var locationCallBack: LocationCallback
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
@@ -114,7 +108,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
 
         checkPermission()
 
-        edt_search.setOnEditorActionListener { textView, i, keyEvent ->
+        edt_search.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
                 if ("${edt_search.text}".isEmpty()) {
                     showDialog()
@@ -168,12 +162,12 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
         locationCallBack = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 super.onLocationResult(locationResult)
-                map?.clear()
+                map.clear()
                 if (locationResult != null) {
                     currentLocation = locationResult.lastLocation
                 }
 
-                currentLatLng = LatLng(currentLocation?.latitude!!, currentLocation?.longitude!!)
+                currentLatLng = LatLng(currentLocation.latitude, currentLocation.longitude)
 
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15f))
             }
@@ -186,12 +180,12 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
     }
 
     private fun updateLocationUI() {
-        map?.isMyLocationEnabled = true
-        map!!.uiSettings.isMyLocationButtonEnabled = true
+        map.isMyLocationEnabled = true
+        map.uiSettings.isMyLocationButtonEnabled = true
     }
 
     private fun getCurrentLocation() {
-        fusedLocationProviderClient?.requestLocationUpdates(
+        fusedLocationProviderClient.requestLocationUpdates(
             locationRequest,
             locationCallBack,
             Looper.myLooper()
@@ -200,34 +194,27 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
 
     private fun keyBoard() {
         var isKeyboardShowing = false
-        contentView.viewTreeObserver.addOnGlobalLayoutListener(
-            object : ViewTreeObserver.OnGlobalLayoutListener {
-                override fun onGlobalLayout() {
-                    val r = Rect()
-                    try {
-                        contentView.getWindowVisibleDisplayFrame(r)
-                        val screenHeight = contentView.rootView.height
-                        val keypadHeight = screenHeight - r.bottom
-
-                        Log.d(TAG, "keypadHeight = $keypadHeight")
-                        if (keypadHeight > screenHeight * 0.15) {
-                            if (!isKeyboardShowing) {
-                                isKeyboardShowing = true
-                                (activity as HomeActivity).tabGone()
-                            }
-                        } else {
-                            if (isKeyboardShowing) {
-                                isKeyboardShowing = false
-                                (activity as HomeActivity).tabVisible()
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Log.d("MapTabFragment", "$e")
+        contentView.viewTreeObserver.addOnGlobalLayoutListener {
+            val r = Rect()
+            try {
+                contentView.getWindowVisibleDisplayFrame(r)
+                val screenHeight = contentView.rootView.height
+                val keypadHeight = screenHeight - r.bottom
+                if (keypadHeight > screenHeight * 0.15) {
+                    if (!isKeyboardShowing) {
+                        isKeyboardShowing = true
+                        (activity as HomeActivity).tabGone()
                     }
-
-
+                } else {
+                    if (isKeyboardShowing) {
+                        isKeyboardShowing = false
+                        (activity as HomeActivity).tabVisible()
+                    }
                 }
-            })
+            } catch (e: Exception) {
+                Log.d("MapTabFragment", "$e")
+            }
+        }
     }
 
     private fun showDialog() {
