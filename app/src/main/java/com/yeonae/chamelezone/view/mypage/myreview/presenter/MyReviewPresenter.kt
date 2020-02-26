@@ -45,7 +45,6 @@ class MyReviewPresenter(
             override fun onFailure(message: String) {
 
             }
-
         })
     }
 }
