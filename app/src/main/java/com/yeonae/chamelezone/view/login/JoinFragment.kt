@@ -5,6 +5,7 @@ import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,33 +13,35 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.network.model.EmailResponse
+import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_join.*
 import java.util.regex.Pattern
 
 class JoinFragment : Fragment(), JoinContract.View {
-    var checkedEmail: Boolean = false
-    var checkedNickname: Boolean = false
-    override fun showNicknameMessage(response: Boolean) {
-        if(response){
+    private var checkedEmail: Boolean = false
+    private var checkedNickname: Boolean = false
+    override fun showNicknameMessage(response: NicknameResponse) {
+        if(response.nicknameCheck == "Y"){
             Toast.makeText(context, R.string.available_nickname, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = true
 
-        }else if(!response){
+        }else if(response.nicknameCheck == "N"){
             Toast.makeText(context, R.string.registered_nickname, Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
-    override fun showEmailMessage(response: Boolean) {
-        if(response){
+    override fun showEmailMessage(response: EmailResponse) {
+        if(response.emailCheck == "Y"){
             Toast.makeText(context, R.string.available_email, Toast.LENGTH_SHORT)
                 .show()
             checkedEmail = true
 
-        }else if(!response){
+        }else if(response.emailCheck == "N"){
             Toast.makeText(context, R.string.registered_email, Toast.LENGTH_SHORT)
                 .show()
         }
@@ -85,13 +88,13 @@ class JoinFragment : Fragment(), JoinContract.View {
             )
         }
 
-        join_email.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+        join_email.onFocusChangeListener = View.OnFocusChangeListener { _, b ->
             if (!b) {
                 presenter.checkEmail("${join_email.text}")
             }
         }
 
-        join_nickname.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
+        join_nickname.onFocusChangeListener = View.OnFocusChangeListener { _, b ->
             if (!b) {
                 presenter.checkNickname("${join_nickname.text}")
             }

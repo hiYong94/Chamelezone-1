@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.presenter
 
+import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 interface UserModifyContract {
@@ -8,6 +9,7 @@ interface UserModifyContract {
         var presenter: Presenter
         fun showUserInfo(user: UserEntity)
         fun showMessage(response: Boolean)
+        fun showNicknameMessage(response: NicknameResponse)
     }
 
     interface Presenter {
@@ -19,5 +21,7 @@ interface UserModifyContract {
             nickName: String,
             phone: String
         )
+
+        fun checkNickname(nickName: String)
     }
 }

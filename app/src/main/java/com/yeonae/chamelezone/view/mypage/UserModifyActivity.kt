@@ -6,18 +6,23 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
+import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.presenter.UserModifyContract
 import com.yeonae.chamelezone.view.mypage.presenter.UserModifyPresenter
 import kotlinx.android.synthetic.main.activity_user_modify.*
 import java.util.regex.Pattern
 
-class UserModifyActivity() : AppCompatActivity(), UserModifyContract.View {
+class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     var memberNumber: Int = 0
+    private var checkedNickname: Boolean = false
+
     override fun showUserInfo(user: UserEntity) {
         val nickname = SpannableStringBuilder(user.nickname)
         val phone = SpannableStringBuilder(user.phone)
@@ -30,9 +35,21 @@ class UserModifyActivity() : AppCompatActivity(), UserModifyContract.View {
         memberNumber = user.userNumber ?: 0
     }
 
+    override fun showNicknameMessage(response: NicknameResponse) {
+        if (response.nicknameCheck == "Y") {
+            Toast.makeText(applicationContext, R.string.available_nickname, Toast.LENGTH_SHORT)
+                .show()
+            checkedNickname = true
+
+        } else if (response.nicknameCheck == "N") {
+            Toast.makeText(applicationContext, R.string.registered_nickname, Toast.LENGTH_SHORT)
+                .show()
+        }
+    }
+
     override fun showMessage(response: Boolean) {
         if (response) {
-            Toast.makeText(this, "회원 정보 수정 성공", Toast.LENGTH_LONG)
+            Toast.makeText(this, R.string.successful_member_info_modification, Toast.LENGTH_LONG)
                 .show()
             finish()
         }
@@ -57,6 +74,12 @@ class UserModifyActivity() : AppCompatActivity(), UserModifyContract.View {
             finish()
         }
 
+        user_nickname.onFocusChangeListener = View.OnFocusChangeListener { _, b ->
+            if (!b) {
+                presenter.checkNickname("${user_nickname.text}")
+            }
+        }
+
         btn_user_modify.setOnClickListener {
             if (!password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled) {
                 presenter.updateMember(
@@ -73,9 +96,9 @@ class UserModifyActivity() : AppCompatActivity(), UserModifyContract.View {
         val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
         val m = p.matcher(user_password.text.toString())
         if (!m.matches()) {
-            password_layout.error = "영문, 숫자 조합 8~16자로 입력해주세요."
+            password_layout.error = getString(R.string.password_format)
         } else if ("${user_password.text}".isEmpty()) {
-            password_layout.error = "비밀번호를 입력해주세요."
+            password_layout.error = getString(R.string.enter_password)
         } else {
             password_layout.isErrorEnabled = false
         }
@@ -85,9 +108,9 @@ class UserModifyActivity() : AppCompatActivity(), UserModifyContract.View {
         val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
         val m = p.matcher(user_nickname.text.toString())
         if (!m.matches()) {
-            nickname_layout.error = "한글, 영문, 숫자 포함 1~10자로 입력해주세요."
+            nickname_layout.error = getString(R.string.nickname_format)
         } else if ("${user_nickname.text}".isEmpty()) {
-            nickname_layout.error = "닉네임을 입력해주세요."
+            nickname_layout.error = getString(R.string.enter_nickname)
         } else {
             nickname_layout.isErrorEnabled = false
         }
