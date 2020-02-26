@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.view.place.adapter
+package com.yeonae.chamelezone.view.review.adapter
 
 import android.util.Log
 import android.view.LayoutInflater

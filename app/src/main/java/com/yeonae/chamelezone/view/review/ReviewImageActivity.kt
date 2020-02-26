@@ -1,12 +1,11 @@
 package com.yeonae.chamelezone.view.review
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.ReviewResponse
-import com.yeonae.chamelezone.view.place.adapter.PlaceReviewImageVpAdapter
+import com.yeonae.chamelezone.view.review.adapter.PlaceReviewImageVpAdapter
 import com.yeonae.chamelezone.view.review.presenter.ReviewDetailContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewDetailPresenter
 import kotlinx.android.synthetic.main.activity_review_image.*
@@ -29,16 +28,12 @@ class ReviewImageActivity : AppCompatActivity(), ReviewDetailContract.View {
 
         val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
         val reviewNumber = intent.getIntExtra(REVIEW_NUMBER, 0)
-        Log.d("ReviewImageActivity placeNumber2", placeNumber.toString())
-        Log.d("ReviewImageActivity reviewNumber2", reviewNumber.toString())
 
         presenter = ReviewDetailPresenter(
             Injection.reviewRepository(), this
         )
 
         presenter.getReview(placeNumber, reviewNumber)
-        Log.d("rr ReviewImageActivity placeNumber", placeNumber.toString())
-        Log.d("rr ReviewImageActivity reviewNumber", reviewNumber.toString())
 
         btn_back.setOnClickListener {
             finish()
