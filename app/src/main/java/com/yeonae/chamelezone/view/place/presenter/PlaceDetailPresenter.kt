@@ -15,7 +15,7 @@ class PlaceDetailPresenter(
     private val likeRepository: LikeRepository,
     private val view: PlaceDetailContract.View
 ) :PlaceDetailContract.Presenter {
-    override fun placeDetail(placeNumber: Int, memberNumber: Int) {
+    override fun placeDetail(placeNumber: Int, memberNumber: Int?) {
         placeRepository.getPlaceDetail(placeNumber, memberNumber, object : PlaceCallBack<PlaceResponse>{
             override fun onSuccess(response: PlaceResponse) {
                 view.placeInfo(response)
@@ -44,7 +44,7 @@ class PlaceDetailPresenter(
     override fun getUser() {
         memberRepository.getMember(object : MemberCallBack<UserEntity>{
             override fun onSuccess(response: UserEntity) {
-                view.showUserInfo(response)
+                view.deliverUserInfo(response)
             }
 
             override fun onFailure(message: String) {

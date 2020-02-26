@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.network.api
 
+import com.google.gson.JsonObject
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -46,7 +47,7 @@ interface PlaceApi {
     @GET("/place/{placeNumber}")
     fun getPlaceDetail(
         @Path("placeNumber") placeNumber: Int,
-        @Query("memberNumber") memberNumber: Int
+        @Query("memberNumber") memberNumber: Int?
     ): Call<PlaceResponse>
 
     @GET("/user/{MemberNumber}/place")
@@ -56,12 +57,14 @@ interface PlaceApi {
 
     @PUT("/place/{placeNumber}")
     fun updatePlace(
-        @Path("placeNumber") placeNumber: Int
+        @Path("placeNumber") placeNumber: Int,
+        @Body place: JsonObject
     ): Call<PlaceResponse>
 
     @DELETE("/place/{placeNumber}")
     fun deletePlace(
-        @Path("placeNumber") placeNumber: Int
+        @Path("placeNumber") placeNumber: Int,
+        @Body user: JsonObject
     ): Call<ResponseBody>
 
     @GET("/place")

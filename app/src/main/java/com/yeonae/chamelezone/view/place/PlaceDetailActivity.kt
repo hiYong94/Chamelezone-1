@@ -6,12 +6,12 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.AppBarLayout
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
@@ -22,28 +22,22 @@ import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlin.math.abs
 
 class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
+    override lateinit var presenter: PlaceDetailContract.Presenter
+    var memberNumber: Int? = null
+    var placeNumber: Int = 0
+    var placeName: String = ""
+    var likeNumber: Int? = null
+
     override fun showLikeMessage(response: Boolean) {
         if (response) {
-            Toast.makeText(applicationContext, "좋아요 목록에 추가되었습니다", Toast.LENGTH_LONG)
-                .show()
+            this.shortToast(R.string.select_like)
         }
     }
 
     override fun showDeleteLikeMessage(response: Boolean) {
         if (response) {
-            Toast.makeText(applicationContext, "좋아요 목록에서 삭제되었습니다", Toast.LENGTH_LONG)
-                .show()
+            this.shortToast(R.string.delete_like)
         }
-    }
-
-    override lateinit var presenter: PlaceDetailContract.Presenter
-    var memberNumber: Int = 0
-    var placeNumber: Int = 0
-    var likeNumber: Int? = null
-
-    override fun showUserInfo(user: UserEntity) {
-        memberNumber = user.userNumber ?: 0
-        presenter.placeDetail(placeNumber, memberNumber)
     }
 
     override fun placeInfo(place: PlaceResponse) {
@@ -59,27 +53,34 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         val imageAdapter = ImageViewPagerAdapter(images)
         vp_image.adapter = imageAdapter
 
-        btn_like.setOnClickListener {
-            if (btn_like.isChecked) {
-                presenter.selectLike(memberNumber, placeNumber)
-            } else {
-                presenter.deleteLike(likeNumber ?: 0, memberNumber, placeNumber)
+        if(likeNumber == null){
+            btn_like.setOnClickListener {
+                btn_like.isChecked = false
+                val intent = Intent(applicationContext, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        } else if(likeNumber != null){
+            btn_like.setOnClickListener {
+                if (btn_like.isChecked) {
+                    memberNumber?.let { it1 -> presenter.selectLike(it1, placeNumber) }
+                } else {
+                    memberNumber?.let { it1 -> presenter.deleteLike(likeNumber ?: 0, it1, placeNumber) }
+                }
             }
         }
     }
 
-    override lateinit var presenter: PlaceInfoContract.Presenter
+    override fun deliverUserInfo(user: UserEntity) {
+        memberNumber = user.userNumber
+        presenter.placeDetail(placeNumber, memberNumber)
+    }
 
     override fun showResultView(response: Boolean) {
         if (response) {
             presenter.getUser()
 
         } else {
-            btn_like.setOnClickListener {
-                btn_like.isChecked = false
-                val intent = Intent(applicationContext, LoginActivity::class.java)
-                startActivity(intent)
-            }
+            presenter.placeDetail(placeNumber, memberNumber)
         }
     }
 
@@ -90,6 +91,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         val placeName = intent.getStringExtra(PLACE_NAME)
         placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
         tv_place_name.text = placeName
+        tv_place_name_two.text = placeName
 
         presenter = PlaceDetailPresenter(
             Injection.memberRepository(applicationContext),
@@ -113,30 +115,14 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
     }
 
-    private fun setupView(){
-        val placeName = intent.getStringExtra(PLACE_NAME).orEmpty()
-        val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
-        Log.d("placeNumber detail", placeNumber.toString())
-        tv_place_name.text = placeName
-        tv_place_name_two.text = placeName
-
+    private fun setupView() {
         val outMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(outMetrics)
-        val density = outMetrics.densityDpi
-
-        presenter = PlaceInfoPresenter(
-            Injection.placeRepository(), this
-        )
-
-        presenter.placeDetail(placeNumber)
-
-        btn_back.setOnClickListener {
-            finish()
-        }
 
         tab_layout.setupWithViewPager(vp_image, true)
 
-        val fragmentAdapter = PlaceDetailPagerAdapter(supportFragmentManager, placeNumber, placeName)
+        val fragmentAdapter =
+            PlaceDetailPagerAdapter(supportFragmentManager, placeNumber, placeName)
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 

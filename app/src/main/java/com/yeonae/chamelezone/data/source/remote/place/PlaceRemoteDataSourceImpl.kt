@@ -215,7 +215,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
     override fun getPlaceDetail(
         placeNumber: Int,
-        memberNumber: Int,
+        memberNumber: Int?,
         callBack: PlaceCallBack<PlaceResponse>
     ) {
         placeService.getPlaceDetail(placeNumber, memberNumber)

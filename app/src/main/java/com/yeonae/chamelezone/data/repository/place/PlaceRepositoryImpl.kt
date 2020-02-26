@@ -53,7 +53,7 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
 
     override fun getPlaceDetail(
         placeNumber: Int,
-        memberNumber: Int,
+        memberNumber: Int?,
         callBack: PlaceCallBack<PlaceResponse>
     ) {
         remoteDataSource.getPlaceDetail(placeNumber, memberNumber, callBack)

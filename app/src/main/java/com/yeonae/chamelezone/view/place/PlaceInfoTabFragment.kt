@@ -19,9 +19,13 @@ import com.yeonae.chamelezone.view.place.presenter.PlaceInfoPresenter
 import kotlinx.android.synthetic.main.fragment_place_info_tab.*
 
 class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallback {
+    override lateinit var presenter: PlaceInfoContract.Presenter
     private lateinit var map: GoogleMap
     var placeNumber: Int = 0
-    private val PLACE_NUMBER = "placeNumber"
+
+    override fun getPlaceDetail() {
+        presenter.placeDetail(placeNumber, null)
+    }
 
     override fun showUserInfo(user: UserEntity) {
         user.userNumber?.let { presenter.placeDetail(placeNumber, it) }
@@ -41,9 +45,10 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
             draggable(true)
         }
 
-        map?.run {
+        map.run {
             addMarker(markerOptions)
             moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+            uiSettings.setAllGesturesEnabled(false)
         }
     }
 
@@ -52,8 +57,6 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
             this.map = map
         }
     }
-
-    override lateinit var presenter: PlaceInfoContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,6 +79,7 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
     }
 
     companion object {
+        private const val PLACE_NUMBER = "placeNumber"
         fun newInstance(placeNumber: Int) = PlaceInfoTabFragment().apply {
             arguments = Bundle().apply {
                 putInt(PLACE_NUMBER, placeNumber)
