@@ -15,5 +15,6 @@ interface ReviewRemoteDataSource {
     fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>)
     fun getMyReviewList(memberNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>)
     fun updateReview()
-    fun deleteReview()
+    fun deleteReview(placeNumber: Int, reviewNumber: Int, memberNumber: Int, callBack: ReviewCallBack<String>)
+    fun getReviewDetail(placeNumber: Int, reviewNumber: Int, callBack: ReviewCallBack<ReviewResponse>)
 }

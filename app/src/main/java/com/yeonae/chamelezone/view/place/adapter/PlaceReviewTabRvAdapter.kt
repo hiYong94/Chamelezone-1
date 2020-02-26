@@ -1,5 +1,7 @@
 package com.yeonae.chamelezone.view.place.adapter
 
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,11 +23,11 @@ class PlaceReviewTabRvAdapter :
 //    private lateinit var moreImageBtnListener: MoreImageBtnListener
 
     interface OnItemClickListener {
-        fun onItemClick(view: View, position: Int)
+        fun onItemClick(view: View, position: Int, review: ReviewResponse)
     }
 
     interface MoreButtonListener {
-        fun bottomSheetDialog()
+        fun bottomSheetDialog(review: ReviewResponse)
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -60,24 +62,29 @@ class PlaceReviewTabRvAdapter :
         private val reviewContent: TextView = itemView.findViewById(R.id.tv_review_content)
         private val moreReviewImg: LinearLayout = itemView.findViewById(R.id.iv_image)
         private val reviewCount: TextView = itemView.findViewById(R.id.tv_image_count)
-//        private val moreDelete: LinearLayout = itemView.findViewById(R.id.btn_delete)
 
+        @SuppressLint("SetTextI18n")
         fun bind(review: ReviewResponse) {
             nickname.text = review.nickName
             reviewDate.text = review.regiDate
             reviewContent.text = review.content
             val images = review.savedImageName.split(",")
-            val imageList = arrayListOf<String>()
-            for (i in images.indices)
-                imageList.add("http://13.209.136.122:3000/image/" + images[i])
+            Log.d("imageList images", images.toString())
+            val imageList = images.map {
+                "http://13.209.136.122:3000/image/$it"
+            }
+//            images.forEachIndexed { index, _ ->
+//                imageList.add("http://13.209.136.122:3000/image/" + images[index])
+//                Log.d("imageList review", images[index])
+//            }
             reviewImg.glideTransformations(imageList[0], reviewImg.measuredWidth, reviewImg.measuredHeight)
             reviewCount.text = "+" + (imageList.size - 1)
 
             reviewImg.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val item = reviewList?.get(position)
-                    itemClickListener.onItemClick(itemView, position)
+                    val item = reviewList[position]
+                    itemClickListener.onItemClick(itemView, position, review)
                     reviewList[position] = review
                 }
             }
@@ -87,7 +94,7 @@ class PlaceReviewTabRvAdapter :
                 if (position != RecyclerView.NO_POSITION) {
 
                     if (::itemClickListener.isInitialized) {
-                        itemClickListener.onItemClick(itemView, position)
+                        itemClickListener.onItemClick(itemView, position, review)
                     }
                     reviewList[position] = review
                 }
@@ -95,7 +102,7 @@ class PlaceReviewTabRvAdapter :
 
             itemView.apply {
                 btn_more.setOnClickListener {
-                    moreButtonListener.bottomSheetDialog()
+                    moreButtonListener.bottomSheetDialog(review)
                 }
             }
         }

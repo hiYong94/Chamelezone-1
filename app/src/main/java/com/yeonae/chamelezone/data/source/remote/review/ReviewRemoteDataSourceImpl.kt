@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.source.remote.review
 
 import android.util.Log
+import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.Network
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
 import com.yeonae.chamelezone.network.api.RetrofitConnection.reviewService
@@ -32,11 +33,12 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         val file = ArrayList<MultipartBody.Part>()
 
         for (i in images.indices) {
+            val extends = images[i].split(".").lastOrNull() ?: "*"
             file.add(
                 MultipartBody.Part.createFormData(
                     "images",
                     images[i],
-                    RequestBody.create(MediaType.parse("image/*"), File(images[i]))
+                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
                 )
             )
         }
@@ -107,8 +109,41 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
 
     }
 
-    override fun deleteReview() {
+    override fun deleteReview(placeNumber: Int, reviewNumber: Int, memberNumber: Int, callBack: ReviewCallBack<String>) {
+        val jsonObject = JsonObject().apply {
+            addProperty("memberNumber", memberNumber)
+        }
+        reviewService.deleteReview(placeNumber, reviewNumber, jsonObject).enqueue(object : Callback<ResponseBody>{
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("tag", t.toString())
+            }
 
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == Network.SUCCESS) {
+                    callBack.onSuccess("리뷰 삭제 성공")
+                }
+            }
+        })
+    }
+
+    override fun getReviewDetail(
+        placeNumber: Int,
+        reviewNumber: Int,
+        callBack: ReviewCallBack<ReviewResponse>
+    ) {
+        reviewService.getReviewDetail(placeNumber, reviewNumber).enqueue(object : Callback<ReviewResponse> {
+            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
+                Log.d("tag", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<ReviewResponse>,
+                response: Response<ReviewResponse>
+            ) {
+                if (response.code() == Network.SUCCESS)
+                    response.body()?.let { callBack.onSuccess(it) }
+            }
+        })
     }
 
     companion object {
