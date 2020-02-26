@@ -125,7 +125,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
 
             if (!isCreated) {
-                isCreated
+                isCreated = true
                 Handler().postDelayed({
                     if (latitude != null && longitude != null) {
                         presenter.placeRegister(
@@ -140,7 +140,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                             longitude,
                             imageUri
                         )
-                        Log.d("placeRegister memberNumber", memberNumber.toString())
                     }
                     isCreated = false
                 }, 1000)

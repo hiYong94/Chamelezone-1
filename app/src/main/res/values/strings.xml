@@ -116,4 +116,8 @@
     <string name="successful_member_info_modification">회원 정보 수정 성공</string>
     <string name="enter_search">검색어를 입력해주세요</string>
     <string name="check_email_password_again">이메일과 비밀번호를 확인 후 다시 로그인해주세요.</string>
+    <string name="select_like">좋아요 목록에 추가되었습니다</string>
+    <string name="delete_like">좋아요 목록에서 삭제되었습니다</string>
+    <string name="really_logout">정말 로그아웃 하시겠습니까?</string>
+    <string name="really_delete">정말 탈퇴하시겠습니까?</string>
 </resources>
