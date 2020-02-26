@@ -17,6 +17,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.catchFocus
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import kotlinx.android.synthetic.main.activity_review_create.*
@@ -26,10 +27,19 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
     private val uriList = arrayListOf<String>()
+    var memberNumber = 0
 
     override fun review(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         finish()
+    }
+
+    override fun getMember(user: UserEntity) {
+        memberNumber = user.userNumber ?: 0
+    }
+
+    override fun getMemberCheck(response: Boolean) {
+        presenter.getMember()
     }
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
@@ -69,8 +79,10 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         setupGUI()
 
         presenter = ReviewPresenter(
-            Injection.reviewRepository(), this
+            Injection.reviewRepository(), Injection.memberRepository(applicationContext), this
         )
+
+        presenter.checkMember()
 
         val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
         Log.d("placeNumber", placeNumber.toString())
@@ -78,7 +90,10 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
 
-            presenter.reviewCreate(2, placeNumber, content, uriList)
+
+            presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
+            Log.d("reviewCreate memberNumber", memberNumber.toString())
+
             Log.d("uriList", uriList.toString())
         }
     }
@@ -123,13 +138,13 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             finish()
         }
         btn_image_create.setOnClickListener {
-            if(!isCreated){
+            if (!isCreated) {
                 isCreated = true
                 checkPermission()
             }
             Handler().postDelayed({
                 isCreated = false
-            },1000)
+            }, 1000)
         }
         btn_image_clear.setOnClickListener { image_container.removeAllViews() }
     }
