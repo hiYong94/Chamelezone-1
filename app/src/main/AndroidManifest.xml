@@ -73,7 +73,7 @@
             android:name=".view.mypage.PersonaInfoActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".view.review.MyReviewDetailActivity"
+            android:name=".view.mypage.myreview.MyReviewDetailActivity"
             android:launchMode="singleTask" />
         <activity
             android:name=".view.review.ReviewImageActivity"
