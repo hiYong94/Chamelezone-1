@@ -8,7 +8,7 @@ import com.yeonae.chamelezone.data.model.CourseItem
 import com.yeonae.chamelezone.ext.glideImageSet
 import kotlinx.android.synthetic.main.item_course.view.*
 
-class CourseTabRvAdapter() :
+class CourseTabRvAdapter :
     RecyclerView.Adapter<CourseTabRvAdapter.CourseViewHolder>() {
     private val items = mutableListOf<CourseItem>()
     private var onClickListener: OnClickListener? = null

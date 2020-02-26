@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Course
 import com.yeonae.chamelezone.data.model.CourseItem
-import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.view.course.adapter.CourseTabRvAdapter
 import com.yeonae.chamelezone.view.course.presenter.CourseContract
 import com.yeonae.chamelezone.view.course.presenter.CoursePresenter
@@ -19,6 +17,9 @@ import com.yeonae.chamelezone.view.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_course_tab.*
 
 class CourseTabFragment : Fragment(), CourseContract.View {
+    override lateinit var presenter: CourseContract.Presenter
+    private val courseTabRvAdapter = CourseTabRvAdapter()
+
     override fun showResultView(response: Boolean) {
         if (response) {
             btn_register.setOnClickListener {
@@ -33,12 +34,9 @@ class CourseTabFragment : Fragment(), CourseContract.View {
         }
     }
 
-    override fun showCourseList(courseList: List<CourseItem>) {
-        courseTabRvAdapter.addData(courseList)
+    override fun showCourseList(item: List<CourseItem>) {
+        courseTabRvAdapter.addData(item)
     }
-
-    override lateinit var presenter: CourseContract.Presenter
-    private val courseTabRvAdapter = CourseTabRvAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
