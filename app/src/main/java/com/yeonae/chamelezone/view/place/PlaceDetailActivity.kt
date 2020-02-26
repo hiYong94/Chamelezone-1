@@ -46,7 +46,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         for (i in placeImages.indices) {
             images.add(IMAGE_RESOURCE + placeImages[i])
         }
-        likeNumber = place.likeNumber
+        likeNumber = place.likeStatus
         if (likeNumber != null) {
             btn_like.isChecked = true
         }
