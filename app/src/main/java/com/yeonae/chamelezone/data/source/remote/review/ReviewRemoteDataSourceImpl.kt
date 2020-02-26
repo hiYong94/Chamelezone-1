@@ -146,6 +146,26 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         })
     }
 
+    override fun getMyReviewDetail(
+        placeNumber: Int,
+        reviewNumber: Int,
+        callBack: ReviewCallBack<ReviewResponse>
+    ) {
+        reviewService.getMyReviewDetail(placeNumber, reviewNumber).enqueue(object : Callback<ReviewResponse> {
+            override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
+                Log.d("tag", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<ReviewResponse>,
+                response: Response<ReviewResponse>
+            ) {
+                if (response.code() == Network.SUCCESS)
+                    response.body()?.let { callBack.onSuccess(it) }
+            }
+        })
+    }
+
     companion object {
         fun getInstance(reviewApi: ReviewApi): ReviewRemoteDataSource =
             ReviewRemoteDataSourceImpl(reviewApi)
