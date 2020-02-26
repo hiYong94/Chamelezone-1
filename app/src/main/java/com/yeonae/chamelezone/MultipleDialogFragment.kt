@@ -20,10 +20,6 @@ class MultipleDialogFragment : DialogFragment() {
         fun onClick()
     }
 
-//    fun setOnClickListener(listener: OnClickListener) {
-//        onClickListener = listener
-//    }
-
     override fun onStart() {
         super.onStart()
         val message = arguments!!.getString("message")

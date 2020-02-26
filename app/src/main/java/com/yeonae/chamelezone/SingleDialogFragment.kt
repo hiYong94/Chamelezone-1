@@ -50,8 +50,6 @@ class SingleDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val TAG_DIALOG = "TAG_DIALOG"
-        const val DIALOG_NUM = "DIALOG_NUM"
         const val DIALOG_HEIGHT_RATIO = "DIALOG_HEIGHT_RATIO"
         const val DIALOG_WIDTH_RATIO = "DIALOG_WIDTH_RATIO"
         fun newInstance(message: Int): SingleDialogFragment {
