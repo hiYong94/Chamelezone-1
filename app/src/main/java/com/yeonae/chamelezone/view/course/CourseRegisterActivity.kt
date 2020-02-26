@@ -4,6 +4,7 @@ import android.Manifest
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
@@ -131,7 +132,8 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 placeNumbers.add(thirdPlaceNumber)
             }
             if (!isCreated) {
-                isCreated
+                isCreated = true
+                Log.d("isCreated", isCreated.toString())
                 Handler().postDelayed({
                     presenter.registerCourse(
                         memberNumber,
