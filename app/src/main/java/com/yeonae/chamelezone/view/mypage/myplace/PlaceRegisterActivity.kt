@@ -1,13 +1,12 @@
 package com.yeonae.chamelezone.view.mypage.myplace
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,6 +20,7 @@ import androidx.core.view.forEach
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.CheckDialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
@@ -39,7 +39,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private val openingTime = mutableListOf<String>()
     private val keywordMap = hashMapOf<Int, String>()
     private val keyword = mutableListOf<Int>()
-    private val selectedItems = ArrayList<String>()
+    private var isCreated = false
 
     override fun showUserInfo(user: UserEntity) {
         memberNumber = user.userNumber!!
@@ -94,13 +94,28 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             finish()
         }
 
+        test.setOnClickListener {
+            val intent = Intent(this, OpeningHoursActivity::class.java)
+            startActivity(intent)
+        }
+
         btn_address_search.setOnClickListener {
             val intent = Intent(this, SearchAddressActivity::class.java)
             startActivityForResult(intent, 1)
         }
 
+        val items = keywordMap.values.toTypedArray()
+        val newFragment = CheckDialogFragment.newInstance(
+            items, object :
+                CheckDialogFragment.OnClickListener {
+                override fun onClick() {
+
+                }
+            }
+        )
+
         btn_category_choice.setOnClickListener {
-            categoryDialog(keywordMap.values.toTypedArray())
+            newFragment.show(supportFragmentManager, "dialog")
         }
 
         btn_register.setOnClickListener {
@@ -109,23 +124,28 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             val longitude = latLng?.longitude?.toBigDecimal()
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
 
-            if (latitude != null && longitude != null) {
-                presenter.placeRegister(
-                    memberNumber,
-                    keyword,
-                    "${edt_place_name.text}",
-                    realAddress,
-                    openingTime,
-                    "${edt_place_phone.text}",
-                    "${edt_place_text.text}",
-                    latitude,
-                    longitude,
-                    imageUri
-                )
-                Log.d("placeRegister memberNumber", memberNumber.toString())
+            if (!isCreated) {
+                isCreated
+                Handler().postDelayed({
+                    if (latitude != null && longitude != null) {
+                        presenter.placeRegister(
+                            memberNumber,
+                            keyword,
+                            "${edt_place_name.text}",
+                            realAddress,
+                            openingTime,
+                            "${edt_place_phone.text}",
+                            "${edt_place_text.text}",
+                            latitude,
+                            longitude,
+                            imageUri
+                        )
+                        Log.d("placeRegister memberNumber", memberNumber.toString())
+                    }
+                    isCreated = false
+                }, 1000)
             }
         }
-        openingHours()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -155,43 +175,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         return latLng
     }
 
-    private var booleanList: BooleanArray? = null
-    private fun categoryDialog(items: Array<String>) {
-        keyword.clear()
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("키워드")
-        builder.setMultiChoiceItems(items, booleanList,
-            DialogInterface.OnMultiChoiceClickListener { dialog, which, isChecked ->
-                if (isChecked) {
-                    selectedItems.add(items[which]!!)
-                } else if (selectedItems.contains(items[which])) {
-                    selectedItems.remove(items[which])
-                }
-            })
-        builder.setPositiveButton("확인",
-            DialogInterface.OnClickListener { dialog, id ->
-                tv_place_keyword.text = selectedItems.joinToString(" ")
-                for (i in selectedItems.indices) {
-                    Log.d("selectedItems", selectedItems.toString())
-                    for (j in 1..keywordMap.size) {
-                        if (selectedItems[i] == keywordMap.getValue(j)) {
-                            Log.d("keywordMap key", j.toString())
-                            keyword.add(j)
-                        }
-                    }
-                    Log.d("keyword", keyword.toString())
-                }
-            })
-
-        builder.setNegativeButton("취소",
-            DialogInterface.OnClickListener { dialog, id ->
-                dialog.cancel()
-            })
-
-        builder.create()
-        builder.show()
-    }
-
     private fun pickMulti() {
         BottomSheetImagePicker.Builder(getString(R.string.file_provider))
             .multiSelect(2, 4)
@@ -209,64 +192,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private fun setupGUI() {
         btn_image_create.setOnClickListener { pickMulti() }
         btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
-    }
-
-    private fun openingHours() {
-        addOpeningHourLayout()
-
-        btn_add.setOnClickListener {
-            addOpeningHourLayout()
-        }
-
-    }
-
-    private fun addOpeningHourLayout() {
-        val dayArray = resources.getStringArray(R.array.day_array)
-        val openArray = resources.getStringArray(R.array.open_array)
-        val closeArray = resources.getStringArray(R.array.close_array)
-
-        val dayAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, dayArray)
-        val openAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, openArray)
-        val closeAdapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, closeArray)
-
-        val layout = LayoutInflater.from(applicationContext)
-            .inflate(R.layout.item_opening_hours, opening_hours, false)
-
-        val count = opening_hours.childCount
-        Log.d("count_call", count.toString())
-
-        opening_hours.addView(layout)
-        Log.d("count_call_1", count.toString())
-        layout.findViewById<View>(R.id.btn_close)
-            .setOnClickListener {
-                opening_hours.removeView(layout)
-                Log.d("count_call", count.toString())
-                if (count <= 2) {
-                    btn_add.visibility = View.VISIBLE
-                }
-            }
-
-        if (count > 1) {
-            btn_add.visibility = View.GONE
-        }
-
-        layout.findViewById<Spinner>(R.id.day_spinner).adapter = dayAdapter
-        layout.findViewById<Spinner>(R.id.open_spinner).adapter = openAdapter
-        layout.findViewById<Spinner>(R.id.close_spinner).adapter = closeAdapter
-
-
-        opening_hours.forEach {
-            val day = it.findViewById<Spinner>(R.id.day_spinner).selectedItem
-            val open = it.findViewById<Spinner>(R.id.open_spinner).selectedItem
-            val close = it.findViewById<Spinner>(R.id.close_spinner).selectedItem
-            Log.d("Spinner value is", "$day $open ${"~"} $close")
-            openingTime.add("$day $open ${"~"} $close")
-        }
-        Log.d("Spinner value is", "$openingTime")
-
     }
 
     companion object {
