@@ -5,7 +5,6 @@ import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,24 +23,24 @@ class JoinFragment : Fragment(), JoinContract.View {
     private var checkedEmail: Boolean = false
     private var checkedNickname: Boolean = false
     override fun showNicknameMessage(response: NicknameResponse) {
-        if(response.nicknameCheck == "Y"){
+        if(response.nicknameCheck == CHECK_YES){
             Toast.makeText(context, R.string.available_nickname, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = true
 
-        }else if(response.nicknameCheck == "N"){
+        }else if(response.nicknameCheck == CHECK_NO){
             Toast.makeText(context, R.string.registered_nickname, Toast.LENGTH_SHORT)
                 .show()
         }
     }
 
     override fun showEmailMessage(response: EmailResponse) {
-        if(response.emailCheck == "Y"){
+        if(response.emailCheck == CHECK_YES){
             Toast.makeText(context, R.string.available_email, Toast.LENGTH_SHORT)
                 .show()
             checkedEmail = true
 
-        }else if(response.emailCheck == "N"){
+        }else if(response.emailCheck == CHECK_NO){
             Toast.makeText(context, R.string.registered_email, Toast.LENGTH_SHORT)
                 .show()
         }
@@ -234,5 +233,10 @@ class JoinFragment : Fragment(), JoinContract.View {
                 }, 500)
             }
         })
+    }
+
+    companion object {
+        const val CHECK_YES = "Y"
+        const val CHECK_NO = "N"
     }
 }
