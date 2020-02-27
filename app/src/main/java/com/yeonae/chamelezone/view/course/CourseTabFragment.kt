@@ -34,8 +34,8 @@ class CourseTabFragment : Fragment(), CourseContract.View {
         }
     }
 
-    override fun showCourseList(item: List<CourseItem>) {
-        courseTabRvAdapter.addData(item)
+    override fun showCourseList(items: List<CourseItem>) {
+        courseTabRvAdapter.addData(items)
     }
 
     override fun onCreateView(

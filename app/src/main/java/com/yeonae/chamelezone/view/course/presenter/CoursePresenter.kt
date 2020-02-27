@@ -28,11 +28,11 @@ class CoursePresenter(
     override fun getCourseList() {
         courseRepository.getCourseList(object : CourseCallBack<List<CourseResponse>> {
             override fun onSuccess(response: List<CourseResponse>) {
-                val courseItem = mutableListOf<CourseItem>()
+                val items = mutableListOf<CourseItem>()
                 for(i in response.indices){
-                    courseItem.add(response[i].toCourseItem(response[i]))
+                    items.add(response[i].toCourseItem(response[i]))
                 }
-                view.showCourseList(courseItem)
+                view.showCourseList(items)
             }
 
             override fun onFailure(message: String) {
