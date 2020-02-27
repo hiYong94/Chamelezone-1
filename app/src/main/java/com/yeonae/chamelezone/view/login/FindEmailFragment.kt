@@ -19,13 +19,12 @@ class FindEmailFragment : Fragment(), FindEmailContract.View {
     override lateinit var presenter: FindEmailContract.Presenter
 
     override fun showUserInfo(response: List<EmailResponse>) {
-        val emailList = mutableListOf<String>()
+        val emails = arrayOfNulls<String>(response.size)
         for(i in response.indices){
-            emailList.add(response[i].email)
+            emails[i] = response[i].email
         }
-        Log.d("email", emailList.toString())
         (activity as? LoginActivity)?.replace(
-            ConfirmEmailFragment.newInstance(emailList),
+            ConfirmEmailFragment.newInstance(emails),
             true
         )
     }
@@ -52,7 +51,7 @@ class FindEmailFragment : Fragment(), FindEmailContract.View {
         }
 
         btn_back.setOnClickListener {
-            (activity as LoginActivity).back()
+            (activity as? LoginActivity)?.back()
         }
     }
 
