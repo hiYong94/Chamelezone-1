@@ -18,7 +18,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     CourseRemoteDataSource {
     override fun registerCourse(
         memberNumber: Int,
-        placeNumberList: List<Int>,
+        placeNumbers: List<Int>,
         title: String,
         content: String,
         image: String,
@@ -35,12 +35,12 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         val memberNumber = RequestBody.create(
             MediaType.parse("text/plain"), memberNumber.toString()
         )
-        val placeNumber = ArrayList<RequestBody>()
 
-        for (i in placeNumberList.indices) {
+        val placeNumber = ArrayList<RequestBody>()
+        for (i in placeNumbers.indices) {
             placeNumber.add(
                 RequestBody.create(
-                    MediaType.parse("text/plain"), placeNumberList[i].toString()
+                    MediaType.parse("text/plain"), placeNumbers[i].toString()
                 )
             )
         }

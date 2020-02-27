@@ -12,19 +12,17 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import okio.Buffer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.io.IOException
 import java.math.BigDecimal
 
 class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceApi) :
     PlaceRemoteDataSource {
     override fun registerPlace(
         memberNumber: Int,
-        keywordName: List<Int>,
+        keywordNames: List<Int>,
         name: String,
         address: String,
         openingTimes: List<String>,
@@ -57,10 +55,10 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         }
 
         val keyword = ArrayList<RequestBody>()
-        for (i in keywordName.indices) {
+        for (i in keywordNames.indices) {
             keyword.add(
                 RequestBody.create(
-                    MediaType.parse("text/plain"), keywordName[i].toString()
+                    MediaType.parse("text/plain"), keywordNames[i].toString()
                 )
             )
         }
@@ -106,32 +104,14 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == SUCCESS) {
-                    Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
-                    (call.request().body() as MultipartBody).parts().forEach {
-                        Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
-                    }
                     callBack.onSuccess("장소 등록 성공")
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                (call.request().body() as MultipartBody).parts().forEach {
-                    Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
-                }
-                Log.d("register call request", call.request().toString())
                 Log.e("tag", t.toString())
             }
         })
-    }
-
-    private fun bodyToString(request: RequestBody): String {
-        return try {
-            val buffer = Buffer()
-            request.writeTo(buffer)
-            buffer.readUtf8()
-        } catch (e: IOException) {
-            "did not work"
-        }
     }
 
     override fun getSearchByMap(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
@@ -274,10 +254,10 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
     override fun modifyPlace(
         memberNumber: Int,
-        keywordName: List<Int>,
+        keywordNames: List<Int>,
         name: String,
         address: String,
-        openingTime: List<String>,
+        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
@@ -285,6 +265,86 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         images: List<String>,
         callBack: PlaceCallBack<Boolean>
     ) {
+
+        val imageList = ArrayList<MultipartBody.Part>()
+        for (i in images.indices) {
+            val extends = images[i].split(".").lastOrNull() ?: "*"
+            imageList.add(
+                MultipartBody.Part.createFormData(
+                    "images",
+                    images[i],
+                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
+                )
+            )
+        }
+
+        val openingTime = ArrayList<RequestBody>()
+        for (i in openingTimes.indices) {
+            openingTime.add(
+                RequestBody.create(
+                    MediaType.parse("text/plain"), openingTimes[i]
+                )
+            )
+        }
+
+        val keyword = ArrayList<RequestBody>()
+        for (i in keywordNames.indices) {
+            keyword.add(
+                RequestBody.create(
+                    MediaType.parse("text/plain"), keywordNames[i].toString()
+                )
+            )
+        }
+
+        val memberNumber = RequestBody.create(
+            MediaType.parse("text/plain"), memberNumber.toString()
+        )
+
+        val name = RequestBody.create(
+            MediaType.parse("text/plain"), name
+        )
+        val address = RequestBody.create(
+            MediaType.parse("text/plain"), address
+        )
+        val phoneNumber = RequestBody.create(
+            MediaType.parse("text/plain"), phoneNumber
+        )
+        val content = RequestBody.create(
+            MediaType.parse("text/plain"), content
+        )
+        val latitude = RequestBody.create(
+            MediaType.parse("text/plain"), latitude.toString()
+        )
+        val longitude = RequestBody.create(
+            MediaType.parse("text/plain"), longitude.toString()
+        )
+
+        placeService.updatePlace(
+            imageList,
+            memberNumber,
+            keyword,
+            name,
+            address,
+            openingTime,
+            phoneNumber,
+            content,
+            latitude,
+            longitude
+        ).enqueue(object :
+            Callback<ResponseBody> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.code() == SUCCESS) {
+                    callBack.onSuccess(true)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+        })
 
     }
 

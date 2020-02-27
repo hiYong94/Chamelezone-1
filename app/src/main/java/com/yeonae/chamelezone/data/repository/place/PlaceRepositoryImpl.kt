@@ -9,10 +9,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
     PlaceRepository {
     override fun registerPlace(
         memberNumber: Int,
-        keywordName: List<Int>,
+        keywordNames: List<Int>,
         name: String,
         address: String,
-        openingTime: List<String>,
+        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
@@ -22,10 +22,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
     ) {
         remoteDataSource.registerPlace(
             memberNumber,
-            keywordName,
+            keywordNames,
             name,
             address,
-            openingTime,
+            openingTimes,
             phoneNumber,
             content,
             latitude,
@@ -69,10 +69,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
 
     override fun modifyPlace(
         memberNumber: Int,
-        keywordName: List<Int>,
+        keywordNames: List<Int>,
         name: String,
         address: String,
-        openingTime: List<String>,
+        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
@@ -82,10 +82,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
     ) {
         remoteDataSource.modifyPlace(
             memberNumber,
-            keywordName,
+            keywordNames,
             name,
             address,
-            openingTime,
+            openingTimes,
             phoneNumber,
             content,
             latitude,

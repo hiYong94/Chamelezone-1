@@ -7,10 +7,10 @@ import java.math.BigDecimal
 interface PlaceRepository {
     fun registerPlace(
         memberNumber: Int,
-        keywordName: List<Int>,
+        keywordNames: List<Int>,
         name: String,
         address: String,
-        openingTime: List<String>,
+        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
@@ -28,10 +28,10 @@ interface PlaceRepository {
     fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>)
     fun modifyPlace(
         memberNumber: Int,
-        keywordName: List<Int>,
+        keywordNames: List<Int>,
         name: String,
         address: String,
-        openingTime: List<String>,
+        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,

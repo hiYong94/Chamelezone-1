@@ -7,13 +7,13 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
     CourseRepository {
     override fun registerCourse(
         memberNumber: Int,
-        placeNumber: List<Int>,
+        placeNumbers: List<Int>,
         title: String,
         content: String,
         image: String,
         callBack: CourseCallBack<String>
     ) {
-        remoteDataSource.registerCourse(memberNumber, placeNumber, title, content, image, callBack)
+        remoteDataSource.registerCourse(memberNumber, placeNumbers, title, content, image, callBack)
     }
 
     override fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>) {
