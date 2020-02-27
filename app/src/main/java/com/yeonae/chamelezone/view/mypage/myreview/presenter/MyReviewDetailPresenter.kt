@@ -9,15 +9,17 @@ class MyReviewDetailPresenter(
     private val myReviewDetailView: MyReviewDetailContract.View
 ) : MyReviewDetailContract.Presenter {
     override fun getMyReviewDetail(placeNumber: Int, reviewNumber: Int) {
-        reviewRepository.getMyReviewDetail(placeNumber, reviewNumber, object :
-            ReviewCallBack<ReviewResponse> {
-            override fun onSuccess(response: ReviewResponse) {
-                myReviewDetailView.showMyReviewDetail(response)
-            }
+        reviewRepository.getMyReviewDetail(
+            placeNumber,
+            reviewNumber,
+            object : ReviewCallBack<ReviewResponse> {
+                override fun onSuccess(response: ReviewResponse) {
+                    myReviewDetailView.showMyReviewDetail(response)
+                }
 
-            override fun onFailure(message: String) {
+                override fun onFailure(message: String) {
 
-            }
-        })
+                }
+            })
     }
 }
