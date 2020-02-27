@@ -36,12 +36,12 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     }
 
     override fun showNicknameMessage(response: NicknameResponse) {
-        if (response.nicknameCheck == "Y") {
+        if (response.nicknameCheck == CHECK_YES) {
             Toast.makeText(applicationContext, R.string.available_nickname, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = true
 
-        } else if (response.nicknameCheck == "N") {
+        } else if (response.nicknameCheck == CHECK_NO) {
             Toast.makeText(applicationContext, R.string.registered_nickname, Toast.LENGTH_SHORT)
                 .show()
         }
@@ -150,5 +150,10 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
                 }, 500)
             }
         })
+    }
+
+    companion object {
+        const val CHECK_YES = "Y"
+        const val CHECK_NO = "N"
     }
 }
