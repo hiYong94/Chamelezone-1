@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="영업시간"
+                    android:text="@string/business_hours"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -54,7 +54,7 @@
                 android:id="@+id/checkbox_sun"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="일요일" />
+                android:text="@string/sunday" />
 
             <LinearLayout
                 android:id="@+id/opening_hour_sun"
@@ -66,7 +66,7 @@
                 android:id="@+id/checkbox_mon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="월요일" />
+                android:text="@string/monday" />
 
             <LinearLayout
                 android:id="@+id/opening_hour_mon"
@@ -78,7 +78,7 @@
                 android:id="@+id/checkbox_tue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="화요일" />
+                android:text="@string/tuesday" />
 
             <LinearLayout
                 android:id="@+id/opening_hour_tue"
@@ -90,7 +90,7 @@
                 android:id="@+id/checkbox_wed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="수요일" />
+                android:text="@string/wednesday" />
 
             <LinearLayout
                 android:id="@+id/opening_hour_wed"
@@ -102,7 +102,7 @@
                 android:id="@+id/checkbox_thu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="목요일" />
+                android:text="@string/thursday" />
 
             <LinearLayout
                 android:id="@+id/opening_hour_thu"
@@ -114,7 +114,7 @@
                 android:id="@+id/checkbox_fri"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="금요일" />
+                android:text="@string/friday" />
 
             <LinearLayout
                 android:id="@+id/opening_hour_fri"
@@ -126,7 +126,7 @@
                 android:id="@+id/checkbox_sat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="토요일" />
+                android:text="@string/saturday" />
 
             <LinearLayout
                 android:id="@+id/opening_hour_sat"

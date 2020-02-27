@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:padding="10dp"
-                    android:text="예"
+                    android:text="@string/confirm"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:padding="10dp"
-                    android:text="아니요"
+                    android:text="@string/cancel"
                     android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
