@@ -55,11 +55,20 @@ interface PlaceApi {
         @Path("MemberNumber") memberNumber: Int
     ): Call<List<PlaceResponse>>
 
+    @Multipart
     @PUT("/place/{placeNumber}")
     fun updatePlace(
-        @Path("placeNumber") placeNumber: Int,
-        @Body place: JsonObject
-    ): Call<PlaceResponse>
+        @Part image: ArrayList<MultipartBody.Part>,
+        @Part("memberNumber") memberNumber: RequestBody,
+        @Part("keywordName") keywordName: ArrayList<RequestBody>,
+        @Part("name") name: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("openingTime") openingTime: ArrayList<RequestBody>,
+        @Part("phoneNumber") phoneNumber: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part("latitude") latitude: RequestBody,
+        @Part("longitude") longitude: RequestBody
+    ): Call<ResponseBody>
 
     @DELETE("/place/{placeNumber}")
     fun deletePlace(
