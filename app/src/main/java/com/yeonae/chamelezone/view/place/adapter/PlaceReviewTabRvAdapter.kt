@@ -71,7 +71,7 @@ class PlaceReviewTabRvAdapter :
             val images = review.savedImageName.split(",")
             Log.d("imageList images", images.toString())
             val imageList = images.map {
-                "http://13.209.136.122:3000/image/$it"
+                IMAGE_URL + it
             }
 //            images.forEachIndexed { index, _ ->
 //                imageList.add("http://13.209.136.122:3000/image/" + images[index])
@@ -112,5 +112,9 @@ class PlaceReviewTabRvAdapter :
         reviewList.clear()
         reviewList.addAll(addDataList)
         notifyDataSetChanged()
+    }
+
+    companion object {
+        const val IMAGE_URL = "http://13.209.136.122:3000/image/"
     }
 }
