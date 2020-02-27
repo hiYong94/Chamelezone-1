@@ -2,7 +2,7 @@ package com.yeonae.chamelezone.data.model
 
 import java.io.Serializable
 
-data class PlaceItem @JvmOverloads constructor(
+data class PlaceItem(
     val placeNumber: Int,
     val name: String,
     val keyword: String,
