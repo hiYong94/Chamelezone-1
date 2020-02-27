@@ -7,12 +7,19 @@ import com.yeonae.chamelezone.view.place.PlaceInfoTabFragment
 import com.yeonae.chamelezone.view.place.PlaceReviewTabFragment
 
 class PlaceDetailPagerAdapter(
-    fm: FragmentManager,  val placeNumber: Int, val placeName: String, val memberNumber: Int
+    fm: FragmentManager,
+    val placeNumber: Int,
+    val placeName: String,
+    val memberNumber: Int
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
-        return when(position) {
-            0 -> {PlaceInfoTabFragment.newInstance(placeNumber)}
-            else -> {PlaceReviewTabFragment.newInstance(placeNumber, placeName, memberNumber)}
+        return when (position) {
+            0 -> {
+                PlaceInfoTabFragment.newInstance(placeNumber)
+            }
+            else -> {
+                PlaceReviewTabFragment.newInstance(placeNumber, placeName, memberNumber)
+            }
         }
     }
 
@@ -21,7 +28,7 @@ class PlaceDetailPagerAdapter(
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return when (position){
+        return when (position) {
             0 -> "정보"
             else -> "리뷰"
         }
