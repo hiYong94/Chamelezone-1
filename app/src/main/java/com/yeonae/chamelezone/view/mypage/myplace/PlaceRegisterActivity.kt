@@ -33,13 +33,17 @@ import kotlinx.android.synthetic.main.slider_item_image.*
 import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
-    BottomSheetImagePicker.OnImagesSelectedListener {
+    BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
     var memberNumber: Int = 0
     private var imageUri = arrayListOf<String>()
     private val openingTime = mutableListOf<String>()
     private val keywordMap = hashMapOf<Int, String>()
     private val keyword = mutableListOf<Int>()
     private var isCreated = false
+
+    override fun onClick(keyword: ArrayList<String>) {
+
+    }
 
     override fun showUserInfo(user: UserEntity) {
         memberNumber = user.userNumber!!
@@ -105,14 +109,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         val items = keywordMap.values.toTypedArray()
-        val newFragment = CheckDialogFragment.newInstance(
-            items, object :
-                CheckDialogFragment.OnClickListener {
-                override fun onClick() {
-
-                }
-            }
-        )
+        val newFragment = CheckDialogFragment()
 
         btn_category_choice.setOnClickListener {
             newFragment.show(supportFragmentManager, "dialog")

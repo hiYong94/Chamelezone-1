@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -21,7 +22,12 @@ class CheckDialogFragment : DialogFragment() {
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
-        fun onClick()
+        fun onClick(keyword: ArrayList<String>)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        onClickListener = (context as OnClickListener)
     }
 
     override fun onStart() {
@@ -43,6 +49,7 @@ class CheckDialogFragment : DialogFragment() {
             (dpMetrics.widthPixels * widthRatio).toInt(),
             (dpMetrics.heightPixels * heightRatio).toInt()
         )
+        val selectedKeyword : ArrayList<String>? = null
 
         val keyword = arguments?.getStringArray("keyword")
         val layout = LayoutInflater.from(context)
@@ -55,7 +62,9 @@ class CheckDialogFragment : DialogFragment() {
         }
 
         btn_ok.setOnClickListener {
-            onClickListener?.onClick()
+            if (selectedKeyword != null) {
+                onClickListener?.onClick(selectedKeyword)
+            }
             dialog?.cancel()
         }
 
@@ -75,13 +84,5 @@ class CheckDialogFragment : DialogFragment() {
     companion object {
         const val DIALOG_HEIGHT_RATIO = "DIALOG_HEIGHT_RATIO"
         const val DIALOG_WIDTH_RATIO = "DIALOG_WIDTH_RATIO"
-        fun newInstance(items: Array<String>, listener: OnClickListener): CheckDialogFragment {
-            val frag = CheckDialogFragment()
-            val args = Bundle()
-            args.putStringArray("keyword", items)
-            frag.arguments = args
-            frag.onClickListener = listener
-            return frag
-        }
     }
 }
