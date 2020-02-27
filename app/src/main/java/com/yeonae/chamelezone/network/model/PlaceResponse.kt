@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.network.model
 import com.google.gson.annotations.SerializedName
 import com.yeonae.chamelezone.data.model.LikeItem
 import com.yeonae.chamelezone.data.model.PlaceItem
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 
 data class PlaceResponse(
     @SerializedName("placeNumber")
@@ -31,7 +32,7 @@ data class PlaceResponse(
     val memberNumber: Int,
     @SerializedName("like_status")
     val likeStatus: Int? = null
-){
+) {
     fun toPlaceItem(response: PlaceResponse): PlaceItem {
         val keyword = response.keywordName.replace(",", ", ")
         val placeImages = response.savedImageName.split(",")
@@ -67,9 +68,5 @@ data class PlaceResponse(
             response.address,
             imageFormat
         )
-    }
-
-    companion object {
-        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
     }
 }

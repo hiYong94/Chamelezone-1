@@ -11,6 +11,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
@@ -157,6 +158,5 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     companion object {
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
-        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
     }
 }
