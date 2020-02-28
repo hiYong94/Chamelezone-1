@@ -29,8 +29,13 @@ class PlaceDetailPagerAdapter(
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when (position) {
-            0 -> "정보"
-            else -> "리뷰"
+            0 -> INFO
+            else -> REVIEW
         }
+    }
+
+    companion object {
+        const val INFO = "정보"
+        const val REVIEW = "리뷰"
     }
 }
