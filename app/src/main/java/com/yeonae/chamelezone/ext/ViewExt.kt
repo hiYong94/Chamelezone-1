@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
@@ -67,4 +68,14 @@ fun ImageView.glideTransformations(image: String, width: Int, height: Int) {
         )
         .placeholder(ContextCompat.getDrawable(context, R.drawable.home))
         .into(this)
+}
+
+fun Context.shortToast(resourceId: Int) {
+    Toast.makeText(this, resourceId, Toast.LENGTH_SHORT)
+        .show()
+}
+
+fun Context.shortToast(message: String) {
+    Toast.makeText(this, message, Toast.LENGTH_SHORT)
+        .show()
 }

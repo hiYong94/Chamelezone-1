@@ -9,13 +9,13 @@ interface PlaceDetailContract {
         var presenter: Presenter
         fun placeInfo(place: PlaceResponse)
         fun showResultView(response: Boolean)
-        fun showUserInfo(user: UserEntity)
+        fun deliverUserInfo(user: UserEntity)
         fun showLikeMessage(response: Boolean)
         fun showDeleteLikeMessage(response: Boolean)
     }
 
     interface Presenter {
-        fun placeDetail(placeNumber: Int, memberNumber: Int)
+        fun placeDetail(placeNumber: Int, memberNumber: Int?)
         fun checkLogin()
         fun getUser()
         fun selectLike(memberNumber: Int, placeNumber: Int)

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import kotlinx.android.synthetic.main.item_place.view.*
@@ -34,7 +35,7 @@ class HomePlaceRvAdapter :
             val images = place.savedImageName.split(",")
             val imageList = arrayListOf<String>()
             for (i in images.indices)
-                imageList.add("http://13.209.136.122:3000/image/" + images[i])
+                imageList.add(IMAGE_RESOURCE + images[i])
             Log.d("imageList", images.toString())
             Log.d("imageList", imageList.toString())
 

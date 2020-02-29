@@ -8,10 +8,10 @@ import java.math.BigDecimal
 interface PlaceRemoteDataSource {
     fun registerPlace(
         memberNumber: Int,
-        keywordName: List<Int>,
+        keywordNames: List<Int>,
         name: String,
         address: String,
-        openingTime: List<String>,
+        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
@@ -24,10 +24,23 @@ interface PlaceRemoteDataSource {
     fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>)
     fun getSearchByAddress(address: String, callBack: PlaceCallBack<List<PlaceResponse>>)
     fun getSearchByKeyword(keyword: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getPlaceDetail(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<PlaceResponse>)
+    fun getPlaceDetail(placeNumber: Int, memberNumber: Int?, callBack: PlaceCallBack<PlaceResponse>)
     fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>)
     fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>)
-    fun modifyPlace()
-    fun deletePlace(placeNumber: Int, callBack: PlaceCallBack<String>)
+    fun modifyPlace(
+        memberNumber: Int,
+        keywordNames: List<Int>,
+        name: String,
+        address: String,
+        openingTimes: List<String>,
+        phoneNumber: String,
+        content: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
+        images: List<String>,
+        callBack: PlaceCallBack<Boolean>
+    )
+
+    fun deletePlace(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<Boolean>)
     fun getHomePlaceList(callBack: PlaceCallBack<List<PlaceResponse>>)
 }

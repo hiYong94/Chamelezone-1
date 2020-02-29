@@ -59,7 +59,7 @@ class MyPlaceRvAdapter() :
         ) {
             itemView.run {
                 setOnClickListener {
-                    clickListener?.onClick(item)
+                    clickListener.onClick(item)
                 }
                 tv_place_name.text = item.name
                 tv_place_keyword.text = item.keywordName

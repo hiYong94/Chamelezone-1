@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
@@ -48,7 +49,6 @@ class MarkerInfoFragment : Fragment() {
     }
 
     companion object {
-        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
         private const val PLACE_NAME = "placeName"
         private const val PLACE_KEYWORD = "placeKeyword"
         private const val PLACE_ADDRESS = "placeAddress"

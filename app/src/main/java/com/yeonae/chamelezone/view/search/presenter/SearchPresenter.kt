@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.search.presenter
 
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -11,7 +12,11 @@ class SearchPresenter(
     override fun searchByName(placeName: String) {
         placeRepository.getSearchByName(placeName, object : PlaceCallBack<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
-                searchView.showPlaceList(response)
+                val placeItem = mutableListOf<PlaceItem>()
+                for (i in response.indices) {
+                    placeItem.add(response[i].toPlaceItem(response[i]))
+                }
+                searchView.showPlaceList(placeItem)
             }
 
             override fun onFailure(message: String) {
@@ -24,7 +29,11 @@ class SearchPresenter(
     override fun searchByAddress(address: String) {
         placeRepository.getSearchByAddress(address, object : PlaceCallBack<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
-                searchView.showPlaceList(response)
+                val placeItem = mutableListOf<PlaceItem>()
+                for (i in response.indices) {
+                    placeItem.add(response[i].toPlaceItem(response[i]))
+                }
+                searchView.showPlaceList(placeItem)
             }
 
             override fun onFailure(message: String) {
@@ -37,7 +46,11 @@ class SearchPresenter(
     override fun searchByKeyword(keyword: String) {
         placeRepository.getSearchByKeyword(keyword, object : PlaceCallBack<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
-                searchView.showPlaceList(response)
+                val placeItem = mutableListOf<PlaceItem>()
+                for (i in response.indices) {
+                    placeItem.add(response[i].toPlaceItem(response[i]))
+                }
+                searchView.showPlaceList(placeItem)
             }
 
             override fun onFailure(message: String) {

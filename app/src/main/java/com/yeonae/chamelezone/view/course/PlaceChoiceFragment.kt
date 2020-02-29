@@ -1,7 +1,6 @@
 package com.yeonae.chamelezone.view.course
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.view.course.adapter.PlaceChoiceRvAdapter
 import com.yeonae.chamelezone.view.search.presenter.SearchContract
 import com.yeonae.chamelezone.view.search.presenter.SearchPresenter
@@ -17,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_place_choice.*
 
 class PlaceChoiceFragment : Fragment(), SearchContract.View {
     override lateinit var presenter: SearchContract.Presenter
-    private lateinit var lastCheckedPlace: PlaceResponse
+    private lateinit var lastCheckedPlace: PlaceItem
     private val placeChoiceRvAdapter = PlaceChoiceRvAdapter()
 
     override fun onCreateView(
@@ -35,7 +34,7 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
         setAdapter()
 
         placeChoiceRvAdapter.setOnClickListener(object : PlaceChoiceRvAdapter.OnClickListener {
-            override fun onClick(place: PlaceResponse) {
+            override fun onClick(place: PlaceItem) {
                 lastCheckedPlace = place
             }
         })
@@ -43,7 +42,6 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
         btn_ok.setOnClickListener {
             if (::lastCheckedPlace.isInitialized) {
                 val placeIndex = arguments?.getInt(PLACE_INDEX)
-                Log.d("placeIndex", placeIndex.toString())
                 if (placeIndex != null) {
                     (activity as? CourseRegisterActivity)?.getVisible(
                         placeIndex,
@@ -69,7 +67,7 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
 
     }
 
-    override fun showPlaceList(placeList: List<PlaceResponse>) {
+    override fun showPlaceList(placeList: List<PlaceItem>) {
         layout_no_search.visibility = View.GONE
         layout_has_search.visibility = View.VISIBLE
         placeChoiceRvAdapter.addData(placeList)

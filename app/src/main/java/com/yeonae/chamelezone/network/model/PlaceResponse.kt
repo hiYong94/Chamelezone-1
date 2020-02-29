@@ -1,6 +1,9 @@
 package com.yeonae.chamelezone.network.model
 
 import com.google.gson.annotations.SerializedName
+import com.yeonae.chamelezone.data.model.LikeItem
+import com.yeonae.chamelezone.data.model.PlaceItem
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 
 data class PlaceResponse(
     @SerializedName("placeNumber")
@@ -27,6 +30,43 @@ data class PlaceResponse(
     val regiDate: String,
     @SerializedName("memberNumber")
     val memberNumber: Int,
-    @SerializedName("likeNumber")
-    val likeNumber: Int? = null
-)
+    @SerializedName("like_status")
+    val likeStatus: Int? = null
+) {
+    fun toPlaceItem(response: PlaceResponse): PlaceItem {
+        val keyword = response.keywordName.replace(",", ", ")
+        val placeImages = response.savedImageName.split(",")
+        val images = arrayListOf<String>()
+        for (i in placeImages.indices) {
+            images.add(IMAGE_RESOURCE + placeImages[i])
+        }
+        val imageFormat = images[0]
+
+        return PlaceItem(
+            response.placeNumber,
+            response.name,
+            keyword,
+            response.address,
+            imageFormat
+        )
+    }
+
+    fun toLikeItem(response: PlaceResponse): LikeItem {
+        val keyword = response.keywordName.replace(",", ", ")
+        val placeImages = response.savedImageName.split(",")
+        val images = arrayListOf<String>()
+        for (i in placeImages.indices) {
+            images.add(IMAGE_RESOURCE + placeImages[i])
+        }
+        val imageFormat = images[0]
+
+        return LikeItem(
+            response.likeStatus,
+            response.placeNumber,
+            response.name,
+            keyword,
+            response.address,
+            imageFormat
+        )
+    }
+}

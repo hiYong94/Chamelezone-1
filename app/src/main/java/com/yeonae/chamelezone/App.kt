@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.util
+package com.yeonae.chamelezone
 
 import android.app.Application
 import android.content.Context

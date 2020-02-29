@@ -9,10 +9,11 @@ interface PlaceInfoContract {
         var presenter: Presenter
         fun placeInfo(place: PlaceResponse)
         fun showUserInfo(user: UserEntity)
+        fun getPlaceDetail()
     }
 
     interface Presenter {
-        fun placeDetail(placeNumber: Int, memberNumber: Int)
+        fun placeDetail(placeNumber: Int, memberNumber: Int?)
         fun getUser()
     }
 }

@@ -7,7 +7,7 @@ interface CourseContract {
     interface View {
         var presenter: Presenter
         fun showResultView(response: Boolean)
-        fun showCourseList(item: List<CourseItem>)
+        fun showCourseList(items: List<CourseItem>)
     }
 
     interface Presenter {
