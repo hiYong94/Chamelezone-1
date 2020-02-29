@@ -2,12 +2,14 @@ package com.yeonae.chamelezone.view.mypage
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.view.place.PlaceReviewTabFragment
 import kotlinx.android.synthetic.main.fragment_more_button.*
 
 
@@ -23,7 +25,8 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
+        val reviewNumber = arguments?.getInt(REVIEW_NUMBER) ?: 0
+        Log.d("More reviewNumber", reviewNumber.toString())
 
         btn_modify.setOnClickListener {
             Toast.makeText(context, "수정", Toast.LENGTH_SHORT).show()
@@ -33,15 +36,16 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         btn_delete.setOnClickListener {
-            Toast.makeText(context, "삭제",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show()
 
-            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, Intent(reviewNumber.toString()))
+            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, Intent())
+            PlaceReviewTabFragment.newInstanceReview(reviewNumber)
 
             dismiss()
         }
     }
 
-    companion object{
+    companion object {
         const val REVIEW_NUMBER = "reviewNumber"
         const val BTN_EDIT = 10
         const val BTN_DELETE = 20

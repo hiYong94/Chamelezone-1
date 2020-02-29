@@ -69,10 +69,12 @@ class PlaceReviewTabRvAdapter :
             reviewDate.text = review.regiDate
             reviewContent.text = review.content
             val images = review.savedImageName.split(",")
+            Log.d("imageList images savedImageName", review.savedImageName)
             Log.d("imageList images", images.toString())
             val imageList = images.map {
                 IMAGE_URL + it
             }
+            Log.d("imageList images", imageList.toString())
 //            images.forEachIndexed { index, _ ->
 //                imageList.add("http://13.209.136.122:3000/image/" + images[index])
 //                Log.d("imageList review", images[index])

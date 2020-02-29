@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
@@ -23,7 +22,6 @@ import com.yeonae.chamelezone.view.review.ReviewImageActivity
 import com.yeonae.chamelezone.view.review.ReviewModifyActivity
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
-import kotlinx.android.synthetic.main.item_place_review.*
 
 class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     override lateinit var presenter: PlaceReviewContract.Presenter
@@ -31,12 +29,15 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     private var placeNumber = 0
     private var memberNumber = 0
 
+    private lateinit var placeReviewRvAdapter: PlaceReviewTabRvAdapter
+
     override fun showPlaceReview(reviewList: List<ReviewResponse>) {
-        placeReviewRvAdapter.addData(reviewList)
+        if (::placeReviewRvAdapter.isInitialized)
+            placeReviewRvAdapter.addData(reviewList)
     }
 
     override fun showReviewDelete(message: String) {
-        ll_review.isGone = true
+//        ll_review.isGone = true
         Toast.makeText(context, "리뷰가 삭제되었습니다", Toast.LENGTH_LONG).show()
     }
 
@@ -48,7 +49,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         presenter.getMember()
     }
 
-    private val placeReviewRvAdapter = PlaceReviewTabRvAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,17 +57,20 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     ): View? =
         inflater.inflate(R.layout.fragment_place_review_tab, container, false)
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
         val placeName = arguments?.getString(PLACE_NAME)
         memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
         Log.d("memberNumber", memberNumber.toString())
 
+        placeReviewRvAdapter = PlaceReviewTabRvAdapter()
+
         setAdapter()
 
         presenter = PlaceReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(requireContext()),this
+            Injection.reviewRepository(), Injection.memberRepository(requireContext()), this
         )
 
         presenter.checkMember()
@@ -118,6 +121,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
                     startActivity(intent)
 
                 } else if (resultCode == MoreButtonFragment.BTN_DELETE) {
+                    reviewNumber = arguments?.getInt(REVIEW_NUMBER) ?: 0
                     Toast.makeText(context, "삭제 받음", Toast.LENGTH_SHORT).show()
                     presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
                     Log.d("placeDetailReviewTab reviewNumber", reviewNumber.toString())
@@ -131,7 +135,8 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     private fun setAdapter() {
         recycler_place_review.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = placeReviewRvAdapter
+            if (::placeReviewRvAdapter.isInitialized)
+                adapter = placeReviewRvAdapter
         }
     }
 
@@ -161,5 +166,13 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
                     putInt(MEMBER_NUMBER, memberNumber)
                 }
             }
+
+        fun newInstanceReview(reviewNumber: Int) =
+            PlaceReviewTabFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(REVIEW_NUMBER, reviewNumber)
+                }
+            }
     }
+
 }

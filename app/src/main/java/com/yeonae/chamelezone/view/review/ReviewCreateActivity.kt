@@ -90,7 +90,6 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
 
-
             presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
             Log.d("reviewCreate memberNumber", memberNumber.toString())
 
