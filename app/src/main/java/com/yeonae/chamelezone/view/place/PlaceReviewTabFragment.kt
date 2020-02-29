@@ -67,7 +67,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         setAdapter()
 
         presenter = PlaceReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(requireContext()),this
+            Injection.reviewRepository(), Injection.memberRepository(requireContext()), this
         )
 
         presenter.checkMember()
@@ -153,12 +153,14 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         private const val MEMBER_NUMBER = "memberNumber"
         private const val REVIEW_NUMBER = "reviewNumber"
 
-        fun newInstance(placeNumber: Int, placeName: String, memberNumber: Int) =
+        fun newInstance(placeNumber: Int, placeName: String, memberNumber: Int?) =
             PlaceReviewTabFragment().apply {
                 arguments = Bundle().apply {
                     putInt(PLACE_NUMBER, placeNumber)
                     putString(PLACE_NAME, placeName)
-                    putInt(MEMBER_NUMBER, memberNumber)
+                    if (memberNumber != null) {
+                        putInt(MEMBER_NUMBER, memberNumber)
+                    }
                 }
             }
     }
