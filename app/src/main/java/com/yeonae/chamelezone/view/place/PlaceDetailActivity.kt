@@ -13,6 +13,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
@@ -27,16 +28,15 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     var memberNumber: Int? = null
     var placeNumber: Int = 0
     var placeName: String = ""
-    var likeNumber: Int? = null
 
-    override fun showLikeMessage(response: Boolean) {
-        if (response) {
+    override fun showLikeMessage(response: LikeResponse) {
+        if (response.likeStatus) {
             this.shortToast(R.string.select_like)
         }
     }
 
-    override fun showDeleteLikeMessage(response: Boolean) {
-        if (response) {
+    override fun showDeleteLikeMessage(response: LikeResponse) {
+        if (!response.likeStatus) {
             this.shortToast(R.string.delete_like)
         }
     }
@@ -47,25 +47,30 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         for (i in placeImages.indices) {
             images.add(IMAGE_RESOURCE + placeImages[i])
         }
-        likeNumber = place.likeStatus
-        if (likeNumber != null) {
+        if (place.likeNumber != null) {
             btn_like.isChecked = true
         }
         val imageAdapter = ImageViewPagerAdapter(images)
         vp_image.adapter = imageAdapter
 
-        if(likeNumber == null){
+        if (memberNumber == null) {
             btn_like.setOnClickListener {
                 btn_like.isChecked = false
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 startActivity(intent)
             }
-        } else if(likeNumber != null){
+        } else {
             btn_like.setOnClickListener {
                 if (btn_like.isChecked) {
                     memberNumber?.let { it1 -> presenter.selectLike(it1, placeNumber) }
                 } else {
-                    memberNumber?.let { it1 -> presenter.deleteLike(likeNumber ?: 0, it1, placeNumber) }
+                    memberNumber?.let { it1 ->
+                        presenter.deleteLike(
+                            place.likeNumber ?: 0,
+                            it1,
+                            placeNumber
+                        )
+                    }
                 }
             }
         }
