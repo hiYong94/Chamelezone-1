@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.view.review.adapter
+package com.yeonae.chamelezone.view.mypage.myreview.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
 import kotlinx.android.synthetic.main.slider_image.view.*
 
-class ReviewImageVpAdapter(private val images: IntArray) : PagerAdapter() {
+class ReviewImageVpAdapter(private val images: List<String>) : PagerAdapter() {
 
     override fun isViewFromObject(view: View, obj: Any): Boolean =
         view == obj

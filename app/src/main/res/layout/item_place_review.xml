@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/ll_review">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
