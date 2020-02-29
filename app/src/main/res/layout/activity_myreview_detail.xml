@@ -31,7 +31,7 @@
         android:weightSum="5.1">
 
         <TextView
-            android:id="@+id/tv_place_name"
+            android:id="@+id/tv_place_title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="구슬모아당구장"
@@ -72,7 +72,7 @@
             android:layout_weight="0.25" />
 
         <TextView
-            android:id="@+id/tv_review_content"
+            android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:textSize="15sp"

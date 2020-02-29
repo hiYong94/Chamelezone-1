@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -89,7 +88,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             presenter.placeDetail(placeNumber, memberNumber)
         }
     }
-
+  
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
@@ -129,6 +128,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
         val fragmentAdapter =
             PlaceDetailPagerAdapter(supportFragmentManager, placeNumber, placeName)
+
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
@@ -136,6 +136,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             post {
                 val nameBar = layout_visibility.height
                 val tabBar = tabs_detail.height
+                val density = resources.displayMetrics.density
 
                 Log.d("PlaceDetailActivity nameBar", nameBar.toString())
                 Log.d("PlaceDetailActivity tabBar", tabBar.toString())
@@ -143,6 +144,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
                 layoutParams = tool_bar.layoutParams.apply {
                     height = nameBar + tabBar
                 }
+
                 app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
                     if (abs(verticalOffset) - appBarLayout.totalScrollRange > 0) {
                         layout_visibility.visibility = View.VISIBLE

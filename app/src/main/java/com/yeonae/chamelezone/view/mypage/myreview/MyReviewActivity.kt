@@ -2,28 +2,40 @@ package com.yeonae.chamelezone.view.mypage.myreview
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.ReviewResponse
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewPresenter
-import com.yeonae.chamelezone.view.review.MyReviewDetailActivity
-import com.yeonae.chamelezone.view.review.ReviewModifyActivity
 import kotlinx.android.synthetic.main.activity_my_review.*
 import kotlinx.android.synthetic.main.item_my_review.*
 
 class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
     override lateinit var presenter: MyReviewContract.Presenter
     private val myReviewRvAdapter = MyReviewRvAdapter()
+    private var placeNumber = 0
+    private var reviewNumber = 0
+
+    override fun getMember(user: UserEntity) {
+        user.userNumber?.let { presenter.getUserReview(it) }
+        Log.d("myReviewList memberNumber", user.userNumber.toString())
+    }
+
+    override fun getMemberCheck(response: Boolean) {
+        presenter.getMember()
+    }
 
     override fun showMyReviewList(reviewList: List<ReviewResponse>) {
         myReviewRvAdapter.addData(reviewList)
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,16 +43,20 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         setAdapter()
 
         presenter = MyReviewPresenter(
-            Injection.reviewRepository(), this
+            Injection.reviewRepository(), Injection.memberRepository(applicationContext), this
         )
 
-        presenter.userReview(2)
+        presenter.checkMember()
 
         myReviewRvAdapter.setOnClickListener(object : MyReviewRvAdapter.OnClickListener {
             override fun onClick(review: ReviewResponse) {
+                placeNumber = review.placeNumber
+                reviewNumber = review.reviewNumber
                 val intent = Intent(this@MyReviewActivity, MyReviewDetailActivity::class.java)
-                intent.putExtra("placeName", tv_place_name.text)
-                intent.putExtra("content", tv_review_content.text)
+                intent.putExtra(PLACE_NUMBER, placeNumber)
+                intent.putExtra(REVIEW_NUMBER, reviewNumber)
+                intent.putExtra(PLACE_NAME, tv_place_name.text)
+                intent.putExtra(REVIEW_CONTENT, tv_review_content.text)
                 this@MyReviewActivity.startActivity(intent)
             }
         })
@@ -57,26 +73,6 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
 
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            BOTTOM_SHEET -> {
-                if (resultCode == MoreButtonFragment.BTN_EDIT || resultCode == MoreButtonFragment.BTN_DELETE) {
-                    Toast.makeText(this, "수정 받음", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, ReviewModifyActivity::class.java)
-                    intent.putExtra(PLACE_NAME, tv_place_name.text)
-                    intent.putExtra(REVIEW_CONTENT, tv_review_content.text)
-                    startActivity(intent)
-
-                    Toast.makeText(this, "삭제 받음", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "수정 실패", Toast.LENGTH_SHORT).show()
-                    Toast.makeText(this, "삭제 실패", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
     private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
@@ -91,5 +87,7 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         const val BOTTOM_SHEET = 100
         const val PLACE_NAME = "placeName"
         const val REVIEW_CONTENT = "content"
+        const val PLACE_NUMBER = "placeNumber"
+        const val REVIEW_NUMBER = "reviewNumber"
     }
 }
