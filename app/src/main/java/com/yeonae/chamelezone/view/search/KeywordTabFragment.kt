@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
 import com.yeonae.chamelezone.view.search.presenter.SearchContract
@@ -29,9 +29,6 @@ class KeywordTabFragment : Fragment(), SearchContract.View {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = (context as OnKeywordSelectedListener)
-        if (listener == null) {
-            throw ClassCastException("$context must implement OnArticleSelectedListener")
-        }
     }
 
     override fun onCreateView(
@@ -49,47 +46,47 @@ class KeywordTabFragment : Fragment(), SearchContract.View {
         setAdapter()
 
         btn_cafe.setOnClickListener {
-            listener?.keywordSelected("카페")
+            listener.keywordSelected("카페")
         }
 
         btn_exhibition.setOnClickListener {
-            listener?.keywordSelected("전시회")
+            listener.keywordSelected("전시회")
         }
 
         btn_laundry.setOnClickListener {
-            listener?.keywordSelected("빨래방")
+            listener.keywordSelected("빨래방")
         }
 
         btn_select_shop.setOnClickListener {
-            listener?.keywordSelected("편집샵")
+            listener.keywordSelected("편집샵")
         }
 
         btn_bank.setOnClickListener {
-            listener?.keywordSelected("은행")
+            listener.keywordSelected("은행")
         }
 
         btn_book_store.setOnClickListener {
-            listener?.keywordSelected("서점")
+            listener.keywordSelected("서점")
         }
 
         btn_lodging.setOnClickListener {
-            listener?.keywordSelected("숙소")
+            listener.keywordSelected("숙소")
         }
 
         btn_office.setOnClickListener {
-            listener?.keywordSelected("오피스")
+            listener.keywordSelected("오피스")
         }
 
         btn_garden.setOnClickListener {
-            listener?.keywordSelected("식물원")
+            listener.keywordSelected("식물원")
         }
 
         btn_restaurant.setOnClickListener {
-            listener?.keywordSelected("레스토랑")
+            listener.keywordSelected("레스토랑")
         }
 
         searchRvAdapter.setOnClickListener(object : SearchRvAdapter.OnClickListener {
-            override fun onClick(place: PlaceResponse) {
+            override fun onClick(place: PlaceItem) {
                 val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
                 intent.putExtra(PLACE_NAME, place.name)
                 intent.putExtra(PLACE_NUMBER, place.placeNumber)
@@ -98,7 +95,7 @@ class KeywordTabFragment : Fragment(), SearchContract.View {
         })
     }
 
-    override fun showPlaceList(placeList: List<PlaceResponse>) {
+    override fun showPlaceList(placeList: List<PlaceItem>) {
         layout_no_search.visibility = View.GONE
         layout_has_search.visibility = View.VISIBLE
         searchRvAdapter.addData(placeList)

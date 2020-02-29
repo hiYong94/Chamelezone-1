@@ -6,7 +6,7 @@ import com.yeonae.chamelezone.network.model.CourseResponse
 interface CourseRemoteDataSource {
     fun registerCourse(
         memberNumber: Int,
-        placeNumber: List<Int>,
+        placeNumbers: List<Int>,
         title: String,
         content: String,
         image: String,

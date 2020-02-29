@@ -4,7 +4,6 @@ import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.data.repository.course.CourseRepository
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
-import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 class CourseRegisterPresenter(
@@ -19,22 +18,28 @@ class CourseRegisterPresenter(
         content: String,
         image: String
     ) {
-        courseRepository.registerCourse(memberNumber, placeNumber, title, content, image, object : CourseCallBack<String>{
-            override fun onSuccess(response: String) {
-                view.showMessage(response)
-            }
+        courseRepository.registerCourse(
+            memberNumber,
+            placeNumber,
+            title,
+            content,
+            image,
+            object : CourseCallBack<String> {
+                override fun onSuccess(response: String) {
+                    view.showMessage(response)
+                }
 
-            override fun onFailure(message: String) {
+                override fun onFailure(message: String) {
 
-            }
+                }
 
-        })
+            })
     }
 
     override fun getUser() {
         memberRepository.getMember(object : MemberCallBack<UserEntity> {
             override fun onSuccess(response: UserEntity) {
-                view.showUserInfo(response)
+                view.deliverUserInfo(response)
             }
 
             override fun onFailure(message: String) {

@@ -5,7 +5,7 @@ import com.yeonae.chamelezone.network.model.CourseResponse
 interface CourseRepository {
     fun registerCourse(
         memberNumber: Int,
-        placeNumber: List<Int>,
+        placeNumbers: List<Int>,
         title: String,
         content: String,
         image: String,

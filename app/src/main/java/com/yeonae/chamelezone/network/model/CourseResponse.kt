@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.network.model
 
 import com.google.gson.annotations.SerializedName
 import com.yeonae.chamelezone.data.model.CourseItem
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 
 data class CourseResponse(
     @SerializedName("courseNumber")
@@ -35,9 +36,5 @@ data class CourseResponse(
             imageFormat,
             regiDateFormat
         )
-    }
-
-    companion object {
-        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
     }
 }

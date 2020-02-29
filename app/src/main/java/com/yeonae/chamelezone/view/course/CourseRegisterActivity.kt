@@ -3,6 +3,8 @@ package com.yeonae.chamelezone.view.course
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
@@ -15,8 +17,9 @@ import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
@@ -25,20 +28,22 @@ import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
-    var imageUri: String = ""
+    override lateinit var presenter: CourseRegisterContract.Presenter
+    private val placeChoiceFragment = PlaceChoiceFragment
+    private var imageUri: String = ""
     var memberNumber: Int = 0
     private var firstPlaceNumber: Int = NOT_SELECTED
     private var secondPlaceNumber: Int = NOT_SELECTED
     private var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
+    private var isCreated = false
 
-    override fun showUserInfo(user: UserEntity) {
+    override fun deliverUserInfo(user: UserEntity) {
         memberNumber = user.userNumber ?: 0
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG)
-            .show()
+        this.shortToast(message)
         finish()
     }
 
@@ -60,9 +65,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             imageUri = uris[0].path.toString()
         }
     }
-
-    override lateinit var presenter: CourseRegisterContract.Presenter
-    private val placeChoiceFragment = PlaceChoiceFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -129,14 +131,20 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             if (thirdPlaceNumber != NOT_SELECTED) {
                 placeNumbers.add(thirdPlaceNumber)
             }
-
-            presenter.registerCourse(
-                memberNumber,
-                placeNumbers,
-                "${edt_course_title.text}",
-                "${edt_course_content.text}",
-                imageUri
-            )
+            if (!isCreated) {
+                isCreated = true
+                Log.d("isCreated", isCreated.toString())
+                Handler().postDelayed({
+                    presenter.registerCourse(
+                        memberNumber,
+                        placeNumbers,
+                        "${edt_course_title.text}",
+                        "${edt_course_content.text}",
+                        imageUri
+                    )
+                    isCreated = false
+                }, 1000)
+            }
         }
     }
 
@@ -155,24 +163,15 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
     }
 
-    private fun processImage(image: String): String {
-        val placeImages = image.split(",")
-        val images = arrayListOf<String>()
-        for (i in placeImages.indices) {
-            images.add(IMAGE_RESOURCE + placeImages[i])
-        }
-        return images[0]
-    }
-
-    fun getVisible(placeIndex: Int, place: PlaceResponse) {
+    fun getVisible(placeIndex: Int, place: PlaceItem) {
         when (placeIndex) {
             1 -> {
                 firstPlaceNumber = place.placeNumber
                 tv_place_name1.text = place.name
-                tv_place_keyword1.text = place.keywordName
+                tv_place_keyword1.text = place.keyword
                 tv_place_address1.text = place.address
                 iv_place_image1.glideImageSet(
-                    processImage(place.savedImageName),
+                    place.image,
                     iv_place_image1.measuredWidth,
                     iv_place_image1.measuredHeight
                 )
@@ -182,10 +181,10 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             2 -> {
                 secondPlaceNumber = place.placeNumber
                 tv_place_name2.text = place.name
-                tv_place_keyword2.text = place.keywordName
+                tv_place_keyword2.text = place.keyword
                 tv_place_address2.text = place.address
                 iv_place_image2.glideImageSet(
-                    processImage(place.savedImageName),
+                    place.image,
                     iv_place_image1.measuredWidth,
                     iv_place_image1.measuredHeight
                 )
@@ -196,10 +195,10 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             3 -> {
                 thirdPlaceNumber = place.placeNumber
                 tv_place_name3.text = place.name
-                tv_place_keyword3.text = place.keywordName
+                tv_place_keyword3.text = place.keyword
                 tv_place_address3.text = place.address
                 iv_place_image3.glideImageSet(
-                    processImage(place.savedImageName), iv_place_image1.measuredWidth,
+                    place.image, iv_place_image1.measuredWidth,
                     iv_place_image1.measuredHeight
                 )
                 layout_place_add3.visibility = View.GONE
@@ -247,7 +246,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     }
 
     companion object {
-        private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
         private const val NOT_SELECTED = -1
     }
 }

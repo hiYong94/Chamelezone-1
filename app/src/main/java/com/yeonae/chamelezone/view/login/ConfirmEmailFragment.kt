@@ -20,8 +20,11 @@ class ConfirmEmailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val email = arguments?.getString(EMAIL).orEmpty()
-        tv_email.text = email
+        val emailList = arguments?.getStringArray(EMAIL).orEmpty()
+        for(i in emailList.indices){
+            tv_email.text = "${tv_email.text}" + "\n" + emailList[i]
+        }
+
         btn_find_password.setOnClickListener {
             (activity as LoginActivity).replace(FindPasswordFragment(), true)
         }
@@ -37,9 +40,9 @@ class ConfirmEmailFragment : Fragment() {
 
     companion object {
         private const val EMAIL = "email"
-        fun newInstance(email: String) = ConfirmEmailFragment().apply {
+        fun newInstance(emails: Array<String?>) = ConfirmEmailFragment().apply {
             arguments = Bundle().apply {
-                putString(EMAIL, email)
+                putStringArray(EMAIL, emails)
             }
         }
     }

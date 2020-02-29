@@ -1,12 +1,15 @@
 package com.yeonae.chamelezone.view.login.presenter
 
+import com.yeonae.chamelezone.network.model.EmailResponse
+import com.yeonae.chamelezone.network.model.NicknameResponse
+
 interface JoinContract {
 
     interface View {
         var presenter: Presenter
         fun showMessage(message: String)
-        fun showEmailMessage(response: Boolean)
-        fun showNicknameMessage(response: Boolean)
+        fun showEmailMessage(response: EmailResponse)
+        fun showNicknameMessage(response: NicknameResponse)
     }
 
     interface Presenter {

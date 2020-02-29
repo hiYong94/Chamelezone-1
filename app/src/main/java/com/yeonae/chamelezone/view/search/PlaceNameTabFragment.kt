@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
 import com.yeonae.chamelezone.view.search.presenter.SearchContract
@@ -34,7 +34,7 @@ class PlaceNameTabFragment : Fragment(), SearchContract.View {
         setAdapter()
 
         searchRvAdapter.setOnClickListener(object : SearchRvAdapter.OnClickListener {
-            override fun onClick(place: PlaceResponse) {
+            override fun onClick(place: PlaceItem) {
                 val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
                 intent.putExtra(PLACE_NAME, place.name)
                 intent.putExtra(PLACE_NUMBER, place.placeNumber)
@@ -43,7 +43,7 @@ class PlaceNameTabFragment : Fragment(), SearchContract.View {
         })
     }
 
-    override fun showPlaceList(placeList: List<PlaceResponse>) {
+    override fun showPlaceList(placeList: List<PlaceItem>) {
         layout_no_search.visibility = View.GONE
         layout_has_search.visibility = View.VISIBLE
         searchRvAdapter.addData(placeList)

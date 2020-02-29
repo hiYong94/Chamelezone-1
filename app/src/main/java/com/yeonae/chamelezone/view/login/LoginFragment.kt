@@ -22,7 +22,7 @@ class LoginFragment : Fragment(), LoginContract.View {
     }
 
     override fun showMessage(message: String) {
-        Toast.makeText(context, message + "" +"환영합니다.", Toast.LENGTH_LONG)
+        Toast.makeText(context, "$message 환영합니다.", Toast.LENGTH_LONG)
             .show()
         (activity as? LoginActivity)?.finish()
     }
