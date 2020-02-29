@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -21,7 +21,7 @@ import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import kotlinx.android.synthetic.main.activity_course_register.*
-import kotlinx.android.synthetic.main.slider_item_image.*
+import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener {
@@ -46,13 +46,15 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         toast("$tag")
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val iv = LayoutInflater.from(this).inflate(
+            val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as ImageView
-            imageContainer.addView(iv)
-            iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
+            ) as RelativeLayout
+            imageContainer.addView(rl)
+            rl.image_item.run {
+                glideImageSet(uri, measuredWidth, measuredHeight)
+            }
         }
         if (!uris[0].path.isNullOrEmpty()) {
             imageUri = uris[0].path.toString()

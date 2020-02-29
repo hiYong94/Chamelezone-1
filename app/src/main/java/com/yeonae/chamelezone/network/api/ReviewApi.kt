@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.network.api
 
+import com.google.gson.JsonObject
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -26,4 +27,23 @@ interface ReviewApi {
     fun getMyReviewList(
         @Path("memberNumber") memberNumber: Int
     ): Call<List<ReviewResponse>>
+
+    @HTTP(method = "DELETE", path = "/place/{placeNumber}/review/{reviewNumber}", hasBody = true)
+    fun deleteReview(
+        @Path("placeNumber") placeNumber: Int,
+        @Path("reviewNumber") reviewNumber: Number,
+        @Body memberNumber: JsonObject
+    ): Call<ResponseBody>
+
+    @GET("/place/{placeNumber}/review/{reviewNumber}")
+    fun getReviewDetail(
+        @Path("placeNumber") placeNumber: Int,
+        @Path("reviewNumber") reviewNumber: Int
+    ): Call<ReviewResponse>
+
+    @GET("/place/{placeNumber}/review/{reviewNumber}")
+    fun getMyReviewDetail(
+        @Path("placeNumber") placeNumber: Int,
+        @Path("reviewNumber") reviewNumber: Int
+    ): Call<ReviewResponse>
 }

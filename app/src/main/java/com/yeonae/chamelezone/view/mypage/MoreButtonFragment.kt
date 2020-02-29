@@ -10,6 +10,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.fragment_more_button.*
 
+
 class MoreButtonFragment : BottomSheetDialogFragment() {
 
     override fun onCreateView(
@@ -22,6 +23,8 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
+
         btn_modify.setOnClickListener {
             Toast.makeText(context, "수정", Toast.LENGTH_SHORT).show()
 
@@ -32,15 +35,22 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         btn_delete.setOnClickListener {
             Toast.makeText(context, "삭제",Toast.LENGTH_SHORT).show()
 
-            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, Intent())
+            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, Intent(reviewNumber.toString()))
 
             dismiss()
         }
-
     }
 
     companion object{
+        const val REVIEW_NUMBER = "reviewNumber"
         const val BTN_EDIT = 10
         const val BTN_DELETE = 20
+
+        fun newInstance(reviewNumber: Int) =
+            MoreButtonFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(REVIEW_NUMBER, reviewNumber)
+                }
+            }
     }
 }

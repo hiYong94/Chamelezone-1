@@ -48,7 +48,9 @@ object Injection {
             ReviewRemoteDataSourceImpl.getInstance(
                 RetrofitConnection.reviewService
             )
-          
+        )
+    }
+
     fun likeRepository(): LikeRepository {
         return LikeRepositoryImpl.getInstance(
             LikeRemoteDataSourceImpl.getInstance(RetrofitConnection.likeService)
