@@ -1,8 +1,8 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
+import com.yeonae.chamelezone.data.Network
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
-import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSourceImpl.Network.SUCCESS
 import com.yeonae.chamelezone.network.api.PlaceApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
 import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
@@ -105,7 +105,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
                     (call.request().body() as MultipartBody).parts().forEach {
                         Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
@@ -140,7 +140,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
                     callBack.onFailure("검색하신 장소가 없습니다.")
@@ -160,7 +160,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
                     callBack.onFailure("검색하신 장소가 없습니다.")
@@ -180,7 +180,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
                     callBack.onFailure("검색하신 장소가 없습니다.")
@@ -200,7 +200,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
                     callBack.onFailure("검색하신 장소가 없습니다.")
@@ -220,7 +220,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<PlaceResponse>,
                 response: Response<PlaceResponse>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -242,7 +242,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -260,7 +260,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<KeywordResponse>>,
                 response: Response<List<KeywordResponse>>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }
             }
@@ -279,7 +279,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     callBack.onSuccess("장소 삭제 성공")
                 }
             }
@@ -297,40 +297,18 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                     Log.d("HomePlaceList", "홈 장소 리스트 성공")
                 }
             }
         })
     }
-//
-//    override fun getPlaceDetailReview(placeNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
-//        placeService.getPlaceDetailReview(placeNumber).enqueue(object : Callback<PlaceResponse> {
-//            override fun onResponse(
-//                call: Call<PlaceResponse>,
-//                response: Response<PlaceResponse>
-//            ) {
-//                if (response.code() == 200) {
-//                    response.body()?.let { callBack.onSuccess(it) }
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<PlaceResponse>, t: Throwable) {
-//                Log.e("tag", t.toString())
-//            }
-//
-//        })
-//    }
 
     companion object {
         private const val REQUEST_ERR = 404
 
         fun getInstance(placeApi: PlaceApi): PlaceRemoteDataSource =
             PlaceRemoteDataSourceImpl(placeApi)
-    }
-
-    object Network {
-        const val SUCCESS = 200
     }
 }

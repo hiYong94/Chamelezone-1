@@ -13,7 +13,7 @@ import com.yeonae.chamelezone.view.course.CourseTabFragment
 import com.yeonae.chamelezone.view.like.LikeTabFragment
 import com.yeonae.chamelezone.view.map.MapTabFragment
 import com.yeonae.chamelezone.view.mypage.MypageTabFragment
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
     private val tabList by lazy { listOf("홈", "코스", "지도", "즐겨찾기", "MY") }
@@ -62,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
         setupView()
     }
 

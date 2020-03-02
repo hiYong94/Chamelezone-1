@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.ext
 
 import android.content.Context
 import android.net.Uri
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -48,8 +47,7 @@ fun ImageView.glideImageSet(image: Uri, width: Int, height: Int) {
 }
 
 fun ImageView.glideTransformations(image: String, width: Int, height: Int) {
-    val outMetrics = DisplayMetrics()
-    val density = outMetrics.densityDpi
+    val density = resources.displayMetrics.density
 
     Glide.with(context)
         .load(image)
@@ -61,7 +59,7 @@ fun ImageView.glideTransformations(image: String, width: Int, height: Int) {
                 CenterCrop(),
                 CustomRoundedCornersTransformation(
                     context,
-                    25 * density,
+                    (12 * density).toInt(),
                     0,
                     CustomRoundedCornersTransformation.CornerType.ALL
                 )

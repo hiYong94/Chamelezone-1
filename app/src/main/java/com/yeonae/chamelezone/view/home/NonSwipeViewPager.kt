@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.view
+package com.yeonae.chamelezone.view.home
 
 import android.content.Context
 import android.util.AttributeSet

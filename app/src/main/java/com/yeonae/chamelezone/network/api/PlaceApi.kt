@@ -66,9 +66,4 @@ interface PlaceApi {
 
     @GET("/place")
     fun getHomePlaceList(): Call<List<PlaceResponse>>
-
-    @GET("/place/{placeNumber}/review")
-    fun getPlaceDetailReview(
-        @Path("placeNumber") placeNumber: Int
-    ): Call<PlaceResponse>
 }
