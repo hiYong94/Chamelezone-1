@@ -4,6 +4,7 @@ import com.yeonae.chamelezone.data.repository.like.LikeCallBack
 import com.yeonae.chamelezone.data.repository.like.LikeRepository
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
@@ -40,8 +41,8 @@ class LikePresenter(
 
     override fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int) {
         likeRepository.deleteLike(likeNumber, memberNumber, placeNumber, object :
-            LikeCallBack<Boolean> {
-            override fun onSuccess(response: Boolean) {
+            LikeCallBack<LikeResponse> {
+            override fun onSuccess(response: LikeResponse) {
                 view.showLikeState(response)
             }
 

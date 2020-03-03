@@ -72,7 +72,7 @@ class LikeTabRvAdapter :
                 tv_place_name.text = item.name
                 tv_place_keyword.text = item.keywordName
                 tv_place_address.text = item.address
-                if (item.likeStatus != null) {
+                if (item.memberNumber != null) {
                     btn_like.isChecked = true
                 }
                 btn_like.setOnClickListener {

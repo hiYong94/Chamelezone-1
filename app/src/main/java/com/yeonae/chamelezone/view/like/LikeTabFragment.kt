@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.like.adapter.LikeTabRvAdapter
 import com.yeonae.chamelezone.view.like.presenter.LikeContract
@@ -37,8 +38,8 @@ class LikeTabFragment : Fragment(), LikeContract.View {
         likeTabRvAdapter.addData(response)
     }
 
-    override fun showLikeState(response: Boolean) {
-        if (response) {
+    override fun showLikeState(response: LikeResponse) {
+        if (!response.likeStatus) {
             context?.shortToast(R.string.delete_like)
         }
     }
@@ -74,7 +75,7 @@ class LikeTabFragment : Fragment(), LikeContract.View {
         likeTabRvAdapter.setOnLikeClickListener(object : LikeTabRvAdapter.OnLikeClickListener {
             override fun onLikeClick(place: PlaceResponse) {
                 place.memberNumber?.let {
-                    presenter.deleteLike(place.likeStatus ?: 0,
+                    presenter.deleteLike(place.likeNumber ?: 0,
                         it, place.placeNumber)
                 }
             }
