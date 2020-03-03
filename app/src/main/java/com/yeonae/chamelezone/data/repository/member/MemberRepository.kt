@@ -1,6 +1,8 @@
 package com.yeonae.chamelezone.data.repository.member
 
+import com.yeonae.chamelezone.network.model.EmailResponse
 import com.yeonae.chamelezone.network.model.MemberResponse
+import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import okhttp3.RequestBody
 
@@ -40,9 +42,13 @@ interface MemberRepository {
 
     fun deleteLoginUser(callBack: MemberCallBack<Boolean>)
 
-    fun checkEmail(email: String, callBack: MemberCallBack<Boolean>)
+    fun checkEmail(email: String, callBack: MemberCallBack<EmailResponse>)
 
-    fun checkNickname(nickname: String, callBack: MemberCallBack<Boolean>)
+    fun checkNickname(nickname: String, callBack: MemberCallBack<NicknameResponse>)
+
+    fun findEmail(name: String, phone: String, callBack: MemberCallBack<List<EmailResponse>>)
+
+    fun findPassword(email: String, phone: String, callBack: MemberCallBack<MemberResponse>)
 }
 
 

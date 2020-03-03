@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/draw"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <LinearLayout
@@ -10,29 +10,28 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:weightSum="5">
+        android:weightSum="8">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="3"
+            android:layout_weight="7"
             android:gravity="center_horizontal|center_vertical"
+            android:orientation="vertical"
             android:weightSum="5">
 
-            <TextView
-                android:id="@+id/tv_message"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="4"
-                android:gravity="center_vertical"
-                android:textSize="16sp" />
+            <LinearLayout
+                android:id="@+id/check_box"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
             android:weightSum="2">
 
             <LinearLayout
@@ -49,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:padding="10dp"
-                    android:text="@string/yes"
+                    android:text="@string/confirm"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -67,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="4"
                     android:padding="10dp"
-                    android:text="@string/no"
+                    android:text="@string/cancel"
                     android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>

@@ -37,8 +37,8 @@ class PlacePresenter(
             longitude,
             images,
             object : PlaceCallBack<String> {
-                override fun onSuccess(message: String) {
-                    view.showMessage(message)
+                override fun onSuccess(response: String) {
+                    view.showMessage(response)
                 }
 
                 override fun onFailure(message: String) {

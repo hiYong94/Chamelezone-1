@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.like.adapter.LikeTabRvAdapter
 import com.yeonae.chamelezone.view.like.presenter.LikeContract
 import com.yeonae.chamelezone.view.like.presenter.LikePresenter
@@ -22,10 +21,6 @@ import kotlinx.android.synthetic.main.fragment_like_tab.*
 class LikeTabFragment : Fragment(), LikeContract.View {
     override lateinit var presenter: LikeContract.Presenter
     private val likeTabRvAdapter = LikeTabRvAdapter()
-
-    override fun showUserInfo(user: UserEntity) {
-        user.userNumber?.let { presenter.getMyLikeList(it) }
-    }
 
     override fun showResultView(response: Boolean) {
         if (response) {
@@ -44,8 +39,7 @@ class LikeTabFragment : Fragment(), LikeContract.View {
 
     override fun showLikeState(response: Boolean) {
         if (response) {
-            Toast.makeText(context, "좋아요 목록에서 삭제되었습니다", Toast.LENGTH_LONG)
-                .show()
+            context?.shortToast(R.string.delete_like)
         }
     }
 
@@ -79,7 +73,10 @@ class LikeTabFragment : Fragment(), LikeContract.View {
 
         likeTabRvAdapter.setOnLikeClickListener(object : LikeTabRvAdapter.OnLikeClickListener {
             override fun onLikeClick(place: PlaceResponse) {
-                presenter.deleteLike(place.likeNumber ?: 0, place.memberNumber, place.placeNumber)
+                place.memberNumber?.let {
+                    presenter.deleteLike(place.likeStatus ?: 0,
+                        it, place.placeNumber)
+                }
             }
         })
     }

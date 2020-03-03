@@ -6,14 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Place
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myplace.adapter.MyPlaceRvAdapter
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.MyPlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.MyPlacePresenter
-import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_my_place.*
 
@@ -47,14 +45,6 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View {
                 showBottomSheet()
             }
         })
-
-        btn_delete.setOnClickListener {
-
-        }
-
-        btn_modify.setOnClickListener {
-
-        }
 
         btn_back.setOnClickListener {
             finish()

@@ -36,7 +36,7 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         search_view_pager.offscreenPageLimit = 2
         search_view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(search_tab))
 
-        edt_search.setOnEditorActionListener { textView, i, keyEvent ->
+        edt_search.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
                 supportFragmentManager.fragments.forEach {
                     when (it) {

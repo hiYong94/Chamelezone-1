@@ -1,12 +1,12 @@
 package com.yeonae.chamelezone.view.search.presenter
 
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.data.model.PlaceItem
 
 interface SearchContract {
 
     interface View {
         var presenter: Presenter
-        fun showPlaceList(placeList: List<PlaceResponse>)
+        fun showPlaceList(placeList: List<PlaceItem>)
         fun showMessage(message: String)
     }
 

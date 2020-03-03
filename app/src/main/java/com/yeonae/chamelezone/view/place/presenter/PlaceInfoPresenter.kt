@@ -12,14 +12,13 @@ class PlaceInfoPresenter(
     private val memberRepository: MemberRepository,
     private val view: PlaceInfoContract.View
 ) : PlaceInfoContract.Presenter {
-    override fun placeDetail(placeNumber: Int, memberNumber: Int) {
+    override fun placeDetail(placeNumber: Int, memberNumber: Int?) {
         placeRepository.getPlaceDetail(placeNumber, memberNumber, object : PlaceCallBack<PlaceResponse>{
             override fun onSuccess(response: PlaceResponse) {
                 view.placeInfo(response)
             }
 
             override fun onFailure(message: String) {
-
             }
 
         })
@@ -32,7 +31,7 @@ class PlaceInfoPresenter(
             }
 
             override fun onFailure(message: String) {
-
+                view.getPlaceDetail()
             }
 
         })

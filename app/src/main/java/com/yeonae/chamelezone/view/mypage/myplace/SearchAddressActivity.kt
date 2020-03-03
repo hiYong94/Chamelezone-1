@@ -24,6 +24,7 @@ class SearchAddressActivity : AppCompatActivity() {
         handler = Handler()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     fun setWebView() {
         web_view.run {
             webChromeClient = WebChromeClient()
@@ -65,14 +66,14 @@ class SearchAddressActivity : AppCompatActivity() {
     private inner class AndroidBridge {
         @JavascriptInterface
         fun setAddress(arg1: String, arg2: String, arg3: String) {
-            handler?.post(Runnable {
+            handler?.post {
                 val address = String.format("%s %s", arg2, arg3)
                 setWebView()
                 val intent = Intent()
                 intent.putExtra("result", address)
                 setResult(RESULT_OK, intent)
                 finish()
-            })
+            }
         }
     }
 }

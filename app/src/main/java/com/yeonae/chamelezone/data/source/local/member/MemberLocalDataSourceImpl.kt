@@ -82,6 +82,8 @@ class MemberLocalDataSourceImpl(
                 appExecutors.mainThread.execute {
                     callBack.onSuccess(user)
                 }
+            } else{
+                callBack.onFailure("없음")
             }
         }
     }

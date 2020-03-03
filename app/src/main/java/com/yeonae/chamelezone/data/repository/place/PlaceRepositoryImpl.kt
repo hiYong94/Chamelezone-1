@@ -9,10 +9,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
     PlaceRepository {
     override fun registerPlace(
         memberNumber: Int,
-        keywordName: List<Int>,
+        keywordNames: List<Int>,
         name: String,
         address: String,
-        openingTime: List<String>,
+        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
@@ -22,10 +22,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
     ) {
         remoteDataSource.registerPlace(
             memberNumber,
-            keywordName,
+            keywordNames,
             name,
             address,
-            openingTime,
+            openingTimes,
             phoneNumber,
             content,
             latitude,
@@ -51,7 +51,11 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.getSearchByKeyword(keyword, callBack)
     }
 
-    override fun getPlaceDetail(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<PlaceResponse>) {
+    override fun getPlaceDetail(
+        placeNumber: Int,
+        memberNumber: Int?,
+        callBack: PlaceCallBack<PlaceResponse>
+    ) {
         remoteDataSource.getPlaceDetail(placeNumber, memberNumber, callBack)
     }
 
@@ -63,12 +67,40 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.getKeyword(callBack)
     }
 
-    override fun modifyPlace() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun modifyPlace(
+        memberNumber: Int,
+        keywordNames: List<Int>,
+        name: String,
+        address: String,
+        openingTimes: List<String>,
+        phoneNumber: String,
+        content: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
+        images: List<String>,
+        callBack: PlaceCallBack<Boolean>
+    ) {
+        remoteDataSource.modifyPlace(
+            memberNumber,
+            keywordNames,
+            name,
+            address,
+            openingTimes,
+            phoneNumber,
+            content,
+            latitude,
+            longitude,
+            images,
+            callBack
+        )
     }
 
-    override fun deletePlace(placeNumber: Int, callBack: PlaceCallBack<String>) {
-        remoteDataSource.deletePlace(placeNumber, callBack)
+    override fun deletePlace(
+        placeNumber: Int,
+        memberNumber: Int,
+        callBack: PlaceCallBack<Boolean>
+    ) {
+        remoteDataSource.deletePlace(placeNumber, memberNumber, callBack)
     }
 
     override fun getHomePlaceList(callBack: PlaceCallBack<List<PlaceResponse>>) {

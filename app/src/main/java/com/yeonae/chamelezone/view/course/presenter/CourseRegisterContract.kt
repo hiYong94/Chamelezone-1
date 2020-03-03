@@ -7,7 +7,7 @@ interface CourseRegisterContract {
     interface View {
         var presenter: Presenter
         fun showMessage(message: String)
-        fun showUserInfo(user: UserEntity)
+        fun deliverUserInfo(user: UserEntity)
     }
 
     interface Presenter {

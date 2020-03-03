@@ -2,7 +2,9 @@ package com.yeonae.chamelezone.data.repository.member
 
 import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSource
 import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSource
+import com.yeonae.chamelezone.network.model.EmailResponse
 import com.yeonae.chamelezone.network.model.MemberResponse
+import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 class MemberRepositoryImpl private constructor(
@@ -87,12 +89,20 @@ class MemberRepositoryImpl private constructor(
         localDataSource.deleteAll(callBack)
     }
 
-    override fun checkEmail(email: String, callBack: MemberCallBack<Boolean>) {
+    override fun checkEmail(email: String, callBack: MemberCallBack<EmailResponse>) {
         remoteDataSource.checkEmail(email, callBack)
     }
 
-    override fun checkNickname(nickname: String, callBack: MemberCallBack<Boolean>) {
+    override fun checkNickname(nickname: String, callBack: MemberCallBack<NicknameResponse>) {
         remoteDataSource.checkNickname(nickname, callBack)
+    }
+
+    override fun findEmail(name: String, phone: String, callBack: MemberCallBack<List<EmailResponse>>) {
+        remoteDataSource.findEmail(name, phone, callBack)
+    }
+
+    override fun findPassword(email: String, phone: String, callBack: MemberCallBack<MemberResponse>) {
+        remoteDataSource.findPassword(email, phone, callBack)
     }
 
     companion object {

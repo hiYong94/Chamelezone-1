@@ -28,7 +28,7 @@ class LikePresenter(
     override fun getUser() {
         memberRepository.getMember(object : MemberCallBack<UserEntity>{
             override fun onSuccess(response: UserEntity) {
-                view.showUserInfo(response)
+                response.userNumber?.let { getMyLikeList(it) }
             }
 
             override fun onFailure(message: String) {
