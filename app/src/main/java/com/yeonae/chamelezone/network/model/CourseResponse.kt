@@ -18,10 +18,19 @@ data class CourseResponse(
     @SerializedName("savedImageName")
     val savedImageName: String,
     @SerializedName("regiDate")
-    val regiDate: String
+    val regiDate: String,
+    @SerializedName("keyword_name")
+    val keywordName: ArrayList<String>,
+    @SerializedName("place_name")
+    val placeName: String,
+    @SerializedName("address")
+    val address: String,
+    @SerializedName("place_images")
+    val placeImages: String,
+    @SerializedName("course_image")
+    val courseImage: String
 ) {
     fun toCourseItem(response: CourseResponse): CourseItem {
-        val regiDateFormat = response.regiDate.split("T").first()
         val placeImages = response.savedImageName.split(",")
         val images = arrayListOf<String>()
         for (i in placeImages.indices) {
@@ -34,7 +43,7 @@ data class CourseResponse(
             response.nickName,
             response.title,
             imageFormat,
-            regiDateFormat
+            response.regiDate
         )
     }
 }

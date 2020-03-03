@@ -25,7 +25,7 @@ interface CourseApi {
     @GET("/course/{courseNumber}")
     fun getCourseDetail(
         @Path("courseNumber") courseNumber: Int
-    ): Call<CourseResponse>
+    ): Call<List<CourseResponse>>
 
     @GET("/course/{MemberNumber}")
     fun getMyCourseList(

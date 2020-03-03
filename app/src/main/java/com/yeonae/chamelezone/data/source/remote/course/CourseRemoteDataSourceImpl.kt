@@ -9,10 +9,12 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import okio.Buffer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.io.IOException
 
 class CourseRemoteDataSourceImpl private constructor(private val courseApi: CourseApi) :
     CourseRemoteDataSource {
@@ -55,6 +57,10 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             .enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("tag", t.toString())
+                    Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                    (call.request().body() as MultipartBody).parts().forEach {
+                        Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                    }
                 }
 
                 override fun onResponse(
@@ -86,15 +92,15 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         })
     }
 
-    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<CourseResponse>) {
-        courseService.getCourseDetail(courseNumber).enqueue(object : Callback<CourseResponse> {
-            override fun onFailure(call: Call<CourseResponse>, t: Throwable) {
+    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<List<CourseResponse>>) {
+        courseService.getCourseDetail(courseNumber).enqueue(object : Callback<List<CourseResponse>>{
+            override fun onFailure(call: Call<List<CourseResponse>>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
 
             override fun onResponse(
-                call: Call<CourseResponse>,
-                response: Response<CourseResponse>
+                call: Call<List<CourseResponse>>,
+                response: Response<List<CourseResponse>>
             ) {
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
@@ -143,6 +149,16 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             }
 
         })
+    }
+
+    private fun bodyToString(request: RequestBody): String {
+        return try {
+            val buffer = Buffer()
+            request.writeTo(buffer)
+            buffer.readUtf8()
+        } catch (e: IOException) {
+            "did not work"
+        }
     }
 
     companion object {

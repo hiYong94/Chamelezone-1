@@ -20,7 +20,7 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         remoteDataSource.getCourseList(callBack)
     }
 
-    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<CourseResponse>) {
+    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<List<CourseResponse>>) {
         remoteDataSource.getCourseDetail(courseNumber, callBack)
     }
 
