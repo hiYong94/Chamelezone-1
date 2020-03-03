@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.network.api
 
 import com.google.gson.JsonObject
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -11,14 +12,14 @@ interface LikeApi {
     fun selectLike(
         @Path("memberNumber") memberNumber: Int,
         @Body placeNumber: JsonObject
-    ): Call<ResponseBody>
+    ): Call<LikeResponse>
 
     @HTTP(method = "DELETE", path = "/user/{memberNumber}/like/{likeNumber}", hasBody = true)
     fun deleteLike(
         @Path("likeNumber") likeNumber: Int,
         @Path("memberNumber") memberNumber: Int,
         @Body placeNumber: JsonObject
-    ): Call<ResponseBody>
+    ): Call<LikeResponse>
 
     @GET("/user/{memberNumber}/likes")
     fun getMyLikeList(

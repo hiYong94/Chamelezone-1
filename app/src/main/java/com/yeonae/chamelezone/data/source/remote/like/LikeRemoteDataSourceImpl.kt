@@ -5,6 +5,7 @@ import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.repository.like.LikeCallBack
 import com.yeonae.chamelezone.network.api.LikeApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.likeService
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -13,18 +14,19 @@ import retrofit2.Response
 
 class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi) :
     LikeRemoteDataSource {
-    override fun selectLike(memberNumber: Int, placeNumber: Int, callBack: LikeCallBack<Boolean>) {
+    override fun selectLike(memberNumber: Int, placeNumber: Int, callBack: LikeCallBack<LikeResponse>) {
         val jsonObject = JsonObject().apply {
             addProperty("placeNumber", placeNumber)
         }
-        likeService.selectLike(memberNumber, jsonObject).enqueue(object : Callback<ResponseBody> {
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+        likeService.selectLike(memberNumber, jsonObject).enqueue(object : Callback<LikeResponse> {
+            override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(true)
+                    response.body()?.let { callBack.onSuccess(it) }
+                    Log.d("like", response.body().toString())
                 }
             }
 
@@ -35,19 +37,20 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
         likeNumber: Int,
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<Boolean>
+        callBack: LikeCallBack<LikeResponse>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("placeNumber", placeNumber)
         }
-        likeService.deleteLike(likeNumber, memberNumber, jsonObject).enqueue(object : Callback<ResponseBody>{
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+        likeService.deleteLike(likeNumber, memberNumber, jsonObject).enqueue(object : Callback<LikeResponse>{
+            override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
 
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+            override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(true)
+                    response.body()?.let { callBack.onSuccess(it) }
+                    Log.d("like", response.body().toString())
                 }
             }
 

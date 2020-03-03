@@ -1,13 +1,18 @@
 package com.yeonae.chamelezone.data.repository.like
 
 import com.yeonae.chamelezone.data.source.remote.like.LikeRemoteDataSource
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 
 class LikeRepositoryImpl private constructor(
     private val remoteDataSource: LikeRemoteDataSource
 ) :
     LikeRepository {
-    override fun selectLike(memberNumber: Int, placeNumber: Int, callBack: LikeCallBack<Boolean>) {
+    override fun selectLike(
+        memberNumber: Int,
+        placeNumber: Int,
+        callBack: LikeCallBack<LikeResponse>
+    ) {
         remoteDataSource.selectLike(memberNumber, placeNumber, callBack)
     }
 
@@ -15,7 +20,7 @@ class LikeRepositoryImpl private constructor(
         likeNumber: Int,
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<Boolean>
+        callBack: LikeCallBack<LikeResponse>
     ) {
         remoteDataSource.deleteLike(likeNumber, memberNumber, placeNumber, callBack)
     }
