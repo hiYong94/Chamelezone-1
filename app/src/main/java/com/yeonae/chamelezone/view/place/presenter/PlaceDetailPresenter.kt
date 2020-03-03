@@ -6,6 +6,7 @@ import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
@@ -55,8 +56,8 @@ class PlaceDetailPresenter(
     }
 
     override fun selectLike(memberNumber: Int, placeNumber: Int) {
-        likeRepository.selectLike(memberNumber, placeNumber, object : LikeCallBack<Boolean>{
-            override fun onSuccess(response: Boolean) {
+        likeRepository.selectLike(memberNumber, placeNumber, object : LikeCallBack<LikeResponse>{
+            override fun onSuccess(response: LikeResponse) {
                 view.showLikeMessage(response)
             }
 
@@ -68,8 +69,8 @@ class PlaceDetailPresenter(
     }
 
     override fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int) {
-        likeRepository.deleteLike(likeNumber, memberNumber, placeNumber, object : LikeCallBack<Boolean>{
-            override fun onSuccess(response: Boolean) {
+        likeRepository.deleteLike(likeNumber, memberNumber, placeNumber, object : LikeCallBack<LikeResponse>{
+            override fun onSuccess(response: LikeResponse) {
                 view.showDeleteLikeMessage(response)
             }
 
