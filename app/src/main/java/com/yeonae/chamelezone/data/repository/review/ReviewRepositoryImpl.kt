@@ -27,8 +27,29 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
 
     }
 
-    override fun deleteReview() {
+    override fun deleteReview(
+        placeNumber: Int,
+        reviewNumber: Int,
+        memberNumber: Int,
+        callBack: ReviewCallBack<String>
+    ) {
+        reviewRemoteDataSource.deleteReview(placeNumber, reviewNumber, memberNumber, callBack)
+    }
 
+    override fun getReviewDetail(
+        placeNumber: Int,
+        reviewNumber: Int,
+        callBack: ReviewCallBack<ReviewResponse>
+    ) {
+        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callBack)
+    }
+
+    override fun getMyReviewDetail(
+        placeNumber: Int,
+        reviewNumber: Int,
+        callBack: ReviewCallBack<ReviewResponse>
+    ) {
+        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callBack)
     }
 
     companion object {
