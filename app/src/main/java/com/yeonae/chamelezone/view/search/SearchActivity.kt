@@ -1,7 +1,9 @@
 package com.yeonae.chamelezone.view.search
 
+import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
@@ -50,6 +52,8 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         }
 
         btn_back.setOnClickListener {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
             finish()
         }
 
