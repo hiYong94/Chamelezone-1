@@ -24,25 +24,27 @@ class JoinFragment : Fragment(), JoinContract.View {
     private var checkedNickname: Boolean = false
     override fun showNicknameMessage(response: NicknameResponse) {
         if(response.nicknameCheck == CHECK_YES){
-            Toast.makeText(context, R.string.available_nickname, Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), R.string.available_nickname, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = true
 
         }else if(response.nicknameCheck == CHECK_NO){
-            Toast.makeText(context, R.string.registered_nickname, Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), R.string.registered_nickname, Toast.LENGTH_SHORT)
                 .show()
+            checkedNickname = false
         }
     }
 
     override fun showEmailMessage(response: EmailResponse) {
         if(response.emailCheck == CHECK_YES){
-            Toast.makeText(context, R.string.available_email, Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), R.string.available_email, Toast.LENGTH_SHORT)
                 .show()
             checkedEmail = true
 
         }else if(response.emailCheck == CHECK_NO){
-            Toast.makeText(context, R.string.registered_email, Toast.LENGTH_SHORT)
+            Toast.makeText(requireContext(), R.string.registered_email, Toast.LENGTH_SHORT)
                 .show()
+            checkedNickname = false
         }
     }
 
@@ -78,6 +80,8 @@ class JoinFragment : Fragment(), JoinContract.View {
         }
 
         btn_join.setOnClickListener {
+            presenter.checkEmail("${join_email.text}")
+            presenter.checkNickname("${join_nickname.text}")
             joinCheck(
                 "${join_email.text}",
                 "${join_password.text}",
@@ -131,6 +135,16 @@ class JoinFragment : Fragment(), JoinContract.View {
             phone.isEmpty() -> Toast.makeText(
                 requireContext(),
                 R.string.enter_phone_number,
+                Toast.LENGTH_SHORT
+            ).show()
+            !checkedEmail -> Toast.makeText(
+                requireContext(),
+                R.string.registered_email,
+                Toast.LENGTH_SHORT
+            ).show()
+            !checkedNickname -> Toast.makeText(
+                requireContext(),
+                R.string.registered_nickname,
                 Toast.LENGTH_SHORT
             ).show()
             else -> {
