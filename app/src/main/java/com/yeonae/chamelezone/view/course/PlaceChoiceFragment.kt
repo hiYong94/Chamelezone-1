@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.view.course.adapter.PlaceChoiceRvAdapter
 import com.yeonae.chamelezone.view.search.presenter.SearchContract
@@ -65,6 +67,17 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
             requireActivity().onBackPressed()
         }
 
+        edt_search.setOnEditorActionListener { _, i, _ ->
+            if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
+                if ("${edt_search.text}".isEmpty()) {
+                    showDialog()
+                } else {
+                    presenter.searchByName("${edt_search.text}")
+                }
+            }
+            true
+        }
+
     }
 
     override fun showPlaceList(placeList: List<PlaceItem>) {
@@ -82,6 +95,15 @@ class PlaceChoiceFragment : Fragment(), SearchContract.View {
     private fun setAdapter() {
         recycler_place_choice.layoutManager = LinearLayoutManager(context)
         recycler_place_choice.adapter = placeChoiceRvAdapter
+    }
+
+    private fun showDialog() {
+        val newFragment = SingleDialogFragment.newInstance(
+            R.string.enter_search
+        )
+        fragmentManager?.let {
+            newFragment.show(it, "dialog")
+        }
     }
 
     companion object {
