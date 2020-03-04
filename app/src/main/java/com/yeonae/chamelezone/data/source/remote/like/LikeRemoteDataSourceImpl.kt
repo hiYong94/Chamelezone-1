@@ -34,7 +34,6 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
     }
 
     override fun deleteLike(
-        likeNumber: Int,
         memberNumber: Int,
         placeNumber: Int,
         callBack: LikeCallBack<LikeResponse>
@@ -42,7 +41,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
         val jsonObject = JsonObject().apply {
             addProperty("placeNumber", placeNumber)
         }
-        likeService.deleteLike(likeNumber, memberNumber, jsonObject).enqueue(object : Callback<LikeResponse>{
+        likeService.deleteLike(memberNumber, jsonObject).enqueue(object : Callback<LikeResponse>{
             override fun onFailure(call: Call<LikeResponse>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
@@ -69,6 +68,8 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
             ) {
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
+                }else if (response.code() == REQUEST_ERR) {
+                    callBack.onFailure("마음에 드는 장소를 발견하면\n하트를 눌러 보세요.")
                 }
             }
 
@@ -77,6 +78,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
 
     companion object {
         private const val SUCCESS = 200
+        private const val REQUEST_ERR = 404
         fun getInstance(likeApi: LikeApi): LikeRemoteDataSource =
             LikeRemoteDataSourceImpl(likeApi)
     }

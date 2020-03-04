@@ -17,12 +17,11 @@ class LikeRepositoryImpl private constructor(
     }
 
     override fun deleteLike(
-        likeNumber: Int,
         memberNumber: Int,
         placeNumber: Int,
         callBack: LikeCallBack<LikeResponse>
     ) {
-        remoteDataSource.deleteLike(likeNumber, memberNumber, placeNumber, callBack)
+        remoteDataSource.deleteLike(memberNumber, placeNumber, callBack)
     }
 
     override fun getMyLikeList(memberNumber: Int, callBack: LikeCallBack<List<PlaceResponse>>) {

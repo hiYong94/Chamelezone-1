@@ -9,12 +9,13 @@ interface LikeContract {
         fun showResultView(response: Boolean)
         fun showLikeState(response: LikeResponse)
         fun showMyLikeList(response: List<PlaceResponse>)
+        fun showMessage(message: String)
     }
 
     interface Presenter {
         fun checkLogin()
         fun getUser()
-        fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int)
+        fun deleteLike(memberNumber: Int, placeNumber: Int)
         fun getMyLikeList(memberNumber: Int)
     }
 }

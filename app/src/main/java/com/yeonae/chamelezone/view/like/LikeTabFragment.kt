@@ -26,16 +26,22 @@ class LikeTabFragment : Fragment(), LikeContract.View {
     override fun showResultView(response: Boolean) {
         if (response) {
             layout_before_login.visibility = View.GONE
-            layout_after_login.visibility = View.VISIBLE
             presenter.getUser()
         } else {
             layout_before_login.visibility = View.VISIBLE
-            layout_after_login.visibility = View.GONE
         }
     }
 
     override fun showMyLikeList(response: List<PlaceResponse>) {
+        layout_no_like_list.visibility = View.GONE
+        layout_like_list.visibility = View.VISIBLE
         likeTabRvAdapter.addData(response)
+    }
+
+    override fun showMessage(message: String) {
+        layout_no_like_list.visibility = View.VISIBLE
+        layout_like_list.visibility = View.GONE
+        tv_message.text = message
     }
 
     override fun showLikeState(response: LikeResponse) {
@@ -74,9 +80,10 @@ class LikeTabFragment : Fragment(), LikeContract.View {
 
         likeTabRvAdapter.setOnLikeClickListener(object : LikeTabRvAdapter.OnLikeClickListener {
             override fun onLikeClick(place: PlaceResponse) {
-                place.memberNumber?.let {
-                    presenter.deleteLike(place.likeNumber ?: 0,
-                        it, place.placeNumber)
+                place.memberNumber.let {
+                    presenter.deleteLike(
+                        it, place.placeNumber
+                    )
                 }
             }
         })

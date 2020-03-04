@@ -41,12 +41,11 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     }
 
     override fun placeInfo(place: PlaceResponse) {
-        val placeImages = place.savedImageName.split(",")
         val images = arrayListOf<String>()
-        for (i in placeImages.indices) {
-            images.add(IMAGE_RESOURCE + placeImages[i])
+        for (i in place.savedImageName.indices) {
+            images.add(IMAGE_RESOURCE + place.savedImageName[i])
         }
-        if (place.likeNumber != null) {
+        if (place.likeStatus) {
             btn_like.isChecked = true
         }
         val imageAdapter = ImageViewPagerAdapter(images)
@@ -65,7 +64,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
                 } else {
                     memberNumber?.let { it1 ->
                         presenter.deleteLike(
-                            place.likeNumber ?: 0,
                             it1,
                             placeNumber
                         )
@@ -88,7 +86,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             presenter.placeDetail(placeNumber, memberNumber)
         }
     }
-  
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
@@ -134,7 +132,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             post {
                 val nameBar = layout_visibility.height
                 val tabBar = tabs_detail.height
-                val density = resources.displayMetrics.density
 
                 Log.d("PlaceDetailActivity nameBar", nameBar.toString())
                 Log.d("PlaceDetailActivity tabBar", tabBar.toString())

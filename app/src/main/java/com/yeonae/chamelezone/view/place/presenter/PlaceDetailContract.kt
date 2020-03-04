@@ -20,6 +20,6 @@ interface PlaceDetailContract {
         fun checkLogin()
         fun getUser()
         fun selectLike(memberNumber: Int, placeNumber: Int)
-        fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int)
+        fun deleteLike(memberNumber: Int, placeNumber: Int)
     }
 }

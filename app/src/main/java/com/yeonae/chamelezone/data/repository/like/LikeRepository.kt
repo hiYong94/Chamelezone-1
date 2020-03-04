@@ -11,7 +11,6 @@ interface LikeRepository {
     )
 
     fun deleteLike(
-        likeNumber: Int,
         memberNumber: Int,
         placeNumber: Int,
         callBack: LikeCallBack<LikeResponse>

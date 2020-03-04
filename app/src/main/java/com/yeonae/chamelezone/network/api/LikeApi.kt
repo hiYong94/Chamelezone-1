@@ -14,9 +14,8 @@ interface LikeApi {
         @Body placeNumber: JsonObject
     ): Call<LikeResponse>
 
-    @HTTP(method = "DELETE", path = "/user/{memberNumber}/like/{likeNumber}", hasBody = true)
+    @HTTP(method = "DELETE", path = "/user/{memberNumber}/like", hasBody = true)
     fun deleteLike(
-        @Path("likeNumber") likeNumber: Int,
         @Path("memberNumber") memberNumber: Int,
         @Body placeNumber: JsonObject
     ): Call<LikeResponse>

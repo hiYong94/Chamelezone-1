@@ -39,8 +39,8 @@ class LikePresenter(
         })
     }
 
-    override fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int) {
-        likeRepository.deleteLike(likeNumber, memberNumber, placeNumber, object :
+    override fun deleteLike(memberNumber: Int, placeNumber: Int) {
+        likeRepository.deleteLike(memberNumber, placeNumber, object :
             LikeCallBack<LikeResponse> {
             override fun onSuccess(response: LikeResponse) {
                 view.showLikeState(response)
@@ -60,7 +60,7 @@ class LikePresenter(
             }
 
             override fun onFailure(message: String) {
-
+                view.showMessage(message)
             }
 
         })
