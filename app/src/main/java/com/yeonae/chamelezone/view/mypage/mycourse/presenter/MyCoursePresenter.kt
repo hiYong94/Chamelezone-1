@@ -2,9 +2,13 @@ package com.yeonae.chamelezone.view.mypage.mycourse.presenter
 
 import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.data.repository.course.CourseRepository
+import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.model.CourseResponse
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 class MyCoursePresenter(
+    private val memberRepository: MemberRepository,
     private val repository: CourseRepository,
     private val view: MyCourseContract.View
 ) : MyCourseContract.Presenter {
@@ -15,7 +19,20 @@ class MyCoursePresenter(
             }
 
             override fun onFailure(message: String) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                view.showMessage(message)
+            }
+
+        })
+    }
+
+    override fun getUser() {
+        memberRepository.getMember(object : MemberCallBack<UserEntity> {
+            override fun onSuccess(response: UserEntity) {
+                view.showUserInfo(response)
+            }
+
+            override fun onFailure(message: String) {
+
             }
 
         })

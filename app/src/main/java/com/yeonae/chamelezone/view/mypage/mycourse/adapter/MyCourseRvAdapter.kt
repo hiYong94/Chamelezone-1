@@ -5,17 +5,20 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
+import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.network.model.CourseResponse
 import kotlinx.android.synthetic.main.item_my_course.view.*
 
-class MyCourseRvAdapter(private var items: ArrayList<Course>) :
+class MyCourseRvAdapter :
     RecyclerView.Adapter<MyCourseRvAdapter.MyCourseViewHolder>() {
 
-    //private var items = mutableListOf<Like>()
+    private var items = mutableListOf<CourseResponse>()
     private lateinit var onClickListener: OnClickListener
     private lateinit var moreButtonListener: MoreButtonListener
 
     interface OnClickListener {
-        fun onClick(course: Course)
+        fun onClick(course: CourseResponse)
     }
 
     interface MoreButtonListener {
@@ -42,7 +45,7 @@ class MyCourseRvAdapter(private var items: ArrayList<Course>) :
         }
     }
 
-    fun addData(addDataList: List<Course>) {
+    fun addData(addDataList: List<CourseResponse>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
@@ -52,16 +55,21 @@ class MyCourseRvAdapter(private var items: ArrayList<Course>) :
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_course, parent, false)
     ) {
         fun bind(
-            item: Course,
+            item: CourseResponse,
             clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {
             itemView.run {
                 setOnClickListener {
-                    clickListener?.onClick(item)
+                    clickListener.onClick(item)
                 }
-                tv_course_name.text = item.courseName
-                tv_course_content.text = item.courseText
+                tv_course_name.text = item.title
+                tv_course_content.text = item.content
+                iv_course_image.glideImageSet(
+                    IMAGE_RESOURCE + item.savedImageName,
+                    iv_course_image.measuredWidth,
+                    iv_course_image.measuredHeight
+                )
 
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog()
