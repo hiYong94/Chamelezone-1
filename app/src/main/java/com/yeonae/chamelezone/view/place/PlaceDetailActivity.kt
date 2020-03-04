@@ -119,12 +119,10 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     }
 
     private fun setupView() {
-
         tab_layout.setupWithViewPager(vp_image, true)
 
         val fragmentAdapter =
             PlaceDetailPagerAdapter(supportFragmentManager, placeNumber, placeName, memberNumber)
-
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
