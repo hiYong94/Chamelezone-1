@@ -19,7 +19,7 @@ data class CourseResponse(
     val savedImageName: String,
     @SerializedName("regiDate")
     val regiDate: String,
-    @SerializedName("keyword_name")
+    @SerializedName("keywordName")
     val keywordName: ArrayList<String>,
     @SerializedName("place_name")
     val placeName: String,

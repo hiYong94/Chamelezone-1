@@ -126,6 +126,8 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 ) {
                     if (response.code() == SUCCESS) {
                         response.body()?.let { callBack.onSuccess(it) }
+                    }else if (response.code() == REQUEST_ERR) {
+                        callBack.onFailure("코스 등록을 해보세요.")
                     }
                 }
 
@@ -136,8 +138,8 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
 
     }
 
-    override fun deleteCourse(courseNumber: Int, callBack: CourseCallBack<String>) {
-        courseService.deleteCourse(courseNumber).enqueue(object : Callback<ResponseBody> {
+    override fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<String>) {
+        courseService.deleteCourse(courseNumber, memberNumber).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
@@ -163,6 +165,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
 
     companion object {
         private const val SUCCESS = 200
+        private const val REQUEST_ERR = 404
         fun getInstance(courseApi: CourseApi): CourseRemoteDataSource =
             CourseRemoteDataSourceImpl(courseApi)
     }

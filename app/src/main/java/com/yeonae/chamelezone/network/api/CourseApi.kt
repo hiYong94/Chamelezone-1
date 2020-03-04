@@ -27,9 +27,9 @@ interface CourseApi {
         @Path("courseNumber") courseNumber: Int
     ): Call<List<CourseResponse>>
 
-    @GET("/course/{MemberNumber}")
+    @GET("/user/{memberNumber}/course")
     fun getMyCourseList(
-        @Path("MemberNumber") memberNumber: Int
+        @Path("memberNumber") memberNumber: Int
     ): Call<List<CourseResponse>>
 
     @PUT("/course/{courseNumber}")
@@ -39,7 +39,8 @@ interface CourseApi {
 
     @DELETE("/course/{courseNumber}")
     fun deleteCourse(
-        @Path("courseNumber") courseNumber: Int
+        @Path("courseNumber") courseNumber: Int,
+        @Query("memberNumber") memberNumber: Int
     ): Call<ResponseBody>
 
 }
