@@ -337,7 +337,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.code() == SUCCESS) {
+                if (response.code() == Network.SUCCESS) {
                     callBack.onSuccess(true)
                 }
             }
@@ -364,15 +364,15 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == Network.SUCCESS) {
-                    callBack.onSuccess("장소 삭제 성공")
+                    callBack.onSuccess(true)
                 }
             }
 
         })
     }
 
-    override fun getHomePlaceList(callBack: PlaceCallBack<List<PlaceResponse>>) {
-        placeService.getHomePlaceList().enqueue(object : Callback<List<PlaceResponse>> {
+    override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
+        placeService.getHomePlaceList(memberNumber).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
                 Log.d("tag", t.toString())
             }
