@@ -8,7 +8,7 @@ import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import kotlinx.android.synthetic.main.item_my_place.view.*
 
-class MyPlaceRvAdapter() :
+class MyPlaceRvAdapter :
     RecyclerView.Adapter<MyPlaceRvAdapter.MyPlaceViewHolder>() {
 
     private val items = mutableListOf<PlaceResponse>()
@@ -62,15 +62,17 @@ class MyPlaceRvAdapter() :
                     clickListener.onClick(item)
                 }
                 tv_place_name.text = item.name
-                tv_place_keyword.text = item.keywordName
-                tv_place_address.text = item.address
-                val placeImages = item.savedImageName.split(",")
-                val images = arrayListOf<String>()
-                for (i in placeImages.indices) {
-                    images.add(IMAGE_RESOURCE + placeImages[i])
+                item.keywordName.forEach {
+                    if (it == item.keywordName[0]) {
+                        tv_place_keyword.text = it
+                    } else {
+                        tv_place_keyword.text = "${tv_place_keyword.text}${","} $it"
+                    }
                 }
+                tv_place_address.text = item.address
+                val image = IMAGE_RESOURCE + item.savedImageName[0]
                 iv_place_image.glideImageSet(
-                    images[0],
+                    image,
                     iv_place_image.measuredWidth,
                     iv_place_image.measuredHeight
                 )

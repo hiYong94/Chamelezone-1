@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
@@ -57,12 +58,20 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View {
     }
 
     override fun showUserInfo(user: UserEntity) {
-        memberNumber = user.userNumber!!
+        memberNumber = user.userNumber ?: 0
         presenter.getMyPlaceList(memberNumber)
     }
 
     override fun showMyPlaceList(response: List<PlaceResponse>) {
+        layout_no_my_place.visibility = View.GONE
+        layout_my_place.visibility = View.VISIBLE
         myPlaceRvAdapter.addData(response)
+    }
+
+    override fun showMessage(message: String) {
+        layout_no_my_place.visibility = View.VISIBLE
+        layout_my_place.visibility = View.GONE
+        tv_message.text = message
     }
 
     private fun showBottomSheet() {
