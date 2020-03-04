@@ -31,7 +31,7 @@ interface ReviewApi {
     @HTTP(method = "DELETE", path = "/place/{placeNumber}/review/{reviewNumber}", hasBody = true)
     fun deleteReview(
         @Path("placeNumber") placeNumber: Int,
-        @Path("reviewNumber") reviewNumber: Number,
+        @Path("reviewNumber") reviewNumber: Int,
         @Body memberNumber: JsonObject
     ): Call<ResponseBody>
 
