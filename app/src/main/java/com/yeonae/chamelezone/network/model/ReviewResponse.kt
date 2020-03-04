@@ -28,13 +28,15 @@ data class ReviewResponse(
         reviewImages.forEachIndexed { index, _ ->
             imageList.add(IMAGE_RESOURCE + reviewImages[index])
         }
+        val image = imageList.first()
         return ReviewItem(
             response.reviewNumber,
             response.placeNumber,
             response.name,
+            response.regiDate,
             response.content,
+            image,
             imageList.toString()
-            )
-
+        )
     }
 }

@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.ReviewResponse
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
@@ -33,7 +33,7 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         presenter.getMember()
     }
 
-    override fun showMyReviewList(reviewList: List<ReviewResponse>) {
+    override fun showMyReviewList(reviewList: List<ReviewItem>) {
         myReviewRvAdapter.addData(reviewList)
     }
 
@@ -53,7 +53,7 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         presenter.checkMember()
 
         myReviewRvAdapter.setOnClickListener(object : MyReviewRvAdapter.OnClickListener {
-            override fun onClick(review: ReviewResponse) {
+            override fun onClick(review: ReviewItem) {
                 val placeName = review.name
                 val reviewContent = review.content
                 placeNumber = review.placeNumber
@@ -68,7 +68,7 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         })
 
         myReviewRvAdapter.setMoreButtonListener(object : MyReviewRvAdapter.MoreButtonListener {
-            override fun bottomSheetDialog(review: ReviewResponse) {
+            override fun bottomSheetDialog(review: ReviewItem) {
                 placeNumber = review.placeNumber
                 reviewNumber = review.reviewNumber
                 showBottomSheet(placeNumber, reviewNumber)

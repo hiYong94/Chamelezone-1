@@ -5,9 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.model.ReviewResponse
 import kotlinx.android.synthetic.main.item_my_review.view.*
 
 class MyReviewRvAdapter :
@@ -15,14 +14,14 @@ class MyReviewRvAdapter :
 
     private lateinit var onClickListener: OnClickListener
     private lateinit var moreButtonListener: MoreButtonListener
-    private var items = ArrayList<ReviewResponse>()
+    private var items = ArrayList<ReviewItem>()
 
     interface OnClickListener {
-        fun onClick(review: ReviewResponse)
+        fun onClick(review: ReviewItem)
     }
 
     interface MoreButtonListener {
-        fun bottomSheetDialog(review: ReviewResponse)
+        fun bottomSheetDialog(review: ReviewItem)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -45,7 +44,7 @@ class MyReviewRvAdapter :
         }
     }
 
-    fun addData(addDataList: List<ReviewResponse>) {
+    fun addData(addDataList: List<ReviewItem>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
@@ -59,7 +58,7 @@ class MyReviewRvAdapter :
         private val content = itemView.tv_review_content
         private val regiDate = itemView.tv_review_date
         fun bind(
-            review: ReviewResponse,
+            review: ReviewItem,
             clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {
@@ -67,18 +66,13 @@ class MyReviewRvAdapter :
                 setOnClickListener {
                     clickListener.onClick(review)
                 }
-                val dateSplit = review.regiDate.split("T")
                 placeName.text = review.name
                 content.text = review.content
-                regiDate.text = dateSplit[0]
-                val images = review.savedImageName.split(",")
-                val imageList = images.map {
-                    IMAGE_RESOURCE + it
-                }
-                imageList.let {
-                    placeImg.glideImageSet(imageList[0], placeImg.measuredWidth, placeImg.measuredHeight)
-                    Log.d("imageList", images.toString())
-                    Log.d("imageList", imageList.toString())
+                regiDate.text = review.regiDate
+                val image = review.image
+                Log.d("MyReviewRvAdapter image images", image)
+                image.let {
+                    placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
                 }
 
                 btn_more.setOnClickListener {

@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myreview.presenter
 
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
@@ -15,7 +16,11 @@ class MyReviewPresenter(
     override fun getUserReview(memberNumber: Int) {
         reviewRepository.getMyReviewList(memberNumber, object : ReviewCallBack<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
-                myReviewView.showMyReviewList(response)
+                val reviewItem = arrayListOf<ReviewItem>()
+                response.forEachIndexed { index, _ ->
+                    reviewItem.add(response[index].toReviewItem(response[index]))
+                }
+                myReviewView.showMyReviewList(reviewItem)
             }
 
             override fun onFailure(message: String) {
