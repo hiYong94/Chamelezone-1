@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import kotlinx.android.synthetic.main.item_my_review.view.*
@@ -21,7 +22,7 @@ class MyReviewRvAdapter :
     }
 
     interface MoreButtonListener {
-        fun bottomSheetDialog()
+        fun bottomSheetDialog(review: ReviewResponse)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -64,7 +65,7 @@ class MyReviewRvAdapter :
         ) {
             itemView.run {
                 setOnClickListener {
-                    clickListener?.onClick(review)
+                    clickListener.onClick(review)
                 }
                 val dateSplit = review.regiDate.split("T")
                 placeName.text = review.name
@@ -72,16 +73,16 @@ class MyReviewRvAdapter :
                 regiDate.text = dateSplit[0]
                 val images = review.savedImageName.split(",")
                 val imageList = images.map {
-                    "http://13.209.136.122:3000/image/$it"
+                    IMAGE_RESOURCE + it
                 }
-//                for (i in images.indices)
-//                    imageList.add("http://13.209.136.122:3000/image/" + images[i])
-                placeImg.glideImageSet(imageList[0], placeImg.measuredWidth, placeImg.measuredHeight)
-                Log.d("imageList", images.toString())
-                Log.d("imageList", imageList.toString())
+                imageList.let {
+                    placeImg.glideImageSet(imageList[0], placeImg.measuredWidth, placeImg.measuredHeight)
+                    Log.d("imageList", images.toString())
+                    Log.d("imageList", imageList.toString())
+                }
 
                 btn_more.setOnClickListener {
-                    moreButtonListener.bottomSheetDialog()
+                    moreButtonListener.bottomSheetDialog(review)
                 }
             }
         }
