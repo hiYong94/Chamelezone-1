@@ -9,11 +9,13 @@ interface MyReviewContract {
         fun showMyReviewList(reviewList: List<ReviewResponse>)
         fun getMember(user: UserEntity)
         fun getMemberCheck(response: Boolean)
+        fun showReviewDelete(message: String)
     }
 
     interface Presenter {
         fun getUserReview(memberNumber: Int)
         fun getMember()
         fun checkMember()
+        fun deleteReview(placeNumber: Int, reviewNumber: Int, memberNumber: Int)
     }
 }

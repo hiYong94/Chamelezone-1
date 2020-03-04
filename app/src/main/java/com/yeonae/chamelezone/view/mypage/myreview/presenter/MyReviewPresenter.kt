@@ -47,4 +47,16 @@ class MyReviewPresenter(
             }
         })
     }
+
+    override fun deleteReview(placeNumber: Int, reviewNumber: Int, memberNumber: Int) {
+        reviewRepository.deleteReview(placeNumber, reviewNumber, memberNumber, object : ReviewCallBack<String> {
+            override fun onSuccess(response: String) {
+                myReviewView.showReviewDelete(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+        })
+    }
 }
