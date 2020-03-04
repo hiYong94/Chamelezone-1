@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceReviewContract
@@ -20,14 +23,15 @@ import com.yeonae.chamelezone.view.place.presenter.PlaceReviewPresenter
 import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import com.yeonae.chamelezone.view.review.ReviewImageActivity
 import com.yeonae.chamelezone.view.review.ReviewModifyActivity
-import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
+import kotlinx.android.synthetic.main.item_place_review.*
 
 class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     override lateinit var presenter: PlaceReviewContract.Presenter
     private var reviewNumber = 0
     private var placeNumber = 0
     private var memberNumber = 0
+    var placeName = arguments?.getString(PLACE_NAME)
 
     private lateinit var placeReviewRvAdapter: PlaceReviewTabRvAdapter
 
@@ -47,8 +51,25 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
     override fun getMemberCheck(response: Boolean) {
         presenter.getMember()
+        if (response) {
+            review.setOnClickListener {
+                val intent = Intent(context, ReviewCreateActivity::class.java)
+//            intent.putExtra(PLACE_NAME, "$tv_place_name")
+                Log.d("placeNumber", placeNumber.toString())
+                Log.d("PlaceReviewTabFragment placeName", placeName.toString())
+                intent.putExtra(PLACE_NUMBER, placeNumber)
+                intent.putExtra(PLACE_NAME, placeName)
+                startActivity(intent)
+            }
+            btn_more.isVisible = true
+        } else {
+            review.setOnClickListener {
+                val intent = Intent(context, LoginActivity::class.java)
+                startActivity(intent)
+            }
+            btn_more.isInvisible = true
+        }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,7 +82,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
-        val placeName = arguments?.getString(PLACE_NAME)
         memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
         Log.d("memberNumber", memberNumber.toString())
 
@@ -77,7 +97,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
         placeNumber.let {
             presenter.placeDetailReview(it)
-
         }
 
         placeReviewRvAdapter.setItemClickListener(object :
@@ -101,14 +120,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
             }
         })
 
-        Log.d("placeNumber", placeNumber.toString())
-        review.setOnClickListener {
-            val intent = Intent(context, ReviewCreateActivity::class.java)
-            intent.putExtra(PLACE_NAME, "$tv_place_name")
-            intent.putExtra(PLACE_NUMBER, placeNumber)
-            intent.putExtra(PLACE_NAME, placeName)
-            startActivity(intent)
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -116,12 +127,12 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         when (requestCode) {
             BOTTOM_SHEET -> {
                 if (resultCode == MoreButtonFragment.BTN_EDIT) {
+                    reviewNumber = data?.getIntExtra(REVIEW_NUMBER, 0) ?: 0
                     Toast.makeText(context, "수정 받음", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, ReviewModifyActivity::class.java)
                     startActivity(intent)
 
                 } else if (resultCode == MoreButtonFragment.BTN_DELETE) {
-                    reviewNumber = arguments?.getInt(REVIEW_NUMBER) ?: 0
                     Toast.makeText(context, "삭제 받음", Toast.LENGTH_SHORT).show()
                     presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
                     Log.d("placeDetailReviewTab reviewNumber", reviewNumber.toString())
@@ -158,19 +169,14 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         private const val MEMBER_NUMBER = "memberNumber"
         private const val REVIEW_NUMBER = "reviewNumber"
 
-        fun newInstance(placeNumber: Int, placeName: String, memberNumber: Int) =
+        fun newInstance(placeNumber: Int, placeName: String, memberNumber: Int?) =
             PlaceReviewTabFragment().apply {
                 arguments = Bundle().apply {
                     putInt(PLACE_NUMBER, placeNumber)
                     putString(PLACE_NAME, placeName)
-                    putInt(MEMBER_NUMBER, memberNumber)
-                }
-            }
-
-        fun newInstanceReview(reviewNumber: Int) =
-            PlaceReviewTabFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(REVIEW_NUMBER, reviewNumber)
+                    if (memberNumber != null) {
+                        putInt(MEMBER_NUMBER, memberNumber)
+                    }
                 }
             }
     }
