@@ -17,6 +17,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -30,7 +31,21 @@ import com.yeonae.chamelezone.view.map.presenter.MapContract
 import com.yeonae.chamelezone.view.map.presenter.MapPresenter
 import kotlinx.android.synthetic.main.fragment_map_tab.*
 
-class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
+class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
+    GoogleMap.OnMarkerClickListener {
+    override fun onMarkerClick(p0: Marker?): Boolean {
+        (activity as? HomeActivity)?.back()
+        if (p0 != null) {
+            (activity as? HomeActivity)?.replace(
+                SingleInfoFragment.newInstance(
+                    p0.title
+                ), true
+            )
+        }
+        Log.d("title", p0!!.title)
+        return false
+    }
+
     override lateinit var presenter: MapContract.Presenter
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
@@ -40,6 +55,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
     private lateinit var locationCallBack: LocationCallback
 
     override fun placeInfo(placeList: List<PlaceResponse>) {
+        map.clear()
         for (i in placeList.indices) {
             val searchLatLng =
                 LatLng(placeList[i].latitude.toDouble(), placeList[i].longitude.toDouble())
@@ -48,19 +64,36 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
                 title(placeList[i].name)
                 draggable(true)
             }
+            if (placeList.size == 1) {
+                (activity as? HomeActivity)?.back()
+                map.addMarker(markerOptions).showInfoWindow()
+                (activity as? HomeActivity)?.replace(
+                    SingleInfoFragment.newInstance(
+                        "${edt_search.text}"
+                    ), true
+                )
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
 
-            map.run {
-                addMarker(markerOptions)
-                setOnMarkerClickListener {
-                    (activity as? HomeActivity)?.back(MarkerInfoFragment())
-                    (activity as? HomeActivity)?.replace(
-                        MarkerInfoFragment.newInstance(
-                            placeList[i]
-                        ), false
+            } else {
+                (activity as? HomeActivity)?.back()
+                (activity as? HomeActivity)?.replace(
+                    MarkerInfoFragment.newInstance(
+                        "${edt_search.text}"
+                    ), true
+                )
+
+                map.run {
+                    addMarker(markerOptions).showInfoWindow()
+                    setOnMarkerClickListener(this@MapTabFragment)
+                    animateCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            LatLng(
+                                placeList[0].latitude.toDouble(),
+                                placeList[0].longitude.toDouble()
+                            ), 15f
+                        )
                     )
-                    false
                 }
-                animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
             }
         }
     }
@@ -95,7 +128,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
         }
         getCurrentLocation()
         updateLocationUI()
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -146,7 +178,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View {
     }
 
     private fun loadMap() {
-
         map_view.onResume()
         map_view.getMapAsync(this)
 
