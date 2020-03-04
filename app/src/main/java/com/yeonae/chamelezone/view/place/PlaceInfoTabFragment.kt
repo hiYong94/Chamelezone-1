@@ -32,10 +32,22 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
     }
 
     override fun placeInfo(place: PlaceResponse) {
-        tv_keyword.text = place.keywordName.replace(",", ", ")
+        place.keywordName.forEach {
+            if (it == place.keywordName[0]) {
+                tv_keyword.text = it
+            } else {
+                tv_keyword.text = "${tv_keyword.text}${","} $it"
+            }
+        }
         tv_address.text = place.address
         tv_phone.text = place.phoneNumber
-        tv_opening_time.text = place.openingTime.replace(",", "\n")
+        place.openingTime.forEach {
+            if (it == place.openingTime[0]) {
+                tv_opening_time.text = it
+            } else {
+                tv_opening_time.text = "${tv_opening_time.text}${"\n"} $it"
+            }
+        }
         tv_content.text = place.content
 
         val latLng = LatLng(place.latitude.toDouble(), place.longitude.toDouble())

@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.view.home.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,18 +30,18 @@ class HomePlaceRvAdapter :
 
         fun bind(place: PlaceResponse, listener: OnItemClickListener) {
             placeName.text = place.name
-            keyword.text = place.keywordName
-            val images = place.savedImageName.split(",")
-            val imageList = arrayListOf<String>()
-            for (i in images.indices)
-                imageList.add(IMAGE_RESOURCE + images[i])
-            Log.d("imageList", images.toString())
-            Log.d("imageList", imageList.toString())
-
-            placeImg.glideImageSet(imageList[0], placeImg.measuredWidth, placeImg.measuredHeight)
+            place.keywordName.forEach {
+                if (it == place.keywordName[0]) {
+                    keyword.text = it
+                } else {
+                    keyword.text = "${keyword.text}${","} $it"
+                }
+            }
+            val image = IMAGE_RESOURCE + place.savedImageName[0]
+            placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
 
             itemView.setOnClickListener {
-                listener?.onItemClick(place)
+                listener.onItemClick(place)
             }
         }
     }

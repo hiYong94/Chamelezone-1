@@ -9,13 +9,13 @@ data class PlaceResponse(
     @SerializedName("placeNumber")
     val placeNumber: Int,
     @SerializedName("keywordName")
-    val keywordName: String,
+    val keywordName: ArrayList<String>,
     @SerializedName("name")
     val name: String,
     @SerializedName("address")
     val address: String,
     @SerializedName("openingTime")
-    val openingTime: String,
+    val openingTime: ArrayList<String>,
     @SerializedName("phoneNumber")
     val phoneNumber: String,
     @SerializedName("content")
@@ -25,38 +25,39 @@ data class PlaceResponse(
     @SerializedName("longitude")
     val longitude: String,
     @SerializedName("savedImageName")
-    val savedImageName: String,
+    val savedImageName: ArrayList<String>,
     @SerializedName("regiDate")
     val regiDate: String,
     @SerializedName("memberNumber")
     val memberNumber: Int,
-    @SerializedName("like_status")
-    val likeStatus: Int? = null
+    @SerializedName("likeStatus")
+    val likeStatus: Boolean
 ) {
     fun toPlaceItem(response: PlaceResponse): PlaceItem {
-        val keyword = response.keywordName.replace(",", ", ")
-        val placeImages = response.savedImageName.split(",")
-        val images = arrayListOf<String>()
-        for (i in placeImages.indices) {
-            images.add(IMAGE_RESOURCE + placeImages[i])
+        var keywordFormat = ""
+        response.keywordName.forEach {
+            keywordFormat = if (it == response.keywordName[0]) {
+                it
+            } else {
+                "${keywordFormat}${","} $it"
+            }
         }
-        val imageFormat = images[0]
+        val imageFormat = IMAGE_RESOURCE + response.savedImageName[0]
 
         return PlaceItem(
             response.placeNumber,
             response.name,
-            keyword,
+            keywordFormat,
             response.address,
             imageFormat
         )
     }
 
     fun toLikeItem(response: PlaceResponse): LikeItem {
-        val keyword = response.keywordName.replace(",", ", ")
-        val placeImages = response.savedImageName.split(",")
+        val keyword = response.keywordName.toString().replace(",", ", ")
         val images = arrayListOf<String>()
-        for (i in placeImages.indices) {
-            images.add(IMAGE_RESOURCE + placeImages[i])
+        for (i in response.savedImageName.indices) {
+            images.add(IMAGE_RESOURCE + response.savedImageName[i])
         }
         val imageFormat = images[0]
 
