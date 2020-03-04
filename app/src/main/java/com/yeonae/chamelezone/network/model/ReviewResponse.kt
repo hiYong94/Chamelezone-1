@@ -36,7 +36,7 @@ data class ReviewResponse(
             response.regiDate,
             response.content,
             image,
-            imageList.toString()
+            response.savedImageName
         )
     }
 }

@@ -1,11 +1,11 @@
 package com.yeonae.chamelezone.view.mypage.myreview.presenter
 
-import com.yeonae.chamelezone.network.model.ReviewResponse
+import com.yeonae.chamelezone.data.model.ReviewItem
 
 interface MyReviewDetailContract {
     interface View {
         var presenter: Presenter
-        fun showMyReviewDetail(review: ReviewResponse)
+        fun showMyReviewDetail(review: ReviewItem)
     }
 
     interface Presenter {

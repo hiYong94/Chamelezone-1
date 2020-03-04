@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
-import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.ReviewImageVpAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewDetailContract
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewDetailPresenter
@@ -17,13 +17,14 @@ class MyReviewDetailActivity : AppCompatActivity(), MyReviewDetailContract.View 
     private var placeNumber = 0
     private var reviewNumber = 0
 
-    override fun showMyReviewDetail(review: ReviewResponse) {
-        val reviewImages = review.savedImageName.split(",")
-        val imageList = reviewImages.map {
-            IMAGE_RESOURCE + it
+    override fun showMyReviewDetail(review: ReviewItem) {
+        val reviewImages = review.images.split(",")
+        val imageList = arrayListOf<String>()
+        reviewImages.forEachIndexed { index, _ ->
+            imageList.add(IMAGE_RESOURCE + reviewImages[index])
         }
-        Log.d("imageList imageList", imageList.toString())
-        Log.d("imageList imageList", reviewImages.toString())
+        Log.d("imageList imageList reviewImages", reviewImages.toString())
+        Log.d("imageList imageList imageList", imageList.toString())
 
         val imageAdapter = ReviewImageVpAdapter(imageList)
         vp_image.adapter = imageAdapter
