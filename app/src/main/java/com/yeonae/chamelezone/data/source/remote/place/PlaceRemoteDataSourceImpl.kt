@@ -229,6 +229,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             ) {
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
+                } else if (response.code() == REQUEST_ERR) {
+                    callBack.onFailure("장소 등록을 해보세요.")
                 }
             }
 
