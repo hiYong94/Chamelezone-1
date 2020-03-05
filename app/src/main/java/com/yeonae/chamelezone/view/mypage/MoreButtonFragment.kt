@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_more_button.*
 
 
 class MoreButtonFragment : BottomSheetDialogFragment() {
+    lateinit var activity : MyReviewActivity
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +30,6 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
         val placeNumber = arguments?.getInt(PLACE_NUMBER)
-        Log.d("More reviewNumber", reviewNumber.toString())
 
         val data = Intent().apply {
             putExtra(REVIEW_NUMBER, reviewNumber)
@@ -36,6 +38,7 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         val myReviewData = Intent().apply {
             putExtra(REVIEW_NUMBER, reviewNumber)
             putExtra(PLACE_NUMBER, placeNumber)
+            Log.d("More reviewNumber", reviewNumber.toString())
         }
 
         btn_modify.setOnClickListener {
@@ -50,10 +53,15 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
             targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
 
-            (context as MyReviewActivity).data(myReviewData)
+            activity.data(myReviewData)
 
             dismiss()
         }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+            activity = context as MyReviewActivity
     }
 
     companion object {
