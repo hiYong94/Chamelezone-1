@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
 import com.google.gson.JsonObject
+import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.Network
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.api.PlaceApi
@@ -9,6 +10,7 @@ import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
 import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.view.Context
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -105,7 +107,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    callBack.onSuccess("장소 등록 성공")
+                    callBack.onSuccess(Context.APPLICATION_CONTEXT.getString(R.string.success_register_place))
                 }
             }
 
@@ -144,7 +146,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure("검색하신 장소가 없습니다.")
+                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.no_place_found))
                 }
             }
 
@@ -164,7 +166,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure("검색하신 장소가 없습니다.")
+                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.no_place_found))
                 }
             }
 
@@ -184,7 +186,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure("검색하신 장소가 없습니다.")
+                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.no_place_found))
                 }
             }
 
@@ -230,7 +232,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure("장소 등록을 해보세요.")
+                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.register_my_place))
                 }
             }
 
