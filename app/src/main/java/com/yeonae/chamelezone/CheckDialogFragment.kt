@@ -80,17 +80,19 @@ class CheckDialogFragment : DialogFragment() {
         val layout = LayoutInflater.from(context)
             .inflate(R.layout.item_check_box, check_box, false)
         check_box.addView(layout)
-        layout.findViewById<CheckBox>(R.id.cb_keyword).text = keyword
-        selectedKeyword.forEach {
-            if (it == keyword) {
-                layout.findViewById<CheckBox>(R.id.cb_keyword).isChecked = true
+        layout.findViewById<CheckBox>(R.id.cb_keyword).run {
+            this.text = keyword
+            selectedKeyword.forEach {
+                if (it == keyword) {
+                    this.isChecked = true
+                }
             }
-        }
-        layout.findViewById<CheckBox>(R.id.cb_keyword).setOnClickListener {
-            if (layout.findViewById<CheckBox>(R.id.cb_keyword).isChecked) {
-                selectedKeyword.add(layout.findViewById<CheckBox>(R.id.cb_keyword).text.toString())
-            } else if (!layout.findViewById<CheckBox>(R.id.cb_keyword).isChecked) {
-                selectedKeyword.remove(layout.findViewById<CheckBox>(R.id.cb_keyword).text.toString())
+            setOnClickListener {
+                if (this.isChecked) {
+                    selectedKeyword.add(this.text.toString())
+                } else if (this.isChecked) {
+                    selectedKeyword.remove(this.text.toString())
+                }
             }
         }
     }
