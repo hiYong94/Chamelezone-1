@@ -9,6 +9,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myplace.adapter.MyPlaceRvAdapter
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.MyPlaceContract
@@ -27,7 +28,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View {
         setAdapter()
 
         presenter = MyPlacePresenter(
-            Injection.memberRepository(applicationContext), Injection.placeRepository(), this
+            Injection.memberRepository(APPLICATION_CONTEXT), Injection.placeRepository(), this
         )
 
         presenter.getUser()

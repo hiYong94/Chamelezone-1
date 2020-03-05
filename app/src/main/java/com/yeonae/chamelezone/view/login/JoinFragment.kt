@@ -14,6 +14,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.EmailResponse
 import com.yeonae.chamelezone.network.model.NicknameResponse
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_join.*
@@ -70,7 +71,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         join_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = JoinPresenter(
-            Injection.memberRepository(requireContext()), this
+            Injection.memberRepository(APPLICATION_CONTEXT), this
         )
 
         checkType()

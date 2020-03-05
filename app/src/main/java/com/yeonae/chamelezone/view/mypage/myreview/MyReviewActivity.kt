@@ -9,6 +9,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
@@ -43,7 +44,7 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         setAdapter()
 
         presenter = MyReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(applicationContext), this
+            Injection.reviewRepository(), Injection.memberRepository(APPLICATION_CONTEXT), this
         )
 
         presenter.checkMember()

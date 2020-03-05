@@ -21,6 +21,7 @@ import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import kotlinx.android.synthetic.main.activity_course_register.*
@@ -76,7 +77,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         setupGUI()
 
         presenter = CourseRegisterPresenter(
-            Injection.memberRepository(applicationContext), Injection.courseRepository(), this
+            Injection.memberRepository(APPLICATION_CONTEXT), Injection.courseRepository(), this
         )
 
         presenter.getUser()

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.CourseItem
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.course.adapter.CourseTabRvAdapter
 import com.yeonae.chamelezone.view.course.presenter.CourseContract
 import com.yeonae.chamelezone.view.course.presenter.CoursePresenter
@@ -48,7 +49,7 @@ class CourseTabFragment : Fragment(), CourseContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = CoursePresenter(
-            Injection.memberRepository(requireContext()), Injection.courseRepository(), this
+            Injection.memberRepository(APPLICATION_CONTEXT), Injection.courseRepository(), this
         )
         presenter.getCourseList()
         setAdapter()

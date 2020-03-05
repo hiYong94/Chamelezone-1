@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.login.presenter.LoginContract
 import com.yeonae.chamelezone.view.login.presenter.LoginPresenter
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -45,7 +46,7 @@ class LoginFragment : Fragment(), LoginContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = LoginPresenter(
-            Injection.memberRepository(requireContext()), this
+            Injection.memberRepository(APPLICATION_CONTEXT), this
         )
 
         btn_back.setOnClickListener {

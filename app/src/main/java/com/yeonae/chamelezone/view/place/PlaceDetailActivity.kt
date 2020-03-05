@@ -15,6 +15,7 @@ import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailContract
@@ -97,7 +98,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         tv_place_name_two.text = placeName
 
         presenter = PlaceDetailPresenter(
-            Injection.memberRepository(applicationContext),
+            Injection.memberRepository(APPLICATION_CONTEXT),
             Injection.placeRepository(),
             Injection.likeRepository(),
             this

@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.network.model.EmailResponse
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.login.presenter.FindEmailContract
 import com.yeonae.chamelezone.view.login.presenter.FindEmailPresenter
 import kotlinx.android.synthetic.main.fragment_find_email.*
@@ -20,7 +20,7 @@ class FindEmailFragment : Fragment(), FindEmailContract.View {
 
     override fun showUserInfo(response: List<EmailResponse>) {
         val emails = arrayOfNulls<String>(response.size)
-        for(i in response.indices){
+        for (i in response.indices) {
             emails[i] = response[i].email
         }
         (activity as? LoginActivity)?.replace(
@@ -43,7 +43,7 @@ class FindEmailFragment : Fragment(), FindEmailContract.View {
         edt_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = FindEmailPresenter(
-            Injection.memberRepository(requireContext()), this
+            Injection.memberRepository(APPLICATION_CONTEXT), this
         )
 
         btn_find_email.setOnClickListener {

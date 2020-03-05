@@ -14,6 +14,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceReviewContract
@@ -67,7 +68,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         setAdapter()
 
         presenter = PlaceReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(requireContext()), this
+            Injection.reviewRepository(), Injection.memberRepository(APPLICATION_CONTEXT), this
         )
 
         presenter.checkMember()
