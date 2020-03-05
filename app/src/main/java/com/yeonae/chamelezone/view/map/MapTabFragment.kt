@@ -33,16 +33,16 @@ import kotlinx.android.synthetic.main.fragment_map_tab.*
 
 class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     GoogleMap.OnMarkerClickListener {
-    override fun onMarkerClick(p0: Marker?): Boolean {
+    override fun onMarkerClick(marker: Marker?): Boolean {
         (activity as? HomeActivity)?.back()
-        if (p0 != null) {
+        if (marker != null) {
             (activity as? HomeActivity)?.replace(
                 SingleInfoFragment.newInstance(
-                    p0.title
+                    marker.title
                 ), true
             )
         }
-        Log.d("title", p0!!.title)
+        Log.d("title", marker!!.title)
         return false
     }
 
