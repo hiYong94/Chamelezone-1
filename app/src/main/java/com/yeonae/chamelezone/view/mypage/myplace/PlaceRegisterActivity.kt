@@ -24,6 +24,7 @@ import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
@@ -96,7 +97,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         setupGUI()
 
         presenter = PlacePresenter(
-            Injection.memberRepository(applicationContext), Injection.placeRepository(), this
+            Injection.memberRepository(APPLICATION_CONTEXT), Injection.placeRepository(), this
         )
         presenter.getUser()
         presenter.getKeyword()
@@ -170,13 +171,14 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         } else if (requestCode == OPENING_HOURS_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 openingTime = data?.getStringArrayListExtra(OPENING_HOURS) as ArrayList<String>
-                Log.d("openingTime", openingTime.toString())
-                val openingHours =
-                    openingTime.toString().replace(", ", "\n")
-                        .replace("[", "")
-                        .replace("]", "")
+                openingTime.forEach {
+                    if (it == openingTime[0]) {
+                        tv_opening_time.text = it
+                    } else {
+                        tv_opening_time.text = "${tv_opening_time.text}\n $it"
+                    }
+                }
                 tv_opening_time.visibility = View.VISIBLE
-                tv_opening_time.text = openingHours
             }
         }
     }
