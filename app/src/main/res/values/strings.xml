@@ -144,4 +144,13 @@
     <string name="enter_place_phone">전화번호를 입력해주세요.</string>
     <string name="enter_place_content">장소에 대한 설명을 입력해주세요.</string>
     <string name="enter_place_image">장소 사진을 선택해주세요.</string>
+    <string name="selected_place">이미 선택된 장소 입니다.</string>
+    <string name="success_register_course">코스 등록 성공</string>
+    <string name="success_delete_course">코스 삭제 성공</string>
+    <string name="click_heart">마음에 드는 장소를 발견하면
+하트를 눌러 보세요.</string>
+    <string name="success_register_member">회원 가입 성공</string>
+    <string name="success_delete_member">회원 탈퇴 성공</string>
+    <string name="success_register_place">장소 등록 성공</string>
+    <string name="no_place_found">검색하신 장소가 없습니다.</string>
 </resources>

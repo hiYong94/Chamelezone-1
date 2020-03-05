@@ -94,7 +94,7 @@ class PlaceCheckDialogFragment : DialogFragment(), SearchContract.View {
                 onClickListener?.onClick(lastCheckedPlace, placeIndex)
                 dialog?.cancel()
             } else if (!checkStatus) {
-                context?.shortToast("장소를 선택해주세요.")
+                context?.shortToast(R.string.enter_place)
             }
         }
 

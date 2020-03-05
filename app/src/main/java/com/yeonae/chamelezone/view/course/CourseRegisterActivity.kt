@@ -185,7 +185,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
             }
             2 -> {
                 if (firstPlaceNumber == place.placeNumber) {
-                    shortToast("이미 선택된 장소 입니다.")
+                    shortToast(R.string.selected_place)
                 } else {
                     secondPlaceNumber = place.placeNumber
                     tv_place_name2.text = place.name
@@ -201,21 +201,21 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 }
             }
             3 -> {
-                if (firstPlaceNumber == place.placeNumber) {
-                    shortToast("이미 선택된 장소 입니다.")
-                } else if (secondPlaceNumber == place.placeNumber) {
-                    shortToast("이미 선택된 장소 입니다.")
-                } else {
-                    thirdPlaceNumber = place.placeNumber
-                    tv_place_name3.text = place.name
-                    tv_place_keyword3.text = place.keyword
-                    tv_place_address3.text = place.address
-                    iv_place_image3.glideImageSet(
-                        place.image, iv_place_image1.measuredWidth,
-                        iv_place_image1.measuredHeight
-                    )
-                    layout_place_add3.visibility = View.GONE
-                    layout_course3.visibility = View.VISIBLE
+                when {
+                    firstPlaceNumber == place.placeNumber -> shortToast(R.string.selected_place)
+                    secondPlaceNumber == place.placeNumber -> shortToast(R.string.selected_place)
+                    else -> {
+                        thirdPlaceNumber = place.placeNumber
+                        tv_place_name3.text = place.name
+                        tv_place_keyword3.text = place.keyword
+                        tv_place_address3.text = place.address
+                        iv_place_image3.glideImageSet(
+                            place.image, iv_place_image1.measuredWidth,
+                            iv_place_image1.measuredHeight
+                        )
+                        layout_place_add3.visibility = View.GONE
+                        layout_course3.visibility = View.VISIBLE
+                    }
                 }
             }
         }
