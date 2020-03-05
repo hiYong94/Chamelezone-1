@@ -14,7 +14,7 @@ class MyReviewRvAdapter :
 
     private lateinit var onClickListener: OnClickListener
     private lateinit var moreButtonListener: MoreButtonListener
-    private var items = ArrayList<ReviewItem>()
+    private val items = ArrayList<ReviewItem>()
 
     interface OnClickListener {
         fun onClick(review: ReviewItem)
