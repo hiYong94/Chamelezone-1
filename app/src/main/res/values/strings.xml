@@ -148,7 +148,7 @@
     <string name="success_register_course">코스 등록 성공</string>
     <string name="success_delete_course">코스 삭제 성공</string>
     <string name="click_heart">마음에 드는 장소를 발견하면
-하트를 눌러 보세요.</string>
+        하트를 눌러 보세요.</string>
     <string name="success_register_member">회원 가입 성공</string>
     <string name="success_delete_member">회원 탈퇴 성공</string>
     <string name="success_register_place">장소 등록 성공</string>

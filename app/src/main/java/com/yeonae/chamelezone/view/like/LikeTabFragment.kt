@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -45,7 +46,7 @@ class LikeTabFragment : Fragment(), LikeContract.View {
         tv_message.text = message
     }
 
-    override fun showLikeState(response: LikeResponse) {
+    override fun showLikeState(response: LikeStatusItem) {
         if (!response.likeStatus) {
             context?.shortToast(R.string.delete_like)
         }

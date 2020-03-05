@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.like.presenter
 
+import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.data.repository.like.LikeCallBack
 import com.yeonae.chamelezone.data.repository.like.LikeRepository
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
@@ -43,7 +44,7 @@ class LikePresenter(
         likeRepository.deleteLike(memberNumber, placeNumber, object :
             LikeCallBack<LikeResponse> {
             override fun onSuccess(response: LikeResponse) {
-                view.showLikeState(response)
+                view.showLikeState(response.toLikeStatusItem(response))
             }
 
             override fun onFailure(message: String) {

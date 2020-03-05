@@ -10,6 +10,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
+import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.LikeResponse
@@ -29,13 +30,13 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     var placeNumber: Int = 0
     var placeName: String = ""
 
-    override fun showLikeMessage(response: LikeResponse) {
+    override fun showLikeMessage(response: LikeStatusItem) {
         if (response.likeStatus) {
             this.shortToast(R.string.select_like)
         }
     }
 
-    override fun showDeleteLikeMessage(response: LikeResponse) {
+    override fun showDeleteLikeMessage(response: LikeStatusItem) {
         if (!response.likeStatus) {
             this.shortToast(R.string.delete_like)
         }
