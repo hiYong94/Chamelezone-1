@@ -49,7 +49,7 @@ class MakerInfoRvAdapter : RecyclerView.Adapter<MakerInfoRvAdapter.SearchViewHol
                     if (it == item.keywordName[0]) {
                         tv_place_keyword.text = it
                     } else {
-                        tv_place_keyword.text = "${tv_place_keyword.text}${","} $it"
+                        tv_place_keyword.text = "${tv_place_keyword.text}, $it"
                     }
                 }
                 tv_place_address.text = item.address

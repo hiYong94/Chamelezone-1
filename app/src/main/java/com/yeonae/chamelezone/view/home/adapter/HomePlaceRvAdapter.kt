@@ -34,7 +34,7 @@ class HomePlaceRvAdapter :
                 if (it == place.keywordName[0]) {
                     keyword.text = it
                 } else {
-                    keyword.text = "${keyword.text}${","} $it"
+                    keyword.text = "${keyword.text}, $it"
                 }
             }
             val image = IMAGE_RESOURCE + place.savedImageName[0]
