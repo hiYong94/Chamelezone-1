@@ -2,7 +2,7 @@ package com.yeonae.chamelezone.data.model
 
 import java.io.Serializable
 
-data class CourseItem constructor(
+data class CourseItem(
     val courseNumber: Int,
     val nickName: String,
     val title: String,
