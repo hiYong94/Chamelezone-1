@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.network.model
 
 import com.google.gson.annotations.SerializedName
 import com.yeonae.chamelezone.data.model.CourseItem
+import com.yeonae.chamelezone.data.model.MyCourseItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 
 data class CourseResponse(
@@ -44,6 +45,22 @@ data class CourseResponse(
             response.title,
             imageFormat,
             response.regiDate
+        )
+    }
+
+    fun toMyCourseItem(response: CourseResponse): MyCourseItem {
+        val placeImages = response.savedImageName.split(",")
+        val images = arrayListOf<String>()
+        for (i in placeImages.indices) {
+            images.add(IMAGE_RESOURCE + placeImages[i])
+        }
+        val imageFormat = images[0]
+
+        return MyCourseItem(
+            response.courseNumber,
+            response.title,
+            response.content,
+            imageFormat
         )
     }
 }

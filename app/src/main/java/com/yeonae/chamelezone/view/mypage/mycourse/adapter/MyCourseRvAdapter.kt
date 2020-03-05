@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.Course
+import com.yeonae.chamelezone.data.model.MyCourseItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.CourseResponse
@@ -13,12 +14,12 @@ import kotlinx.android.synthetic.main.item_my_course.view.*
 class MyCourseRvAdapter :
     RecyclerView.Adapter<MyCourseRvAdapter.MyCourseViewHolder>() {
 
-    private var items = mutableListOf<CourseResponse>()
+    private var items = mutableListOf<MyCourseItem>()
     private lateinit var onClickListener: OnClickListener
     private lateinit var moreButtonListener: MoreButtonListener
 
     interface OnClickListener {
-        fun onClick(course: CourseResponse)
+        fun onClick(course: MyCourseItem)
     }
 
     interface MoreButtonListener {
@@ -45,7 +46,7 @@ class MyCourseRvAdapter :
         }
     }
 
-    fun addData(addDataList: List<CourseResponse>) {
+    fun addData(addDataList: List<MyCourseItem>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
@@ -55,7 +56,7 @@ class MyCourseRvAdapter :
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_course, parent, false)
     ) {
         fun bind(
-            item: CourseResponse,
+            item: MyCourseItem,
             clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {

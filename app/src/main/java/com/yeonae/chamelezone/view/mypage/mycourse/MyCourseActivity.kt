@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.MyCourseItem
 import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.CourseDetailActivity
@@ -33,7 +34,7 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View {
         presenter.getUser()
 
         myCourseRvAdapter.setOnClickListener(object : MyCourseRvAdapter.OnClickListener {
-            override fun onClick(course: CourseResponse) {
+            override fun onClick(course: MyCourseItem) {
                 val intent = Intent(this@MyCourseActivity, CourseDetailActivity::class.java)
                 intent.putExtra(COURSE_NUMBER, course.courseNumber)
                 startActivity(intent)
@@ -56,7 +57,7 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View {
         presenter.getMyCourseList(memberNumber)
     }
 
-    override fun showMyCourseList(response: List<CourseResponse>) {
+    override fun showMyCourseList(response: List<MyCourseItem>) {
         layout_no_my_course.visibility = View.GONE
         layout_my_course.visibility = View.VISIBLE
         myCourseRvAdapter.addData(response)
