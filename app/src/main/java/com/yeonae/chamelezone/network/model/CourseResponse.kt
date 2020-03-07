@@ -22,13 +22,13 @@ data class CourseResponse(
     val regiDate: String,
     @SerializedName("keywordName")
     val keywordName: ArrayList<String>,
-    @SerializedName("place_name")
+    @SerializedName("placeName")
     val placeName: String,
     @SerializedName("address")
     val address: String,
-    @SerializedName("place_images")
+    @SerializedName("placeImage")
     val placeImages: String,
-    @SerializedName("course_image")
+    @SerializedName("courseImage")
     val courseImage: String
 ) {
     fun toCourseItem(response: CourseResponse): CourseItem {
