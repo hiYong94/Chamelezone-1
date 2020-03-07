@@ -26,9 +26,9 @@ import kotlin.math.abs
 
 class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     override lateinit var presenter: PlaceDetailContract.Presenter
-    var memberNumber: Int? = null
-    var placeNumber: Int = 0
-    var placeName: String = ""
+    private var memberNumber: Int? = null
+    private var placeNumber: Int = 0
+    private var placeName: String = ""
 
     override fun showLikeMessage(response: LikeStatusItem) {
         if (response.likeStatus) {

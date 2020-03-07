@@ -50,8 +50,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
-    lateinit var currentLocation: Location
-    lateinit var currentLatLng: LatLng
+    private lateinit var currentLocation: Location
+    private lateinit var currentLatLng: LatLng
     private lateinit var locationCallBack: LocationCallback
 
     override fun placeInfo(placeList: List<PlaceResponse>) {
