@@ -21,12 +21,14 @@ class CheckDialogFragment : DialogFragment() {
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
-        fun onClick(keyword: ArrayList<String>)
+        fun onClick(keywordList: ArrayList<String>)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onClickListener = (context as OnClickListener)
+        (context as? OnClickListener).let {
+            onClickListener = it
+        }
     }
 
     override fun onStart() {
@@ -101,12 +103,12 @@ class CheckDialogFragment : DialogFragment() {
         const val DIALOG_HEIGHT_RATIO = "DIALOG_HEIGHT_RATIO"
         const val DIALOG_WIDTH_RATIO = "DIALOG_WIDTH_RATIO"
         fun newInstance(
-            keyword: ArrayList<String>,
+            keywordList: ArrayList<String>,
             selectedKeyword: ArrayList<String>
         ): CheckDialogFragment {
             val frag = CheckDialogFragment()
             val args = Bundle()
-            args.putStringArrayList("keyword", keyword)
+            args.putStringArrayList("keyword", keywordList)
             args.putStringArrayList("selectedKeyword", selectedKeyword)
             frag.arguments = args
             return frag

@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -42,17 +41,17 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private var isCreated = false
     val keywordName = arrayListOf<String>()
 
-    override fun onClick(keyword: ArrayList<String>) {
+    override fun onClick(keywordList: ArrayList<String>) {
         keywords.clear()
-        for (i in 0 until keyword.size) {
+        for (i in 0 until keywordList.size) {
             for (j in 0 until keywordMap.size) {
-                if (keywordMap[j] == keyword[i]) {
+                if (keywordMap[j] == keywordList[i]) {
                     keywords.add(j)
                 }
             }
         }
-        selectedKeyword = keyword
-        tv_place_keyword.text = keyword.toString().replace("[", "").replace("]", "")
+        selectedKeyword = keywordList
+        tv_place_keyword.text = keywordList.toString().replace("[", "").replace("]", "")
     }
 
     override fun showUserInfo(user: UserEntity) {

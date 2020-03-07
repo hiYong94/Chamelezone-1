@@ -57,9 +57,9 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             )
         }
 
-        val keyword = ArrayList<RequestBody>()
+        val keywords = ArrayList<RequestBody>()
         for (i in keywordNames.indices) {
-            keyword.add(
+            keywords.add(
                 RequestBody.create(
                     MediaType.parse("text/plain"), keywordNames[i].toString()
                 )
@@ -92,7 +92,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         placeService.placeRegister(
             imageList,
             memberNumber,
-            keyword,
+            keywords,
             name,
             address,
             openingTime,
