@@ -37,8 +37,10 @@ class HomePlaceRvAdapter :
                     keyword.text = "${keyword.text}, $it"
                 }
             }
-            val image = IMAGE_RESOURCE + place.savedImageName[0]
-            placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
+            if (place.savedImageName.isNotEmpty()) {
+                val image = IMAGE_RESOURCE + place.savedImageName[0]
+                placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
+            }
 
             itemView.setOnClickListener {
                 listener.onItemClick(place)
