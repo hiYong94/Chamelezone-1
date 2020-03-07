@@ -12,7 +12,11 @@ class FindEmailPresenter(
     override fun findEmail(name: String, phone: String) {
         repository.findEmail(name, phone, object : MemberCallBack<List<EmailResponse>>{
             override fun onSuccess(response: List<EmailResponse>) {
-                view.showUserInfo(response)
+                val emails = arrayListOf<String>()
+                for (i in response.indices) {
+                    emails[i] = response[i].email
+                }
+                view.showUserInfo(emails)
             }
 
             override fun onFailure(message: String) {

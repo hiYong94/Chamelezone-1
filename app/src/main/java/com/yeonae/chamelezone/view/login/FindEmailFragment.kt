@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +19,7 @@ import kotlinx.android.synthetic.main.fragment_find_email.*
 class FindEmailFragment : Fragment(), FindEmailContract.View {
     override lateinit var presenter: FindEmailContract.Presenter
 
-    override fun showUserInfo(response: List<EmailResponse>) {
-        val emails = arrayOfNulls<String>(response.size)
-        for (i in response.indices) {
-            emails[i] = response[i].email
-        }
+    override fun showUserInfo(emails: ArrayList<String>) {
         (activity as? LoginActivity)?.replace(
             ConfirmEmailFragment.newInstance(emails),
             true

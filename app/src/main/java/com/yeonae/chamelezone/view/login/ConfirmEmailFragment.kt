@@ -20,7 +20,7 @@ class ConfirmEmailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val emailList = arguments?.getStringArray(EMAIL).orEmpty()
+        val emailList = arguments?.getStringArrayList(EMAIL).orEmpty()
         for(i in emailList.indices){
             tv_email.text = "${tv_email.text}" + "\n" + emailList[i]
         }
@@ -40,9 +40,9 @@ class ConfirmEmailFragment : Fragment() {
 
     companion object {
         private const val EMAIL = "email"
-        fun newInstance(emails: Array<String?>) = ConfirmEmailFragment().apply {
+        fun newInstance(emails: ArrayList<String>) = ConfirmEmailFragment().apply {
             arguments = Bundle().apply {
-                putStringArray(EMAIL, emails)
+                putStringArrayList(EMAIL, emails)
             }
         }
     }

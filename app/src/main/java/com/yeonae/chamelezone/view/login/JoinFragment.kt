@@ -12,8 +12,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
@@ -23,26 +21,26 @@ import java.util.regex.Pattern
 class JoinFragment : Fragment(), JoinContract.View {
     private var checkedEmail: Boolean = false
     private var checkedNickname: Boolean = false
-    override fun showNicknameMessage(response: NicknameResponse) {
-        if(response.nicknameCheck == CHECK_YES){
+    override fun showNicknameMessage(nicknameCheck: String) {
+        if (nicknameCheck == CHECK_YES) {
             Toast.makeText(requireContext(), R.string.available_nickname, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = true
 
-        }else if(response.nicknameCheck == CHECK_NO){
+        } else if (nicknameCheck == CHECK_NO) {
             Toast.makeText(requireContext(), R.string.registered_nickname, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = false
         }
     }
 
-    override fun showEmailMessage(response: EmailResponse) {
-        if(response.emailCheck == CHECK_YES){
+    override fun showEmailMessage(emailCheck: String) {
+        if (emailCheck == CHECK_YES) {
             Toast.makeText(requireContext(), R.string.available_email, Toast.LENGTH_SHORT)
                 .show()
             checkedEmail = true
 
-        }else if(response.emailCheck == CHECK_NO){
+        } else if (emailCheck == CHECK_NO) {
             Toast.makeText(requireContext(), R.string.registered_email, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = false
@@ -153,7 +151,8 @@ class JoinFragment : Fragment(), JoinContract.View {
                     !password_layout.isErrorEnabled &&
                     !nickname_layout.isErrorEnabled &&
                     checkedEmail &&
-                    checkedNickname) {
+                    checkedNickname
+                ) {
                     presenter.userRegister(
                         email, password, name, nickName, phone
                     )
