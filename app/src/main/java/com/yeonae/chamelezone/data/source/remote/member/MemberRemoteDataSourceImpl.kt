@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.data.source.remote.member
 
 import android.util.Log
 import com.google.gson.JsonObject
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.network.api.MemberApi
@@ -40,7 +41,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(Context.APPLICATION_CONTEXT.getString(R.string.success_register_member))
+                    callBack.onSuccess(App.instance.context().getString(R.string.success_register_member))
                 }
             }
 
@@ -70,7 +71,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.check_email_password_again))
+                    callBack.onFailure(App.instance.context().getString(R.string.check_email_password_again))
                 }
             }
 
@@ -115,7 +116,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         memberService.deleteMember(memberNumber).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(Context.APPLICATION_CONTEXT.getString(R.string.success_delete_member))
+                    callBack.onSuccess(App.instance.context().getString(R.string.success_delete_member))
                 }
             }
 
@@ -179,6 +180,8 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 ) {
                     if (response.code() == SUCCESS) {
                         response.body()?.let { callBack.onSuccess(it) }
+                    } else if (response.code() == REQUEST_ERR) {
+                        callBack.onFailure(App.instance.context().getString(R.string.information_not_exist))
                     }
                 }
 

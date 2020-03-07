@@ -12,11 +12,11 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.mypage.presenter.UserModifyContract
 import com.yeonae.chamelezone.view.mypage.presenter.UserModifyPresenter
 import kotlinx.android.synthetic.main.activity_user_modify.*
@@ -71,7 +71,7 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         user_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = UserModifyPresenter(
-            Injection.memberRepository(APPLICATION_CONTEXT), this
+            Injection.memberRepository(App.instance.context()), this
         )
 
         presenter.getUser()

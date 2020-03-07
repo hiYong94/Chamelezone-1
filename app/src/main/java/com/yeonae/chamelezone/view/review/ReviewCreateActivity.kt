@@ -13,12 +13,12 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.catchFocus
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import kotlinx.android.synthetic.main.activity_review_create.*
@@ -80,7 +80,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         setupGUI()
 
         presenter = ReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(APPLICATION_CONTEXT), this
+            Injection.reviewRepository(), Injection.memberRepository(App.instance.context()), this
         )
 
         presenter.checkMember()

@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.MultipleDialogFragment
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.mycourse.MyCourseActivity
 import com.yeonae.chamelezone.view.mypage.myplace.MyPlaceActivity
@@ -57,7 +57,7 @@ class MypageTabFragment : Fragment(), MypageContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = MypagePresenter(
-            Injection.memberRepository(APPLICATION_CONTEXT), this
+            Injection.memberRepository(App.instance.context()), this
         )
 
         btn_login.setOnClickListener {

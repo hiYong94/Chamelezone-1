@@ -10,11 +10,11 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.place.presenter.PlaceInfoContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceInfoPresenter
 import kotlinx.android.synthetic.main.fragment_place_info_tab.*
@@ -85,7 +85,7 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
         place_info_map.getMapAsync(this)
 
         presenter = PlaceInfoPresenter(
-            Injection.placeRepository(), Injection.memberRepository(APPLICATION_CONTEXT), this
+            Injection.placeRepository(), Injection.memberRepository(App.instance.context()), this
         )
         placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
         presenter.getUser()

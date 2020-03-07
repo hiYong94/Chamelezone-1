@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
 import com.google.gson.JsonObject
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.Network
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
@@ -107,7 +108,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    callBack.onSuccess(Context.APPLICATION_CONTEXT.getString(R.string.success_register_place))
+                    callBack.onSuccess(App.instance.context().getString(R.string.success_register_place))
                 }
             }
 
@@ -146,7 +147,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.no_place_found))
+                    callBack.onFailure(App.instance.context().getString(R.string.no_place_found))
                 }
             }
 
@@ -166,7 +167,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.no_place_found))
+                    callBack.onFailure(App.instance.context().getString(R.string.no_place_found))
                 }
             }
 
@@ -186,7 +187,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.no_place_found))
+                    callBack.onFailure(App.instance.context().getString(R.string.no_place_found))
                 }
             }
 
@@ -232,7 +233,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.register_my_place))
+                    callBack.onFailure(App.instance.context().getString(R.string.register_my_place))
                 }
             }
 

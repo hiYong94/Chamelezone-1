@@ -10,9 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_join.*
@@ -36,13 +37,11 @@ class JoinFragment : Fragment(), JoinContract.View {
 
     override fun showEmailMessage(emailCheck: String) {
         if (emailCheck == CHECK_YES) {
-            Toast.makeText(requireContext(), R.string.available_email, Toast.LENGTH_SHORT)
-                .show()
+            context?.shortToast(R.string.available_email)
             checkedEmail = true
 
         } else if (emailCheck == CHECK_NO) {
-            Toast.makeText(requireContext(), R.string.registered_email, Toast.LENGTH_SHORT)
-                .show()
+            context?.shortToast(R.string.registered_email)
             checkedNickname = false
         }
     }
@@ -69,7 +68,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         join_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = JoinPresenter(
-            Injection.memberRepository(APPLICATION_CONTEXT), this
+            Injection.memberRepository(App.instance.context()), this
         )
 
         checkType()

@@ -2,16 +2,14 @@ package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.login.presenter.FindEmailContract
 import com.yeonae.chamelezone.view.login.presenter.FindEmailPresenter
 import kotlinx.android.synthetic.main.fragment_find_email.*
@@ -40,7 +38,7 @@ class FindEmailFragment : Fragment(), FindEmailContract.View {
         edt_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = FindEmailPresenter(
-            Injection.memberRepository(APPLICATION_CONTEXT), this
+            Injection.memberRepository(App.instance.context()), this
         )
 
         btn_find_email.setOnClickListener {

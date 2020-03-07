@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.MyCourseItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.course.CourseDetailActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.mycourse.adapter.MyCourseRvAdapter
@@ -28,7 +28,7 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View {
         setAdapter()
 
         presenter = MyCoursePresenter(
-            Injection.memberRepository(APPLICATION_CONTEXT), Injection.courseRepository(), this
+            Injection.memberRepository(App.instance.context()), Injection.courseRepository(), this
         )
 
         presenter.getUser()

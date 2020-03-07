@@ -1,12 +1,12 @@
 package com.yeonae.chamelezone.data.source.remote.course
 
 import android.util.Log
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.network.api.CourseApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.courseService
 import com.yeonae.chamelezone.network.model.CourseResponse
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -70,7 +70,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == SUCCESS) {
-                        callBack.onSuccess(APPLICATION_CONTEXT.getString(R.string.success_register_course))
+                        callBack.onSuccess(App.instance.context().getString(R.string.success_register_course))
                     }
                 }
 
@@ -129,7 +129,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     if (response.code() == SUCCESS) {
                         response.body()?.let { callBack.onSuccess(it) }
                     }else if (response.code() == REQUEST_ERR) {
-                        callBack.onFailure(APPLICATION_CONTEXT.getString(R.string.register_my_course))
+                        callBack.onFailure(App.instance.context().getString(R.string.register_my_course))
                     }
                 }
 
@@ -148,7 +148,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(APPLICATION_CONTEXT.getString(R.string.success_delete_course))
+                    callBack.onSuccess(App.instance.context().getString(R.string.success_delete_course))
                 }
             }
 

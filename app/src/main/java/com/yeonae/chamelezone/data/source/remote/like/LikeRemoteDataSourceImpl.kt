@@ -2,14 +2,13 @@ package com.yeonae.chamelezone.data.source.remote.like
 
 import android.util.Log
 import com.google.gson.JsonObject
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.like.LikeCallBack
 import com.yeonae.chamelezone.network.api.LikeApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.likeService
 import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import com.yeonae.chamelezone.view.Context
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -71,7 +70,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 }else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(Context.APPLICATION_CONTEXT.getString(R.string.click_heart))
+                    callBack.onFailure(App.instance.context().getString(R.string.click_heart))
                 }
             }
 

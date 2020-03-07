@@ -10,11 +10,11 @@ import android.widget.Toast
 import androidx.core.view.isGone
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceReviewContract
@@ -68,7 +68,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         setAdapter()
 
         presenter = PlaceReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(APPLICATION_CONTEXT), this
+            Injection.reviewRepository(), Injection.memberRepository(App.instance.context()), this
         )
 
         presenter.checkMember()
