@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import kotlinx.android.synthetic.main.item_place_review.view.*
@@ -21,6 +22,7 @@ class PlaceReviewTabRvAdapter :
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var moreButtonListener: MoreButtonListener
 //    private lateinit var moreImageBtnListener: MoreImageBtnListener
+
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, review: ReviewResponse)
@@ -37,7 +39,6 @@ class PlaceReviewTabRvAdapter :
     fun setMoreButtonListener(listener: MoreButtonListener) {
         moreButtonListener = listener
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceReviewViewHolder {
         val view =
@@ -68,17 +69,21 @@ class PlaceReviewTabRvAdapter :
             nickname.text = review.nickName
             reviewDate.text = review.regiDate
             reviewContent.text = review.content
+
+            Log.d("imageList images savedImageName", ""+review.savedImageName)
+
             val images = review.savedImageName.split(",")
-            Log.d("imageList images", images.toString())
-            val imageList = images.map {
-                IMAGE_URL + it
+            val imageList = arrayListOf<String>()
+            images.forEachIndexed { index, _ ->
+                imageList.add(IMAGE_RESOURCE + images[index])
             }
-//            images.forEachIndexed { index, _ ->
-//                imageList.add("http://13.209.136.122:3000/image/" + images[index])
-//                Log.d("imageList review", images[index])
-//            }
+
+            Log.d("imageList images", imageList.toString())
+
             reviewImg.glideTransformations(imageList[0], reviewImg.measuredWidth, reviewImg.measuredHeight)
             reviewCount.text = "+" + (imageList.size - 1)
+            Log.d("imageList images size1", imageList.size.toString())
+            Log.d("imageList images size2", (imageList.size - 1).toString())
 
             reviewImg.setOnClickListener {
                 val position = adapterPosition
@@ -109,12 +114,9 @@ class PlaceReviewTabRvAdapter :
     }
 
     fun addData(addDataList: List<ReviewResponse>) {
+        Log.d("addDataList", "$addDataList")
         reviewList.clear()
         reviewList.addAll(addDataList)
         notifyDataSetChanged()
-    }
-
-    companion object {
-        const val IMAGE_URL = "http://13.209.136.122:3000/image/"
     }
 }
