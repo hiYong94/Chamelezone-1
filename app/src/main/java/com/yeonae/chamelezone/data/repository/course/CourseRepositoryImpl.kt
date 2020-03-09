@@ -20,7 +20,7 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         remoteDataSource.getCourseList(callBack)
     }
 
-    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<CourseResponse>) {
+    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<List<CourseResponse>>) {
         remoteDataSource.getCourseDetail(courseNumber, callBack)
     }
 
@@ -35,8 +35,8 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun deleteCourse(courseNumber: Int, callBack: CourseCallBack<String>) {
-        remoteDataSource.deleteCourse(courseNumber, callBack)
+    override fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<String>) {
+        remoteDataSource.deleteCourse(courseNumber, memberNumber, callBack)
     }
 
     companion object {

@@ -2,12 +2,15 @@ package com.yeonae.chamelezone.data.source.remote.member
 
 import android.util.Log
 import com.google.gson.JsonObject
+import com.yeonae.chamelezone.App
+import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.network.api.MemberApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.memberService
 import com.yeonae.chamelezone.network.model.EmailResponse
 import com.yeonae.chamelezone.network.model.MemberResponse
 import com.yeonae.chamelezone.network.model.NicknameResponse
+import com.yeonae.chamelezone.view.Context
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -38,7 +41,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess("회원가입 성공")
+                    callBack.onSuccess(App.instance.context().getString(R.string.success_register_member))
                 }
             }
 
@@ -68,7 +71,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure("이메일과 비밀번호를 확인 후 다시 로그인해주세요.")
+                    callBack.onFailure(App.instance.context().getString(R.string.check_email_password_again))
                 }
             }
 
@@ -113,7 +116,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         memberService.deleteMember(memberNumber).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess("회원 탈퇴 성공")
+                    callBack.onSuccess(App.instance.context().getString(R.string.success_delete_member))
                 }
             }
 
@@ -177,6 +180,8 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 ) {
                     if (response.code() == SUCCESS) {
                         response.body()?.let { callBack.onSuccess(it) }
+                    } else if (response.code() == REQUEST_ERR) {
+                        callBack.onFailure(App.instance.context().getString(R.string.information_not_exist))
                     }
                 }
 

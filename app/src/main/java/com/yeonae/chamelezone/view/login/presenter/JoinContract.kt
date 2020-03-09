@@ -8,8 +8,8 @@ interface JoinContract {
     interface View {
         var presenter: Presenter
         fun showMessage(message: String)
-        fun showEmailMessage(response: EmailResponse)
-        fun showNicknameMessage(response: NicknameResponse)
+        fun showEmailMessage(emailCheck: String)
+        fun showNicknameMessage(nicknameCheck: String)
     }
 
     interface Presenter {

@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.network.model.NicknameResponse
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.fragment_join.*
@@ -22,27 +22,27 @@ import java.util.regex.Pattern
 class JoinFragment : Fragment(), JoinContract.View {
     private var checkedEmail: Boolean = false
     private var checkedNickname: Boolean = false
-    override fun showNicknameMessage(response: NicknameResponse) {
-        if(response.nicknameCheck == CHECK_YES){
-            Toast.makeText(context, R.string.available_nickname, Toast.LENGTH_SHORT)
+    override fun showNicknameMessage(nicknameCheck: String) {
+        if (nicknameCheck == CHECK_YES) {
+            Toast.makeText(requireContext(), R.string.available_nickname, Toast.LENGTH_SHORT)
                 .show()
             checkedNickname = true
 
-        }else if(response.nicknameCheck == CHECK_NO){
-            Toast.makeText(context, R.string.registered_nickname, Toast.LENGTH_SHORT)
+        } else if (nicknameCheck == CHECK_NO) {
+            Toast.makeText(requireContext(), R.string.registered_nickname, Toast.LENGTH_SHORT)
                 .show()
+            checkedNickname = false
         }
     }
 
-    override fun showEmailMessage(response: EmailResponse) {
-        if(response.emailCheck == CHECK_YES){
-            Toast.makeText(context, R.string.available_email, Toast.LENGTH_SHORT)
-                .show()
+    override fun showEmailMessage(emailCheck: String) {
+        if (emailCheck == CHECK_YES) {
+            context?.shortToast(R.string.available_email)
             checkedEmail = true
 
-        }else if(response.emailCheck == CHECK_NO){
-            Toast.makeText(context, R.string.registered_email, Toast.LENGTH_SHORT)
-                .show()
+        } else if (emailCheck == CHECK_NO) {
+            context?.shortToast(R.string.registered_email)
+            checkedNickname = false
         }
     }
 
@@ -68,7 +68,7 @@ class JoinFragment : Fragment(), JoinContract.View {
         join_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = JoinPresenter(
-            Injection.memberRepository(requireContext()), this
+            Injection.memberRepository(App.instance.context()), this
         )
 
         checkType()
@@ -78,6 +78,8 @@ class JoinFragment : Fragment(), JoinContract.View {
         }
 
         btn_join.setOnClickListener {
+            presenter.checkEmail("${join_email.text}")
+            presenter.checkNickname("${join_nickname.text}")
             joinCheck(
                 "${join_email.text}",
                 "${join_password.text}",
@@ -133,12 +135,23 @@ class JoinFragment : Fragment(), JoinContract.View {
                 R.string.enter_phone_number,
                 Toast.LENGTH_SHORT
             ).show()
+            !checkedEmail -> Toast.makeText(
+                requireContext(),
+                R.string.registered_email,
+                Toast.LENGTH_SHORT
+            ).show()
+            !checkedNickname -> Toast.makeText(
+                requireContext(),
+                R.string.registered_nickname,
+                Toast.LENGTH_SHORT
+            ).show()
             else -> {
                 if (!email_layout.isErrorEnabled &&
                     !password_layout.isErrorEnabled &&
                     !nickname_layout.isErrorEnabled &&
                     checkedEmail &&
-                    checkedNickname) {
+                    checkedNickname
+                ) {
                     presenter.userRegister(
                         email, password, name, nickName, phone
                     )

@@ -1,14 +1,17 @@
 package com.yeonae.chamelezone.view.login
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.SingleDialogFragment
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.view.login.presenter.LoginContract
 import com.yeonae.chamelezone.view.login.presenter.LoginPresenter
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -24,6 +27,9 @@ class LoginFragment : Fragment(), LoginContract.View {
     override fun showMessage(message: String) {
         Toast.makeText(context, "$message 환영합니다.", Toast.LENGTH_LONG)
             .show()
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(edt_email.windowToken, 0)
+        imm.hideSoftInputFromWindow(edt_password.windowToken, 0)
         (activity as? LoginActivity)?.finish()
     }
 
@@ -40,10 +46,13 @@ class LoginFragment : Fragment(), LoginContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = LoginPresenter(
-            Injection.memberRepository(requireContext()), this
+            Injection.memberRepository(App.instance.context()), this
         )
 
         btn_back.setOnClickListener {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(edt_email.windowToken, 0)
+            imm.hideSoftInputFromWindow(edt_password.windowToken, 0)
             requireActivity().finish()
         }
         btn_find_email.setOnClickListener {

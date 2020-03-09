@@ -1,7 +1,8 @@
 package com.yeonae.chamelezone.view.mypage.myplace
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
@@ -11,11 +12,16 @@ import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.activity_opening_hours.*
 
 class OpeningHoursActivity : AppCompatActivity() {
-    private val openingTime = mutableListOf<String>()
+    private val openingTime = ArrayList<String>()
+    private var selectedOpeningHours = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_opening_hours)
+        selectedOpeningHours = intent.getStringArrayListExtra("selectedOpeningHours")
+        selectedOpeningHours.forEach {
+
+        }
 
         btn_back.setOnClickListener {
             finish()
@@ -78,28 +84,31 @@ class OpeningHoursActivity : AppCompatActivity() {
         }
 
         btn_complete.setOnClickListener {
-            if(checkbox_sun.isChecked){
-                result(opening_hour_sun, "일요일")
+            if (checkbox_sun.isChecked) {
+                result(opening_hour_sun, getString(R.string.sunday))
             }
-            if(checkbox_mon.isChecked){
-                result(opening_hour_mon, "월요일")
+            if (checkbox_mon.isChecked) {
+                result(opening_hour_mon, getString(R.string.monday))
             }
-            if(checkbox_tue.isChecked){
-                result(opening_hour_tue, "화요일")
+            if (checkbox_tue.isChecked) {
+                result(opening_hour_tue, getString(R.string.tuesday))
             }
-            if(checkbox_wed.isChecked){
-                result(opening_hour_wed, "수요일")
+            if (checkbox_wed.isChecked) {
+                result(opening_hour_wed, getString(R.string.wednesday))
             }
-            if(checkbox_thu.isChecked){
-                result(opening_hour_thu, "목요일")
+            if (checkbox_thu.isChecked) {
+                result(opening_hour_thu, getString(R.string.thursday))
             }
-            if(checkbox_fri.isChecked){
-                result(opening_hour_fri, "금요일")
+            if (checkbox_fri.isChecked) {
+                result(opening_hour_fri, getString(R.string.friday))
             }
-            if(checkbox_sat.isChecked){
-                result(opening_hour_sat, "토요일")
+            if (checkbox_sat.isChecked) {
+                result(opening_hour_sat, getString(R.string.saturday))
             }
-            Log.d("Spinner value is", "$openingTime")
+            val intent = Intent(this, PlaceRegisterActivity::class.java)
+            intent.putExtra("openingHours", openingTime)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
 
     }

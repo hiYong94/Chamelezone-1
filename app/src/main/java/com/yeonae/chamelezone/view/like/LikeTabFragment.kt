@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.like.adapter.LikeTabRvAdapter
@@ -25,20 +27,26 @@ class LikeTabFragment : Fragment(), LikeContract.View {
     override fun showResultView(response: Boolean) {
         if (response) {
             layout_before_login.visibility = View.GONE
-            layout_after_login.visibility = View.VISIBLE
             presenter.getUser()
         } else {
             layout_before_login.visibility = View.VISIBLE
-            layout_after_login.visibility = View.GONE
         }
     }
 
     override fun showMyLikeList(response: List<PlaceResponse>) {
+        layout_no_like_list.visibility = View.GONE
+        layout_like_list.visibility = View.VISIBLE
         likeTabRvAdapter.addData(response)
     }
 
-    override fun showLikeState(response: Boolean) {
-        if (response) {
+    override fun showMessage(message: String) {
+        layout_no_like_list.visibility = View.VISIBLE
+        layout_like_list.visibility = View.GONE
+        tv_message.text = message
+    }
+
+    override fun showLikeState(response: LikeStatusItem) {
+        if (!response.likeStatus) {
             context?.shortToast(R.string.delete_like)
         }
     }
@@ -53,7 +61,7 @@ class LikeTabFragment : Fragment(), LikeContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = LikePresenter(
-            Injection.memberRepository(requireContext()), Injection.likeRepository(), this
+            Injection.memberRepository(App.instance.context()), Injection.likeRepository(), this
         )
 
         btn_login.setOnClickListener {
@@ -73,9 +81,10 @@ class LikeTabFragment : Fragment(), LikeContract.View {
 
         likeTabRvAdapter.setOnLikeClickListener(object : LikeTabRvAdapter.OnLikeClickListener {
             override fun onLikeClick(place: PlaceResponse) {
-                place.memberNumber?.let {
-                    presenter.deleteLike(place.likeStatus ?: 0,
-                        it, place.placeNumber)
+                place.memberNumber.let {
+                    presenter.deleteLike(
+                        it, place.placeNumber
+                    )
                 }
             }
         })

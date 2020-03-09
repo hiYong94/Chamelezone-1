@@ -19,7 +19,7 @@ class MyPlacePresenter(
             }
 
             override fun onFailure(message: String) {
-
+                view.showMessage(message)
             }
 
         })

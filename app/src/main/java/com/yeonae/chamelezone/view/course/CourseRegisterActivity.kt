@@ -15,6 +15,7 @@ import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
@@ -27,9 +28,12 @@ import kotlinx.android.synthetic.main.activity_course_register.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
-    BottomSheetImagePicker.OnImagesSelectedListener {
+    BottomSheetImagePicker.OnImagesSelectedListener, PlaceCheckDialogFragment.OnClickListener {
+    override fun onClick(place: PlaceItem, placeIndex: Int) {
+        getVisible(place, placeIndex)
+    }
+
     override lateinit var presenter: CourseRegisterContract.Presenter
-    private val placeChoiceFragment = PlaceChoiceFragment
     private var imageUri: String = ""
     var memberNumber: Int = 0
     private var firstPlaceNumber: Int = NOT_SELECTED
@@ -73,7 +77,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         setupGUI()
 
         presenter = CourseRegisterPresenter(
-            Injection.memberRepository(applicationContext), Injection.courseRepository(), this
+            Injection.memberRepository(App.instance.context()), Injection.courseRepository(), this
         )
 
         presenter.getUser()
@@ -83,15 +87,15 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_place_add1.setOnClickListener {
-            replace(1)
+            PlaceCheckDialogFragment.newInstance(1).show(supportFragmentManager, "dialog")
         }
 
         btn_place_add2.setOnClickListener {
-            replace(2)
+            PlaceCheckDialogFragment.newInstance(2).show(supportFragmentManager, "dialog")
         }
 
         btn_place_add3.setOnClickListener {
-            replace(3)
+            PlaceCheckDialogFragment.newInstance(3).show(supportFragmentManager, "dialog")
         }
 
         btn_close1.setOnClickListener {
@@ -122,14 +126,15 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_register.setOnClickListener {
-            if (firstPlaceNumber != NOT_SELECTED) {
-                placeNumbers.add(firstPlaceNumber)
-            }
-            if (secondPlaceNumber != NOT_SELECTED) {
-                placeNumbers.add(secondPlaceNumber)
-            }
-            if (thirdPlaceNumber != NOT_SELECTED) {
-                placeNumbers.add(thirdPlaceNumber)
+            when {
+                firstPlaceNumber != NOT_SELECTED -> placeNumbers.add(firstPlaceNumber)
+                secondPlaceNumber != NOT_SELECTED -> placeNumbers.add(secondPlaceNumber)
+                thirdPlaceNumber != NOT_SELECTED -> placeNumbers.add(thirdPlaceNumber)
+                edt_course_title.text.isEmpty() -> shortToast(R.string.enter_course_title)
+                edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
+                tv_place_name1.text.isEmpty() -> shortToast(R.string.enter_place)
+                tv_place_name2.text.isEmpty() -> shortToast(R.string.enter_place)
+                imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
             if (!isCreated) {
                 isCreated = true
@@ -163,7 +168,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
     }
 
-    fun getVisible(placeIndex: Int, place: PlaceItem) {
+    private fun getVisible(place: PlaceItem, placeIndex: Int) {
         when (placeIndex) {
             1 -> {
                 firstPlaceNumber = place.placeNumber
@@ -179,39 +184,41 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 layout_course1.visibility = View.VISIBLE
             }
             2 -> {
-                secondPlaceNumber = place.placeNumber
-                tv_place_name2.text = place.name
-                tv_place_keyword2.text = place.keyword
-                tv_place_address2.text = place.address
-                iv_place_image2.glideImageSet(
-                    place.image,
-                    iv_place_image1.measuredWidth,
-                    iv_place_image1.measuredHeight
-                )
-                layout_place_add2.visibility = View.GONE
-                layout_course2.visibility = View.VISIBLE
-
+                if (firstPlaceNumber == place.placeNumber) {
+                    shortToast(R.string.selected_place)
+                } else {
+                    secondPlaceNumber = place.placeNumber
+                    tv_place_name2.text = place.name
+                    tv_place_keyword2.text = place.keyword
+                    tv_place_address2.text = place.address
+                    iv_place_image2.glideImageSet(
+                        place.image,
+                        iv_place_image1.measuredWidth,
+                        iv_place_image1.measuredHeight
+                    )
+                    layout_place_add2.visibility = View.GONE
+                    layout_course2.visibility = View.VISIBLE
+                }
             }
             3 -> {
-                thirdPlaceNumber = place.placeNumber
-                tv_place_name3.text = place.name
-                tv_place_keyword3.text = place.keyword
-                tv_place_address3.text = place.address
-                iv_place_image3.glideImageSet(
-                    place.image, iv_place_image1.measuredWidth,
-                    iv_place_image1.measuredHeight
-                )
-                layout_place_add3.visibility = View.GONE
-                layout_course3.visibility = View.VISIBLE
+                when {
+                    firstPlaceNumber == place.placeNumber -> shortToast(R.string.selected_place)
+                    secondPlaceNumber == place.placeNumber -> shortToast(R.string.selected_place)
+                    else -> {
+                        thirdPlaceNumber = place.placeNumber
+                        tv_place_name3.text = place.name
+                        tv_place_keyword3.text = place.keyword
+                        tv_place_address3.text = place.address
+                        iv_place_image3.glideImageSet(
+                            place.image, iv_place_image1.measuredWidth,
+                            iv_place_image1.measuredHeight
+                        )
+                        layout_place_add3.visibility = View.GONE
+                        layout_course3.visibility = View.VISIBLE
+                    }
+                }
             }
         }
-    }
-
-    fun replace(placeIndex: Int) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_place_choice, placeChoiceFragment.newInstance(placeIndex))
-            .addToBackStack(null)
-            .commit()
     }
 
     private fun pickSingle() {

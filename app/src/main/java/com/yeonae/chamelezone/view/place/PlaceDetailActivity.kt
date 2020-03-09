@@ -7,11 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.appbar.AppBarLayout
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
+import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
@@ -23,48 +26,50 @@ import kotlin.math.abs
 
 class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     override lateinit var presenter: PlaceDetailContract.Presenter
-    var memberNumber: Int? = null
-    var placeNumber: Int = 0
-    var placeName: String = ""
-    var likeNumber: Int? = null
+    private var memberNumber: Int? = null
+    private var placeNumber: Int = 0
+    private var placeName: String = ""
 
-    override fun showLikeMessage(response: Boolean) {
-        if (response) {
+    override fun showLikeMessage(response: LikeStatusItem) {
+        if (response.likeStatus) {
             this.shortToast(R.string.select_like)
         }
     }
 
-    override fun showDeleteLikeMessage(response: Boolean) {
-        if (response) {
+    override fun showDeleteLikeMessage(response: LikeStatusItem) {
+        if (!response.likeStatus) {
             this.shortToast(R.string.delete_like)
         }
     }
 
     override fun placeInfo(place: PlaceResponse) {
-        val placeImages = place.savedImageName.split(",")
         val images = arrayListOf<String>()
-        for (i in placeImages.indices) {
-            images.add(IMAGE_RESOURCE + placeImages[i])
+        for (i in place.savedImageName.indices) {
+            images.add(IMAGE_RESOURCE + place.savedImageName[i])
         }
-        likeNumber = place.likeStatus
-        if (likeNumber != null) {
+        if (place.likeStatus) {
             btn_like.isChecked = true
         }
         val imageAdapter = ImageViewPagerAdapter(images)
         vp_image.adapter = imageAdapter
 
-        if(likeNumber == null){
+        if (memberNumber == null) {
             btn_like.setOnClickListener {
                 btn_like.isChecked = false
                 val intent = Intent(applicationContext, LoginActivity::class.java)
                 startActivity(intent)
             }
-        } else if(likeNumber != null){
+        } else {
             btn_like.setOnClickListener {
                 if (btn_like.isChecked) {
                     memberNumber?.let { it1 -> presenter.selectLike(it1, placeNumber) }
                 } else {
-                    memberNumber?.let { it1 -> presenter.deleteLike(likeNumber ?: 0, it1, placeNumber) }
+                    memberNumber?.let { it1 ->
+                        presenter.deleteLike(
+                            it1,
+                            placeNumber
+                        )
+                    }
                 }
             }
         }
@@ -83,7 +88,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             presenter.placeDetail(placeNumber, memberNumber)
         }
     }
-  
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
@@ -94,7 +99,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         tv_place_name_two.text = placeName
 
         presenter = PlaceDetailPresenter(
-            Injection.memberRepository(applicationContext),
+            Injection.memberRepository(App.instance.context()),
             Injection.placeRepository(),
             Injection.likeRepository(),
             this
@@ -128,7 +133,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             post {
                 val nameBar = layout_visibility.height
                 val tabBar = tabs_detail.height
-                val density = resources.displayMetrics.density
 
                 Log.d("PlaceDetailActivity nameBar", nameBar.toString())
                 Log.d("PlaceDetailActivity tabBar", tabBar.toString())
