@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.activity_my_review.*
 class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
     override lateinit var presenter: MyReviewContract.Presenter
     private val myReviewRvAdapter = MyReviewRvAdapter()
+    private val moreFragment = MoreButtonFragment()
     private var placeNumber = 0
     private var reviewNumber = 0
     private var memberNumber: Int = 0
@@ -78,6 +79,18 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         btn_back.setOnClickListener {
             finish()
         }
+
+        moreFragment.setDeletedListener(object : MoreButtonFragment.OnDeletedSelectedListener {
+            override fun deleteSelected(intent: Intent) {
+                intent.getIntExtra(REVIEW_NUMBER, 0)
+                intent.getIntExtra(PLACE_NUMBER, 0)
+                Toast.makeText(applicationContext, "삭제 받음", Toast.LENGTH_SHORT).show()
+                Log.d("MyReviewActivity reviewNumber", reviewNumber.toString())
+                Log.d("MyReviewActivity placeNumber", placeNumber.toString())
+                Log.d("MyReviewActivity memberNumber", memberNumber.toString())
+                presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
+            }
+        })
     }
 
     private fun showBottomSheet(placeNumber: Int, reviewNumber: Int) {
@@ -88,16 +101,6 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
     private fun setAdapter() {
         recycler_my_review.layoutManager = LinearLayoutManager(this)
         recycler_my_review.adapter = myReviewRvAdapter
-    }
-
-    fun data(intent: Intent) {
-        intent.getIntExtra(REVIEW_NUMBER, 0)
-        intent.getIntExtra(PLACE_NUMBER, 0)
-        Toast.makeText(this, "삭제 받음", Toast.LENGTH_SHORT).show()
-        Log.d("MyReviewActivity reviewNumber", reviewNumber.toString())
-        Log.d("MyReviewActivity placeNumber", placeNumber.toString())
-        Log.d("MyReviewActivity memberNumber", memberNumber.toString())
-        presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
     }
 
     companion object {

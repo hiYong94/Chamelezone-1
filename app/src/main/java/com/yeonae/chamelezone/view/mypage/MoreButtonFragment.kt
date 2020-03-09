@@ -10,13 +10,26 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import kotlinx.android.synthetic.main.fragment_more_button.*
 
 
 class MoreButtonFragment : BottomSheetDialogFragment() {
-    lateinit var activity : MyReviewActivity
+    private lateinit var deletedButtonListener: OnDeletedSelectedListener
+    private val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
+    private val placeNumber = arguments?.getInt(PLACE_NUMBER)
+    private val myReviewData = Intent().apply {
+        putExtra(REVIEW_NUMBER, reviewNumber)
+        putExtra(PLACE_NUMBER, placeNumber)
+        Log.d("More reviewNumber", reviewNumber.toString())
+    }
 
+    interface OnDeletedSelectedListener {
+        fun deleteSelected(intent: Intent)
+    }
+
+    fun setDeletedListener(listener: OnDeletedSelectedListener) {
+        deletedButtonListener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,17 +41,9 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
-        val placeNumber = arguments?.getInt(PLACE_NUMBER)
 
         val data = Intent().apply {
             putExtra(REVIEW_NUMBER, reviewNumber)
-        }
-
-        val myReviewData = Intent().apply {
-            putExtra(REVIEW_NUMBER, reviewNumber)
-            putExtra(PLACE_NUMBER, placeNumber)
-            Log.d("More reviewNumber", reviewNumber.toString())
         }
 
         btn_modify.setOnClickListener {
@@ -53,7 +58,7 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
             targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
 
-            activity.data(myReviewData)
+            deletedButtonListener.deleteSelected(myReviewData)
 
             dismiss()
         }
@@ -61,7 +66,7 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-            activity = context as MyReviewActivity
+        deletedButtonListener = (context as OnDeletedSelectedListener)
     }
 
     companion object {
