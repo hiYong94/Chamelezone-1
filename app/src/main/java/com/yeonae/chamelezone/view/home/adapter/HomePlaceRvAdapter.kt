@@ -37,7 +37,6 @@ class HomePlaceRvAdapter :
             images.forEachIndexed { index, _ ->
                 imageList.add(IMAGE_RESOURCE + images[index])
             }
-
             Log.d("imageList", images.toString())
             Log.d("imageList", imageList.toString())
 
