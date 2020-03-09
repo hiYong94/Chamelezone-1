@@ -10,7 +10,7 @@ class PlaceDetailPagerAdapter(
     fm: FragmentManager,
     val placeNumber: Int,
     val placeName: String,
-    val memberNumber: Int
+    val memberNumber: Int?
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getItem(position: Int): Fragment {
         return when (position) {

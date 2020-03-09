@@ -120,6 +120,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
         val fragmentAdapter =
             PlaceDetailPagerAdapter(supportFragmentManager, placeNumber, placeName, memberNumber)
+
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
@@ -137,7 +138,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
                 }
 
                 app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                    if (abs(verticalOffset) - appBarLayout.totalScrollRange > 0) {
+                    if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
                         layout_visibility.visibility = View.VISIBLE
                     } else {
                         Log.d("PlaceDetailActivity nameBar", nameBar.toString())
