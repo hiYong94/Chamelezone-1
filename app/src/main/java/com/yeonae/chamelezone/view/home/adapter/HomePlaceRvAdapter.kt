@@ -34,15 +34,17 @@ class HomePlaceRvAdapter :
             keyword.text = place.keywordName
             val images = place.savedImageName.split(",")
             val imageList = arrayListOf<String>()
-            for (i in images.indices)
-                imageList.add(IMAGE_RESOURCE + images[i])
+            images.forEachIndexed { index, _ ->
+                imageList.add(IMAGE_RESOURCE + images[index])
+            }
+
             Log.d("imageList", images.toString())
             Log.d("imageList", imageList.toString())
 
             placeImg.glideImageSet(imageList[0], placeImg.measuredWidth, placeImg.measuredHeight)
 
             itemView.setOnClickListener {
-                listener?.onItemClick(place)
+                listener.onItemClick(place)
             }
         }
     }

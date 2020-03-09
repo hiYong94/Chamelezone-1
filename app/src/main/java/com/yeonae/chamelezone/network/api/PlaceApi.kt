@@ -77,5 +77,7 @@ interface PlaceApi {
     ): Call<ResponseBody>
 
     @GET("/place")
-    fun getHomePlaceList(): Call<List<PlaceResponse>>
+    fun getHomePlaceList(
+        @Query("memberNumber") memberNumber: Int?
+    ): Call<List<PlaceResponse>>
 }
