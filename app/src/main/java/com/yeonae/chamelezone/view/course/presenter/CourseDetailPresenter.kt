@@ -9,8 +9,8 @@ class CourseDetailPresenter(
     private val view: CourseDetailContract.View
 ) : CourseDetailContract.Presenter {
     override fun getCourseDetail(courseNumber: Int) {
-        repository.getCourseDetail(courseNumber, object : CourseCallBack<CourseResponse> {
-            override fun onSuccess(response: CourseResponse) {
+        repository.getCourseDetail(courseNumber, object : CourseCallBack<List<CourseResponse>> {
+            override fun onSuccess(response: List<CourseResponse>) {
                 view.showCourseDetail(response)
             }
 

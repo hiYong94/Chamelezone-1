@@ -8,15 +8,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.forEach
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
@@ -24,8 +20,10 @@ import com.yeonae.chamelezone.CheckDialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
@@ -36,13 +34,24 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
     var memberNumber: Int = 0
     private var imageUri = arrayListOf<String>()
-    private val openingTime = mutableListOf<String>()
+    private var openingTime = ArrayList<String>()
     private val keywordMap = hashMapOf<Int, String>()
-    private val keyword = mutableListOf<Int>()
+    private var keywords = mutableListOf<Int>()
+    private var selectedKeyword = arrayListOf<String>()
     private var isCreated = false
+    val keywordName = arrayListOf<String>()
 
-    override fun onClick(keyword: ArrayList<String>) {
-
+    override fun onClick(keywordList: ArrayList<String>) {
+        keywords.clear()
+        for (i in 0 until keywordList.size) {
+            for (j in 0 until keywordMap.size) {
+                if (keywordMap[j] == keywordList[i]) {
+                    keywords.add(j)
+                }
+            }
+        }
+        selectedKeyword = keywordList
+        tv_place_keyword.text = keywordList.toString().replace("[", "").replace("]", "")
     }
 
     override fun showUserInfo(user: UserEntity) {
@@ -51,6 +60,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
     override fun showKeywordList(response: List<KeywordResponse>) {
         for (i in response.indices) {
+            keywordName.add(response[i].keywordName)
             keywordMap[response[i].keywordNumber] = response[i].keywordName
         }
     }
@@ -86,7 +96,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         setupGUI()
 
         presenter = PlacePresenter(
-            Injection.memberRepository(applicationContext), Injection.placeRepository(), this
+            Injection.memberRepository(APPLICATION_CONTEXT), Injection.placeRepository(), this
         )
         presenter.getUser()
         presenter.getKeyword()
@@ -100,18 +110,17 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
         test.setOnClickListener {
             val intent = Intent(this, OpeningHoursActivity::class.java)
-            startActivity(intent)
+            intent.putExtra("selectedOpeningHours", openingTime)
+            startActivityForResult(intent, OPENING_HOURS_REQUEST_CODE)
         }
 
         btn_address_search.setOnClickListener {
             val intent = Intent(this, SearchAddressActivity::class.java)
-            startActivityForResult(intent, 1)
+            startActivityForResult(intent, ADDRESS_REQUEST_CODE)
         }
 
-        val items = keywordMap.values.toTypedArray()
-        val newFragment = CheckDialogFragment()
-
         btn_category_choice.setOnClickListener {
+            val newFragment = CheckDialogFragment.newInstance(keywordName, selectedKeyword)
             newFragment.show(supportFragmentManager, "dialog")
         }
 
@@ -120,14 +129,22 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             val latitude = latLng?.latitude?.toBigDecimal()
             val longitude = latLng?.longitude?.toBigDecimal()
             val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
-
+            when {
+                edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
+                tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
+                tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
+                tv_opening_time.text.isEmpty() -> shortToast(R.string.enter_place_opening_hours)
+                edt_place_phone.text.isEmpty() -> shortToast(R.string.enter_place_phone)
+                edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
+                imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+            }
             if (!isCreated) {
                 isCreated = true
                 Handler().postDelayed({
                     if (latitude != null && longitude != null) {
                         presenter.placeRegister(
                             memberNumber,
-                            keyword,
+                            keywords,
                             "${edt_place_name.text}",
                             realAddress,
                             openingTime,
@@ -146,9 +163,21 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == ADDRESS_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                tv_place_address.text = data?.getStringExtra("result")
+                tv_place_address.text = data?.getStringExtra(RESULT)
+            }
+        } else if (requestCode == OPENING_HOURS_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                openingTime = data?.getStringArrayListExtra(OPENING_HOURS) as ArrayList<String>
+                openingTime.forEach {
+                    if (it == openingTime[0]) {
+                        tv_opening_time.text = it
+                    } else {
+                        tv_opening_time.text = "${tv_opening_time.text}\n $it"
+                    }
+                }
+                tv_opening_time.visibility = View.VISIBLE
             }
         }
     }
@@ -191,6 +220,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     }
 
     companion object {
-        const val REQUEST_CODE = 1
+        const val ADDRESS_REQUEST_CODE = 1
+        const val OPENING_HOURS_REQUEST_CODE = 2
+        const val RESULT = "result"
+        const val OPENING_HOURS = "openingHours"
     }
 }

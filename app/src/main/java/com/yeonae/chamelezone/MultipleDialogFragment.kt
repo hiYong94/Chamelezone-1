@@ -22,7 +22,7 @@ class MultipleDialogFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
-        val message = arguments!!.getString("message")
+        val message = arguments?.getString("message")
         val dpMetrics = DisplayMetrics()
         activity?.windowManager?.defaultDisplay?.getMetrics(dpMetrics)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

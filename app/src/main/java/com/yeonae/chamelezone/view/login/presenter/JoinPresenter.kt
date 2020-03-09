@@ -37,7 +37,7 @@ class JoinPresenter(
     override fun checkEmail(email: String) {
         memberRepository.checkEmail(email, object : MemberCallBack<EmailResponse>{
             override fun onSuccess(response: EmailResponse) {
-                joinView.showEmailMessage(response)
+                joinView.showEmailMessage(response.emailCheck)
             }
 
             override fun onFailure(message: String) {
@@ -50,7 +50,7 @@ class JoinPresenter(
     override fun checkNickname(nickName: String) {
         memberRepository.checkNickname(nickName, object : MemberCallBack<NicknameResponse>{
             override fun onSuccess(response: NicknameResponse) {
-                joinView.showNicknameMessage(response)
+                joinView.showNicknameMessage(response.nicknameCheck)
             }
 
             override fun onFailure(message: String) {

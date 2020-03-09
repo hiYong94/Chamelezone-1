@@ -10,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -32,10 +33,22 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
     }
 
     override fun placeInfo(place: PlaceResponse) {
-        tv_keyword.text = place.keywordName.replace(",", ", ")
+        place.keywordName.forEach {
+            if (it == place.keywordName[0]) {
+                tv_keyword.text = it
+            } else {
+                tv_keyword.text = "${tv_keyword.text}, $it"
+            }
+        }
         tv_address.text = place.address
         tv_phone.text = place.phoneNumber
-        tv_opening_time.text = place.openingTime.replace(",", "\n")
+        place.openingTime.forEach {
+            if (it == place.openingTime[0]) {
+                tv_opening_time.text = it
+            } else {
+                tv_opening_time.text = "${tv_opening_time.text}\n $it"
+            }
+        }
         tv_content.text = place.content
 
         val latLng = LatLng(place.latitude.toDouble(), place.longitude.toDouble())
@@ -72,7 +85,7 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
         place_info_map.getMapAsync(this)
 
         presenter = PlaceInfoPresenter(
-            Injection.placeRepository(), Injection.memberRepository(requireContext()), this
+            Injection.placeRepository(), Injection.memberRepository(App.instance.context()), this
         )
         placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
         presenter.getUser()

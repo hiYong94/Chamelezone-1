@@ -1,13 +1,10 @@
 package com.yeonae.chamelezone.view.login.presenter
 
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.network.model.MemberResponse
-
 interface FindEmailContract {
 
     interface View {
         var presenter: Presenter
-        fun showUserInfo(response: List<EmailResponse>)
+        fun showUserInfo(emails: ArrayList<String>)
     }
 
     interface Presenter {

@@ -1,6 +1,8 @@
 package com.yeonae.chamelezone.data.source.remote.course
 
 import android.util.Log
+import com.yeonae.chamelezone.App
+import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.network.api.CourseApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.courseService
@@ -9,10 +11,12 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import okio.Buffer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.io.IOException
 
 class CourseRemoteDataSourceImpl private constructor(private val courseApi: CourseApi) :
     CourseRemoteDataSource {
@@ -55,6 +59,10 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             .enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("tag", t.toString())
+                    Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                    (call.request().body() as MultipartBody).parts().forEach {
+                        Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                    }
                 }
 
                 override fun onResponse(
@@ -62,7 +70,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == SUCCESS) {
-                        callBack.onSuccess("코스 등록 성공")
+                        callBack.onSuccess(App.instance.context().getString(R.string.success_register_course))
                     }
                 }
 
@@ -86,15 +94,15 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         })
     }
 
-    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<CourseResponse>) {
-        courseService.getCourseDetail(courseNumber).enqueue(object : Callback<CourseResponse> {
-            override fun onFailure(call: Call<CourseResponse>, t: Throwable) {
+    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<List<CourseResponse>>) {
+        courseService.getCourseDetail(courseNumber).enqueue(object : Callback<List<CourseResponse>>{
+            override fun onFailure(call: Call<List<CourseResponse>>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
 
             override fun onResponse(
-                call: Call<CourseResponse>,
-                response: Response<CourseResponse>
+                call: Call<List<CourseResponse>>,
+                response: Response<List<CourseResponse>>
             ) {
                 if (response.code() == SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
@@ -120,6 +128,8 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 ) {
                     if (response.code() == SUCCESS) {
                         response.body()?.let { callBack.onSuccess(it) }
+                    }else if (response.code() == REQUEST_ERR) {
+                        callBack.onFailure(App.instance.context().getString(R.string.register_my_course))
                     }
                 }
 
@@ -130,23 +140,34 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
 
     }
 
-    override fun deleteCourse(courseNumber: Int, callBack: CourseCallBack<String>) {
-        courseService.deleteCourse(courseNumber).enqueue(object : Callback<ResponseBody> {
+    override fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<String>) {
+        courseService.deleteCourse(courseNumber, memberNumber).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess("코스 삭제 성공")
+                    callBack.onSuccess(App.instance.context().getString(R.string.success_delete_course))
                 }
             }
 
         })
     }
 
+    private fun bodyToString(request: RequestBody): String {
+        return try {
+            val buffer = Buffer()
+            request.writeTo(buffer)
+            buffer.readUtf8()
+        } catch (e: IOException) {
+            "did not work"
+        }
+    }
+
     companion object {
         private const val SUCCESS = 200
+        private const val REQUEST_ERR = 404
         fun getInstance(courseApi: CourseApi): CourseRemoteDataSource =
             CourseRemoteDataSourceImpl(courseApi)
     }

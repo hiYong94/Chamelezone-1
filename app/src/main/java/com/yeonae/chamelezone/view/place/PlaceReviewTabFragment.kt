@@ -11,6 +11,7 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.ReviewResponse
@@ -90,7 +91,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         setAdapter()
 
         presenter = PlaceReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(requireContext()), this
+            Injection.reviewRepository(), Injection.memberRepository(App.instance.context()), this
         )
 
         presenter.checkMember()

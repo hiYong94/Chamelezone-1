@@ -154,8 +154,8 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun back(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().remove(fragment).commit()
+    fun back() {
+        supportFragmentManager.popBackStack()
     }
 
     fun tabVisible() {

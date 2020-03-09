@@ -6,14 +6,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
-import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.view.map.adapter.MakerInfoRvAdapter
+import com.yeonae.chamelezone.view.map.presenter.MapContract
+import com.yeonae.chamelezone.view.map.presenter.MapPresenter
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.fragment_marker_info.*
 
-class MarkerInfoFragment : Fragment() {
+class MarkerInfoFragment : Fragment(), MapContract.View {
+    private val makerInfoRvAdapter = MakerInfoRvAdapter()
+    override lateinit var presenter: MapContract.Presenter
+
+    override fun placeInfo(placeList: List<PlaceResponse>) {
+        makerInfoRvAdapter.addData(placeList)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,45 +33,32 @@ class MarkerInfoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        arguments?.run {
-            tv_place_name.text = getString(PLACE_NAME)
-            tv_place_keyword.text = getString(PLACE_KEYWORD)
-            tv_place_address.text = getString(PLACE_ADDRESS)
-            val placeImages = getString(PLACE_IMAGE)?.split(",")
-            val images = arrayListOf<String>()
-            if (placeImages != null) {
-                for (i in placeImages.indices) {
-                    images.add(IMAGE_RESOURCE + placeImages[i])
-                }
+        presenter = MapPresenter(
+            Injection.placeRepository(), this
+        )
+        setAdapter()
+        arguments?.getString("searchWord")?.let { presenter.searchPlace(it) }
+
+        makerInfoRvAdapter.setOnClickListener(object : MakerInfoRvAdapter.OnClickListener {
+            override fun onClick(place: PlaceResponse) {
+                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
+                intent.putExtra(PLACE_NAME, place.name)
+                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                startActivity(intent)
             }
-            iv_place_image.glideImageSet(
-                images[0], iv_place_image.measuredWidth,
-                iv_place_image.measuredHeight
-            )
-        }
-        layout_info.setOnClickListener {
-            val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
-            intent.putExtra(PLACE_NAME, arguments?.getString(PLACE_NAME))
-            intent.putExtra(PLACE_NUMBER, arguments?.getInt(PLACE_NUMBER))
-            startActivity(intent)
-        }
+        })
+    }
+    private fun setAdapter() {
+        recycler_marker_info.layoutManager = LinearLayoutManager(context)
+        recycler_marker_info.adapter = makerInfoRvAdapter
     }
 
     companion object {
         private const val PLACE_NAME = "placeName"
-        private const val PLACE_KEYWORD = "placeKeyword"
-        private const val PLACE_ADDRESS = "placeAddress"
         private const val PLACE_NUMBER = "placeNumber"
-        private const val PLACE_IMAGE = "placeImage"
-        fun newInstance(
-            placeInfo: PlaceResponse
-        ) = MarkerInfoFragment().apply {
+        fun newInstance(searchWord: String) = MarkerInfoFragment().apply {
             arguments = Bundle().apply {
-                putString(PLACE_NAME, placeInfo.name)
-                putString(PLACE_KEYWORD, placeInfo.keywordName)
-                putString(PLACE_ADDRESS, placeInfo.address)
-                putInt(PLACE_NUMBER, placeInfo.placeNumber)
-                putString(PLACE_IMAGE, placeInfo.savedImageName)
+                putString("searchWord",searchWord)
             }
         }
     }

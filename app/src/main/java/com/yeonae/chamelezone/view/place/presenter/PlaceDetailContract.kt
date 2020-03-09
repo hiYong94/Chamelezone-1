@@ -1,5 +1,7 @@
 package com.yeonae.chamelezone.view.place.presenter
 
+import com.yeonae.chamelezone.data.model.LikeStatusItem
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
@@ -10,8 +12,8 @@ interface PlaceDetailContract {
         fun placeInfo(place: PlaceResponse)
         fun showResultView(response: Boolean)
         fun deliverUserInfo(user: UserEntity)
-        fun showLikeMessage(response: Boolean)
-        fun showDeleteLikeMessage(response: Boolean)
+        fun showLikeMessage(response: LikeStatusItem)
+        fun showDeleteLikeMessage(response: LikeStatusItem)
     }
 
     interface Presenter {
@@ -19,6 +21,6 @@ interface PlaceDetailContract {
         fun checkLogin()
         fun getUser()
         fun selectLike(memberNumber: Int, placeNumber: Int)
-        fun deleteLike(likeNumber: Int, memberNumber: Int, placeNumber: Int)
+        fun deleteLike(memberNumber: Int, placeNumber: Int)
     }
 }

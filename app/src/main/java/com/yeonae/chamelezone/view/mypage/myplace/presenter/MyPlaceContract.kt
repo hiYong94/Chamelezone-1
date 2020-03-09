@@ -9,6 +9,7 @@ interface MyPlaceContract {
         var presenter: Presenter
         fun showMyPlaceList(response: List<PlaceResponse>)
         fun showUserInfo(user: UserEntity)
+        fun showMessage(message: String)
     }
 
     interface Presenter {
