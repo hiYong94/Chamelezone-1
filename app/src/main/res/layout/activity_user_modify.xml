@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.3"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:weightSum="10">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -83,7 +83,9 @@
                 android:layout_weight="8"
                 android:hint="@string/password"
                 app:endIconMode="password_toggle"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:helperText="영문, 숫자 조합 8~16자로 입력해주세요"
+                app:helperTextEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/user_password"
@@ -129,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.3"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:weightSum="10">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -139,7 +141,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="8"
                 android:hint="@string/nickname"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                app:helperText="한글, 영문, 숫자 포함 1~10자로 입력해주세요"
+                app:helperTextEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/user_nickname"

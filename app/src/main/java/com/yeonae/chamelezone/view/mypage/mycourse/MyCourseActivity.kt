@@ -2,42 +2,41 @@ package com.yeonae.chamelezone.view.mypage.mycourse
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.yeonae.chamelezone.App
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Course
+import com.yeonae.chamelezone.data.model.MyCourseItem
+import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.CourseDetailActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.mycourse.adapter.MyCourseRvAdapter
+import com.yeonae.chamelezone.view.mypage.mycourse.presenter.MyCourseContract
+import com.yeonae.chamelezone.view.mypage.mycourse.presenter.MyCoursePresenter
 import kotlinx.android.synthetic.main.activity_my_course.*
 
-class MyCourseActivity : AppCompatActivity() {
-    private val myCourseList = arrayListOf(
-        Course(
-            "익선동 데이트 코스",
-            "2019-11-29",
-            "yeonjae22",
-            "익선동에서 다양한 경험을 할 수 있어요. 제가 제일 자주 가는 코스입니다. 연재는 지금 졸리다. 마카롱이 매우 먹고싶다. 연재는 퇴근하고 싶다." +
-                    "연재는 오늘 쇼핑을 할거다! 연재는 혼자 영등포가서 쇼핑할거다^^ 과연 4줄일까"
-        ),
-        Course("용권이의 코스", "2019-11-28", "hiyong", "용애용애"),
-        Course(
-            "선애와 연재처럼 책을 좋아하는 사람을 위한 코스",
-            "2019-11-27",
-            "Lsunae",
-            "선애바보"
-        )
-    )
-    private val myCourseRvAdapter = MyCourseRvAdapter(myCourseList)
+class MyCourseActivity : AppCompatActivity(), MyCourseContract.View {
+    private val myCourseRvAdapter = MyCourseRvAdapter()
+    override lateinit var presenter: MyCourseContract.Presenter
+    var memberNumber: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_course)
         setAdapter()
 
+        presenter = MyCoursePresenter(
+            Injection.memberRepository(App.instance.context()), Injection.courseRepository(), this
+        )
+
+        presenter.getUser()
+
         myCourseRvAdapter.setOnClickListener(object : MyCourseRvAdapter.OnClickListener {
-            override fun onClick(course: Course) {
+            override fun onClick(course: MyCourseItem) {
                 val intent = Intent(this@MyCourseActivity, CourseDetailActivity::class.java)
+                intent.putExtra(COURSE_NUMBER, course.courseNumber)
                 startActivity(intent)
             }
         })
@@ -53,6 +52,23 @@ class MyCourseActivity : AppCompatActivity() {
         }
     }
 
+    override fun showUserInfo(user: UserEntity) {
+        memberNumber = user.userNumber ?: 0
+        presenter.getMyCourseList(memberNumber)
+    }
+
+    override fun showMyCourseList(response: List<MyCourseItem>) {
+        layout_no_my_course.visibility = View.GONE
+        layout_my_course.visibility = View.VISIBLE
+        myCourseRvAdapter.addData(response)
+    }
+
+    override fun showMessage(message: String) {
+        layout_no_my_course.visibility = View.VISIBLE
+        layout_my_course.visibility = View.GONE
+        tv_message.text = message
+    }
+
     private fun showBottomSheet() {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
@@ -61,5 +77,9 @@ class MyCourseActivity : AppCompatActivity() {
     private fun setAdapter() {
         recycler_my_course.layoutManager = LinearLayoutManager(this)
         recycler_my_course.adapter = myCourseRvAdapter
+    }
+
+    companion object {
+        private const val COURSE_NUMBER = "courseNumber"
     }
 }

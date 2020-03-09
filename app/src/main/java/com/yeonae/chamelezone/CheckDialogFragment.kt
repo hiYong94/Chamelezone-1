@@ -5,29 +5,30 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.fragment_check_dialog.*
-import kotlinx.android.synthetic.main.fragment_multiple_dialog.*
 import kotlinx.android.synthetic.main.fragment_multiple_dialog.btn_cancel
 import kotlinx.android.synthetic.main.fragment_multiple_dialog.btn_ok
 
 class CheckDialogFragment : DialogFragment() {
     private var heightRatio = 0.8803125f  // default
     private var widthRatio = 0.88888889f // default
-
+    private var selectedKeyword = arrayListOf<String>()
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
-        fun onClick(keyword: ArrayList<String>)
+        fun onClick(keywordList: ArrayList<String>)
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onClickListener = (context as OnClickListener)
+        (context as? OnClickListener).let {
+            onClickListener = it
+        }
     }
 
     override fun onStart() {
@@ -49,22 +50,18 @@ class CheckDialogFragment : DialogFragment() {
             (dpMetrics.widthPixels * widthRatio).toInt(),
             (dpMetrics.heightPixels * heightRatio).toInt()
         )
-        val selectedKeyword : ArrayList<String>? = null
 
-        val keyword = arguments?.getStringArray("keyword")
-        val layout = LayoutInflater.from(context)
-            .inflate(R.layout.item_check_box, check_box, false)
+        val keyword = arguments?.getStringArrayList("keyword")
+        selectedKeyword = arguments?.getStringArrayList("selectedKeyword") as ArrayList<String>
+
         if (keyword != null) {
-            for(i in keyword.indices){
-                check_box.addView(layout)
-                layout.findViewById<View>(R.id.keyword)
+            for (i in 0 until keyword.size) {
+                addKeywordView(keyword[i])
             }
         }
 
         btn_ok.setOnClickListener {
-            if (selectedKeyword != null) {
-                onClickListener?.onClick(selectedKeyword)
-            }
+            onClickListener?.onClick(selectedKeyword)
             dialog?.cancel()
         }
 
@@ -81,8 +78,40 @@ class CheckDialogFragment : DialogFragment() {
         return inflater.inflate(R.layout.fragment_check_dialog, container, false)
     }
 
+    private fun addKeywordView(keyword: String) {
+        val layout = LayoutInflater.from(context)
+            .inflate(R.layout.item_check_box, check_box, false)
+        check_box.addView(layout)
+        layout.findViewById<CheckBox>(R.id.cb_keyword).run {
+            this.text = keyword
+            selectedKeyword.forEach {
+                if (it == keyword) {
+                    this.isChecked = true
+                }
+            }
+            setOnClickListener {
+                if (this.isChecked) {
+                    selectedKeyword.add(this.text.toString())
+                } else if (this.isChecked) {
+                    selectedKeyword.remove(this.text.toString())
+                }
+            }
+        }
+    }
+
     companion object {
         const val DIALOG_HEIGHT_RATIO = "DIALOG_HEIGHT_RATIO"
         const val DIALOG_WIDTH_RATIO = "DIALOG_WIDTH_RATIO"
+        fun newInstance(
+            keywordList: ArrayList<String>,
+            selectedKeyword: ArrayList<String>
+        ): CheckDialogFragment {
+            val frag = CheckDialogFragment()
+            val args = Bundle()
+            args.putStringArrayList("keyword", keywordList)
+            args.putStringArrayList("selectedKeyword", selectedKeyword)
+            frag.arguments = args
+            return frag
+        }
     }
 }

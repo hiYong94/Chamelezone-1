@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
@@ -8,8 +9,10 @@ import android.text.SpannableStringBuilder
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.NicknameResponse
@@ -51,6 +54,10 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         if (response) {
             Toast.makeText(this, R.string.successful_member_info_modification, Toast.LENGTH_LONG)
                 .show()
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(user_nickname.windowToken, 0)
+            imm.hideSoftInputFromWindow(user_password.windowToken, 0)
+            imm.hideSoftInputFromWindow(user_phone.windowToken, 0)
             finish()
         }
     }
@@ -64,7 +71,7 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         user_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = UserModifyPresenter(
-            Injection.memberRepository(applicationContext), this
+            Injection.memberRepository(App.instance.context()), this
         )
 
         presenter.getUser()

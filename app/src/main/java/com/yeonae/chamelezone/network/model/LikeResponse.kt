@@ -1,12 +1,15 @@
 package com.yeonae.chamelezone.network.model
 
 import com.google.gson.annotations.SerializedName
+import com.yeonae.chamelezone.data.model.LikeStatusItem
 
 data class LikeResponse(
-    @SerializedName("likeNumber")
-    val likeNumber: String,
-    @SerializedName("placeNumber")
-    val placeNumber: String,
-    @SerializedName("memberNumber")
-    val memberNumber: String
-)
+    @SerializedName("likeStatus")
+    val likeStatus: Boolean
+) {
+    fun toLikeStatusItem(response: LikeResponse): LikeStatusItem {
+        return LikeStatusItem(
+            response.likeStatus
+        )
+    }
+}
