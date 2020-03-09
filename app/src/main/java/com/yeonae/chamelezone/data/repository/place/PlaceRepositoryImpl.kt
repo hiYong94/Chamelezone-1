@@ -103,8 +103,8 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.deletePlace(placeNumber, memberNumber, callBack)
     }
 
-    override fun getHomePlaceList(callBack: PlaceCallBack<List<PlaceResponse>>) {
-        remoteDataSource.getHomePlaceList(callBack)
+    override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
+        memberNumber?.let { remoteDataSource.getHomePlaceList(it, callBack) }
     }
 
     companion object {
