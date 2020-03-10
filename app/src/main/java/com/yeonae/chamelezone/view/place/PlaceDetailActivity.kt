@@ -14,7 +14,6 @@ import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
 import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
@@ -125,6 +124,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
         val fragmentAdapter =
             PlaceDetailPagerAdapter(supportFragmentManager, placeNumber, placeName, memberNumber)
+
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
