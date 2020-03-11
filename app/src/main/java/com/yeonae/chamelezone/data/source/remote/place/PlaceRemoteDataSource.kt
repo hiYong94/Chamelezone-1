@@ -41,8 +41,7 @@ interface PlaceRemoteDataSource {
         images: List<String>,
         callBack: PlaceCallBack<Boolean>
     )
-
     fun deletePlace(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<Boolean>)
-    fun getHomePlaceList(callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>)
     fun checkPlace(name: String, address: String, callBack: PlaceCallBack<PlaceDuplicateResponse>)
 }

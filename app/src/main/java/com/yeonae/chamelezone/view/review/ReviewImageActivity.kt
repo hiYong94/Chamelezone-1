@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.view.review.adapter.PlaceReviewImageVpAdapter
 import com.yeonae.chamelezone.view.review.presenter.ReviewDetailContract
@@ -16,7 +17,7 @@ class ReviewImageActivity : AppCompatActivity(), ReviewDetailContract.View {
     override fun showReviewImage(review: ReviewResponse) {
         val reviewImages = review.savedImageName.split(",")
         val imageList = reviewImages.map {
-            "http://13.209.136.122:3000/image/$it"
+            IMAGE_RESOURCE + it
         }
         val imageAdapter = PlaceReviewImageVpAdapter(imageList)
         view_image.adapter = imageAdapter

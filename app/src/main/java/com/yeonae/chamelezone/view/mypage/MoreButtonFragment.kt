@@ -1,17 +1,22 @@
 package com.yeonae.chamelezone.view.mypage
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import kotlinx.android.synthetic.main.fragment_more_button.*
 
 
 class MoreButtonFragment : BottomSheetDialogFragment() {
+    lateinit var activity : MyReviewActivity
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +29,17 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
+        val placeNumber = arguments?.getInt(PLACE_NUMBER)
+
+        val data = Intent().apply {
+            putExtra(REVIEW_NUMBER, reviewNumber)
+        }
+
+        val myReviewData = Intent().apply {
+            putExtra(REVIEW_NUMBER, reviewNumber)
+            putExtra(PLACE_NUMBER, placeNumber)
+            Log.d("More reviewNumber", reviewNumber.toString())
+        }
 
         btn_modify.setOnClickListener {
             Toast.makeText(context, "수정", Toast.LENGTH_SHORT).show()
@@ -33,23 +49,32 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
             dismiss()
         }
         btn_delete.setOnClickListener {
-            Toast.makeText(context, "삭제",Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show()
 
-            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, Intent(reviewNumber.toString()))
+            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
+
+            activity.data(myReviewData)
 
             dismiss()
         }
     }
 
-    companion object{
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+            activity = context as MyReviewActivity
+    }
+
+    companion object {
         const val REVIEW_NUMBER = "reviewNumber"
+        const val PLACE_NUMBER = "placeNumber"
         const val BTN_EDIT = 10
         const val BTN_DELETE = 20
 
-        fun newInstance(reviewNumber: Int) =
+        fun newInstance(placeNumber: Int, reviewNumber: Int) =
             MoreButtonFragment().apply {
                 arguments = Bundle().apply {
                     putInt(REVIEW_NUMBER, reviewNumber)
+                    putInt(PLACE_NUMBER, placeNumber)
                 }
             }
     }

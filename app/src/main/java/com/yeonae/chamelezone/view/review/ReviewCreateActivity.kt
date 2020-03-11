@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
+import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
@@ -28,6 +29,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
     private val uriList = arrayListOf<String>()
+    private var isCreated = false
     var memberNumber = 0
 
     override fun review(message: String) {
@@ -45,7 +47,6 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
         toast("$tag")
-//        image_container.removeAllViews()
         uris.forEachIndexed { index, uri ->
             val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
@@ -66,7 +67,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             }
 
             uri.path?.let { uriList.add(it) }
-            Log.d("dddd", uri.path)
+            Log.d("dddd", uri.path.toString())
             Log.d("dddd childCount uriList", uriList[index])
 
         }
@@ -91,15 +92,18 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
 
+            if (!isCreated) {
+                isCreated = true
+            }
+            Handler().postDelayed({
+                isCreated = false
+            }, 1000)
 
             presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
             Log.d("reviewCreate memberNumber", memberNumber.toString())
-
             Log.d("uriList", uriList.toString())
         }
     }
-
-    private var isCreated = false
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
@@ -120,6 +124,8 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
 
     private fun pickMulti() {
         BottomSheetImagePicker.Builder(getString(R.string.file_provider))
+            .cameraButton(ButtonType.Button)
+            .galleryButton(ButtonType.Button)
             .multiSelect(2, 4)
             .multiSelectTitles(
                 R.plurals.pick_multi,

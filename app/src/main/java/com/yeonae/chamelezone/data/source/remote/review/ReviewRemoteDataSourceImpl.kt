@@ -33,12 +33,11 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         val file = ArrayList<MultipartBody.Part>()
 
         for (i in images.indices) {
-            val extends = images[i].split(".").lastOrNull() ?: "*"
             file.add(
                 MultipartBody.Part.createFormData(
                     "images",
                     images[i],
-                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
+                    RequestBody.create(MediaType.parse("image/*"), File(images[i]))
                 )
             )
         }
