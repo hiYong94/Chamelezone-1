@@ -9,7 +9,7 @@ interface UserModifyContract {
         var presenter: Presenter
         fun showUserInfo(user: UserEntity)
         fun showMessage(response: Boolean)
-        fun showNicknameMessage(response: NicknameResponse)
+        fun showNicknameMessage(nicknameCheck: String)
     }
 
     interface Presenter {
@@ -17,7 +17,7 @@ interface UserModifyContract {
 
         fun updateMember(
             memberNumber: Int,
-            password: String,
+            password: String?,
             nickName: String,
             phone: String
         )
