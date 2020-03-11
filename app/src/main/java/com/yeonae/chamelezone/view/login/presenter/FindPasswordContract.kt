@@ -1,16 +1,16 @@
 package com.yeonae.chamelezone.view.login.presenter
 
-interface FindEmailContract {
+interface FindPasswordContract {
 
     interface View {
         var presenter: Presenter
-        fun showUserInfo(emails: ArrayList<String>)
+        fun deliverUserInfo(memberNumber: Int)
         fun showMessage(message: String)
     }
 
     interface Presenter {
-        fun findEmail(
-            name: String,
+        fun findPassword(
+            email: String,
             phone: String
         )
     }

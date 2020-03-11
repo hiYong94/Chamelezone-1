@@ -1,18 +1,36 @@
 package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
+import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.SingleDialogFragment
+import com.yeonae.chamelezone.App
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.SingleDialogFragment
+import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.view.login.presenter.FindPasswordContract
+import com.yeonae.chamelezone.view.login.presenter.FindPasswordPresenter
 import kotlinx.android.synthetic.main.fragment_find_password.*
 
-class FindPasswordFragment : Fragment() {
-    private val testEmail = "heimish_08@naver.com"
-    private val testPhone = "01049403065"
+class FindPasswordFragment : Fragment(), FindPasswordContract.View {
+    override fun deliverUserInfo(memberNumber: Int) {
+        (activity as? LoginActivity)?.replace(
+            SecurityCodeFragment.newInstance(memberNumber),
+            true
+        )
+    }
+
+    override fun showMessage(message: String) {
+        val newFragment = SingleDialogFragment.newInstance(
+            R.string.information_not_exist
+        )
+        fragmentManager?.let { newFragment.show(it, "dialog") }
+    }
+
+    override lateinit var presenter: FindPasswordContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,37 +42,23 @@ class FindPasswordFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        edt_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
+        edt_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        presenter = FindPasswordPresenter(
+            Injection.memberRepository(App.instance.context()), this
+        )
 
         btn_find_password.setOnClickListener {
-            passwordCheck("${edt_email.text}", "${edt_phone.text}")
+            when {
+                "${edt_email.text}".isEmpty() -> context?.shortToast(R.string.enter_name)
+                "${edt_phone.text}".isEmpty() -> context?.shortToast(R.string.enter_phone_number)
+                else -> presenter.findPassword("${edt_email.text}", "${edt_phone.text}")
+            }
         }
 
         btn_back.setOnClickListener {
             (activity as LoginActivity).back()
         }
-    }
-
-    private fun passwordCheck(email: String, phone: String) {
-        if (email == testEmail) {
-            if (phone == testPhone) {
-                Toast.makeText(
-                    context!!.applicationContext,
-                    "임시 비밀번호가 이메일로 발송되었습니다.",
-                    Toast.LENGTH_LONG
-                )
-                    .show()
-            } else {
-                showDialog()
-            }
-        } else {
-            showDialog()
-        }
-    }
-
-    private fun showDialog() {
-        val newFragment = SingleDialogFragment.newInstance(
-            R.string.information_not_exist
-        )
-        newFragment.show(fragmentManager!!, "dialog")
     }
 }
