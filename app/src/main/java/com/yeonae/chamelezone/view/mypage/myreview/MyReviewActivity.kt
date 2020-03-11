@@ -17,7 +17,7 @@ import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewPresenter
 import kotlinx.android.synthetic.main.activity_my_review.*
 
-class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
+class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelectedListener, MyReviewContract.View {
     override lateinit var presenter: MyReviewContract.Presenter
     private val myReviewRvAdapter = MyReviewRvAdapter()
     private val moreFragment = MoreButtonFragment()
@@ -80,18 +80,16 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         btn_back.setOnClickListener {
             finish()
         }
+    }
 
-        moreFragment.setDeletedListener(object : MoreButtonFragment.OnDeletedSelectedListener {
-            override fun deleteSelected(intent: Intent) {
-                intent.getIntExtra(REVIEW_NUMBER, 0)
-                intent.getIntExtra(PLACE_NUMBER, 0)
-                Toast.makeText(applicationContext, "삭제 받음", Toast.LENGTH_SHORT).show()
-                Log.d("MyReviewActivity reviewNumber", reviewNumber.toString())
-                Log.d("MyReviewActivity placeNumber", placeNumber.toString())
-                Log.d("MyReviewActivity memberNumber", memberNumber.toString())
-                presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
-            }
-        })
+    override fun onDeleteSelected(intent: Intent) {
+        intent.getIntExtra(REVIEW_NUMBER, 0)
+        intent.getIntExtra(PLACE_NUMBER, 0)
+        Toast.makeText(applicationContext, "삭제 받음", Toast.LENGTH_SHORT).show()
+        Log.d("MyReviewActivity reviewNumber", reviewNumber.toString())
+        Log.d("MyReviewActivity placeNumber", placeNumber.toString())
+        Log.d("MyReviewActivity memberNumber", memberNumber.toString())
+        presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
     }
 
     private fun showBottomSheet(placeNumber: Int, reviewNumber: Int) {
