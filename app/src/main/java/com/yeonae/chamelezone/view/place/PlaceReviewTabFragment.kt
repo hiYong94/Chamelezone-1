@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.ReviewResponse
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
@@ -29,31 +29,39 @@ import kotlinx.android.synthetic.main.item_place_review.*
 
 class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     override lateinit var presenter: PlaceReviewContract.Presenter
+    private lateinit var placeReviewRvAdapter: PlaceReviewTabRvAdapter
     private var reviewNumber = 0
     private var placeNumber = 0
     private var memberNumber = 0
-    var placeName = arguments?.getString(PLACE_NAME)
+    var reviewMemberNumber = 0
+    var placeName: String = ""
 
-    private lateinit var placeReviewRvAdapter: PlaceReviewTabRvAdapter
 
-    override fun showPlaceReview(reviewList: List<ReviewResponse>) {
+    override fun showPlaceReview(reviewList: List<ReviewItem>) {
         if (::placeReviewRvAdapter.isInitialized)
             placeReviewRvAdapter.addData(reviewList)
     }
 
     override fun showReviewDelete(message: String) {
-//        ll_review.isGone = true
         Toast.makeText(context, "리뷰가 삭제되었습니다", Toast.LENGTH_LONG).show()
     }
 
     override fun showMemberReview(user: UserEntity) {
-
+        reviewMemberNumber = placeReviewRvAdapter.reviewMemberNumber
+        Log.d("PlaceReviewTabFragment memberNumber", memberNumber.toString())
+        Log.d("PlaceReviewTabFragment reviewMemberNumber2", reviewMemberNumber.toString())
+        if (memberNumber == reviewMemberNumber) {
+            btn_more.isVisible = true
+        } else if (memberNumber == 0) {
+            btn_more.isInvisible = true
+        }
     }
 
     override fun getMemberCheck(response: Boolean) {
         presenter.getMember()
         if (response) {
             review.setOnClickListener {
+                placeName = arguments?.getString(PLACE_NAME).toString()
                 val intent = Intent(context, ReviewCreateActivity::class.java)
 //            intent.putExtra(PLACE_NAME, "$tv_place_name")
                 Log.d("placeNumber", placeNumber.toString())
@@ -62,13 +70,11 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
                 intent.putExtra(PLACE_NAME, placeName)
                 startActivity(intent)
             }
-            btn_more.isVisible = true
         } else {
             review.setOnClickListener {
                 val intent = Intent(context, LoginActivity::class.java)
                 startActivity(intent)
             }
-            btn_more.isInvisible = true
         }
     }
 
@@ -102,8 +108,10 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
         placeReviewRvAdapter.setItemClickListener(object :
             PlaceReviewTabRvAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, position: Int, review: ReviewResponse) {
+            override fun onItemClick(view: View, position: Int, review: ReviewItem) {
                 reviewNumber = review.reviewNumber
+                reviewMemberNumber = review.memberNumber
+                Log.d("PlaceReviewTabFragment reviewMemberNumber1", reviewMemberNumber.toString())
                 val intent = Intent(context, ReviewImageActivity::class.java)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
                 intent.putExtra(REVIEW_NUMBER, reviewNumber)
@@ -115,7 +123,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
         placeReviewRvAdapter.setMoreButtonListener(object :
             PlaceReviewTabRvAdapter.MoreButtonListener {
-            override fun bottomSheetDialog(review: ReviewResponse) {
+            override fun bottomSheetDialog(review: ReviewItem) {
                 reviewNumber = review.reviewNumber
                 showBottomSheet(reviewNumber)
             }
