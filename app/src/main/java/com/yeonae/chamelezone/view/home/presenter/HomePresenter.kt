@@ -1,29 +1,31 @@
 package com.yeonae.chamelezone.view.home.presenter
 
+import com.yeonae.chamelezone.data.repository.like.LikeCallBack
+import com.yeonae.chamelezone.data.repository.like.LikeRepository
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
+import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 class HomePresenter(
     private val repository: PlaceRepository,
     private val memberRepository: MemberRepository,
+    private val likeRepository: LikeRepository,
     private val view: HomeContract.View
 ) : HomeContract.Presenter {
     override fun getHomeList(memberNumber: Int?) {
-        memberNumber?.let {
-            repository.getHomePlaceList(it, object : PlaceCallBack<List<PlaceResponse>> {
-                override fun onSuccess(response: List<PlaceResponse>) {
-                    view.showHomeList(response)
-                }
+        repository.getHomePlaceList(memberNumber, object : PlaceCallBack<List<PlaceResponse>> {
+            override fun onSuccess(place: List<PlaceResponse>) {
+                view.showHomeList(place)
+            }
 
-                override fun onFailure(message: String) {
+            override fun onFailure(message: String) {
 
-                }
-            })
-        }
+            }
+        })
     }
 
     override fun getMember() {
@@ -47,6 +49,32 @@ class HomePresenter(
             override fun onFailure(message: String) {
 
             }
+        })
+    }
+
+    override fun selectLike(memberNumber: Int, placeNumber: Int) {
+        likeRepository.selectLike(memberNumber, placeNumber, object : LikeCallBack<LikeResponse> {
+            override fun onSuccess(response: LikeResponse) {
+                view.showLikeMessage(response.toLikeStatusItem(response))
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
+
+    override fun deleteLike(memberNumber: Int, placeNumber: Int) {
+        likeRepository.deleteLike(memberNumber, placeNumber, object : LikeCallBack<LikeResponse> {
+            override fun onSuccess(response: LikeResponse) {
+                view.showDeleteLikeMessage(response.toLikeStatusItem(response))
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
         })
     }
 }
