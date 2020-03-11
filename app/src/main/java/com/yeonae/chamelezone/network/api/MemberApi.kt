@@ -7,8 +7,6 @@ import com.yeonae.chamelezone.network.model.NicknameResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import retrofit2.http.Body
-import retrofit2.http.POST
 
 interface MemberApi {
     @POST("/user")
@@ -47,8 +45,13 @@ interface MemberApi {
         @Body user: JsonObject
     ): Call<List<EmailResponse>>
 
-    @POST("/user/help-password")
+    @POST("/user/help-pw-code")
     fun findPassword(
         @Body user: JsonObject
     ): Call<MemberResponse>
+
+    @POST("/user/password")
+    fun changePassword(
+        @Body user: JsonObject
+    ): Call<ResponseBody>
 }

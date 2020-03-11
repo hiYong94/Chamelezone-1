@@ -19,7 +19,7 @@ interface MemberRemoteDataSource {
 
     fun updateMember(
         memberNumber: Int,
-        password: String,
+        password: String?,
         nickName: String,
         phone: String,
         callBack: MemberCallBack<Boolean>
@@ -34,4 +34,6 @@ interface MemberRemoteDataSource {
     fun findEmail(name: String, phone: String, callBack: MemberCallBack<List<EmailResponse>>)
 
     fun findPassword(email: String, phone: String, callBack: MemberCallBack<MemberResponse>)
+
+    fun changePassword(password: String, memberNumber: Int, callBack: MemberCallBack<Boolean>)
 }

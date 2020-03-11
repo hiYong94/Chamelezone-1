@@ -51,7 +51,7 @@ class MemberRepositoryImpl private constructor(
 
     override fun updateMember(
         memberNumber: Int,
-        password: String,
+        password: String?,
         nickName: String,
         phone: String,
         callBack: MemberCallBack<Boolean>,
@@ -103,6 +103,14 @@ class MemberRepositoryImpl private constructor(
 
     override fun findPassword(email: String, phone: String, callBack: MemberCallBack<MemberResponse>) {
         remoteDataSource.findPassword(email, phone, callBack)
+    }
+
+    override fun changePassword(
+        password: String,
+        memberNumber: Int,
+        callBack: MemberCallBack<Boolean>
+    ) {
+        remoteDataSource.changePassword(password, memberNumber, callBack)
     }
 
     companion object {

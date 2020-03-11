@@ -10,7 +10,6 @@ import com.yeonae.chamelezone.network.api.RetrofitConnection.memberService
 import com.yeonae.chamelezone.network.model.EmailResponse
 import com.yeonae.chamelezone.network.model.MemberResponse
 import com.yeonae.chamelezone.network.model.NicknameResponse
-import com.yeonae.chamelezone.view.Context
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -83,7 +82,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
     override fun updateMember(
         memberNumber: Int,
-        password: String,
+        password: String?,
         nickName: String,
         phone: String,
         callBack: MemberCallBack<Boolean>
@@ -213,6 +212,29 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 }
 
             })
+    }
+
+    override fun changePassword(
+        password: String,
+        memberNumber: Int,
+        callBack: MemberCallBack<Boolean>
+    ) {
+        val jsonObject = JsonObject().apply {
+            addProperty(PASSWORD, password)
+            addProperty(MEMBER_NUMBER, memberNumber)
+        }
+        memberService.changePassword(jsonObject).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == SUCCESS) {
+                    callBack.onSuccess(true)
+                }
+            }
+
+        })
     }
 
     companion object {
