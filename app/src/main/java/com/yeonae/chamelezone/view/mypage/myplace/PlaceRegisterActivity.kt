@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.CheckDialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
@@ -23,7 +24,6 @@ import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.Context.APPLICATION_CONTEXT
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
@@ -34,12 +34,34 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
     var memberNumber: Int = 0
     private var imageUri = arrayListOf<String>()
-    private var openingTime = ArrayList<String>()
+    private var openingHours = ArrayList<String>()
+    private var openingHoursPosition = ArrayList<String>()
     private val keywordMap = hashMapOf<Int, String>()
     private var keywords = mutableListOf<Int>()
     private var selectedKeyword = arrayListOf<String>()
     private var isCreated = false
     val keywordName = arrayListOf<String>()
+
+    override fun showPlaceMessage(placeCheck: String) {
+        if (placeCheck == CHECK_YES) {
+            layout_check_place.visibility = View.GONE
+            layout_add_view.visibility = View.VISIBLE
+            tv_check_place.visibility = View.GONE
+            edt_place_name.isEnabled = false
+            tv_place_address.isEnabled = false
+            edt_detail_address.isEnabled = false
+            btn_register.visibility = View.VISIBLE
+        } else if (placeCheck == CHECK_NO) {
+            layout_check_place.visibility = View.VISIBLE
+            layout_add_view.visibility = View.GONE
+            tv_check_place.visibility = View.VISIBLE
+            shortToast(R.string.registered_place)
+            edt_place_name.isEnabled = true
+            tv_place_address.isEnabled = true
+            edt_detail_address.isEnabled = true
+            btn_register.visibility = View.GONE
+        }
+    }
 
     override fun onClick(keywordList: ArrayList<String>) {
         keywords.clear()
@@ -55,7 +77,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     }
 
     override fun showUserInfo(user: UserEntity) {
-        memberNumber = user.userNumber!!
+        memberNumber = user.userNumber ?: 0
     }
 
     override fun showKeywordList(response: List<KeywordResponse>) {
@@ -96,8 +118,20 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         setupGUI()
 
         presenter = PlacePresenter(
-            Injection.memberRepository(APPLICATION_CONTEXT), Injection.placeRepository(), this
+            Injection.memberRepository(App.instance.context()), Injection.placeRepository(), this
         )
+
+        btn_place_check.setOnClickListener {
+            when {
+                edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
+                tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
+                else -> presenter.checkPlace(
+                    "${edt_place_name.text}",
+                    "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
+                )
+            }
+        }
+
         presenter.getUser()
         presenter.getKeyword()
 
@@ -108,9 +142,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             finish()
         }
 
-        test.setOnClickListener {
+        tv_opening_hour.setOnClickListener {
             val intent = Intent(this, OpeningHoursActivity::class.java)
-            intent.putExtra("selectedOpeningHours", openingTime)
+            intent.putExtra("selectedPosition", openingHoursPosition)
             startActivityForResult(intent, OPENING_HOURS_REQUEST_CODE)
         }
 
@@ -147,7 +181,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                             keywords,
                             "${edt_place_name.text}",
                             realAddress,
-                            openingTime,
+                            openingHours,
                             "${edt_place_phone.text}",
                             "${edt_place_text.text}",
                             latitude,
@@ -169,12 +203,14 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             }
         } else if (requestCode == OPENING_HOURS_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                openingTime = data?.getStringArrayListExtra(OPENING_HOURS) as ArrayList<String>
-                openingTime.forEach {
-                    if (it == openingTime[0]) {
+                openingHours = data?.getStringArrayListExtra(OPENING_HOURS) as ArrayList<String>
+                openingHoursPosition =
+                    data.getStringArrayListExtra(OPENING_HOURS_POSITION) as ArrayList<String>
+                openingHours.forEach {
+                    if (it == openingHours[0]) {
                         tv_opening_time.text = it
                     } else {
-                        tv_opening_time.text = "${tv_opening_time.text}\n $it"
+                        tv_opening_time.text = "${tv_opening_time.text}\n$it"
                     }
                 }
                 tv_opening_time.visibility = View.VISIBLE
@@ -224,5 +260,8 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         const val OPENING_HOURS_REQUEST_CODE = 2
         const val RESULT = "result"
         const val OPENING_HOURS = "openingHours"
+        const val OPENING_HOURS_POSITION = "openingHoursPosition"
+        const val CHECK_YES = "Y"
+        const val CHECK_NO = "N"
     }
 }

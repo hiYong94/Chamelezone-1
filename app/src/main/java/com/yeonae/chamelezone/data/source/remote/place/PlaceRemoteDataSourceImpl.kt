@@ -10,8 +10,8 @@ import com.yeonae.chamelezone.network.api.PlaceApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
 import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
 import com.yeonae.chamelezone.network.model.KeywordResponse
+import com.yeonae.chamelezone.network.model.PlaceDuplicateResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import com.yeonae.chamelezone.view.Context
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -391,6 +391,28 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                     Log.d("HomePlaceList", "홈 장소 리스트 성공")
                 }
             }
+        })
+    }
+
+    override fun checkPlace(
+        name: String,
+        address: String,
+        callBack: PlaceCallBack<PlaceDuplicateResponse>
+    ) {
+        placeService.checkPlace(name, address).enqueue(object : Callback<PlaceDuplicateResponse> {
+            override fun onFailure(call: Call<PlaceDuplicateResponse>, t: Throwable) {
+                Log.d("tag", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<PlaceDuplicateResponse>,
+                response: Response<PlaceDuplicateResponse>
+            ) {
+                if (response.code() == Network.SUCCESS) {
+                    response.body()?.let { callBack.onSuccess(it) }
+                }
+            }
+
         })
     }
 
