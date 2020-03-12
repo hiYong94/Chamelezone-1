@@ -1,17 +1,16 @@
 package com.yeonae.chamelezone.view.login.presenter
 
-import com.yeonae.chamelezone.network.model.EmailSendResultResponse
-
-interface FindPasswordContract {
+interface SecurityCodeContract {
 
     interface View {
         var presenter: Presenter
-        fun deliverUserInfo(response: EmailSendResultResponse)
+        fun showResultView(matchResult: Boolean)
         fun showMessage(message: String)
     }
 
     interface Presenter {
-        fun findPassword(
+        fun checkSecurityCode(
+            securityCode: String,
             email: String,
             phone: String
         )

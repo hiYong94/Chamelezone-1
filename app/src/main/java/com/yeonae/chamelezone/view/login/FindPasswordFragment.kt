@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.login
 
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,14 +12,21 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.network.model.EmailSendResultResponse
+import com.yeonae.chamelezone.network.model.FindPasswordResponse
 import com.yeonae.chamelezone.view.login.presenter.FindPasswordContract
 import com.yeonae.chamelezone.view.login.presenter.FindPasswordPresenter
 import kotlinx.android.synthetic.main.fragment_find_password.*
 
 class FindPasswordFragment : Fragment(), FindPasswordContract.View {
-    override fun deliverUserInfo(memberNumber: Int) {
+    override fun deliverUserInfo(response: EmailSendResultResponse) {
+        Log.d("pwResponse", response.memberNumber.toString())
         (activity as? LoginActivity)?.replace(
-            SecurityCodeFragment.newInstance(memberNumber),
+            SecurityCodeFragment.newInstance(
+                response.memberNumber,
+                "${edt_email.text}",
+                "${edt_phone.text}"
+            ),
             true
         )
     }

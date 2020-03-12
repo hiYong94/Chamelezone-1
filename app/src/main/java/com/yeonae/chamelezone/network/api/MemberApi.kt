@@ -1,9 +1,7 @@
 package com.yeonae.chamelezone.network.api
 
 import com.google.gson.JsonObject
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.network.model.MemberResponse
-import com.yeonae.chamelezone.network.model.NicknameResponse
+import com.yeonae.chamelezone.network.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -48,9 +46,14 @@ interface MemberApi {
     @POST("/user/help-pw-code")
     fun findPassword(
         @Body user: JsonObject
-    ): Call<MemberResponse>
+    ): Call<FindPasswordResponse>
 
-    @POST("/user/password")
+    @POST("/user/help-pw-code-check")
+    fun checkSecurityCode(
+        @Body user: JsonObject
+    ): Call<SecurityCodeResponse>
+
+    @PUT("/user/password")
     fun changePassword(
         @Body user: JsonObject
     ): Call<ResponseBody>
