@@ -23,7 +23,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         phone: String,
         callBack: MemberCallBack<String>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
             addProperty(PASSWORD, password)
             addProperty(NAME, name)
@@ -31,7 +31,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
             addProperty(PHONE, phone)
         }
 
-        memberService.createMember(jsonObject).enqueue(object :
+        memberService.createMember(requestBody).enqueue(object :
             Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
@@ -54,12 +54,12 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         password: String,
         callBack: MemberCallBack<MemberResponse>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
             addProperty(PASSWORD, password)
         }
 
-        memberService.getMember(jsonObject).enqueue(object :
+        memberService.getMember(requestBody).enqueue(object :
             Callback<MemberResponse> {
             override fun onResponse(
                 call: Call<MemberResponse>,
@@ -85,13 +85,13 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         phone: String,
         callBack: MemberCallBack<Boolean>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(MEMBER_NUMBER, memberNumber)
             addProperty(PASSWORD, password)
             addProperty(NICKNAME, nickName)
             addProperty(PHONE, phone)
         }
-        memberService.updateMember(memberNumber, jsonObject)
+        memberService.updateMember(memberNumber, requestBody)
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
@@ -161,11 +161,11 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         phone: String,
         callBack: MemberCallBack<List<EmailResponse>>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(NAME, name)
             addProperty(PHONE, phone)
         }
-        memberService.findEmail(jsonObject)
+        memberService.findEmail(requestBody)
             .enqueue(object : Callback<List<EmailResponse>> {
                 override fun onFailure(call: Call<List<EmailResponse>>, t: Throwable) {
                     Log.e("tag", t.toString())
@@ -190,11 +190,11 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         phone: String,
         callBack: MemberCallBack<FindPasswordResponse>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
             addProperty(PHONE, phone)
         }
-        memberService.findPassword(jsonObject)
+        memberService.findPassword(requestBody)
             .enqueue(object : Callback<FindPasswordResponse> {
                 override fun onFailure(call: Call<FindPasswordResponse>, t: Throwable) {
                     Log.e("tag", t.toString())
@@ -220,12 +220,12 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         phone: String,
         callBack: MemberCallBack<SecurityCodeResponse>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(SECURITY_CODE, securityCode)
             addProperty(EMAIL, email)
             addProperty(PHONE, phone)
         }
-        memberService.checkSecurityCode(jsonObject)
+        memberService.checkSecurityCode(requestBody)
             .enqueue(object : Callback<SecurityCodeResponse> {
                 override fun onFailure(call: Call<SecurityCodeResponse>, t: Throwable) {
                     Log.e("tag", t.toString())
