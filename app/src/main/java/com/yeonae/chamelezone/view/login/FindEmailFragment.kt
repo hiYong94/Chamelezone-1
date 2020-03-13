@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
@@ -46,7 +45,7 @@ class FindEmailFragment : Fragment(), FindEmailContract.View {
         edt_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = FindEmailPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         btn_find_email.setOnClickListener {

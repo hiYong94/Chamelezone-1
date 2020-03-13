@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.CourseItem
@@ -49,7 +48,7 @@ class CourseTabFragment : Fragment(), CourseContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = CoursePresenter(
-            Injection.memberRepository(App.instance.context()), Injection.courseRepository(), this
+            Injection.memberRepository(), Injection.courseRepository(), this
         )
         presenter.getCourseList()
         setAdapter()

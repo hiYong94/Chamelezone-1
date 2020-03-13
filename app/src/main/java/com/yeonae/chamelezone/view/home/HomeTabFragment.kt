@@ -66,7 +66,7 @@ class HomeTabFragment : Fragment(), HomeContract.View {
             startActivity(intent)
         }
         presenter = HomePresenter(
-            Injection.placeRepository(), Injection.memberRepository(requireContext()), this
+            Injection.placeRepository(), Injection.memberRepository(), this
         )
         presenter.checkMember()
 

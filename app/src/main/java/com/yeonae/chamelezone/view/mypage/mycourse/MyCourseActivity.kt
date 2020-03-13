@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.MyCourseItem
@@ -28,7 +27,7 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View {
         setAdapter()
 
         presenter = MyCoursePresenter(
-            Injection.memberRepository(App.instance.context()), Injection.courseRepository(), this
+            Injection.memberRepository(), Injection.courseRepository(), this
         )
 
         presenter.getUser()

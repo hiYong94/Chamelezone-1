@@ -20,7 +20,7 @@ class SecurityCodePresenter(
                 }
 
                 override fun onFailure(message: String) {
-                    view.showMessage(message)
+                    view.showDialog()
                 }
 
             })

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.shortToast
@@ -43,7 +42,7 @@ class ChangePasswordFragment : Fragment(), ChangePasswordContract.View {
         memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
 
         presenter = ChangePasswordPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         edt_pw.addTextChangedListener(object : TextWatcher {
@@ -63,7 +62,7 @@ class ChangePasswordFragment : Fragment(), ChangePasswordContract.View {
         })
 
         btn_back.setOnClickListener {
-            (activity as LoginActivity).back()
+            (activity as? LoginActivity)?.back()
         }
 
         btn_ok.setOnClickListener {
@@ -78,8 +77,9 @@ class ChangePasswordFragment : Fragment(), ChangePasswordContract.View {
         when {
             password.isEmpty() -> context?.shortToast("")
             checkPassword.isEmpty() -> context?.shortToast("")
-            "${edt_pw.text}" != "${edt_check_pw.text}" -> layout_check_pw.error =
-                getString(R.string.not_match_pw)
+            "${edt_pw.text}" != "${edt_check_pw.text}" -> {
+                layout_check_pw.error = getString(R.string.not_match_pw)
+            }
             else -> {
                 layout_check_pw.isErrorEnabled = false
                 if (!layout_pw.isErrorEnabled &&
@@ -92,9 +92,9 @@ class ChangePasswordFragment : Fragment(), ChangePasswordContract.View {
     }
 
     private fun checkPassword() {
-        val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
-        val m = p.matcher(edt_pw.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
+        val matcher = pattern.matcher(edt_pw.text.toString())
+        if (!matcher.matches()) {
             layout_pw.error = getString(R.string.password_format)
         } else {
             layout_pw.isErrorEnabled = false

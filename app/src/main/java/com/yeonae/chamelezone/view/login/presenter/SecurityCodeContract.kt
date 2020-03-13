@@ -5,7 +5,7 @@ interface SecurityCodeContract {
     interface View {
         var presenter: Presenter
         fun showResultView(matchResult: Boolean)
-        fun showMessage(message: String)
+        fun showDialog()
     }
 
     interface Presenter {

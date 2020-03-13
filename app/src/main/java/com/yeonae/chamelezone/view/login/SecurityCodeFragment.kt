@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
@@ -25,7 +24,7 @@ class SecurityCodeFragment : Fragment(), SecurityCodeContract.View {
         }
     }
 
-    override fun showMessage(message: String) {
+    override fun showDialog() {
         val newFragment = SingleDialogFragment.newInstance(
             R.string.information_not_exist
         )
@@ -46,7 +45,7 @@ class SecurityCodeFragment : Fragment(), SecurityCodeContract.View {
         val email = arguments?.getString(EMAIL)
         val phone = arguments?.getString(PHONE)
         presenter = SecurityCodePresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         btn_back.setOnClickListener {

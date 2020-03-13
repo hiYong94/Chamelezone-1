@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.EmailSendResultResponse
-import com.yeonae.chamelezone.network.model.FindPasswordResponse
 import com.yeonae.chamelezone.view.login.presenter.FindPasswordContract
 import com.yeonae.chamelezone.view.login.presenter.FindPasswordPresenter
 import kotlinx.android.synthetic.main.fragment_find_password.*
@@ -54,7 +52,7 @@ class FindPasswordFragment : Fragment(), FindPasswordContract.View {
         edt_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = FindPasswordPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         btn_find_password.setOnClickListener {

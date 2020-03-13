@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.kaiteki.toast
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.CheckDialogFragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
@@ -118,7 +117,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         setupGUI()
 
         presenter = PlacePresenter(
-            Injection.memberRepository(App.instance.context()), Injection.placeRepository(), this
+            Injection.memberRepository(), Injection.placeRepository(), this
         )
 
         btn_place_check.setOnClickListener {
@@ -127,7 +126,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 else -> presenter.checkPlace(
                     "${edt_place_name.text}",
-                    "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
+                    "${tv_place_address.text} ${edt_detail_address.text}"
                 )
             }
         }
