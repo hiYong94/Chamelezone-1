@@ -15,11 +15,11 @@ class PlaceReviewPresenter(private val reviewRepository: ReviewRepository,
     override fun placeDetailReview(placeNumber: Int) {
         reviewRepository.getReviewList(placeNumber, object : ReviewCallBack<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
-                val reviewItem = arrayListOf<ReviewItem>()
-                response.forEachIndexed { index, _ ->
-                    reviewItem.add(response[index].toReviewItem(response[index]))
+                val reviewItemList = arrayListOf<ReviewItem>()
+                response.forEach {
+                    reviewItemList.add(it.toReviewItem(it))
                 }
-                placeReviewView.showPlaceReview(reviewItem)
+                placeReviewView.showPlaceReview(reviewItemList)
             }
 
             override fun onFailure(message: String) {

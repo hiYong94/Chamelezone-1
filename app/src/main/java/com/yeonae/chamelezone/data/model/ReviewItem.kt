@@ -7,7 +7,7 @@ data class ReviewItem(
     val placeNumber: Int,
     val memberNumber:Int,
     val name: String?,
-    val nickName: String,
+    val nickName: String?,
     val regiDate: String,
     val content: String,
     val image: String,
