@@ -92,7 +92,7 @@ class CheckDialogFragment : DialogFragment() {
             setOnClickListener {
                 if (this.isChecked) {
                     selectedKeyword.add(this.text.toString())
-                } else if (!this.isChecked) {
+                } else {
                     selectedKeyword.remove(this.text.toString())
                 }
             }
