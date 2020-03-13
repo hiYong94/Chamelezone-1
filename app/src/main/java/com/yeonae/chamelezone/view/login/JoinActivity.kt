@@ -8,10 +8,8 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
 import kotlinx.android.synthetic.main.activity_join.*
@@ -77,7 +75,7 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
         join_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = JoinPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         checkType()
@@ -158,9 +156,9 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
     }
 
     private fun checkEmail() {
-        val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
-        val m = p.matcher(join_email.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
+        val matcher = pattern.matcher(join_email.text.toString())
+        if (!matcher.matches()) {
             email_layout.error = getString(R.string.email_format)
         } else {
             email_layout.isErrorEnabled = false
@@ -168,9 +166,9 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
     }
 
     private fun checkPassword() {
-        val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
-        val m = p.matcher(join_password.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
+        val matcher = pattern.matcher(join_password.text.toString())
+        if (!matcher.matches()) {
             password_layout.error = getString(R.string.password_format)
         } else {
             password_layout.isErrorEnabled = false
@@ -178,9 +176,9 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
     }
 
     private fun checkNickName() {
-        val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
-        val m = p.matcher(join_nickname.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
+        val matcher = pattern.matcher(join_nickname.text.toString())
+        if (!matcher.matches()) {
             nickname_layout.error = getString(R.string.nickname_format)
         } else {
             nickname_layout.isErrorEnabled = false

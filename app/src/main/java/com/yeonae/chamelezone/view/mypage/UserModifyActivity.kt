@@ -12,7 +12,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.room.entity.UserEntity
@@ -74,7 +73,7 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         user_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = UserModifyPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         presenter.getUser()
@@ -99,7 +98,7 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     private var updatePhone = ""
 
     private fun updateCheck() {
-        if(user_password.text.toString().isEmpty()){
+        if (user_password.text.toString().isEmpty()) {
             password_layout.isErrorEnabled = false
         }
         if (!password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled) {
@@ -127,9 +126,9 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     }
 
     private fun checkPassword() {
-        val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
-        val m = p.matcher(user_password.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
+        val matcher = pattern.matcher(user_password.text.toString())
+        if (!matcher.matches()) {
             password_layout.error = getString(R.string.password_format)
         } else {
             password_layout.isErrorEnabled = false
@@ -137,9 +136,9 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     }
 
     private fun checkNickName() {
-        val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
-        val m = p.matcher(user_nickname.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
+        val matcher = pattern.matcher(user_nickname.text.toString())
+        if (!matcher.matches()) {
             nickname_layout.error = getString(R.string.nickname_format)
         } else if ("${user_nickname.text}".isEmpty()) {
             nickname_layout.error = getString(R.string.enter_nickname)
