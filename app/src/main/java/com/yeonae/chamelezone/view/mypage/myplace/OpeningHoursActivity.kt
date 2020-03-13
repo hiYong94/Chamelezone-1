@@ -91,7 +91,7 @@ class OpeningHoursActivity : AppCompatActivity() {
         checkbox_sun.setOnClickListener {
             if (checkbox_sun.isChecked) {
                 addOpeningHourLayout(opening_hour_sun, 1)
-            } else if (!checkbox_sun.isChecked) {
+            } else {
                 addOpeningHourLayout(opening_hour_sun, 0)
             }
         }
