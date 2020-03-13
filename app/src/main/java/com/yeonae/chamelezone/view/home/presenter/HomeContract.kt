@@ -8,11 +8,11 @@ interface HomeContract {
 
     interface View {
         var presenter: Presenter
-        fun showHomeList(place: List<PlaceResponse>)
+        fun showHomeList(placeList: List<PlaceResponse>)
         fun getMember(user: UserEntity)
         fun getMemberCheck(response: Boolean)
-        fun showLikeMessage(response: LikeStatusItem)
-        fun showDeleteLikeMessage(response: LikeStatusItem)
+        fun showLikeMessage(likeStatusItem: LikeStatusItem)
+        fun showDeleteLikeMessage(likeStatusItem: LikeStatusItem)
     }
     interface Presenter {
         fun getHomeList(memberNumber: Int?)

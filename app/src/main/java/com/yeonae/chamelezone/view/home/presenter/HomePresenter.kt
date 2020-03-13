@@ -18,8 +18,8 @@ class HomePresenter(
 ) : HomeContract.Presenter {
     override fun getHomeList(memberNumber: Int?) {
         repository.getHomePlaceList(memberNumber, object : PlaceCallBack<List<PlaceResponse>> {
-            override fun onSuccess(place: List<PlaceResponse>) {
-                view.showHomeList(place)
+            override fun onSuccess(placeList: List<PlaceResponse>) {
+                view.showHomeList(placeList)
             }
 
             override fun onFailure(message: String) {
