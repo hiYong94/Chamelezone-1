@@ -27,10 +27,6 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         fun onDeleteSelected(intent: Intent)
     }
 
-    fun setOnDeletedListener(listener: OnDeletedSelectedListener) {
-        deletedButtonListener = listener
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,14 +54,19 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
             targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
 
-            deletedButtonListener.onDeleteSelected(myReviewData)
+            if (::deletedButtonListener.isInitialized)
+                deletedButtonListener.onDeleteSelected(myReviewData)
 
             dismiss()
         }
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        deletedButtonListener = (context as OnDeletedSelectedListener)
+
+        (context as? OnDeletedSelectedListener)?.let {
+            deletedButtonListener = it
+        }
     }
 
     companion object {
