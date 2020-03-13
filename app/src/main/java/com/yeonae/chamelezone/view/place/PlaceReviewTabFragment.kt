@@ -50,22 +50,16 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         reviewMemberNumber = placeReviewRvAdapter.reviewMemberNumber
         Log.d("PlaceReviewTabFragment memberNumber", memberNumber.toString())
         Log.d("PlaceReviewTabFragment reviewMemberNumber2", reviewMemberNumber.toString())
-        if (memberNumber == reviewMemberNumber) {
-            btn_more.isVisible = true
-        } else if (memberNumber == 0) {
-            btn_more.isInvisible = true
-        }
     }
 
     override fun getMemberCheck(response: Boolean) {
         presenter.getMember()
         if (response) {
             review.setOnClickListener {
-                placeName = arguments?.getString(PLACE_NAME).toString()
+                placeName = arguments?.getString(PLACE_NAME).orEmpty()
                 val intent = Intent(context, ReviewCreateActivity::class.java)
-//            intent.putExtra(PLACE_NAME, "$tv_place_name")
                 Log.d("placeNumber", placeNumber.toString())
-                Log.d("PlaceReviewTabFragment placeName", placeName.toString())
+                Log.d("PlaceReviewTabFragment placeName", placeName)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
                 intent.putExtra(PLACE_NAME, placeName)
                 startActivity(intent)
