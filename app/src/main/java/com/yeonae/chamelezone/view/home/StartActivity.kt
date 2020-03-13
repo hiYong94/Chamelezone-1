@@ -3,7 +3,6 @@ package com.yeonae.chamelezone.view.home
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
@@ -36,17 +35,13 @@ class StartActivity : AppCompatActivity(), StartContract.View {
         setContentView(R.layout.activity_start)
 
         presenter = StartPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
         val setting = getSharedPreferences("setting", 0)
         val email = setting.getString("ID", "")
         val password = setting.getString("PW", "")
-        if (email != null && password != null) {
-            if (email.isNotEmpty() && password.isNotEmpty()) {
-                presenter.userLogin(email, password)
-            } else {
-                presenter.logout()
-            }
+        if (!email.isNullOrEmpty() && !password.isNullOrEmpty()) {
+            presenter.userLogin(email, password)
         } else {
             presenter.logout()
         }
