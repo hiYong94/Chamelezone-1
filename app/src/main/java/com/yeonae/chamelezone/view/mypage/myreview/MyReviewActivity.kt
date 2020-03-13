@@ -83,8 +83,6 @@ class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelect
     }
 
     override fun onDeleteSelected(intent: Intent) {
-        intent.getIntExtra(REVIEW_NUMBER, 0)
-        intent.getIntExtra(PLACE_NUMBER, 0)
         Toast.makeText(applicationContext, "삭제 받음", Toast.LENGTH_SHORT).show()
         Log.d("MyReviewActivity reviewNumber", reviewNumber.toString())
         Log.d("MyReviewActivity placeNumber", placeNumber.toString())
