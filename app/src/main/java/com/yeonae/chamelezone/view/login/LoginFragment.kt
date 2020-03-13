@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
@@ -33,11 +32,11 @@ class LoginFragment : Fragment(), LoginContract.View {
         imm.hideSoftInputFromWindow(edt_password.windowToken, 0)
 
         val editor = context?.getSharedPreferences("setting", 0)?.edit()
-        if(cb_login.isChecked){
+        if (cb_login.isChecked) {
             editor?.putString("ID", "${edt_email.text}")
             editor?.putString("PW", "${edt_password.text}")
             editor?.apply()
-        } else if(!cb_login.isChecked){
+        } else {
             editor?.clear()
             editor?.apply()
         }
@@ -57,7 +56,7 @@ class LoginFragment : Fragment(), LoginContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = LoginPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         btn_back.setOnClickListener {
@@ -70,7 +69,7 @@ class LoginFragment : Fragment(), LoginContract.View {
             (activity as? LoginActivity)?.replace(FindEmailFragment(), true)
         }
         btn_find_password.setOnClickListener {
-            (activity as LoginActivity).replace(FindPasswordFragment(), true)
+            (activity as? LoginActivity)?.replace(FindPasswordFragment(), true)
         }
         btn_join.setOnClickListener {
             val intent = Intent(requireContext(), JoinActivity::class.java)
