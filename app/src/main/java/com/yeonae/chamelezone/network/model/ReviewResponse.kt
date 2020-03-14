@@ -22,23 +22,23 @@ data class ReviewResponse(
     @SerializedName("savedImageName")
     val savedImageName: String
 ) {
-    fun toReviewItem(response: ReviewResponse): ReviewItem {
-        val reviewImages = response.savedImageName.split(",")
+    fun toReviewItem(): ReviewItem {
+        val reviewImages = savedImageName.split(",")
         val imageList = arrayListOf<String>()
         reviewImages.forEachIndexed { index, _ ->
             imageList.add(IMAGE_RESOURCE + reviewImages[index])
         }
         val image = imageList.first()
         return ReviewItem(
-            response.reviewNumber,
-            response.placeNumber,
-            response.memberNumber,
-            response.name,
-            response.nickName,
-            response.regiDate,
-            response.content,
+            reviewNumber,
+            placeNumber,
+            memberNumber,
+            name,
+            nickName,
+            regiDate,
+            content,
             image,
-            response.savedImageName
+            savedImageName
         )
     }
 }

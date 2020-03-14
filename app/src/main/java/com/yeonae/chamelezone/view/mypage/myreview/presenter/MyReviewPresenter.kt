@@ -18,7 +18,7 @@ class MyReviewPresenter(
             override fun onSuccess(response: List<ReviewResponse>) {
                 val reviewItem = arrayListOf<ReviewItem>()
                 response.forEachIndexed { index, _ ->
-                    reviewItem.add(response[index].toReviewItem(response[index]))
+                    reviewItem.add(response[index].toReviewItem())
                 }
                 myReviewView.showMyReviewList(reviewItem)
             }

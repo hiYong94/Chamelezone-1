@@ -17,7 +17,7 @@ class PlaceReviewPresenter(private val reviewRepository: ReviewRepository,
             override fun onSuccess(response: List<ReviewResponse>) {
                 val reviewItemList = arrayListOf<ReviewItem>()
                 response.forEach {
-                    reviewItemList.add(it.toReviewItem(it))
+                    reviewItemList.add(it.toReviewItem())
                 }
                 placeReviewView.showPlaceReview(reviewItemList)
             }
