@@ -61,13 +61,13 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
                 intent.putExtra(PLACE_NAME, placeName)
                 startActivity(intent)
             }
-            btn_more.isVisible = true
+            //btn_more.isVisible = true
         } else {
             review.setOnClickListener {
                 val intent = Intent(context, LoginActivity::class.java)
                 startActivity(intent)
             }
-            btn_more.isInvisible = true
+            //btn_more.isInvisible = true
         }
     }
 
