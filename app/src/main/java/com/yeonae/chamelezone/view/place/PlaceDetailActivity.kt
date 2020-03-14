@@ -3,10 +3,8 @@ package com.yeonae.chamelezone.view.place
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.appbar.AppBarLayout
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
@@ -14,7 +12,6 @@ import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
 import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
@@ -22,13 +19,14 @@ import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailPresenter
 import kotlinx.android.synthetic.main.activity_place_detail.*
-import kotlin.math.abs
 
 class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     override lateinit var presenter: PlaceDetailContract.Presenter
     private var memberNumber: Int? = null
     private var placeNumber: Int = 0
     private var placeName: String = ""
+    private var nameBar = 0
+    private var tabBar = 0
 
     override fun showLikeMessage(response: LikeStatusItem) {
         if (response.likeStatus) {
@@ -77,15 +75,18 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
     override fun deliverUserInfo(user: UserEntity) {
         memberNumber = user.userNumber
+        Log.d("PlaceDetailActivity memberNumber1", memberNumber.toString())
         presenter.placeDetail(placeNumber, memberNumber)
     }
 
     override fun showResultView(response: Boolean) {
         if (response) {
             presenter.getUser()
+            Log.d("PlaceDetailActivity memberNumber2", memberNumber.toString())
 
         } else {
             presenter.placeDetail(placeNumber, memberNumber)
+            Log.d("PlaceDetailActivity memberNumber3", memberNumber.toString())
         }
     }
 
@@ -93,7 +94,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_detail)
 
-        val placeName = intent.getStringExtra(PLACE_NAME)
+        placeName = intent.getStringExtra(PLACE_NAME)
         placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
         tv_place_name.text = placeName
         tv_place_name_two.text = placeName
@@ -114,7 +115,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             vp_image.layoutParams = vp_image.layoutParams.apply {
                 height = ((vp_image.parent as ViewGroup).width / 3) * 2
             }
-
             setupView()
         }
 
@@ -129,10 +129,11 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
+
         tool_bar.run {
             post {
-                val nameBar = layout_visibility.height
-                val tabBar = tabs_detail.height
+                nameBar = ll_title.height
+                tabBar = tabs_detail.height
 
                 Log.d("PlaceDetailActivity nameBar", nameBar.toString())
                 Log.d("PlaceDetailActivity tabBar", tabBar.toString())
@@ -140,15 +141,14 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
                 layoutParams = tool_bar.layoutParams.apply {
                     height = nameBar + tabBar
                 }
-
-                app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-                    if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
-                        layout_visibility.visibility = View.VISIBLE
-                    } else {
-                        Log.d("PlaceDetailActivity nameBar", nameBar.toString())
-                        layout_visibility.visibility = View.GONE
-                    }
-                })
+//                app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+//                    if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
+//                        layout_visibility.visibility = View.VISIBLE
+//                    } else if (abs(verticalOffset) - appBarLayout.totalScrollRange != 0) {
+//                        Log.d("PlaceDetailActivity nameBar", nameBar.toString())
+//                        layout_visibility.visibility = View.GONE
+//                    }
+//                })
             }
         }
     }

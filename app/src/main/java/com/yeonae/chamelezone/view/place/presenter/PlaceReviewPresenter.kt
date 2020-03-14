@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.place.presenter
 
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
@@ -14,7 +15,11 @@ class PlaceReviewPresenter(private val reviewRepository: ReviewRepository,
     override fun placeDetailReview(placeNumber: Int) {
         reviewRepository.getReviewList(placeNumber, object : ReviewCallBack<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
-                placeReviewView.showPlaceReview(response)
+                val reviewItemList = arrayListOf<ReviewItem>()
+                response.forEach {
+                    reviewItemList.add(it.toReviewItem(it))
+                }
+                placeReviewView.showPlaceReview(reviewItemList)
             }
 
             override fun onFailure(message: String) {

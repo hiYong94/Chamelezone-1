@@ -11,7 +11,6 @@ import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
 import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import com.yeonae.chamelezone.view.Context
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -379,7 +378,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
         placeService.getHomePlaceList(memberNumber).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
-                Log.d("tag", t.toString())
+                Log.d("Home error tag", t.toString())
             }
 
             override fun onResponse(
