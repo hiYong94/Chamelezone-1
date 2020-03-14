@@ -18,6 +18,7 @@ import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
+import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceReviewContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceReviewPresenter
@@ -33,7 +34,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     private var reviewNumber = 0
     private var placeNumber = 0
     private var memberNumber = 0
-    var reviewMemberNumber = 0
+    var reviewMemberNum = 0
     var placeName: String = ""
 
 
@@ -47,14 +48,19 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     }
 
     override fun showMemberReview(user: UserEntity) {
-        reviewMemberNumber = placeReviewRvAdapter.reviewMemberNumber
+        Log.d("PlaceReviewTabFragment reviewMemberNumber22222222222", reviewMemberNum.toString())
+//        if (memberNumber == reviewMemberNum) {
+//            btn_more.isVisible = true
+//        } else {
+//            btn_more.isInvisible = true
+//        }
         Log.d("PlaceReviewTabFragment memberNumber", memberNumber.toString())
-        Log.d("PlaceReviewTabFragment reviewMemberNumber2", reviewMemberNumber.toString())
+        Log.d("PlaceReviewTabFragment reviewMemberNumber2", reviewMemberNum.toString())
     }
 
     override fun getMemberCheck(response: Boolean) {
-        presenter.getMember()
         if (response) {
+            presenter.getMember()
             review.setOnClickListener {
                 placeName = arguments?.getString(PLACE_NAME).orEmpty()
                 val intent = Intent(context, ReviewCreateActivity::class.java)
@@ -96,6 +102,14 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
         presenter.checkMember()
 
+        placeReviewRvAdapter.setReviewTabListener(object :
+            PlaceReviewTabRvAdapter.OnReviewTabListener {
+            override fun onReviewTabSelected(review: ReviewItem) {
+                reviewMemberNum = review.memberNumber
+                Log.d("PlaceReviewTabFragment reviewMemberNum", reviewMemberNum.toString())
+            }
+        })
+
         placeNumber.let {
             presenter.placeDetailReview(it)
         }
@@ -104,8 +118,8 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
             PlaceReviewTabRvAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int, review: ReviewItem) {
                 reviewNumber = review.reviewNumber
-                reviewMemberNumber = review.memberNumber
-                Log.d("PlaceReviewTabFragment reviewMemberNumber1", reviewMemberNumber.toString())
+//                reviewMemberNumber = review.memberNumber
+                Log.d("PlaceReviewTabFragment reviewMemberNumber1", reviewMemberNum.toString())
                 val intent = Intent(context, ReviewImageActivity::class.java)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
                 intent.putExtra(REVIEW_NUMBER, reviewNumber)
@@ -146,6 +160,11 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     private fun setAdapter() {
         recycler_place_review.apply {
             layoutManager = LinearLayoutManager(context)
@@ -172,7 +191,11 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         private const val MEMBER_NUMBER = "memberNumber"
         private const val REVIEW_NUMBER = "reviewNumber"
 
-        fun newInstance(placeNumber: Int, placeName: String, memberNumber: Int?) =
+        fun newInstance(
+            placeNumber: Int,
+            placeName: String,
+            memberNumber: Int?
+        ) =
             PlaceReviewTabFragment().apply {
                 arguments = Bundle().apply {
                     putInt(PLACE_NUMBER, placeNumber)

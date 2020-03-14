@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.place.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +21,12 @@ class PlaceReviewTabRvAdapter :
     private val reviewList = arrayListOf<ReviewItem>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var moreButtonListener: MoreButtonListener
-//    private lateinit var moreImageBtnListener: MoreImageBtnListener
-    var reviewMemberNumber: Int = 0
+    private lateinit var reviewListener: OnReviewTabListener
+    var reviewMemberNumberList = arrayListOf<Int>()
+    interface OnReviewTabListener {
+        fun onReviewTabSelected(review: ReviewItem)
+    }
+
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, review: ReviewItem)
@@ -29,6 +34,10 @@ class PlaceReviewTabRvAdapter :
 
     interface MoreButtonListener {
         fun bottomSheetDialog(review: ReviewItem)
+    }
+
+    fun setReviewTabListener(listener: OnReviewTabListener) {
+        reviewListener = listener
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -68,7 +77,9 @@ class PlaceReviewTabRvAdapter :
             nickname.text = review.nickName
             reviewDate.text = review.regiDate
             reviewContent.text = review.content
-            reviewMemberNumber = review.memberNumber
+            val reviewMemberNumber = review.memberNumber
+            reviewMemberNumberList.addAll(arrayListOf(reviewMemberNumber))
+
 
             val image = review.image
             val reviewImages = review.images.split(",")
@@ -107,6 +118,9 @@ class PlaceReviewTabRvAdapter :
                     moreButtonListener.bottomSheetDialog(review)
                 }
             }
+
+            if (::reviewListener.isInitialized)
+                reviewListener.onReviewTabSelected(review)
         }
     }
 
