@@ -107,7 +107,9 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    callBack.onSuccess(App.instance.context().getString(R.string.success_register_place))
+                    callBack.onSuccess(
+                        App.instance.context().getString(R.string.success_register_place)
+                    )
                 }
             }
 
@@ -375,7 +377,10 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
+    override fun getHomePlaceList(
+        memberNumber: Int?,
+        callBack: PlaceCallBack<List<PlaceResponse>>
+    ) {
         placeService.getHomePlaceList(memberNumber).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
                 Log.d("Home error tag", t.toString())
