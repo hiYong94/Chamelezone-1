@@ -5,81 +5,29 @@ import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.App
+import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.view.login.presenter.JoinContract
 import com.yeonae.chamelezone.view.login.presenter.JoinPresenter
-import kotlinx.android.synthetic.main.fragment_join.*
+import kotlinx.android.synthetic.main.activity_join.*
 import java.util.regex.Pattern
 
-class JoinFragment : Fragment(), JoinContract.View {
+class JoinActivity : AppCompatActivity(), JoinContract.View {
     private var checkedEmail: Boolean = false
     private var checkedNickname: Boolean = false
+
     override fun showNicknameMessage(nicknameCheck: String) {
         if (nicknameCheck == CHECK_YES) {
-            Toast.makeText(requireContext(), R.string.available_nickname, Toast.LENGTH_SHORT)
-                .show()
+            nickname_layout.isErrorEnabled = false
             checkedNickname = true
-
         } else if (nicknameCheck == CHECK_NO) {
-            Toast.makeText(requireContext(), R.string.registered_nickname, Toast.LENGTH_SHORT)
-                .show()
+            nickname_layout.error = getString(R.string.registered_nickname)
             checkedNickname = false
         }
-    }
-
-    override fun showEmailMessage(emailCheck: String) {
-        if (emailCheck == CHECK_YES) {
-            context?.shortToast(R.string.available_email)
-            checkedEmail = true
-
-        } else if (emailCheck == CHECK_NO) {
-            context?.shortToast(R.string.registered_email)
-            checkedNickname = false
-        }
-    }
-
-    override lateinit var presenter: JoinContract.Presenter
-
-    override fun showMessage(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG)
-            .show()
-        (activity as LoginActivity).back()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        return inflater.inflate(R.layout.fragment_join, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        join_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
-        join_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
-
-        presenter = JoinPresenter(
-            Injection.memberRepository(App.instance.context()), this
-        )
-
-        checkType()
-
-        btn_back.setOnClickListener {
-            (activity as LoginActivity).back()
-        }
-
-        btn_join.setOnClickListener {
-            presenter.checkEmail("${join_email.text}")
-            presenter.checkNickname("${join_nickname.text}")
+        if (checkedEmail && checkedNickname) {
             joinCheck(
                 "${join_email.text}",
                 "${join_password.text}",
@@ -87,6 +35,58 @@ class JoinFragment : Fragment(), JoinContract.View {
                 "${join_nickname.text}",
                 "${join_phone.text}"
             )
+        }
+    }
+
+    override fun showEmailMessage(emailCheck: String) {
+        if (emailCheck == CHECK_YES) {
+            email_layout.isErrorEnabled = false
+            checkedEmail = true
+
+        } else if (emailCheck == CHECK_NO) {
+            email_layout.error = getString(R.string.registered_email)
+            checkedNickname = false
+        }
+
+        if (checkedEmail && checkedNickname) {
+            joinCheck(
+                "${join_email.text}",
+                "${join_password.text}",
+                "${join_name.text}",
+                "${join_nickname.text}",
+                "${join_phone.text}"
+            )
+        }
+    }
+
+    override lateinit var presenter: JoinContract.Presenter
+
+    override fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG)
+            .show()
+        finish()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_join)
+
+        join_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
+        join_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        presenter = JoinPresenter(
+            Injection.memberRepository(), this
+        )
+
+        checkType()
+
+        btn_back.setOnClickListener {
+            finish()
+        }
+
+        btn_join.setOnClickListener {
+            presenter.checkEmail("${join_email.text}")
+            presenter.checkNickname("${join_nickname.text}")
         }
 
         join_email.onFocusChangeListener = View.OnFocusChangeListener { _, b ->
@@ -100,6 +100,7 @@ class JoinFragment : Fragment(), JoinContract.View {
                 presenter.checkNickname("${join_nickname.text}")
             }
         }
+
     }
 
     private fun joinCheck(
@@ -111,40 +112,34 @@ class JoinFragment : Fragment(), JoinContract.View {
     ) {
         when {
             email.isEmpty() -> Toast.makeText(
-                requireContext(),
+                this,
                 R.string.enter_email,
                 Toast.LENGTH_SHORT
             ).show()
             password.isEmpty() -> Toast.makeText(
-                requireContext(),
+                this,
                 R.string.enter_password,
                 Toast.LENGTH_SHORT
             ).show()
             name.isEmpty() -> Toast.makeText(
-                requireContext(),
+                this,
                 R.string.enter_name,
                 Toast.LENGTH_SHORT
             ).show()
             nickName.isEmpty() -> Toast.makeText(
-                requireContext(),
+                this,
                 R.string.enter_nickname,
                 Toast.LENGTH_SHORT
             ).show()
             phone.isEmpty() -> Toast.makeText(
-                requireContext(),
+                this,
                 R.string.enter_phone_number,
                 Toast.LENGTH_SHORT
             ).show()
-            !checkedEmail -> Toast.makeText(
-                requireContext(),
-                R.string.registered_email,
-                Toast.LENGTH_SHORT
-            ).show()
-            !checkedNickname -> Toast.makeText(
-                requireContext(),
-                R.string.registered_nickname,
-                Toast.LENGTH_SHORT
-            ).show()
+            !checkedEmail ->
+                email_layout.error = getString(R.string.registered_email)
+            !checkedNickname ->
+                nickname_layout.error = getString(R.string.registered_nickname)
             else -> {
                 if (!email_layout.isErrorEnabled &&
                     !password_layout.isErrorEnabled &&
@@ -161,36 +156,30 @@ class JoinFragment : Fragment(), JoinContract.View {
     }
 
     private fun checkEmail() {
-        val p = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
-        val m = p.matcher(join_email.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^[a-zA-Z0-9_]+[@]+[a-zA-Z]+[.]+[a-zA-Z]+")
+        val matcher = pattern.matcher(join_email.text.toString())
+        if (!matcher.matches()) {
             email_layout.error = getString(R.string.email_format)
-        } else if ("${join_email.text}".isEmpty()) {
-            email_layout.error = getString(R.string.enter_email)
         } else {
             email_layout.isErrorEnabled = false
         }
     }
 
     private fun checkPassword() {
-        val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
-        val m = p.matcher(join_password.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
+        val matcher = pattern.matcher(join_password.text.toString())
+        if (!matcher.matches()) {
             password_layout.error = getString(R.string.password_format)
-        } else if ("${join_password.text}".isEmpty()) {
-            password_layout.error = getString(R.string.enter_password)
         } else {
             password_layout.isErrorEnabled = false
         }
     }
 
     private fun checkNickName() {
-        val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
-        val m = p.matcher(join_nickname.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
+        val matcher = pattern.matcher(join_nickname.text.toString())
+        if (!matcher.matches()) {
             nickname_layout.error = getString(R.string.nickname_format)
-        } else if ("${join_nickname.text}".isEmpty()) {
-            nickname_layout.error = getString(R.string.enter_nickname)
         } else {
             nickname_layout.isErrorEnabled = false
         }

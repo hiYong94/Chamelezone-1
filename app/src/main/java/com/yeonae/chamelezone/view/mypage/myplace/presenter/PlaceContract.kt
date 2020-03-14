@@ -11,6 +11,7 @@ interface PlaceContract {
         fun showMessage(message: String)
         fun showKeywordList(response: List<KeywordResponse>)
         fun showUserInfo(user: UserEntity)
+        fun showPlaceMessage(placeCheck: String)
     }
 
     interface Presenter {
@@ -29,5 +30,6 @@ interface PlaceContract {
 
         fun getKeyword()
         fun getUser()
+        fun checkPlace(name: String, address: String)
     }
 }

@@ -84,7 +84,7 @@
                 android:hint="@string/password"
                 app:endIconMode="password_toggle"
                 app:errorEnabled="true"
-                app:helperText="영문, 숫자 조합 8~16자로 입력해주세요"
+                app:helperText="@string/password_format"
                 app:helperTextEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -142,7 +142,7 @@
                 android:layout_weight="8"
                 android:hint="@string/nickname"
                 app:errorEnabled="true"
-                app:helperText="한글, 영문, 숫자 포함 1~10자로 입력해주세요"
+                app:helperText="@string/nickname_format"
                 app:helperTextEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText

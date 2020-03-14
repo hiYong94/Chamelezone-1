@@ -15,7 +15,6 @@ import com.gun0912.tedpermission.TedPermission
 import com.kroegerama.imgpicker.BottomSheetImagePicker
 import com.kroegerama.imgpicker.ButtonType
 import com.kroegerama.kaiteki.toast
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
@@ -77,7 +76,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         setupGUI()
 
         presenter = CourseRegisterPresenter(
-            Injection.memberRepository(App.instance.context()), Injection.courseRepository(), this
+            Injection.memberRepository(), Injection.courseRepository(), this
         )
 
         presenter.getUser()

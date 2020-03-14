@@ -1,9 +1,7 @@
 package com.yeonae.chamelezone.data.source.remote.member
 
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.network.model.MemberResponse
-import com.yeonae.chamelezone.network.model.NicknameResponse
+import com.yeonae.chamelezone.network.model.*
 
 interface MemberRemoteDataSource {
     fun createMember(
@@ -19,7 +17,7 @@ interface MemberRemoteDataSource {
 
     fun updateMember(
         memberNumber: Int,
-        password: String,
+        password: String?,
         nickName: String,
         phone: String,
         callBack: MemberCallBack<Boolean>
@@ -33,5 +31,14 @@ interface MemberRemoteDataSource {
 
     fun findEmail(name: String, phone: String, callBack: MemberCallBack<List<EmailResponse>>)
 
-    fun findPassword(email: String, phone: String, callBack: MemberCallBack<MemberResponse>)
+    fun findPassword(email: String, phone: String, callBack: MemberCallBack<FindPasswordResponse>)
+
+    fun checkSecurityCode(
+        securityCode: String,
+        email: String,
+        phone: String,
+        callBack: MemberCallBack<SecurityCodeResponse>
+    )
+
+    fun changePassword(password: String, memberNumber: Int, callBack: MemberCallBack<Boolean>)
 }

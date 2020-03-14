@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
@@ -49,7 +48,7 @@ class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelect
         setAdapter()
 
         presenter = MyReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(App.instance.context()), this
+            Injection.reviewRepository(), Injection.memberRepository(), this
         )
 
         presenter.checkMember()

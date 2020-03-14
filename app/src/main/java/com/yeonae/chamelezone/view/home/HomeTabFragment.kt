@@ -131,8 +131,7 @@ class HomeTabFragment : Fragment(), HomeContract.View {
         }
 
         presenter = HomePresenter(
-            Injection.placeRepository(),
-            Injection.memberRepository(App.instance.context()),
+            Injection.placeRepository(), Injection.memberRepository(),
             Injection.likeRepository(),
             this
         )

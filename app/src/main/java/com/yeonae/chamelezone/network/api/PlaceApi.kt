@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.network.api
 
 import com.google.gson.JsonObject
+import com.yeonae.chamelezone.network.model.PlaceDuplicateResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -80,4 +81,11 @@ interface PlaceApi {
     fun getHomePlaceList(
         @Query("memberNumber") memberNumber: Int?
     ): Call<List<PlaceResponse>>
+
+    @GET("/place/duplicate-check")
+    fun checkPlace(
+        @Query("name") name: String,
+        @Query("address") address: String
+    ): Call<PlaceDuplicateResponse>
+
 }

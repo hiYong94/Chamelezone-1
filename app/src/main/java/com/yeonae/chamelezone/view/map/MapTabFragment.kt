@@ -42,7 +42,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 ), true
             )
         }
-        Log.d("title", marker!!.title)
         return false
     }
 

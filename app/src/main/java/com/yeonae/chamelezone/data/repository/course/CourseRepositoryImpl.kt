@@ -31,8 +31,15 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         remoteDataSource.getMyCourseList(memberNumber, callBack)
     }
 
-    override fun modifyCourse() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun modifyCourse(
+        memberNumber: Int,
+        placeNumbers: List<Int>,
+        title: String,
+        content: String,
+        image: String,
+        callBack: CourseCallBack<String>
+    ) {
+        remoteDataSource.modifyCourse(memberNumber, placeNumbers, title, content, image, callBack)
     }
 
     override fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<String>) {

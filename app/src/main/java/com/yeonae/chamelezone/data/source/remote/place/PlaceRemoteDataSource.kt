@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.data.source.remote.place
 
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.model.KeywordResponse
+import com.yeonae.chamelezone.network.model.PlaceDuplicateResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import java.math.BigDecimal
 
@@ -42,4 +43,5 @@ interface PlaceRemoteDataSource {
     )
     fun deletePlace(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<Boolean>)
     fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun checkPlace(name: String, address: String, callBack: PlaceCallBack<PlaceDuplicateResponse>)
 }
