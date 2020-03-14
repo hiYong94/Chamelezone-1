@@ -47,42 +47,52 @@ class KeywordTabFragment : Fragment(), SearchContract.View {
 
         btn_cafe.setOnClickListener {
             listener.keywordSelected("카페")
+            searchByKeyword("카페")
         }
 
         btn_exhibition.setOnClickListener {
             listener.keywordSelected("전시회")
+            searchByKeyword("전시회")
         }
 
         btn_laundry.setOnClickListener {
             listener.keywordSelected("빨래방")
+            searchByKeyword("빨래방")
         }
 
         btn_select_shop.setOnClickListener {
             listener.keywordSelected("편집샵")
+            searchByKeyword("편집샵")
         }
 
         btn_bank.setOnClickListener {
             listener.keywordSelected("은행")
+            searchByKeyword("은행")
         }
 
         btn_book_store.setOnClickListener {
             listener.keywordSelected("서점")
+            searchByKeyword("서점")
         }
 
         btn_lodging.setOnClickListener {
             listener.keywordSelected("숙소")
+            searchByKeyword("숙소")
         }
 
         btn_office.setOnClickListener {
             listener.keywordSelected("오피스")
+            searchByKeyword("오피스")
         }
 
         btn_garden.setOnClickListener {
             listener.keywordSelected("식물원")
+            searchByKeyword("식물원")
         }
 
         btn_restaurant.setOnClickListener {
             listener.keywordSelected("레스토랑")
+            searchByKeyword("레스토랑")
         }
 
         searchRvAdapter.setOnClickListener(object : SearchRvAdapter.OnClickListener {
