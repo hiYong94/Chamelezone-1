@@ -198,6 +198,13 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:gravity="center"
+                        android:textColor="@color/darkGray"
+                        android:text="@string/select_two_places"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
                     <LinearLayout
                         android:id="@+id/layout_place_add1"
                         android:layout_width="match_parent"

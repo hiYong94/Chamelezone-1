@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.course.presenter
 
+import android.util.Log
 import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.data.repository.course.CourseRepository
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
@@ -30,7 +31,7 @@ class CourseRegisterPresenter(
                 }
 
                 override fun onFailure(message: String) {
-
+                    Log.d("courseRegister", message)
                 }
 
             })
