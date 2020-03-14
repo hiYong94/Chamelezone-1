@@ -105,7 +105,7 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
     }
 
     override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
-        memberNumber?.let { remoteDataSource.getHomePlaceList(it, callBack) }
+        remoteDataSource.getHomePlaceList(memberNumber, callBack)
     }
 
     override fun checkPlace(

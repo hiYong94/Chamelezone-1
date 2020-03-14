@@ -10,26 +10,25 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
-import com.yeonae.chamelezone.network.model.ReviewResponse
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
 class PlaceReviewTabRvAdapter :
     RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
-    //    private lateinit var placeReviewList: ArrayList<ReviewResponse>
-    private val reviewList = arrayListOf<ReviewResponse>()
+    private val reviewList = arrayListOf<ReviewItem>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var moreButtonListener: MoreButtonListener
 //    private lateinit var moreImageBtnListener: MoreImageBtnListener
-
+    var reviewMemberNumber: Int = 0
 
     interface OnItemClickListener {
-        fun onItemClick(view: View, position: Int, review: ReviewResponse)
+        fun onItemClick(view: View, position: Int, review: ReviewItem)
     }
 
     interface MoreButtonListener {
-        fun bottomSheetDialog(review: ReviewResponse)
+        fun bottomSheetDialog(review: ReviewItem)
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -65,22 +64,20 @@ class PlaceReviewTabRvAdapter :
         private val reviewCount: TextView = itemView.findViewById(R.id.tv_image_count)
 
         @SuppressLint("SetTextI18n")
-        fun bind(review: ReviewResponse) {
+        fun bind(review: ReviewItem) {
             nickname.text = review.nickName
             reviewDate.text = review.regiDate
             reviewContent.text = review.content
+            reviewMemberNumber = review.memberNumber
 
-            Log.d("imageList images savedImageName", ""+review.savedImageName)
-
-            val images = review.savedImageName.split(",")
+            val image = review.image
+            val reviewImages = review.images.split(",")
             val imageList = arrayListOf<String>()
-            images.forEachIndexed { index, _ ->
-                imageList.add(IMAGE_RESOURCE + images[index])
+            reviewImages.forEachIndexed { index, _ ->
+                imageList.add(IMAGE_RESOURCE + reviewImages[index])
             }
 
-            Log.d("imageList images", imageList.toString())
-
-            reviewImg.glideTransformations(imageList[0], reviewImg.measuredWidth, reviewImg.measuredHeight)
+            reviewImg.glideTransformations(image, reviewImg.measuredWidth, reviewImg.measuredHeight)
             reviewCount.text = "+" + (imageList.size - 1)
             Log.d("imageList images size1", imageList.size.toString())
             Log.d("imageList images size2", (imageList.size - 1).toString())
@@ -113,7 +110,7 @@ class PlaceReviewTabRvAdapter :
         }
     }
 
-    fun addData(addDataList: List<ReviewResponse>) {
+    fun addData(addDataList: List<ReviewItem>) {
         Log.d("addDataList", "$addDataList")
         reviewList.clear()
         reviewList.addAll(addDataList)
