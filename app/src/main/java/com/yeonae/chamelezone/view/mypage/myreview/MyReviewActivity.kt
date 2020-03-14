@@ -16,9 +16,10 @@ import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewPresenter
 import kotlinx.android.synthetic.main.activity_my_review.*
 
-class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
+class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelectedListener, MyReviewContract.View {
     override lateinit var presenter: MyReviewContract.Presenter
     private val myReviewRvAdapter = MyReviewRvAdapter()
+    private val moreFragment = MoreButtonFragment()
     private var placeNumber = 0
     private var reviewNumber = 0
     private var memberNumber: Int = 0
@@ -80,6 +81,14 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
         }
     }
 
+    override fun onDeleteSelected(intent: Intent) {
+        Toast.makeText(applicationContext, "삭제 받음", Toast.LENGTH_SHORT).show()
+        Log.d("MyReviewActivity reviewNumber", reviewNumber.toString())
+        Log.d("MyReviewActivity placeNumber", placeNumber.toString())
+        Log.d("MyReviewActivity memberNumber", memberNumber.toString())
+        presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
+    }
+
     private fun showBottomSheet(placeNumber: Int, reviewNumber: Int) {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
@@ -88,16 +97,6 @@ class MyReviewActivity : AppCompatActivity(), MyReviewContract.View {
     private fun setAdapter() {
         recycler_my_review.layoutManager = LinearLayoutManager(this)
         recycler_my_review.adapter = myReviewRvAdapter
-    }
-
-    fun data(intent: Intent) {
-        intent.getIntExtra(REVIEW_NUMBER, 0)
-        intent.getIntExtra(PLACE_NUMBER, 0)
-        Toast.makeText(this, "삭제 받음", Toast.LENGTH_SHORT).show()
-        Log.d("MyReviewActivity reviewNumber", reviewNumber.toString())
-        Log.d("MyReviewActivity placeNumber", placeNumber.toString())
-        Log.d("MyReviewActivity memberNumber", memberNumber.toString())
-        presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
     }
 
     companion object {

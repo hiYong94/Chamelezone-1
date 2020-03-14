@@ -379,7 +379,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
         placeService.getHomePlaceList(memberNumber).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
-                Log.d("tag", t.toString())
+                Log.d("Home error tag", t.toString())
             }
 
             override fun onResponse(
