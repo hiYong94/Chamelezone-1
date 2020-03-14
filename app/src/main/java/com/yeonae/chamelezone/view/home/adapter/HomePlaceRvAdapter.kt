@@ -14,21 +14,31 @@ class HomePlaceRvAdapter :
     RecyclerView.Adapter<HomePlaceRvAdapter.Holder>() {
     private val placeList = arrayListOf<PlaceResponse>()
     private lateinit var itemClickListener: OnItemClickListener
+    private lateinit var likeButtonListener: LikeButtonListener
 
     interface OnItemClickListener {
-        fun onItemClick(place: PlaceResponse)
+        fun onItemClick(view: View, position: Int, place: PlaceResponse)
+    }
+
+    interface LikeButtonListener {
+        fun onLikeClick(placeResponse: PlaceResponse)
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
         itemClickListener = clickListener
     }
 
-    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun setLikeButtonListener(listener: LikeButtonListener) {
+        likeButtonListener = listener
+    }
+
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val placeImg = itemView.place_img
         private val placeName = itemView.place_name
         private val keyword = itemView.keyword
+        private val like = itemView.btn_like
 
-        fun bind(place: PlaceResponse, listener: OnItemClickListener) {
+        fun bind(place: PlaceResponse) {
             placeName.text = place.name
             place.keywordName.forEach {
                 if (it == place.keywordName[0]) {
@@ -43,8 +53,24 @@ class HomePlaceRvAdapter :
             }
 
             itemView.setOnClickListener {
-                listener.onItemClick(place)
+                itemClickListener.onItemClick(itemView, position, place)
             }
+
+            itemView.apply {
+                btn_like.setOnClickListener {
+                    likeButtonListener.onLikeClick(place)
+                }
+            }
+
+//            like.setOnClickListener {
+//                val position = adapterPosition
+//                if (position != RecyclerView.NO_POSITION) {
+//                    if (::itemClickListener.isInitialized) {
+//                        itemClickListener.onItemClick(itemView, position, place)
+//                    }
+//                    placeList[position] = place
+//                }
+//            }
         }
     }
 
@@ -55,7 +81,7 @@ class HomePlaceRvAdapter :
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(placeList[position], itemClickListener)
+        holder.bind(placeList[position])
     }
 
     override fun getItemCount(): Int {

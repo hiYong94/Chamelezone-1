@@ -32,7 +32,9 @@ data class ReviewResponse(
         return ReviewItem(
             response.reviewNumber,
             response.placeNumber,
+            response.memberNumber,
             response.name,
+            response.nickName,
             response.regiDate,
             response.content,
             image,
