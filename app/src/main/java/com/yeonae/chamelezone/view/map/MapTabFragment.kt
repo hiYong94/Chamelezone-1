@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.map
 
 import android.Manifest
+import android.content.Context
 import android.graphics.Rect
 import android.location.Location
 import android.os.Bundle
@@ -10,7 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -144,6 +147,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 if ("${edt_search.text}".isEmpty()) {
                     showDialog()
                 } else {
+                    val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
                     presenter.searchPlace("${edt_search.text}")
                 }
             }
@@ -154,6 +159,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
             if ("${edt_search.text}".isEmpty()) {
                 showDialog()
             } else {
+                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
                 presenter.searchPlace("${edt_search.text}")
             }
         }
