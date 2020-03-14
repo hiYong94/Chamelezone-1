@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.LikeStatusItem
@@ -61,7 +60,7 @@ class LikeTabFragment : Fragment(), LikeContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = LikePresenter(
-            Injection.memberRepository(App.instance.context()), Injection.likeRepository(), this
+            Injection.memberRepository(), Injection.likeRepository(), this
         )
 
         btn_login.setOnClickListener {

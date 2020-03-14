@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.data.repository.place
 
 import com.yeonae.chamelezone.data.source.remote.place.PlaceRemoteDataSource
 import com.yeonae.chamelezone.network.model.KeywordResponse
+import com.yeonae.chamelezone.network.model.PlaceDuplicateResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import java.math.BigDecimal
 
@@ -105,6 +106,14 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
 
     override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
         remoteDataSource.getHomePlaceList(memberNumber, callBack)
+    }
+
+    override fun checkPlace(
+        name: String,
+        address: String,
+        callBack: PlaceCallBack<PlaceDuplicateResponse>
+    ) {
+        remoteDataSource.checkPlace(name, address, callBack)
     }
 
     companion object {

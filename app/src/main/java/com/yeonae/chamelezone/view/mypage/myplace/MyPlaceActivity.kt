@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -28,7 +27,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View {
         setAdapter()
 
         presenter = MyPlacePresenter(
-            Injection.memberRepository(App.instance.context()), Injection.placeRepository(), this
+            Injection.memberRepository(), Injection.placeRepository(), this
         )
 
         presenter.getUser()

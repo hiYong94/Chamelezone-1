@@ -84,6 +84,9 @@
         <activity
             android:name=".view.mypage.myplace.OpeningHoursActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".view.login.JoinActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>

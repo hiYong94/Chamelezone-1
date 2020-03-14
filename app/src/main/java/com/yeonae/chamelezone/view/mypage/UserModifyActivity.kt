@@ -12,10 +12,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.presenter.UserModifyContract
 import com.yeonae.chamelezone.view.mypage.presenter.UserModifyPresenter
@@ -25,28 +23,32 @@ import java.util.regex.Pattern
 class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     var memberNumber: Int = 0
     private var checkedNickname: Boolean = false
+    var phone = ""
+    var nickname = ""
 
     override fun showUserInfo(user: UserEntity) {
-        val nickname = SpannableStringBuilder(user.nickname)
-        val phone = SpannableStringBuilder(user.phone)
+        nickname = user.nickname.toString()
+        phone = user.phone.toString()
         val email = SpannableStringBuilder(user.email)
         val name = SpannableStringBuilder(user.name)
         user_email.text = email
         user_name.text = name
-        user_nickname.text = nickname
-        user_phone.text = phone
+        user_nickname.text = SpannableStringBuilder(nickname)
+        user_phone.text = SpannableStringBuilder(phone)
         memberNumber = user.userNumber ?: 0
     }
 
-    override fun showNicknameMessage(response: NicknameResponse) {
-        if (response.nicknameCheck == CHECK_YES) {
-            Toast.makeText(applicationContext, R.string.available_nickname, Toast.LENGTH_SHORT)
-                .show()
+    override fun showNicknameMessage(nicknameCheck: String) {
+        if (nicknameCheck == CHECK_YES) {
+            nickname_layout.isErrorEnabled = false
             checkedNickname = true
-
-        } else if (response.nicknameCheck == CHECK_NO) {
-            Toast.makeText(applicationContext, R.string.registered_nickname, Toast.LENGTH_SHORT)
-                .show()
+        } else if (nicknameCheck == CHECK_NO) {
+            nickname_layout.error = getString(R.string.registered_nickname)
+            checkedNickname = false
+        }
+        if (checkedNickname) {
+            updateCheck()
+            Log.d("updateMember", checkedNickname.toString())
         }
     }
 
@@ -71,7 +73,7 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         user_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         presenter = UserModifyPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         presenter.getUser()
@@ -88,33 +90,55 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         }
 
         btn_user_modify.setOnClickListener {
-            if (!password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled) {
-                presenter.updateMember(
-                    memberNumber,
-                    "${user_password.text}",
-                    "${user_nickname.text}",
-                    "${user_phone.text}"
-                )
-            }
+            presenter.checkNickname("${user_nickname.text}")
         }
     }
 
+    private var updateNickname = ""
+    private var updatePhone = ""
+
+    private fun updateCheck() {
+        if (user_password.text.toString().isEmpty()) {
+            password_layout.isErrorEnabled = false
+        }
+        if (!password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled) {
+            when {
+                user_nickname.text!!.isEmpty() -> updateNickname = nickname
+                user_phone.text!!.isEmpty() -> updatePhone = phone
+                else -> {
+                    updateNickname = "${user_nickname.text}"
+                    updatePhone = "${user_phone.text}"
+                }
+            }
+            updateMember("${user_password.text}", updateNickname, updatePhone)
+            Log.d("updateMember", "$updateNickname $nickname $phone")
+        }
+    }
+
+    private fun updateMember(password: String?, nickname: String, phone: String) {
+        Log.d("updateMember", "$password $nickname $phone")
+        presenter.updateMember(
+            memberNumber,
+            password,
+            nickname,
+            phone
+        )
+    }
+
     private fun checkPassword() {
-        val p = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
-        val m = p.matcher(user_password.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^(?=.*[a-zA-Z])(?=.*[0-9]).{8,16}")
+        val matcher = pattern.matcher(user_password.text.toString())
+        if (!matcher.matches()) {
             password_layout.error = getString(R.string.password_format)
-        } else if ("${user_password.text}".isEmpty()) {
-            password_layout.error = getString(R.string.enter_password)
         } else {
             password_layout.isErrorEnabled = false
         }
     }
 
     private fun checkNickName() {
-        val p = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
-        val m = p.matcher(user_nickname.text.toString())
-        if (!m.matches()) {
+        val pattern = Pattern.compile("^[a-zA-Z0-9ㄱ-ㅎ가-힣]{1,10}")
+        val matcher = pattern.matcher(user_nickname.text.toString())
+        if (!matcher.matches()) {
             nickname_layout.error = getString(R.string.nickname_format)
         } else if ("${user_nickname.text}".isEmpty()) {
             nickname_layout.error = getString(R.string.enter_nickname)

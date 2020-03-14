@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.login
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
@@ -30,6 +30,16 @@ class LoginFragment : Fragment(), LoginContract.View {
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(edt_email.windowToken, 0)
         imm.hideSoftInputFromWindow(edt_password.windowToken, 0)
+
+        val editor = context?.getSharedPreferences("setting", 0)?.edit()
+        if (cb_login.isChecked) {
+            editor?.putString("ID", "${edt_email.text}")
+            editor?.putString("PW", "${edt_password.text}")
+            editor?.apply()
+        } else {
+            editor?.clear()
+            editor?.apply()
+        }
         (activity as? LoginActivity)?.finish()
     }
 
@@ -46,7 +56,7 @@ class LoginFragment : Fragment(), LoginContract.View {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         presenter = LoginPresenter(
-            Injection.memberRepository(App.instance.context()), this
+            Injection.memberRepository(), this
         )
 
         btn_back.setOnClickListener {
@@ -59,10 +69,12 @@ class LoginFragment : Fragment(), LoginContract.View {
             (activity as? LoginActivity)?.replace(FindEmailFragment(), true)
         }
         btn_find_password.setOnClickListener {
-            (activity as LoginActivity).replace(FindPasswordFragment(), true)
+            (activity as? LoginActivity)?.replace(FindPasswordFragment(), true)
         }
         btn_join.setOnClickListener {
-            (activity as LoginActivity).replace(JoinFragment(), true)
+            val intent = Intent(requireContext(), JoinActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
         }
         btn_login.setOnClickListener {
             loginCheck("${edt_email.text}", "${edt_password.text}")

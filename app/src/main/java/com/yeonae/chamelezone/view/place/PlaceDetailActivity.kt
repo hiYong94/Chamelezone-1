@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.appbar.AppBarLayout
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
@@ -100,7 +101,7 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         tv_place_name_two.text = placeName
 
         presenter = PlaceDetailPresenter(
-            Injection.memberRepository(App.instance.context()),
+            Injection.memberRepository(),
             Injection.placeRepository(),
             Injection.likeRepository(),
             this
@@ -125,7 +126,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
         val fragmentAdapter =
             PlaceDetailPagerAdapter(supportFragmentManager, placeNumber, placeName, memberNumber)
-
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 

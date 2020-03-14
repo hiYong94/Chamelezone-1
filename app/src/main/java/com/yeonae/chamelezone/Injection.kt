@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone
 
-import android.content.Context
 import com.yeonae.chamelezone.data.repository.course.CourseRepository
 import com.yeonae.chamelezone.data.repository.course.CourseRepositoryImpl
 import com.yeonae.chamelezone.data.repository.like.LikeRepository
@@ -22,10 +21,13 @@ import com.yeonae.chamelezone.network.room.database.UserDatabase
 import com.yeonae.chamelezone.util.AppExecutors
 
 object Injection {
-    fun memberRepository(context: Context): MemberRepository {
+    fun memberRepository(): MemberRepository {
         return MemberRepositoryImpl.getInstance(
             MemberRemoteDataSourceImpl.getInstance(RetrofitConnection.memberService),
-            MemberLocalDataSourceImpl.getInstance(AppExecutors(), UserDatabase.getInstance(context))
+            MemberLocalDataSourceImpl.getInstance(
+                AppExecutors(),
+                UserDatabase.getInstance(App.instance.context())
+            )
         )
     }
 

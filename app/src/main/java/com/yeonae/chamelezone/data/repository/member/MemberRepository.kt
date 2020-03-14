@@ -1,10 +1,7 @@
 package com.yeonae.chamelezone.data.repository.member
 
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.network.model.MemberResponse
-import com.yeonae.chamelezone.network.model.NicknameResponse
+import com.yeonae.chamelezone.network.model.*
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import okhttp3.RequestBody
 
 interface MemberRepository {
     fun createMember(
@@ -29,7 +26,7 @@ interface MemberRepository {
 
     fun updateMember(
         memberNumber: Int,
-        password: String,
+        password: String?,
         nickName: String,
         phone: String,
         callBack: MemberCallBack<Boolean>,
@@ -48,7 +45,16 @@ interface MemberRepository {
 
     fun findEmail(name: String, phone: String, callBack: MemberCallBack<List<EmailResponse>>)
 
-    fun findPassword(email: String, phone: String, callBack: MemberCallBack<MemberResponse>)
+    fun findPassword(email: String, phone: String, callBack: MemberCallBack<FindPasswordResponse>)
+
+    fun checkSecurityCode(
+        securityCode: String,
+        email: String,
+        phone: String,
+        callBack: MemberCallBack<SecurityCodeResponse>
+    )
+
+    fun changePassword(password: String, memberNumber: Int, callBack: MemberCallBack<Boolean>)
 }
 
 
