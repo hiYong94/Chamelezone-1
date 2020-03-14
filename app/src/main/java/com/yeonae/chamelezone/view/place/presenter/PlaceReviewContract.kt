@@ -1,12 +1,12 @@
 package com.yeonae.chamelezone.view.place.presenter
 
-import com.yeonae.chamelezone.network.model.ReviewResponse
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 interface PlaceReviewContract {
     interface View {
         var presenter: Presenter
-        fun showPlaceReview(reviewList: List<ReviewResponse>)
+        fun showPlaceReview(reviewList: List<ReviewItem>)
         fun showReviewDelete(message: String)
         fun showMemberReview(user: UserEntity)
         fun getMemberCheck(response: Boolean)
