@@ -10,7 +10,7 @@ import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
@@ -26,7 +26,7 @@ import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
-import kotlinx.android.synthetic.main.slider_item_image.*
+import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
@@ -90,16 +90,23 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         toast("$tag")
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val iv = LayoutInflater.from(this).inflate(
+            val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as ImageView
-            imageContainer.addView(iv)
-            iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
-        }
-        for (i in uris.indices) {
-            uris[i].path?.let { imageUri.add(it) }
+            ) as RelativeLayout
+
+            if (imageContainer.childCount < 4) {
+                imageContainer.addView(rl)
+                rl.image_item.run {
+                    glideImageSet(uri, measuredWidth, measuredHeight)
+                }
+            }
+
+            rl.btn_delete.setOnClickListener {
+                imageContainer.removeView(rl)
+            }
+            uri.path?.let { imageUri.add(it) }
         }
     }
 
