@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.CourseItem
@@ -16,7 +17,11 @@ import com.yeonae.chamelezone.view.course.presenter.CoursePresenter
 import com.yeonae.chamelezone.view.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_course_tab.*
 
-class CourseTabFragment : Fragment(), CourseContract.View {
+class CourseTabFragment : Fragment(), CourseContract.View, SwipeRefreshLayout.OnRefreshListener {
+    override fun onRefresh() {
+        presenter.getCourseList()
+    }
+
     override lateinit var presenter: CourseContract.Presenter
     private val courseTabRvAdapter = CourseTabRvAdapter()
 
@@ -36,6 +41,7 @@ class CourseTabFragment : Fragment(), CourseContract.View {
 
     override fun showCourseList(items: List<CourseItem>) {
         courseTabRvAdapter.addData(items)
+        swipe_course.isRefreshing = false
     }
 
     override fun onCreateView(
@@ -47,6 +53,7 @@ class CourseTabFragment : Fragment(), CourseContract.View {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        swipe_course.setOnRefreshListener(this)
         presenter = CoursePresenter(
             Injection.memberRepository(), Injection.courseRepository(), this
         )
