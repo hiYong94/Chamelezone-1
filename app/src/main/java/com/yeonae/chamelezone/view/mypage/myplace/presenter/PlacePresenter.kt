@@ -5,6 +5,7 @@ import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.network.model.KeywordResponse
+import com.yeonae.chamelezone.network.model.PlaceDuplicateResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import java.math.BigDecimal
 
@@ -66,6 +67,19 @@ class PlacePresenter(
         memberRepository.getMember(object : MemberCallBack<UserEntity> {
             override fun onSuccess(response: UserEntity) {
                 view.showUserInfo(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
+
+    override fun checkPlace(name: String, address: String) {
+        placeRepository.checkPlace(name, address, object : PlaceCallBack<PlaceDuplicateResponse> {
+            override fun onSuccess(response: PlaceDuplicateResponse) {
+                view.showPlaceMessage(response.placeCheck)
             }
 
             override fun onFailure(message: String) {

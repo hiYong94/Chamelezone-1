@@ -7,10 +7,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.repository.member.MemberCallBack
 import com.yeonae.chamelezone.network.api.MemberApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.memberService
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.network.model.MemberResponse
-import com.yeonae.chamelezone.network.model.NicknameResponse
-import com.yeonae.chamelezone.view.Context
+import com.yeonae.chamelezone.network.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,7 +23,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         phone: String,
         callBack: MemberCallBack<String>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
             addProperty(PASSWORD, password)
             addProperty(NAME, name)
@@ -34,7 +31,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
             addProperty(PHONE, phone)
         }
 
-        memberService.createMember(jsonObject).enqueue(object :
+        memberService.createMember(requestBody).enqueue(object :
             Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
@@ -57,12 +54,12 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         password: String,
         callBack: MemberCallBack<MemberResponse>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
             addProperty(PASSWORD, password)
         }
 
-        memberService.getMember(jsonObject).enqueue(object :
+        memberService.getMember(requestBody).enqueue(object :
             Callback<MemberResponse> {
             override fun onResponse(
                 call: Call<MemberResponse>,
@@ -83,18 +80,18 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
     override fun updateMember(
         memberNumber: Int,
-        password: String,
+        password: String?,
         nickName: String,
         phone: String,
         callBack: MemberCallBack<Boolean>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(MEMBER_NUMBER, memberNumber)
             addProperty(PASSWORD, password)
             addProperty(NICKNAME, nickName)
             addProperty(PHONE, phone)
         }
-        memberService.updateMember(memberNumber, jsonObject)
+        memberService.updateMember(memberNumber, requestBody)
             .enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(
                     call: Call<ResponseBody>,
@@ -164,11 +161,11 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         phone: String,
         callBack: MemberCallBack<List<EmailResponse>>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(NAME, name)
             addProperty(PHONE, phone)
         }
-        memberService.findEmail(jsonObject)
+        memberService.findEmail(requestBody)
             .enqueue(object : Callback<List<EmailResponse>> {
                 override fun onFailure(call: Call<List<EmailResponse>>, t: Throwable) {
                     Log.e("tag", t.toString())
@@ -191,28 +188,84 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
     override fun findPassword(
         email: String,
         phone: String,
-        callBack: MemberCallBack<MemberResponse>
+        callBack: MemberCallBack<FindPasswordResponse>
     ) {
-        val jsonObject = JsonObject().apply {
+        val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
             addProperty(PHONE, phone)
         }
-        memberService.findPassword(jsonObject)
-            .enqueue(object : Callback<MemberResponse> {
-                override fun onFailure(call: Call<MemberResponse>, t: Throwable) {
+        memberService.findPassword(requestBody)
+            .enqueue(object : Callback<FindPasswordResponse> {
+                override fun onFailure(call: Call<FindPasswordResponse>, t: Throwable) {
                     Log.e("tag", t.toString())
                 }
 
                 override fun onResponse(
-                    call: Call<MemberResponse>,
-                    response: Response<MemberResponse>
+                    call: Call<FindPasswordResponse>,
+                    response: Response<FindPasswordResponse>
                 ) {
                     if (response.code() == SUCCESS) {
                         response.body()?.let { callBack.onSuccess(it) }
+                    } else if (response.code() == REQUEST_ERR) {
+                        callBack.onFailure(App.instance.context().getString(R.string.information_not_exist))
                     }
                 }
 
             })
+    }
+
+    override fun checkSecurityCode(
+        securityCode: String,
+        email: String,
+        phone: String,
+        callBack: MemberCallBack<SecurityCodeResponse>
+    ) {
+        val requestBody = JsonObject().apply {
+            addProperty(SECURITY_CODE, securityCode)
+            addProperty(EMAIL, email)
+            addProperty(PHONE, phone)
+        }
+        memberService.checkSecurityCode(requestBody)
+            .enqueue(object : Callback<SecurityCodeResponse> {
+                override fun onFailure(call: Call<SecurityCodeResponse>, t: Throwable) {
+                    Log.e("tag", t.toString())
+                }
+
+                override fun onResponse(
+                    call: Call<SecurityCodeResponse>,
+                    response: Response<SecurityCodeResponse>
+                ) {
+                    if (response.code() == SUCCESS) {
+                        response.body()?.let { callBack.onSuccess(it) }
+                    } else if (response.code() == REQUEST_ERR) {
+                        callBack.onFailure(App.instance.context().getString(R.string.not_match_security_code))
+                    }
+                }
+
+            })
+    }
+
+    override fun changePassword(
+        password: String,
+        memberNumber: Int,
+        callBack: MemberCallBack<Boolean>
+    ) {
+        val jsonObject = JsonObject().apply {
+            addProperty(PASSWORD, password)
+            addProperty(MEMBER_NUMBER, memberNumber)
+        }
+        memberService.changePassword(jsonObject).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == SUCCESS) {
+                    callBack.onSuccess(true)
+                }
+            }
+
+        })
     }
 
     companion object {
@@ -222,6 +275,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         private const val NAME = "name"
         private const val NICKNAME = "nickName"
         private const val PHONE = "phoneNumber"
+        private const val SECURITY_CODE = "securityCode"
         private const val SUCCESS = 200
         private const val REQUEST_ERR = 404
         fun getInstance(memberApi: MemberApi): MemberRemoteDataSource =

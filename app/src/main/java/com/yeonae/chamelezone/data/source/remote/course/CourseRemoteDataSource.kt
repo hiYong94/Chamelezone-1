@@ -16,6 +16,14 @@ interface CourseRemoteDataSource {
     fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>)
     fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<List<CourseResponse>>)
     fun getMyCourseList(memberNumber: Int, callBack: CourseCallBack<List<CourseResponse>>)
-    fun modifyCourse()
+    fun modifyCourse(
+        memberNumber: Int,
+        placeNumbers: List<Int>,
+        title: String,
+        content: String,
+        image: String,
+        callBack: CourseCallBack<String>
+    )
+
     fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<String>)
 }

@@ -24,7 +24,7 @@ class UserModifyPresenter(
 
     override fun updateMember(
         memberNumber: Int,
-        password: String,
+        password: String?,
         nickName: String,
         phone: String
     ) {
@@ -58,7 +58,7 @@ class UserModifyPresenter(
     override fun checkNickname(nickName: String) {
         repository.checkNickname(nickName, object : MemberCallBack<NicknameResponse> {
             override fun onSuccess(response: NicknameResponse) {
-                view.showNicknameMessage(response)
+                view.showNicknameMessage(response.nicknameCheck)
             }
 
             override fun onFailure(message: String) {

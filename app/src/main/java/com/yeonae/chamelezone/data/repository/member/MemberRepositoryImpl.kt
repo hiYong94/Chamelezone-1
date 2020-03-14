@@ -2,9 +2,7 @@ package com.yeonae.chamelezone.data.repository.member
 
 import com.yeonae.chamelezone.data.source.local.member.MemberLocalDataSource
 import com.yeonae.chamelezone.data.source.remote.member.MemberRemoteDataSource
-import com.yeonae.chamelezone.network.model.EmailResponse
-import com.yeonae.chamelezone.network.model.MemberResponse
-import com.yeonae.chamelezone.network.model.NicknameResponse
+import com.yeonae.chamelezone.network.model.*
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
 class MemberRepositoryImpl private constructor(
@@ -51,7 +49,7 @@ class MemberRepositoryImpl private constructor(
 
     override fun updateMember(
         memberNumber: Int,
-        password: String,
+        password: String?,
         nickName: String,
         phone: String,
         callBack: MemberCallBack<Boolean>,
@@ -101,8 +99,25 @@ class MemberRepositoryImpl private constructor(
         remoteDataSource.findEmail(name, phone, callBack)
     }
 
-    override fun findPassword(email: String, phone: String, callBack: MemberCallBack<MemberResponse>) {
+    override fun findPassword(email: String, phone: String, callBack: MemberCallBack<FindPasswordResponse>) {
         remoteDataSource.findPassword(email, phone, callBack)
+    }
+
+    override fun checkSecurityCode(
+        securityCode: String,
+        email: String,
+        phone: String,
+        callBack: MemberCallBack<SecurityCodeResponse>
+    ) {
+        remoteDataSource.checkSecurityCode(securityCode, email, phone, callBack)
+    }
+
+    override fun changePassword(
+        password: String,
+        memberNumber: Int,
+        callBack: MemberCallBack<Boolean>
+    ) {
+        remoteDataSource.changePassword(password, memberNumber, callBack)
     }
 
     companion object {

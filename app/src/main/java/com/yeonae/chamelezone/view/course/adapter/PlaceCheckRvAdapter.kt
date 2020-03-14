@@ -16,7 +16,7 @@ class PlaceCheckRvAdapter :
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
-        fun onClick(place: PlaceItem)
+        fun onClick(place: PlaceItem, isChecked: Boolean)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -49,10 +49,11 @@ class PlaceCheckRvAdapter :
                 Log.d("btn_check", position.toString())
                 btn_check.setOnClickListener {
                     if (selectedPosition == position) {
+                        listener?.onClick(item, false)
                         btn_check.isChecked = false
                         selectedPosition = -1
                     } else {
-                        listener?.onClick(item)
+                        listener?.onClick(item, true)
                         selectedPosition = position
                         notifyDataSetChanged()
                     }
