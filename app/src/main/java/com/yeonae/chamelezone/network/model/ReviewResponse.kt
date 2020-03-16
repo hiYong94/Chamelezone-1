@@ -20,25 +20,28 @@ data class ReviewResponse(
     @SerializedName("name")
     val name: String,
     @SerializedName("savedImageName")
-    val savedImageName: String
+    val savedImageName: String?
 ) {
-    fun toReviewItem(): ReviewItem {
-        val reviewImages = savedImageName.split(",")
-        val imageList = arrayListOf<String>()
-        reviewImages.forEachIndexed { index, _ ->
-            imageList.add(IMAGE_RESOURCE + reviewImages[index])
+    fun toReviewItem(): ReviewItem? {
+        val reviewImages = savedImageName.orEmpty()
+        if (reviewImages.isNotEmpty()) {
+            val imageList = arrayListOf<String>()
+            reviewImages.split(",").forEachIndexed { index, _ ->
+                imageList.add(IMAGE_RESOURCE + reviewImages[index])
+            }
+            val image = imageList.first()
+            return ReviewItem(
+                reviewNumber,
+                placeNumber,
+                memberNumber,
+                name,
+                nickName,
+                regiDate,
+                content,
+                image,
+                reviewImages
+            )
         }
-        val image = imageList.first()
-        return ReviewItem(
-            reviewNumber,
-            placeNumber,
-            memberNumber,
-            name,
-            nickName,
-            regiDate,
-            content,
-            image,
-            savedImageName
-        )
+        return null
     }
 }
