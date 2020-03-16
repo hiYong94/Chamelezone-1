@@ -9,7 +9,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
 import kotlinx.android.synthetic.main.slider_item_place_review_image.view.*
 
-class PlaceReviewImageVpAdapter(private val images: List<String>) : PagerAdapter() {
+class PlaceReviewImageVpAdapter(private val images: List<String>?) : PagerAdapter() {
 
     override fun isViewFromObject(view: View, obj: Any): Boolean =
         view == obj
@@ -22,7 +22,7 @@ class PlaceReviewImageVpAdapter(private val images: List<String>) : PagerAdapter
         view.post {
             Log.d("size defi", "gggggggggg  ${view.measuredWidth} ${view.measuredHeight}")
 
-            view.iv_review_img.glideImageSet(images[position], view.measuredWidth, view.measuredHeight)
+            images?.get(position)?.let { view.iv_review_img.glideImageSet(it, view.measuredWidth, view.measuredHeight) }
         }
         container.addView(view)
         return view
@@ -32,6 +32,6 @@ class PlaceReviewImageVpAdapter(private val images: List<String>) : PagerAdapter
         container.invalidate()
 
     override fun getCount(): Int =
-        images.size
+        images?.size!!
 
 }
