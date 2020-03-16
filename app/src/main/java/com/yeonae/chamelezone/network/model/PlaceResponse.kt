@@ -29,7 +29,7 @@ data class PlaceResponse(
     @SerializedName("regiDate")
     val regiDate: String,
     @SerializedName("memberNumber")
-    val memberNumber: Int?,
+    val memberNumber: Int,
     @SerializedName("likeStatus")
     val likeStatus: Boolean
 ) {
