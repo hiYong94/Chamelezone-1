@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.glideOriginImageSet
 import kotlinx.android.synthetic.main.slider_item_place_review_image.view.*
 
 class PlaceReviewImageVpAdapter(private val images: List<String>?) : PagerAdapter() {
@@ -22,9 +23,10 @@ class PlaceReviewImageVpAdapter(private val images: List<String>?) : PagerAdapte
         view.post {
             Log.d("size defi", "gggggggggg  ${view.measuredWidth} ${view.measuredHeight}")
 
-            images?.get(position)?.let { view.iv_review_img.glideImageSet(it, view.measuredWidth, view.measuredHeight) }
+            images?.get(position)?.let { view.iv_review_img.glideOriginImageSet(it, view.measuredWidth, view.measuredHeight) }
         }
         container.addView(view)
+
         return view
     }
 
