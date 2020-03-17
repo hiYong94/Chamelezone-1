@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.LikeStatusItem
@@ -21,7 +22,7 @@ import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
-class HomeTabFragment : Fragment(), HomeContract.View {
+class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
     private val placeAdapter = HomePlaceRvAdapter()
     private var memberNumber: Int? = 0
@@ -101,6 +102,9 @@ class HomeTabFragment : Fragment(), HomeContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipe_layout.setOnRefreshListener(this)
+        swipe_layout.setColorSchemeResources(R.color.colorOrange)
+
         btn_search.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
@@ -128,8 +132,15 @@ class HomeTabFragment : Fragment(), HomeContract.View {
         presenter.checkMember()
     }
 
+    override fun onRefresh() {
+        presenter.getHomeList(memberNumber)
+        swipe_layout.isRefreshing = false
+    }
+
     companion object {
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }
+
+
 }
