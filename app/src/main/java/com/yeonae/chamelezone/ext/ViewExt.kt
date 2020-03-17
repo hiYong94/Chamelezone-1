@@ -48,6 +48,15 @@ fun ImageView.glideImageSet(image: Uri, width: Int, height: Int) {
         .into(this)
 }
 
+fun ImageView.glideOriginImageSet(image: String, width: Int, height: Int) {
+    Glide.with(context)
+        .load(image)
+        .error(R.drawable.ic_x)
+        .override(width, height)
+        .fitCenter()
+        .into(this)
+}
+
 fun ImageView.glideTransformations(image: String, width: Int, height: Int) {
     val density = resources.displayMetrics.density
 
@@ -84,3 +93,5 @@ fun Context.shortToast(message: String) {
 fun TextView.nextLineOptimize(){
     this.text = text.toString().replace(" ", "\u00A0")
 }
+
+

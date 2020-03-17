@@ -113,10 +113,10 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         override fun onPermissionDenied(deniedPermissions: List<String>) {
             isCreated = false
             Toast.makeText(
-                this@ReviewCreateActivity,
-                "권한이 거부되었습니다\n$deniedPermissions",
-                Toast.LENGTH_SHORT
-            )
+                    this@ReviewCreateActivity,
+                    "권한이 거부되었습니다\n$deniedPermissions",
+                    Toast.LENGTH_SHORT
+                )
                 .show()
         }
     }
@@ -140,6 +140,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     private fun setupGUI() {
         tv_title.text = intent.getStringExtra(PLACE_NAME)
         tv_title.catchFocus()
+        ll_touch.run { setOnClickListener { catchFocus() } }
         btn_back.setOnClickListener {
             finish()
         }
