@@ -44,12 +44,7 @@ data class CourseResponse(
     }
 
     fun toMyCourseItem(response: CourseResponse): MyCourseItem {
-        val placeImages = response.savedImageName.split(",")
-        val images = arrayListOf<String>()
-        for (i in placeImages.indices) {
-            images.add(IMAGE_RESOURCE + placeImages[i])
-        }
-        val imageFormat = images[0]
+        val imageFormat = IMAGE_RESOURCE + response.savedImageName
 
         return MyCourseItem(
             response.courseNumber,
