@@ -28,6 +28,7 @@ import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
+import java.math.BigDecimal
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
@@ -40,6 +41,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private var selectedKeyword = arrayListOf<String>()
     private var isCreated = false
     val keywordName = arrayListOf<String>()
+    private lateinit var latLng: LatLng
+    lateinit var latitude: String
+    lateinit var longitude: String
 
     override fun showPlaceMessage(placeCheck: String) {
         if (placeCheck == CHECK_YES) {
@@ -128,12 +132,16 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         )
 
         btn_place_check.setOnClickListener {
+            latLng = findLatLng(applicationContext, "${tv_place_address.text}")
+            latitude = latLng.latitude.toString()
+            longitude = latLng.longitude.toString()
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 else -> presenter.checkPlace(
                     "${edt_place_name.text}",
-                    "${tv_place_address.text} ${edt_detail_address.text}"
+                    latitude,
+                    longitude
                 )
             }
         }
@@ -165,10 +173,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_register.setOnClickListener {
-            val latLng = findLatLng(applicationContext, "${tv_place_address.text}")
-            val latitude = latLng?.latitude?.toBigDecimal()
-            val longitude = latLng?.longitude?.toBigDecimal()
-            val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
+            val realAddress = "${tv_place_address.text} ${edt_detail_address.text}"
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
@@ -181,20 +186,18 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             if (!isCreated) {
                 isCreated = true
                 Handler().postDelayed({
-                    if (latitude != null && longitude != null) {
-                        presenter.placeRegister(
-                            memberNumber,
-                            keywords,
-                            "${edt_place_name.text}",
-                            realAddress,
-                            openingHours,
-                            "${edt_place_phone.text}",
-                            "${edt_place_text.text}",
-                            latitude,
-                            longitude,
-                            imageUri
-                        )
-                    }
+                    presenter.placeRegister(
+                        memberNumber,
+                        keywords,
+                        "${edt_place_name.text}",
+                        realAddress,
+                        openingHours,
+                        "${edt_place_phone.text}",
+                        "${edt_place_text.text}",
+                        latitude.toBigDecimal(),
+                        longitude.toBigDecimal(),
+                        imageUri
+                    )
                     isCreated = false
                 }, 1000)
             }
@@ -224,10 +227,10 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
     }
 
-    private fun findLatLng(context: Context, address: String): LatLng? {
+    private fun findLatLng(context: Context, address: String): LatLng {
         val coder = Geocoder(context)
         var addresses: List<Address>? = null
-        var latLng: LatLng? = null
+        lateinit var latLng: LatLng
 
         try {
             addresses = coder.getFromLocationName(address, 5)
