@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.fragment_find_password.*
 
 class FindPasswordFragment : Fragment(), FindPasswordContract.View {
     override fun deliverUserInfo(response: EmailSendResultResponse) {
-        Log.d("pwResponse", response.memberNumber.toString())
+        (activity as? LoginActivity)?.back()
         (activity as? LoginActivity)?.replace(
             SecurityCodeFragment.newInstance(
                 response.memberNumber,
