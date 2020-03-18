@@ -7,6 +7,7 @@ interface MapContract {
     interface View {
         var presenter: Presenter
         fun placeInfo(placeList: List<PlaceResponse>)
+        fun showMessage(message: String)
     }
 
     interface Presenter {

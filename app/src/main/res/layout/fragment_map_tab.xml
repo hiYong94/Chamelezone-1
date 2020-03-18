@@ -44,6 +44,23 @@
         </LinearLayout>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/layout_no_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/darkGray"
+            android:textSize="18sp" />
+    </LinearLayout>
+
     <FrameLayout
         android:id="@+id/map_fragment"
         android:layout_width="match_parent"

@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -36,6 +35,12 @@ import kotlinx.android.synthetic.main.fragment_map_tab.*
 
 class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     GoogleMap.OnMarkerClickListener {
+    override fun showMessage(message: String) {
+        layout_no_search.visibility = View.VISIBLE
+        map_fragment.visibility = View.GONE
+        tv_message.text = message
+    }
+
     override fun onMarkerClick(marker: Marker?): Boolean {
         (activity as? HomeActivity)?.back()
         if (marker != null) {
@@ -57,6 +62,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     private lateinit var locationCallBack: LocationCallback
 
     override fun placeInfo(placeList: List<PlaceResponse>) {
+        layout_no_search.visibility = View.GONE
+        map_fragment.visibility = View.VISIBLE
         map.clear()
         for (i in placeList.indices) {
             val searchLatLng =
@@ -85,14 +92,14 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 )
 
                 map.run {
-                    addMarker(markerOptions).showInfoWindow()
+                    addMarker(markerOptions)
                     setOnMarkerClickListener(this@MapTabFragment)
                     animateCamera(
                         CameraUpdateFactory.newLatLngZoom(
                             LatLng(
                                 placeList[0].latitude.toDouble(),
                                 placeList[0].longitude.toDouble()
-                            ), 15f
+                            ), 9f
                         )
                     )
                 }
@@ -147,7 +154,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 if ("${edt_search.text}".isEmpty()) {
                     showDialog()
                 } else {
-                    val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    val imm =
+                        context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
                     presenter.searchPlace("${edt_search.text}")
                 }
@@ -159,7 +167,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
             if ("${edt_search.text}".isEmpty()) {
                 showDialog()
             } else {
-                val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                val imm =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
                 presenter.searchPlace("${edt_search.text}")
             }

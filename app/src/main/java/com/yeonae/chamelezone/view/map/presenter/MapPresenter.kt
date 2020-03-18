@@ -5,16 +5,17 @@ import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.network.model.PlaceResponse
 
 class MapPresenter(
-    private val placeRepository: PlaceRepository,
-    private val mapView: MapContract.View
+    private val repository: PlaceRepository,
+    private val view: MapContract.View
 ) : MapContract.Presenter {
     override fun searchPlace(placeName: String) {
-        placeRepository.getSearchByMap(placeName, object : PlaceCallBack<List<PlaceResponse>>{
+        repository.getSearchByMap(placeName, object : PlaceCallBack<List<PlaceResponse>>{
             override fun onSuccess(response: List<PlaceResponse>) {
-                mapView.placeInfo(response)
+                view.placeInfo(response)
             }
 
             override fun onFailure(message: String) {
+                view.showMessage(message)
             }
 
         })
