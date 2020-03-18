@@ -87,6 +87,8 @@
         <activity
             android:name=".view.login.JoinActivity"
             android:launchMode="singleTask" />
+        <activity android:name=".view.mypage.myreview.MyReviewImageDetailActivity"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>
