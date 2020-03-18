@@ -1,12 +1,14 @@
 package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.appbar.AppBarLayout
-import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
@@ -20,6 +22,7 @@ import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailPresenter
 import kotlinx.android.synthetic.main.activity_place_detail.*
+
 
 class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     override lateinit var presenter: PlaceDetailContract.Presenter
@@ -108,6 +111,8 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         )
         presenter.checkLogin()
 
+        btn_back.setColorFilter(Color.parseColor("#F5DA81"), PorterDuff.Mode.SRC_IN)
+
         btn_back.setOnClickListener {
             finish()
         }
@@ -129,7 +134,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         viewpager_detail.adapter = fragmentAdapter
         tabs_detail.setupWithViewPager(viewpager_detail)
 
-
         tool_bar.run {
             post {
                 nameBar = ll_title.height
@@ -141,16 +145,9 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
                 layoutParams = tool_bar.layoutParams.apply {
                     height = nameBar + tabBar
                 }
-//                app_bar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-//                    if (abs(verticalOffset) - appBarLayout.totalScrollRange == 0) {
-//                        layout_visibility.visibility = View.VISIBLE
-//                    } else if (abs(verticalOffset) - appBarLayout.totalScrollRange != 0) {
-//                        Log.d("PlaceDetailActivity nameBar", nameBar.toString())
-//                        layout_visibility.visibility = View.GONE
-//                    }
-//                })
             }
         }
+
     }
 
     override fun onRestart() {

@@ -66,8 +66,8 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             }
 
             uri.path?.let { uriList.add(it) }
-            Log.d("dddd", uri.path.toString())
-            Log.d("dddd childCount uriList", uriList[index])
+            Log.d("image", uri.path.toString())
+            Log.d("image childCount uriList", uriList[index])
 
         }
         Log.d("uriList", uriList.toString())
