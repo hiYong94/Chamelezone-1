@@ -115,6 +115,7 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
 
             itemView.apply {
                 Log.d("PlaceReviewTabFragment memberNumber user", memberNumber.toString())
+                Log.d("PlaceReviewTabFragment memberNumber user review review", review.memberNumber.toString())
                 btn_more.isVisible = memberNumber == review.memberNumber
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog(review)
