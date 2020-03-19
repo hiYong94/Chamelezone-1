@@ -52,15 +52,6 @@ class MyReviewDetailActivity : AppCompatActivity(), MyReviewDetailContract.View 
 
         tab_layout.setupWithViewPager(vp_image, true)
 
-        tv_place_title.setOnClickListener {
-            val intent = Intent(applicationContext, MyReviewImageDetailActivity::class.java)
-            intent.putExtra(PLACE_NUMBER, placeNumber)
-            intent.putExtra(REVIEW_NUMBER, reviewNumber)
-            Log.d("MyReviewDetailActivity placeNumber", placeNumber.toString())
-            Log.d("MyReviewDetailActivity reviewNumber", reviewNumber.toString())
-            startActivity(intent)
-        }
-
         btn_back.setOnClickListener {
             finish()
         }
