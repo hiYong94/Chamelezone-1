@@ -25,11 +25,7 @@ data class ReviewResponse(
     fun toReviewItem(): ReviewItem? {
         val reviewImages = savedImageName.orEmpty()
         if (reviewImages.isNotEmpty()) {
-            val imageList = arrayListOf<String>()
-            reviewImages.split(",").forEachIndexed { index, _ ->
-                imageList.add(IMAGE_RESOURCE + reviewImages[index])
-            }
-            val image = imageList.first()
+            val image = IMAGE_RESOURCE + reviewImages.split(",").first()
             return ReviewItem(
                 reviewNumber,
                 placeNumber,
