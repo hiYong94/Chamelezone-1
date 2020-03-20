@@ -11,15 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
+import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.adapter.SearchRvAdapter
-import com.yeonae.chamelezone.view.search.presenter.SearchContract
-import com.yeonae.chamelezone.view.search.presenter.SearchPresenter
+import com.yeonae.chamelezone.view.search.presenter.KeywordSearchContract
+import com.yeonae.chamelezone.view.search.presenter.KeywordSearchPresenter
 import kotlinx.android.synthetic.main.fragment_keyword_tab.*
 
-class KeywordTabFragment : Fragment(), SearchContract.View {
+class KeywordTabFragment : Fragment(), KeywordSearchContract.View {
     private val searchRvAdapter = SearchRvAdapter()
-    override lateinit var presenter: SearchContract.Presenter
+    override lateinit var presenter: KeywordSearchContract.Presenter
     private lateinit var listener: OnKeywordSelectedListener
 
     interface OnKeywordSelectedListener {
@@ -40,60 +41,11 @@ class KeywordTabFragment : Fragment(), SearchContract.View {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        presenter = SearchPresenter(
+        presenter = KeywordSearchPresenter(
             Injection.placeRepository(), this
         )
+        presenter.getKeyword()
         setAdapter()
-
-        btn_cafe.setOnClickListener {
-            listener.keywordSelected("카페")
-            searchByKeyword("카페")
-        }
-
-        btn_exhibition.setOnClickListener {
-            listener.keywordSelected("전시회")
-            searchByKeyword("전시회")
-        }
-
-        btn_laundry.setOnClickListener {
-            listener.keywordSelected("빨래방")
-            searchByKeyword("빨래방")
-        }
-
-        btn_select_shop.setOnClickListener {
-            listener.keywordSelected("편집샵")
-            searchByKeyword("편집샵")
-        }
-
-        btn_bank.setOnClickListener {
-            listener.keywordSelected("은행")
-            searchByKeyword("은행")
-        }
-
-        btn_book_store.setOnClickListener {
-            listener.keywordSelected("서점")
-            searchByKeyword("서점")
-        }
-
-        btn_lodging.setOnClickListener {
-            listener.keywordSelected("숙소")
-            searchByKeyword("숙소")
-        }
-
-        btn_office.setOnClickListener {
-            listener.keywordSelected("오피스")
-            searchByKeyword("오피스")
-        }
-
-        btn_garden.setOnClickListener {
-            listener.keywordSelected("식물원")
-            searchByKeyword("식물원")
-        }
-
-        btn_restaurant.setOnClickListener {
-            listener.keywordSelected("레스토랑")
-            searchByKeyword("레스토랑")
-        }
 
         searchRvAdapter.setOnClickListener(object : SearchRvAdapter.OnClickListener {
             override fun onClick(place: PlaceItem) {
@@ -115,6 +67,69 @@ class KeywordTabFragment : Fragment(), SearchContract.View {
         layout_no_search.visibility = View.VISIBLE
         layout_has_search.visibility = View.GONE
         tv_message.text = message
+    }
+
+    override fun showKeywordList(response: List<KeywordResponse>) {
+        btn_keyword_1.text = response[0].keywordName
+        btn_keyword_2.text = response[1].keywordName
+        btn_keyword_3.text = response[2].keywordName
+        btn_keyword_4.text = response[3].keywordName
+        btn_keyword_5.text = response[4].keywordName
+        btn_keyword_6.text = response[5].keywordName
+        btn_keyword_7.text = response[6].keywordName
+        btn_keyword_8.text = response[7].keywordName
+        btn_keyword_9.text = response[8].keywordName
+        btn_keyword_10.text = response[9].keywordName
+
+        btn_keyword_1.setOnClickListener {
+            listener.keywordSelected(response[0].keywordName)
+            searchByKeyword(response[0].keywordName)
+        }
+
+        btn_keyword_2.setOnClickListener {
+            listener.keywordSelected(response[1].keywordName)
+            searchByKeyword(response[1].keywordName)
+        }
+
+        btn_keyword_3.setOnClickListener {
+            listener.keywordSelected(response[2].keywordName)
+            searchByKeyword(response[2].keywordName)
+        }
+
+        btn_keyword_4.setOnClickListener {
+            listener.keywordSelected(response[3].keywordName)
+            searchByKeyword(response[3].keywordName)
+        }
+
+        btn_keyword_5.setOnClickListener {
+            listener.keywordSelected(response[4].keywordName)
+            searchByKeyword(response[4].keywordName)
+        }
+
+        btn_keyword_6.setOnClickListener {
+            listener.keywordSelected(response[5].keywordName)
+            searchByKeyword(response[5].keywordName)
+        }
+
+        btn_keyword_7.setOnClickListener {
+            listener.keywordSelected(response[6].keywordName)
+            searchByKeyword(response[6].keywordName)
+        }
+
+        btn_keyword_8.setOnClickListener {
+            listener.keywordSelected(response[7].keywordName)
+            searchByKeyword(response[7].keywordName)
+        }
+
+        btn_keyword_9.setOnClickListener {
+            listener.keywordSelected(response[8].keywordName)
+            searchByKeyword(response[8].keywordName)
+        }
+
+        btn_keyword_10.setOnClickListener {
+            listener.keywordSelected(response[9].keywordName)
+            searchByKeyword(response[9].keywordName)
+        }
     }
 
     private fun setAdapter() {

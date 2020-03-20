@@ -42,21 +42,4 @@ class SearchPresenter(
 
         })
     }
-
-    override fun searchByKeyword(keyword: String) {
-        placeRepository.getSearchByKeyword(keyword, object : PlaceCallBack<List<PlaceResponse>> {
-            override fun onSuccess(response: List<PlaceResponse>) {
-                val placeItem = mutableListOf<PlaceItem>()
-                for (i in response.indices) {
-                    placeItem.add(response[i].toPlaceItem(response[i]))
-                }
-                searchView.showPlaceList(placeItem)
-            }
-
-            override fun onFailure(message: String) {
-                searchView.showMessage(message)
-            }
-
-        })
-    }
 }
