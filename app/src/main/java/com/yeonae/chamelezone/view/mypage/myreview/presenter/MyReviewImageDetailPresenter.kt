@@ -12,7 +12,7 @@ class MyReviewImageDetailPresenter(
         reviewRepository.getReviewDetail(placeNumber, reviewNumber, object :
             ReviewCallBack<ReviewResponse> {
             override fun onSuccess(response: ReviewResponse) {
-                reviewDetailView.showReviewImage(response)
+                response.toReviewItem()?.let { reviewDetailView.showReviewImage(it) }
             }
 
             override fun onFailure(message: String) {
