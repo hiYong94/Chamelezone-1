@@ -4,8 +4,8 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url
-import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewImageDetailVpAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewImageDetailContract
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewImageDetailPresenter
@@ -14,12 +14,12 @@ import kotlinx.android.synthetic.main.activity_review_image.*
 class MyReviewImageDetailActivity : AppCompatActivity(), MyReviewImageDetailContract.View {
     override lateinit var presenter: MyReviewImageDetailContract.Presenter
 
-    override fun showReviewImage(review: ReviewResponse) {
-        val reviewImages = review.savedImageName?.split(",")
-        val imageList = reviewImages?.map {
+    override fun showReviewImage(review: ReviewItem) {
+        val reviewImages = review.images.split(",")
+        val imageList = reviewImages.map {
             Url.IMAGE_RESOURCE + it
         }
-        val imageAdapter = imageList?.let { MyReviewImageDetailVpAdapter(it) }
+        val imageAdapter = MyReviewImageDetailVpAdapter(imageList)
         view_image.adapter = imageAdapter
     }
 
