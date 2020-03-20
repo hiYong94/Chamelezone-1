@@ -6,7 +6,6 @@ import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -28,7 +27,6 @@ import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
-import java.math.BigDecimal
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
@@ -94,21 +92,21 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         toast("$tag")
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val rl = LayoutInflater.from(this).inflate(
+            val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
             ) as RelativeLayout
 
             if (imageContainer.childCount < 4) {
-                imageContainer.addView(rl)
-                rl.image_item.run {
+                imageContainer.addView(rlSlideImg)
+                rlSlideImg.image_item.run {
                     glideImageSet(uri, measuredWidth, measuredHeight)
                 }
             }
 
-            rl.btn_delete.setOnClickListener {
-                imageContainer.removeView(rl)
+            rlSlideImg.btn_delete.setOnClickListener {
+                imageContainer.removeView(rlSlideImg)
             }
             uri.path?.let { imageUri.add(it) }
         }
@@ -183,24 +181,36 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
             }
-            if (!isCreated) {
-                isCreated = true
-                Handler().postDelayed({
-                    presenter.placeRegister(
-                        memberNumber,
-                        keywords,
-                        "${edt_place_name.text}",
-                        realAddress,
-                        openingHours,
-                        "${edt_place_phone.text}",
-                        "${edt_place_text.text}",
-                        latitude.toBigDecimal(),
-                        longitude.toBigDecimal(),
-                        imageUri
-                    )
-                    isCreated = false
-                }, 1000)
-            }
+//            if (!isCreated) {
+//                isCreated = true
+//                Handler().postDelayed({
+//                    presenter.placeRegister(
+//                        memberNumber,
+//                        keywords,
+//                        "${edt_place_name.text}",
+//                        realAddress,
+//                        openingHours,
+//                        "${edt_place_phone.text}",
+//                        "${edt_place_text.text}",
+//                        latitude.toBigDecimal(),
+//                        longitude.toBigDecimal(),
+//                        imageUri
+//                    )
+//                    isCreated = false
+//                }, 1000)
+//            }
+            presenter.placeRegister(
+                memberNumber,
+                keywords,
+                "${edt_place_name.text}",
+                realAddress,
+                openingHours,
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}",
+                latitude.toBigDecimal(),
+                longitude.toBigDecimal(),
+                imageUri
+            )
         }
     }
 
