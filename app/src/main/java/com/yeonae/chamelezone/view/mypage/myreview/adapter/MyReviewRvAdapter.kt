@@ -1,12 +1,10 @@
 package com.yeonae.chamelezone.view.mypage.myreview.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
-import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import kotlinx.android.synthetic.main.item_my_review.view.*
 
@@ -71,14 +69,10 @@ class MyReviewRvAdapter :
                 content.text = review.content
                 regiDate.text = review.regiDate
 
-                val reviewImages = review.images.split(",")
-                val imageList = arrayListOf<String>()
-                reviewImages.forEachIndexed { index, _ ->
-                    imageList.add(IMAGE_RESOURCE + reviewImages[index])
-                }
+                val reviewImages = review.image
 
                 placeImg.glideImageSet(
-                    imageList.first(),
+                    reviewImages,
                     placeImg.measuredWidth,
                     placeImg.measuredHeight
                 )
