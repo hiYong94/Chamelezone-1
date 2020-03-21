@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
@@ -15,13 +16,16 @@ import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
-class PlaceReviewTabRvAdapter :
+class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
     RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
     private val reviewList = arrayListOf<ReviewItem>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var moreButtonListener: MoreButtonListener
-//    private lateinit var moreImageBtnListener: MoreImageBtnListener
-    var reviewMemberNumber: Int = 0
+    private lateinit var reviewListener: OnReviewTabListener
+
+    interface OnReviewTabListener {
+        fun onReviewTabSelected(review: ReviewItem)
+    }
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, review: ReviewItem)
@@ -29,6 +33,10 @@ class PlaceReviewTabRvAdapter :
 
     interface MoreButtonListener {
         fun bottomSheetDialog(review: ReviewItem)
+    }
+
+    fun setReviewTabListener(listener: OnReviewTabListener) {
+        reviewListener = listener
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -68,16 +76,19 @@ class PlaceReviewTabRvAdapter :
             nickname.text = review.nickName
             reviewDate.text = review.regiDate
             reviewContent.text = review.content
-            reviewMemberNumber = review.memberNumber
 
-            val image = review.image
             val reviewImages = review.images.split(",")
             val imageList = arrayListOf<String>()
             reviewImages.forEachIndexed { index, _ ->
                 imageList.add(IMAGE_RESOURCE + reviewImages[index])
             }
 
-            reviewImg.glideTransformations(image, reviewImg.measuredWidth, reviewImg.measuredHeight)
+            reviewImg.glideTransformations(
+                imageList.first(),
+                reviewImg.measuredWidth,
+                reviewImg.measuredHeight
+            )
+
             reviewCount.text = "+" + (imageList.size - 1)
             Log.d("imageList images size1", imageList.size.toString())
             Log.d("imageList images size2", (imageList.size - 1).toString())
@@ -103,10 +114,16 @@ class PlaceReviewTabRvAdapter :
             }
 
             itemView.apply {
+                Log.d("PlaceReviewTabFragment memberNumber user", memberNumber.toString())
+                Log.d("PlaceReviewTabFragment memberNumber user review review", review.memberNumber.toString())
+                btn_more.isVisible = memberNumber == review.memberNumber
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog(review)
                 }
             }
+
+            if (::reviewListener.isInitialized)
+                reviewListener.onReviewTabSelected(review)
         }
     }
 

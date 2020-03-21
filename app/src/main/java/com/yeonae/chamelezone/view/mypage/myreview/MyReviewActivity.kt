@@ -16,7 +16,8 @@ import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewPresenter
 import kotlinx.android.synthetic.main.activity_my_review.*
 
-class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelectedListener, MyReviewContract.View {
+class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelectedListener,
+    MyReviewContract.View {
     override lateinit var presenter: MyReviewContract.Presenter
     private val myReviewRvAdapter = MyReviewRvAdapter()
     private val moreFragment = MoreButtonFragment()
@@ -27,7 +28,6 @@ class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelect
     override fun getMember(user: UserEntity) {
         memberNumber = user.userNumber ?: 0
         memberNumber.let { presenter.getUserReview(it) }
-        Log.d("myReviewList memberNumber", user.userNumber.toString())
     }
 
     override fun getMemberCheck(response: Boolean) {

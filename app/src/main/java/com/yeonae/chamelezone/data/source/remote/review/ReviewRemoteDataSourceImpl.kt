@@ -33,11 +33,12 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         val file = ArrayList<MultipartBody.Part>()
 
         for (i in images.indices) {
+            val extends = images[i].split(".").lastOrNull() ?: "*"
             file.add(
                 MultipartBody.Part.createFormData(
                     "images",
                     images[i],
-                    RequestBody.create(MediaType.parse("image/*"), File(images[i]))
+                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
                 )
             )
         }
@@ -161,6 +162,27 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         callBack: ReviewCallBack<ReviewResponse>
     ) {
         reviewService.getMyReviewDetail(placeNumber, reviewNumber)
+            .enqueue(object : Callback<ReviewResponse> {
+                override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
+                    Log.d("tag", t.toString())
+                }
+
+                override fun onResponse(
+                    call: Call<ReviewResponse>,
+                    response: Response<ReviewResponse>
+                ) {
+                    if (response.code() == Network.SUCCESS)
+                        response.body()?.let { callBack.onSuccess(it) }
+                }
+            })
+    }
+
+    override fun getMyReviewImageDetail(
+        placeNumber: Int,
+        reviewNumber: Int,
+        callBack: ReviewCallBack<ReviewResponse>
+    ) {
+        reviewService.getMyReviewImageDetail(placeNumber, reviewNumber)
             .enqueue(object : Callback<ReviewResponse> {
                 override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
                     Log.d("tag", t.toString())
