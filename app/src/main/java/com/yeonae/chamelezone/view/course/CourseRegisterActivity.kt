@@ -141,17 +141,16 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
-            val image = imageUri.replace(" ", "")
             if (!isCreated) {
                 isCreated = true
+                presenter.registerCourse(
+                    memberNumber,
+                    placeNumbers,
+                    "${edt_course_title.text}",
+                    "${edt_course_content.text}",
+                    imageUri
+                )
                 Handler().postDelayed({
-                    presenter.registerCourse(
-                        memberNumber,
-                        placeNumbers,
-                        "${edt_course_title.text}",
-                        "${edt_course_content.text}",
-                        image
-                    )
                     isCreated = false
                 }, 1000)
             }
