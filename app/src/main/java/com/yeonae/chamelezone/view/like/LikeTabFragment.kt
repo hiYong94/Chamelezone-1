@@ -85,6 +85,7 @@ class LikeTabFragment : Fragment(), LikeContract.View {
                         it, place.placeNumber
                     )
                 }
+                likeTabRvAdapter.removeData(place)
             }
         })
     }

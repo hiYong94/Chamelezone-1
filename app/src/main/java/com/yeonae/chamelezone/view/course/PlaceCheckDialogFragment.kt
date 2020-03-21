@@ -5,11 +5,11 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
@@ -20,7 +20,6 @@ import com.yeonae.chamelezone.view.course.adapter.PlaceCheckRvAdapter
 import com.yeonae.chamelezone.view.search.presenter.SearchContract
 import com.yeonae.chamelezone.view.search.presenter.SearchPresenter
 import kotlinx.android.synthetic.main.fragment_place_check_dialog.*
-import kotlinx.android.synthetic.main.item_place_check.*
 
 class PlaceCheckDialogFragment : DialogFragment(), SearchContract.View {
     override lateinit var presenter: SearchContract.Presenter
@@ -68,7 +67,6 @@ class PlaceCheckDialogFragment : DialogFragment(), SearchContract.View {
 
         placeChoiceRvAdapter.setOnClickListener(object : PlaceCheckRvAdapter.OnClickListener {
             override fun onClick(place: PlaceItem, isChecked: Boolean) {
-
                 checkStatus = isChecked
                 if (isChecked) {
                     lastCheckedPlace = place
@@ -77,11 +75,16 @@ class PlaceCheckDialogFragment : DialogFragment(), SearchContract.View {
         })
 
         btn_search.setOnClickListener {
+            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
             presenter.searchByName("${edt_search.text}")
         }
 
         edt_search.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
+                val imm =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
                 presenter.searchByName("${edt_search.text}")
             }
             true

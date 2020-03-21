@@ -12,13 +12,13 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import com.yeonae.chamelezone.view.map.presenter.MapContract
-import com.yeonae.chamelezone.view.map.presenter.MapPresenter
+import com.yeonae.chamelezone.view.map.presenter.MarkerInfoContract
+import com.yeonae.chamelezone.view.map.presenter.MarkerInfoPresenter
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.fragment_single_info.*
 
-class SingleInfoFragment : Fragment(), MapContract.View {
-    override lateinit var presenter: MapContract.Presenter
+class SingleInfoFragment : Fragment(), MarkerInfoContract.View {
+    override lateinit var presenter: MarkerInfoContract.Presenter
     var placeNumber: Int = 0
     var placeName: String = ""
 
@@ -51,11 +51,10 @@ class SingleInfoFragment : Fragment(), MapContract.View {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        presenter = MapPresenter(
+        presenter = MarkerInfoPresenter(
             Injection.placeRepository(), this
         )
         arguments?.getString("searchWord")?.let { presenter.searchPlace(it) }
-        Log.d("searchWord", arguments?.getString("searchWord"))
 
         layout_info.setOnClickListener {
             val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
