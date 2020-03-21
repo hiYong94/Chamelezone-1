@@ -17,6 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
+import java.net.URLEncoder
 
 class CourseRemoteDataSourceImpl private constructor(private val courseApi: CourseApi) :
     CourseRemoteDataSource {
@@ -28,11 +29,11 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         image: String,
         callBack: CourseCallBack<String>
     ) {
-
         val extends = image.split(".").lastOrNull() ?: "*"
         val image = MultipartBody.Part.createFormData(
             "image",
             image,
+//            URLEncoder.encode(image, "euc-kr"),
             RequestBody.create(MediaType.parse("image/$extends"), File(image))
         )
 
