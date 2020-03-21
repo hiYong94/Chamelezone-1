@@ -17,6 +17,7 @@ class SecurityCodeFragment : Fragment(), SecurityCodeContract.View {
     var memberNumber = 0
     override fun showResultView(matchResult: Boolean) {
         if (matchResult) {
+            (activity as? LoginActivity)?.back()
             (activity as? LoginActivity)?.replace(
                 ChangePasswordFragment.newInstance(memberNumber),
                 true

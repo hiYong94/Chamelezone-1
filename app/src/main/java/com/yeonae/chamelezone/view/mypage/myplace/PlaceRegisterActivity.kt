@@ -6,11 +6,10 @@ import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
@@ -26,7 +25,7 @@ import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
-import kotlinx.android.synthetic.main.slider_item_image.*
+import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
@@ -40,6 +39,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private var selectedKeyword = arrayListOf<String>()
     private var isCreated = false
     val keywordName = arrayListOf<String>()
+    private lateinit var latLng: LatLng
+    lateinit var latitude: String
+    lateinit var longitude: String
 
     override fun showPlaceMessage(placeCheck: String) {
         if (placeCheck == CHECK_YES) {
@@ -90,16 +92,23 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         toast("$tag")
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val iv = LayoutInflater.from(this).inflate(
+            val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as ImageView
-            imageContainer.addView(iv)
-            iv.glideImageSet(uri, image_item.measuredWidth, image_item.measuredHeight)
-        }
-        for (i in uris.indices) {
-            uris[i].path?.let { imageUri.add(it) }
+            ) as RelativeLayout
+
+            if (imageContainer.childCount < 4) {
+                imageContainer.addView(rlSlideImg)
+                rlSlideImg.image_item.run {
+                    glideImageSet(uri, measuredWidth, measuredHeight)
+                }
+            }
+
+            rlSlideImg.btn_delete.setOnClickListener {
+                imageContainer.removeView(rlSlideImg)
+            }
+            uri.path?.let { imageUri.add(it) }
         }
     }
 
@@ -121,12 +130,16 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         )
 
         btn_place_check.setOnClickListener {
+            latLng = findLatLng(applicationContext, "${tv_place_address.text}")
+            latitude = latLng.latitude.toString()
+            longitude = latLng.longitude.toString()
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 else -> presenter.checkPlace(
                     "${edt_place_name.text}",
-                    "${tv_place_address.text} ${edt_detail_address.text}"
+                    latitude,
+                    longitude
                 )
             }
         }
@@ -158,10 +171,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_register.setOnClickListener {
-            val latLng = findLatLng(applicationContext, "${tv_place_address.text}")
-            val latitude = latLng?.latitude?.toBigDecimal()
-            val longitude = latLng?.longitude?.toBigDecimal()
-            val realAddress = "${tv_place_address.text}" + " " + "${edt_detail_address.text}"
+            val realAddress = "${tv_place_address.text} ${edt_detail_address.text}"
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
@@ -171,26 +181,36 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
             }
-            if (!isCreated) {
-                isCreated = true
-                Handler().postDelayed({
-                    if (latitude != null && longitude != null) {
-                        presenter.placeRegister(
-                            memberNumber,
-                            keywords,
-                            "${edt_place_name.text}",
-                            realAddress,
-                            openingHours,
-                            "${edt_place_phone.text}",
-                            "${edt_place_text.text}",
-                            latitude,
-                            longitude,
-                            imageUri
-                        )
-                    }
-                    isCreated = false
-                }, 1000)
-            }
+//            if (!isCreated) {
+//                isCreated = true
+//                Handler().postDelayed({
+//                    presenter.placeRegister(
+//                        memberNumber,
+//                        keywords,
+//                        "${edt_place_name.text}",
+//                        realAddress,
+//                        openingHours,
+//                        "${edt_place_phone.text}",
+//                        "${edt_place_text.text}",
+//                        latitude.toBigDecimal(),
+//                        longitude.toBigDecimal(),
+//                        imageUri
+//                    )
+//                    isCreated = false
+//                }, 1000)
+//            }
+            presenter.placeRegister(
+                memberNumber,
+                keywords,
+                "${edt_place_name.text}",
+                realAddress,
+                openingHours,
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}",
+                latitude.toBigDecimal(),
+                longitude.toBigDecimal(),
+                imageUri
+            )
         }
     }
 
@@ -217,10 +237,10 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
     }
 
-    private fun findLatLng(context: Context, address: String): LatLng? {
+    private fun findLatLng(context: Context, address: String): LatLng {
         val coder = Geocoder(context)
         var addresses: List<Address>? = null
-        var latLng: LatLng? = null
+        lateinit var latLng: LatLng
 
         try {
             addresses = coder.getFromLocationName(address, 5)

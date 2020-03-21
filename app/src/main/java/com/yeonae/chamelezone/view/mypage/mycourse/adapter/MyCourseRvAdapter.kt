@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.MyCourseItem
-import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import kotlinx.android.synthetic.main.item_my_course.view.*
 
@@ -65,7 +64,7 @@ class MyCourseRvAdapter :
                 tv_course_name.text = item.title
                 tv_course_content.text = item.content
                 iv_course_image.glideImageSet(
-                    IMAGE_RESOURCE + item.savedImageName,
+                    item.savedImageName,
                     iv_course_image.measuredWidth,
                     iv_course_image.measuredHeight
                 )

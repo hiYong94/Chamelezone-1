@@ -21,6 +21,8 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
         )
         tv_course_title.text = courseList[0].title
         tv_course_content.text = courseList[0].content
+        tv_user_nickname.text = courseList[0].nickName
+        tv_register_date.text = courseList[0].regiDate
         iv_place_image1.glideImageSet(
             IMAGE_RESOURCE + courseList[0].placeImages,
             iv_place_image1.measuredWidth,
@@ -66,6 +68,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
                     tv_second_keyword.text = "${tv_second_keyword.text}${","} $it"
                 }
             }
+            layout_third_place.visibility = View.VISIBLE
             tv_second_place_name.text = courseList[1].placeName
             tv_second_address.text = courseList[1].address
             iv_place_image3.glideImageSet(

@@ -147,24 +147,38 @@ class OpeningHoursActivity : AppCompatActivity() {
         btn_complete.setOnClickListener {
             if (checkbox_sun.isChecked) {
                 result(opening_hour_sun, getString(R.string.sunday))
+            } else {
+                openingHours.add(getString(R.string.sunday_closed))
             }
             if (checkbox_mon.isChecked) {
                 result(opening_hour_mon, getString(R.string.monday))
+            } else {
+                openingHours.add(getString(R.string.monday_closed))
             }
             if (checkbox_tue.isChecked) {
                 result(opening_hour_tue, getString(R.string.tuesday))
+            } else {
+                openingHours.add(getString(R.string.tuesday_closed))
             }
             if (checkbox_wed.isChecked) {
                 result(opening_hour_wed, getString(R.string.wednesday))
+            } else {
+                openingHours.add(getString(R.string.wednesday_closed))
             }
             if (checkbox_thu.isChecked) {
                 result(opening_hour_thu, getString(R.string.thursday))
+            } else {
+                openingHours.add(getString(R.string.thursday_closed))
             }
             if (checkbox_fri.isChecked) {
                 result(opening_hour_fri, getString(R.string.friday))
+            } else {
+                openingHours.add(getString(R.string.friday_closed))
             }
             if (checkbox_sat.isChecked) {
                 result(opening_hour_sat, getString(R.string.saturday))
+            } else {
+                openingHours.add(getString(R.string.saturday_closed))
             }
             val intent = Intent(this, PlaceRegisterActivity::class.java)
             intent.putExtra("openingHours", openingHours)

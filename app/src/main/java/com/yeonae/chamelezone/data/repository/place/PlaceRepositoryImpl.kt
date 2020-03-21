@@ -110,10 +110,11 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
 
     override fun checkPlace(
         name: String,
-        address: String,
+        latitude: String,
+        longitude: String,
         callBack: PlaceCallBack<PlaceDuplicateResponse>
     ) {
-        remoteDataSource.checkPlace(name, address, callBack)
+        remoteDataSource.checkPlace(name, latitude, longitude, callBack)
     }
 
     companion object {

@@ -76,16 +76,20 @@ class PlacePresenter(
         })
     }
 
-    override fun checkPlace(name: String, address: String) {
-        placeRepository.checkPlace(name, address, object : PlaceCallBack<PlaceDuplicateResponse> {
-            override fun onSuccess(response: PlaceDuplicateResponse) {
-                view.showPlaceMessage(response.placeCheck)
-            }
+    override fun checkPlace(name: String, latitude: String, longitude: String) {
+        placeRepository.checkPlace(
+            name,
+            latitude,
+            longitude,
+            object : PlaceCallBack<PlaceDuplicateResponse> {
+                override fun onSuccess(response: PlaceDuplicateResponse) {
+                    view.showPlaceMessage(response.placeCheck)
+                }
 
-            override fun onFailure(message: String) {
+                override fun onFailure(message: String) {
 
-            }
+                }
 
-        })
+            })
     }
 }
