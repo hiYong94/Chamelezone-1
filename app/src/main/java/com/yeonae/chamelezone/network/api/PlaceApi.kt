@@ -85,7 +85,8 @@ interface PlaceApi {
     @GET("/place/duplicate-check")
     fun checkPlace(
         @Query("name") name: String,
-        @Query("address") address: String
+        @Query("latitude") latitude: String,
+        @Query("longitude") longitude: String
     ): Call<PlaceDuplicateResponse>
 
 }

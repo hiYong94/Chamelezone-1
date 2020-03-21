@@ -401,24 +401,26 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
     override fun checkPlace(
         name: String,
-        address: String,
+        latitude: String,
+        longitude: String,
         callBack: PlaceCallBack<PlaceDuplicateResponse>
     ) {
-        placeService.checkPlace(name, address).enqueue(object : Callback<PlaceDuplicateResponse> {
-            override fun onFailure(call: Call<PlaceDuplicateResponse>, t: Throwable) {
-                Log.d("tag", t.toString())
-            }
-
-            override fun onResponse(
-                call: Call<PlaceDuplicateResponse>,
-                response: Response<PlaceDuplicateResponse>
-            ) {
-                if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+        placeService.checkPlace(name, latitude, longitude)
+            .enqueue(object : Callback<PlaceDuplicateResponse> {
+                override fun onFailure(call: Call<PlaceDuplicateResponse>, t: Throwable) {
+                    Log.d("tag", t.toString())
                 }
-            }
 
-        })
+                override fun onResponse(
+                    call: Call<PlaceDuplicateResponse>,
+                    response: Response<PlaceDuplicateResponse>
+                ) {
+                    if (response.code() == Network.SUCCESS) {
+                        response.body()?.let { callBack.onSuccess(it) }
+                    }
+                }
+
+            })
     }
 
     companion object {

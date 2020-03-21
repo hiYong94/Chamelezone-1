@@ -165,4 +165,5 @@
     <string name="not_match_pw">비밀번호가 일치하지 않습니다.</string>
     <string name="changed_pw">비밀번호가 변경되었습니다.\n새로운 비밀번호로 로그인 하실 수 있습니다.</string>
     <string name="not_match_security_code">보안코드가 일치하지 않습니다.</string>
+    <string name="select_two_places">2개 이상의 장소를 선택해주세요.</string>
 </resources>

@@ -45,7 +45,7 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
             if (it == place.openingTime[0]) {
                 tv_opening_time.text = it
             } else {
-                tv_opening_time.text = "${tv_opening_time.text}\n $it"
+                tv_opening_time.text = "${tv_opening_time.text}\n$it"
             }
         }
         tv_content.text = place.content

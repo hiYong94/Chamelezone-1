@@ -30,6 +30,6 @@ interface PlaceContract {
 
         fun getKeyword()
         fun getUser()
-        fun checkPlace(name: String, address: String)
+        fun checkPlace(name: String, latitude: String, longitude: String)
     }
 }

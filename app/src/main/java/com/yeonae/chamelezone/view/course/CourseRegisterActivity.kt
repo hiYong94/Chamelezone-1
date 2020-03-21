@@ -4,7 +4,6 @@ import android.Manifest
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
@@ -125,26 +124,33 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         }
 
         btn_register.setOnClickListener {
+            placeNumbers.clear()
+            if (firstPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(firstPlaceNumber)
+            }
+            if (secondPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(secondPlaceNumber)
+            }
+            if (thirdPlaceNumber != NOT_SELECTED) {
+                placeNumbers.add(thirdPlaceNumber)
+            }
             when {
-                firstPlaceNumber != NOT_SELECTED -> placeNumbers.add(firstPlaceNumber)
-                secondPlaceNumber != NOT_SELECTED -> placeNumbers.add(secondPlaceNumber)
-                thirdPlaceNumber != NOT_SELECTED -> placeNumbers.add(thirdPlaceNumber)
                 edt_course_title.text.isEmpty() -> shortToast(R.string.enter_course_title)
                 edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
-                tv_place_name1.text.isEmpty() -> shortToast(R.string.enter_place)
-                tv_place_name2.text.isEmpty() -> shortToast(R.string.enter_place)
+                tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
+                tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
+            val image = imageUri.replace(" ", "")
             if (!isCreated) {
                 isCreated = true
-                Log.d("isCreated", isCreated.toString())
                 Handler().postDelayed({
                     presenter.registerCourse(
                         memberNumber,
                         placeNumbers,
                         "${edt_course_title.text}",
                         "${edt_course_content.text}",
-                        imageUri
+                        image
                     )
                     isCreated = false
                 }, 1000)

@@ -47,6 +47,12 @@ class LikeTabRvAdapter :
         notifyDataSetChanged()
     }
 
+    fun removeData(place: PlaceResponse) {
+        val position = items.indexOf(place)
+        items.remove(place)
+        notifyItemRemoved(position)
+    }
+
     class LikeViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_like, parent, false)
     ) {
