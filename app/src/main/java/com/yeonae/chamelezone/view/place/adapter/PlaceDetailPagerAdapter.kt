@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.view.place.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.view.place.PlaceInfoTabFragment
 import com.yeonae.chamelezone.view.place.PlaceReviewTabFragment
 
@@ -12,6 +13,7 @@ class PlaceDetailPagerAdapter(
     val placeName: String,
     val memberNumber: Int?
 ) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> {

@@ -5,6 +5,7 @@ import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -47,6 +48,15 @@ fun ImageView.glideImageSet(image: Uri, width: Int, height: Int) {
         .into(this)
 }
 
+fun ImageView.glideOriginImageSet(image: String, width: Int, height: Int) {
+    Glide.with(context)
+        .load(image)
+        .error(R.drawable.ic_x)
+        .override(width, height)
+        .fitCenter()
+        .into(this)
+}
+
 fun ImageView.glideTransformations(image: String, width: Int, height: Int) {
     val density = resources.displayMetrics.density
 
@@ -79,3 +89,9 @@ fun Context.shortToast(message: String) {
     Toast.makeText(this, message, Toast.LENGTH_SHORT)
         .show()
 }
+
+fun TextView.nextLineOptimize(){
+    this.text = text.toString().replace(" ", "\u00A0")
+}
+
+

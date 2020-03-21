@@ -16,11 +16,11 @@ class MyReviewPresenter(
     override fun getUserReview(memberNumber: Int) {
         reviewRepository.getMyReviewList(memberNumber, object : ReviewCallBack<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
-                val reviewItem = arrayListOf<ReviewItem>()
-                response.forEachIndexed { index, _ ->
-                    reviewItem.add(response[index].toReviewItem(response[index]))
+                val reviewItemList = arrayListOf<ReviewItem>()
+                response.forEach {
+                    it.toReviewItem()?.let { it1 -> reviewItemList.add(it1) }
                 }
-                myReviewView.showMyReviewList(reviewItem)
+                myReviewView.showMyReviewList(reviewItemList)
             }
 
             override fun onFailure(message: String) {

@@ -8,16 +8,17 @@ import com.yeonae.chamelezone.data.repository.review.ReviewRepository
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
-class PlaceReviewPresenter(private val reviewRepository: ReviewRepository,
-                           private val memberRepository: MemberRepository,
-                           private val placeReviewView: PlaceReviewContract.View
+class PlaceReviewPresenter(
+    private val reviewRepository: ReviewRepository,
+    private val memberRepository: MemberRepository,
+    private val placeReviewView: PlaceReviewContract.View
 ) : PlaceReviewContract.Presenter {
     override fun placeDetailReview(placeNumber: Int) {
         reviewRepository.getReviewList(placeNumber, object : ReviewCallBack<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
                 val reviewItemList = arrayListOf<ReviewItem>()
                 response.forEach {
-                    reviewItemList.add(it.toReviewItem(it))
+                    it.toReviewItem()?.let { it1 -> reviewItemList.add(it1) }
                 }
                 placeReviewView.showPlaceReview(reviewItemList)
             }
@@ -30,15 +31,19 @@ class PlaceReviewPresenter(private val reviewRepository: ReviewRepository,
     }
 
     override fun deleteReview(placeNumber: Int, reviewNumber: Int, memberNumber: Int) {
-        reviewRepository.deleteReview(placeNumber, reviewNumber, memberNumber, object : ReviewCallBack<String> {
-            override fun onSuccess(response: String) {
-                placeReviewView.showReviewDelete(response)
-            }
+        reviewRepository.deleteReview(
+            placeNumber,
+            reviewNumber,
+            memberNumber,
+            object : ReviewCallBack<String> {
+                override fun onSuccess(response: String) {
+                    placeReviewView.showReviewDelete(response)
+                }
 
-            override fun onFailure(message: String) {
+                override fun onFailure(message: String) {
 
-            }
-        })
+                }
+            })
     }
 
     override fun getMember() {

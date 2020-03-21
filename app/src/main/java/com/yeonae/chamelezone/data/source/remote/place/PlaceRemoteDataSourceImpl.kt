@@ -116,7 +116,9 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 }
                 Log.d("courseRegister", response.code().toString())
                 if (response.code() == Network.SUCCESS) {
-                    callBack.onSuccess(App.instance.context().getString(R.string.success_register_place))
+                    callBack.onSuccess(
+                        App.instance.context().getString(R.string.success_register_place)
+                    )
                 }
             }
 
