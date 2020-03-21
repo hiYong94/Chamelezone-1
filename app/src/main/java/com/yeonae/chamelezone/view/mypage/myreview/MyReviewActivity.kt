@@ -20,6 +20,7 @@ class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelect
     MyReviewContract.View {
     override lateinit var presenter: MyReviewContract.Presenter
     private val myReviewRvAdapter = MyReviewRvAdapter()
+    private val moreFragment = MoreButtonFragment()
     private var placeNumber = 0
     private var reviewNumber = 0
     private var memberNumber: Int = 0

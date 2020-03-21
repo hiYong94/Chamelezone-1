@@ -20,10 +20,12 @@ import com.yeonae.chamelezone.view.home.presenter.HomePresenter
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
+import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
+    private lateinit var placeResponse: PlaceResponse
     private val placeAdapter = HomePlaceRvAdapter()
     private var memberNumber: Int = 0
     private var placeNumber = 0
@@ -97,7 +99,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+      
         swipe_layout.setOnRefreshListener(this)
         swipe_layout.setColorSchemeResources(R.color.colorOrange)
 
@@ -122,7 +124,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
             }
         })
     }
-
+  
     override fun onRefresh() {
         presenter.getHomeList(memberNumber)
         swipe_layout.isRefreshing = false
@@ -132,6 +134,4 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }
-
-
 }

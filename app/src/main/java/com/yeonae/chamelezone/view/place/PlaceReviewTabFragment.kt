@@ -32,7 +32,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     var reviewMemberNum = 0
     var placeName: String = ""
 
-
     override fun showPlaceReview(reviewList: List<ReviewItem>) {
         if (::placeReviewRvAdapter.isInitialized)
             placeReviewRvAdapter.addData(reviewList)

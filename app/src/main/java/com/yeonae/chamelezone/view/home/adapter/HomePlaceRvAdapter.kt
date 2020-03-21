@@ -36,6 +36,7 @@ class HomePlaceRvAdapter :
         private val placeImg = itemView.place_img
         private val placeName = itemView.place_name
         private val keyword = itemView.keyword
+        private val like = itemView.btn_like
 
         fun bind(place: PlaceResponse) {
             placeName.text = place.name

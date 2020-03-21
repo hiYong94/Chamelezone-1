@@ -27,7 +27,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
         fun onReviewTabSelected(review: ReviewItem)
     }
 
-
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, review: ReviewItem)
     }
@@ -89,6 +88,7 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
                 reviewImg.measuredWidth,
                 reviewImg.measuredHeight
             )
+
             reviewCount.text = "+" + (imageList.size - 1)
             Log.d("imageList images size1", imageList.size.toString())
             Log.d("imageList images size2", (imageList.size - 1).toString())
