@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.view.mypage.myreview.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -69,11 +68,14 @@ class MyReviewRvAdapter :
                 placeName.text = review.name
                 content.text = review.content
                 regiDate.text = review.regiDate
-                val image = review.image
-                Log.d("MyReviewRvAdapter image images", image)
-                image.let {
-                    placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
-                }
+
+                val reviewImages = review.image
+
+                placeImg.glideImageSet(
+                    reviewImages,
+                    placeImg.measuredWidth,
+                    placeImg.measuredHeight
+                )
 
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog(review)

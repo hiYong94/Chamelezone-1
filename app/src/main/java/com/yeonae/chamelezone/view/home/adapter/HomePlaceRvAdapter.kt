@@ -21,7 +21,7 @@ class HomePlaceRvAdapter :
     }
 
     interface LikeButtonListener {
-        fun onLikeClick(placeResponse: PlaceResponse)
+        fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean)
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -36,7 +36,6 @@ class HomePlaceRvAdapter :
         private val placeImg = itemView.place_img
         private val placeName = itemView.place_name
         private val keyword = itemView.keyword
-        private val like = itemView.btn_like
 
         fun bind(place: PlaceResponse) {
             placeName.text = place.name
@@ -53,24 +52,18 @@ class HomePlaceRvAdapter :
             }
 
             itemView.setOnClickListener {
-                itemClickListener.onItemClick(itemView, position, place)
+                itemClickListener.onItemClick(itemView, adapterPosition, place)
             }
 
             itemView.apply {
+                if (place.likeStatus) {
+                    btn_like.isChecked = true
+                }
+
                 btn_like.setOnClickListener {
-                    likeButtonListener.onLikeClick(place)
+                    likeButtonListener.onLikeClick(place, btn_like.isChecked)
                 }
             }
-
-//            like.setOnClickListener {
-//                val position = adapterPosition
-//                if (position != RecyclerView.NO_POSITION) {
-//                    if (::itemClickListener.isInitialized) {
-//                        itemClickListener.onItemClick(itemView, position, place)
-//                    }
-//                    placeList[position] = place
-//                }
-//            }
         }
     }
 

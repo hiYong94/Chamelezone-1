@@ -14,7 +14,7 @@ class MyReviewDetailPresenter(
             reviewNumber,
             object : ReviewCallBack<ReviewResponse> {
                 override fun onSuccess(response: ReviewResponse) {
-                    myReviewDetailView.showMyReviewDetail(response.toReviewItem(response))
+                    response.toReviewItem()?.let { myReviewDetailView.showMyReviewDetail(it) }
                 }
 
                 override fun onFailure(message: String) {

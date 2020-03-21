@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:toos="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:orientation="vertical">
@@ -69,7 +68,7 @@
                             android:layout_weight="1"
                             android:background="@color/transparent"
                             android:padding="5dp"
-                            android:src="@drawable/ic_more_vert_black_24dp" />
+                            android:src="@drawable/ic_more_black_24dp" />
                     </LinearLayout>
 
                     <TextView

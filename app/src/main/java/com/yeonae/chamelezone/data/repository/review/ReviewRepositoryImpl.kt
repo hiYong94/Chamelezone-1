@@ -52,6 +52,14 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
         reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callBack)
     }
 
+    override fun getMyReviewImageDetail(
+        placeNumber: Int,
+        reviewNumber: Int,
+        callBack: ReviewCallBack<ReviewResponse>
+    ) {
+        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callBack)
+    }
+
     companion object {
         fun getInstance(remoteDataSource: ReviewRemoteDataSource): ReviewRepository =
             ReviewRepositoryImpl(remoteDataSource)

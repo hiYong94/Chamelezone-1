@@ -7,8 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.isInvisible
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
@@ -24,15 +22,14 @@ import com.yeonae.chamelezone.view.review.ReviewCreateActivity
 import com.yeonae.chamelezone.view.review.ReviewImageActivity
 import com.yeonae.chamelezone.view.review.ReviewModifyActivity
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
-import kotlinx.android.synthetic.main.item_place_review.*
 
 class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     override lateinit var presenter: PlaceReviewContract.Presenter
     private lateinit var placeReviewRvAdapter: PlaceReviewTabRvAdapter
     private var reviewNumber = 0
     private var placeNumber = 0
-    private var memberNumber = 0
-    var reviewMemberNumber = 0
+    var memberNumber = 0
+    var reviewMemberNum = 0
     var placeName: String = ""
 
 
@@ -46,14 +43,15 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     }
 
     override fun showMemberReview(user: UserEntity) {
-        reviewMemberNumber = placeReviewRvAdapter.reviewMemberNumber
+        Log.d("PlaceReviewTabFragment reviewMemberNumber22222222222", reviewMemberNum.toString())
+
         Log.d("PlaceReviewTabFragment memberNumber", memberNumber.toString())
-        Log.d("PlaceReviewTabFragment reviewMemberNumber2", reviewMemberNumber.toString())
+        Log.d("PlaceReviewTabFragment reviewMemberNumber2", reviewMemberNum.toString())
     }
 
     override fun getMemberCheck(response: Boolean) {
-        presenter.getMember()
         if (response) {
+            presenter.getMember()
             review.setOnClickListener {
                 placeName = arguments?.getString(PLACE_NAME).orEmpty()
                 val intent = Intent(context, ReviewCreateActivity::class.java)
@@ -85,7 +83,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
         Log.d("memberNumber", memberNumber.toString())
 
-        placeReviewRvAdapter = PlaceReviewTabRvAdapter()
+        placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
 
         setAdapter()
 
@@ -95,6 +93,14 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
         presenter.checkMember()
 
+        placeReviewRvAdapter.setReviewTabListener(object :
+            PlaceReviewTabRvAdapter.OnReviewTabListener {
+            override fun onReviewTabSelected(review: ReviewItem) {
+                reviewMemberNum = review.memberNumber
+                Log.d("PlaceReviewTabFragment reviewMemberNum", reviewMemberNum.toString())
+            }
+        })
+
         placeNumber.let {
             presenter.placeDetailReview(it)
         }
@@ -103,8 +109,8 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
             PlaceReviewTabRvAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int, review: ReviewItem) {
                 reviewNumber = review.reviewNumber
-                reviewMemberNumber = review.memberNumber
-                Log.d("PlaceReviewTabFragment reviewMemberNumber1", reviewMemberNumber.toString())
+//                reviewMemberNumber = review.memberNumber
+                Log.d("PlaceReviewTabFragment reviewMemberNumber1", reviewMemberNum.toString())
                 val intent = Intent(context, ReviewImageActivity::class.java)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
                 intent.putExtra(REVIEW_NUMBER, reviewNumber)
@@ -171,7 +177,11 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         private const val MEMBER_NUMBER = "memberNumber"
         private const val REVIEW_NUMBER = "reviewNumber"
 
-        fun newInstance(placeNumber: Int, placeName: String, memberNumber: Int?) =
+        fun newInstance(
+            placeNumber: Int,
+            placeName: String,
+            memberNumber: Int?
+        ) =
             PlaceReviewTabFragment().apply {
                 arguments = Bundle().apply {
                     putInt(PLACE_NUMBER, placeNumber)

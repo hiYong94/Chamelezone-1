@@ -4,11 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Course
 import com.yeonae.chamelezone.data.model.MyCourseItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.model.CourseResponse
 import kotlinx.android.synthetic.main.item_my_course.view.*
 
 class MyCourseRvAdapter :

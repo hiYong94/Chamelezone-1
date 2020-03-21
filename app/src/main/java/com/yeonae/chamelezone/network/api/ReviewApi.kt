@@ -46,4 +46,10 @@ interface ReviewApi {
         @Path("placeNumber") placeNumber: Int,
         @Path("reviewNumber") reviewNumber: Int
     ): Call<ReviewResponse>
+
+    @GET("/place/{placeNumber}/review/{reviewNumber}")
+    fun getMyReviewImageDetail(
+        @Path("placeNumber") placeNumber: Int,
+        @Path("reviewNumber") reviewNumber: Int
+    ): Call<ReviewResponse>
 }

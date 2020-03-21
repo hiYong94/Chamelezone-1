@@ -80,7 +80,7 @@ class LikeTabFragment : Fragment(), LikeContract.View {
 
         likeTabRvAdapter.setOnLikeClickListener(object : LikeTabRvAdapter.OnLikeClickListener {
             override fun onLikeClick(place: PlaceResponse) {
-                place.memberNumber.let {
+                place.memberNumber?.let {
                     presenter.deleteLike(
                         it, place.placeNumber
                     )

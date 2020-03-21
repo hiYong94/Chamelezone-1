@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myreview
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -11,9 +12,11 @@ import com.yeonae.chamelezone.view.mypage.myreview.adapter.ReviewImageVpAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewDetailContract
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewDetailPresenter
 import kotlinx.android.synthetic.main.activity_myreview_detail.*
+import kotlinx.android.synthetic.main.slider_item_myreview_image.*
 
 class MyReviewDetailActivity : AppCompatActivity(), MyReviewDetailContract.View {
     override lateinit var presenter: MyReviewDetailContract.Presenter
+    private lateinit var imagePagerAdapter: ReviewImageVpAdapter
     private var placeNumber = 0
     private var reviewNumber = 0
 
@@ -26,8 +29,10 @@ class MyReviewDetailActivity : AppCompatActivity(), MyReviewDetailContract.View 
         Log.d("imageList imageList reviewImages", reviewImages.toString())
         Log.d("imageList imageList imageList", imageList.toString())
 
-        val imageAdapter = ReviewImageVpAdapter(imageList)
-        vp_image.adapter = imageAdapter
+        imagePagerAdapter = ReviewImageVpAdapter(imageList, placeNumber, reviewNumber)
+
+        if (::imagePagerAdapter.isInitialized)
+            vp_image.adapter = imagePagerAdapter
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

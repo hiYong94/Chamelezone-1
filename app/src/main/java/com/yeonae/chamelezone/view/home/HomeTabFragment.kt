@@ -2,13 +2,12 @@ package com.yeonae.chamelezone.view.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import com.yeonae.chamelezone.App
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.LikeStatusItem
@@ -21,46 +20,29 @@ import com.yeonae.chamelezone.view.home.presenter.HomePresenter
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
-import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
-class HomeTabFragment : Fragment(), HomeContract.View {
+class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
-    private lateinit var placeResponse: PlaceResponse
     private val placeAdapter = HomePlaceRvAdapter()
-    private var memberNumber: Int? = null
+    private var memberNumber: Int = 0
     private var placeNumber = 0
 
-    override fun showHomeList(place: List<PlaceResponse>) {
-        placeAdapter.addData(place)
-
-        if (::placeResponse.isInitialized) {
-            if (placeResponse.likeStatus) {
-                btn_like.isChecked = true
-            }
-        }
+    override fun showHomeList(placeList: List<PlaceResponse>) {
+        placeAdapter.addData(placeList)
 
         placeAdapter.setLikeButtonListener(object : HomePlaceRvAdapter.LikeButtonListener {
-            override fun onLikeClick(placeResponse: PlaceResponse) {
-                Log.d("HomeTabFragment like memberNumber", placeResponse.memberNumber.toString())
-                if (memberNumber == null) {
-                    btn_like.setOnClickListener {
-                        btn_like.isChecked = false
-                        val intent = Intent(context, LoginActivity::class.java)
-                        startActivity(intent)
-                    }
+            override fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean) {
+                placeNumber = placeResponse.placeNumber
+
+                if (memberNumber == 0) {
+                    val intent = Intent(context, LoginActivity::class.java)
+                    startActivity(intent)
                 } else {
-                    btn_like.setOnClickListener {
-                        if (btn_like.isChecked) {
-                            memberNumber?.let { it1 -> presenter.selectLike(it1, placeNumber) }
-                        } else {
-                            memberNumber?.let { it1 ->
-                                presenter.deleteLike(
-                                    it1,
-                                    placeNumber
-                                )
-                            }
-                        }
+                    if (isChecked) {
+                        presenter.selectLike(memberNumber, placeNumber)
+                    } else {
+                        presenter.deleteLike(memberNumber, placeNumber)
                     }
                 }
             }
@@ -68,17 +50,9 @@ class HomeTabFragment : Fragment(), HomeContract.View {
     }
 
     override fun getMember(user: UserEntity) {
-        Log.d("HomeTabFragment memberNumber1", user.userNumber.toString())
-        memberNumber = user.userNumber
+        if (user.userNumber != null)
+            memberNumber = user.userNumber
         presenter.getHomeList(memberNumber)
-        Log.d("HomeTabFragment memberNumber3", memberNumber.toString())
-//        if (memberNumber == null) {
-//            presenter.getHomeList(memberNumber)
-//            Log.d("HomeTabFragment memberNumber2", memberNumber.toString())
-//        } else {
-//            presenter.getHomeList(memberNumber)
-//            Log.d("HomeTabFragment memberNumber3", memberNumber.toString())
-//        }
     }
 
     override fun getMemberCheck(response: Boolean) {
@@ -86,7 +60,6 @@ class HomeTabFragment : Fragment(), HomeContract.View {
             presenter.getMember()
         } else {
             presenter.getHomeList(memberNumber)
-            Log.d("HomeTabFragment memberNumber4", memberNumber.toString())
         }
     }
 
@@ -125,6 +98,9 @@ class HomeTabFragment : Fragment(), HomeContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipe_layout.setOnRefreshListener(this)
+        swipe_layout.setColorSchemeResources(R.color.colorOrange)
+
         btn_search.setOnClickListener {
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
@@ -142,20 +118,20 @@ class HomeTabFragment : Fragment(), HomeContract.View {
                 val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
                 intent.putExtra(PLACE_NAME, place.name)
                 intent.putExtra(PLACE_NUMBER, place.placeNumber)
-                Log.d("HomeTabFragment placeDetail name2", place.name)
-                Log.d("HomeTabFragment placeDetail number2", place.placeNumber.toString())
                 startActivity(intent)
             }
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-        presenter.checkMember()
+    override fun onRefresh() {
+        presenter.getHomeList(memberNumber)
+        swipe_layout.isRefreshing = false
     }
 
     companion object {
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }
+
+
 }
