@@ -94,9 +94,9 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
             if (!isCreated) {
                 isCreated = true
             }
-            Handler().postDelayed({
-                isCreated = false
-            }, 1000)
+//            Handler().postDelayed({
+//                isCreated = false
+//            }, 1000)
 
             presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
             Log.d("reviewCreate memberNumber", memberNumber.toString())

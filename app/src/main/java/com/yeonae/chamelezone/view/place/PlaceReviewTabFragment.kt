@@ -32,7 +32,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     var reviewMemberNum = 0
     var placeName: String = ""
 
-
     override fun showPlaceReview(reviewList: List<ReviewItem>) {
         if (::placeReviewRvAdapter.isInitialized)
             placeReviewRvAdapter.addData(reviewList)
@@ -43,10 +42,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     }
 
     override fun showMemberReview(user: UserEntity) {
-        Log.d("PlaceReviewTabFragment reviewMemberNumber22222222222", reviewMemberNum.toString())
 
-        Log.d("PlaceReviewTabFragment memberNumber", memberNumber.toString())
-        Log.d("PlaceReviewTabFragment reviewMemberNumber2", reviewMemberNum.toString())
     }
 
     override fun getMemberCheck(response: Boolean) {
@@ -93,13 +89,13 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
         presenter.checkMember()
 
-        placeReviewRvAdapter.setReviewTabListener(object :
-            PlaceReviewTabRvAdapter.OnReviewTabListener {
-            override fun onReviewTabSelected(review: ReviewItem) {
-                reviewMemberNum = review.memberNumber
-                Log.d("PlaceReviewTabFragment reviewMemberNum", reviewMemberNum.toString())
-            }
-        })
+//        placeReviewRvAdapter.setReviewTabListener(object :
+//            PlaceReviewTabRvAdapter.OnReviewTabListener {
+//            override fun onReviewTabSelected(review: ReviewItem) {
+//                reviewMemberNum = review.memberNumber
+//                Log.d("PlaceReviewTabFragment reviewMemberNum", reviewMemberNum.toString())
+//            }
+//        })
 
         placeNumber.let {
             presenter.placeDetailReview(it)
@@ -110,7 +106,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
             override fun onItemClick(view: View, position: Int, review: ReviewItem) {
                 reviewNumber = review.reviewNumber
 //                reviewMemberNumber = review.memberNumber
-                Log.d("PlaceReviewTabFragment reviewMemberNumber1", reviewMemberNum.toString())
+//                Log.d("PlaceReviewTabFragment reviewMemberNumber1", reviewMemberNum.toString())
                 val intent = Intent(context, ReviewImageActivity::class.java)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
                 intent.putExtra(REVIEW_NUMBER, reviewNumber)
