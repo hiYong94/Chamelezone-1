@@ -56,10 +56,7 @@ class HomePlaceRvAdapter :
             }
 
             itemView.apply {
-                if (place.likeStatus) {
-                    btn_like.isChecked = true
-                }
-
+                btn_like.isChecked = place.likeStatus
                 btn_like.setOnClickListener {
                     likeButtonListener.onLikeClick(place, btn_like.isChecked)
                 }
