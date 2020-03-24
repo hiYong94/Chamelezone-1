@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
@@ -29,8 +31,8 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     private var reviewNumber = 0
     private var placeNumber = 0
     var memberNumber = 0
-    var reviewMemberNum = 0
     var placeName: String = ""
+    private var recyclerViewState: Parcelable? = null
 
     override fun showPlaceReview(reviewList: List<ReviewItem>) {
         if (::placeReviewRvAdapter.isInitialized)
@@ -42,7 +44,9 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
     }
 
     override fun showMemberReview(user: UserEntity) {
-
+//        Logger.d("memberNumber1 " + user.userNumber)
+//        memberNumber = user.userNumber ?:0
+//        Logger.d("memberNumber2 $memberNumber")
     }
 
     override fun getMemberCheck(response: Boolean) {
@@ -77,7 +81,7 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
         placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
         memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
-        Log.d("memberNumber", memberNumber.toString())
+        Logger.d("memberNumber $memberNumber")
 
         placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
 
@@ -88,14 +92,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         )
 
         presenter.checkMember()
-
-//        placeReviewRvAdapter.setReviewTabListener(object :
-//            PlaceReviewTabRvAdapter.OnReviewTabListener {
-//            override fun onReviewTabSelected(review: ReviewItem) {
-//                reviewMemberNum = review.memberNumber
-//                Log.d("PlaceReviewTabFragment reviewMemberNum", reviewMemberNum.toString())
-//            }
-//        })
 
         placeNumber.let {
             presenter.placeDetailReview(it)
@@ -145,6 +141,17 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        recyclerViewState = recycler_place_review.layoutManager?.onSaveInstanceState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (recyclerViewState != null)
+            recycler_place_review.layoutManager?.onRestoreInstanceState(recyclerViewState)
     }
 
     private fun setAdapter() {

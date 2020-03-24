@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,11 +23,13 @@ import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
+
 class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
     private val placeAdapter = HomePlaceRvAdapter()
     private var memberNumber: Int = 0
     private var placeNumber = 0
+    private var recyclerViewState: Parcelable? = null
 
     override fun showHomeList(placeList: List<PlaceResponse>) {
         placeAdapter.addData(placeList)
@@ -47,6 +50,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
                 }
             }
         })
+
     }
 
     override fun getMember(user: UserEntity) {
@@ -121,6 +125,17 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
                 startActivity(intent)
             }
         })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        recyclerViewState = recycler_view_place.layoutManager?.onSaveInstanceState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (recyclerViewState != null)
+            recycler_view_place.layoutManager?.onRestoreInstanceState(recyclerViewState)
     }
 
     override fun onRefresh() {
