@@ -1,28 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/image_item"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/rl_image">
-
-    <ImageView
-        android:id="@+id/image_item"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:adjustViewBounds="true"
-        android:background="#171219"
-        android:maxWidth="300dp"
-        tools:src="@tools:sample/backgrounds/scenic" />
-
-    <ImageButton
-        android:id="@+id/btn_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        android:src="@drawable/ic_x_orange"
-        android:padding="7dp"/>
-
-</RelativeLayout>
-
+    android:layout_marginEnd="8dp"
+    android:adjustViewBounds="true"
+    android:background="#171219"
+    android:maxWidth="300dp"
+    tools:src="@tools:sample/backgrounds/scenic" />
