@@ -6,6 +6,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -181,36 +182,24 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
             }
-//            if (!isCreated) {
-//                isCreated = true
-//                Handler().postDelayed({
-//                    presenter.placeRegister(
-//                        memberNumber,
-//                        keywords,
-//                        "${edt_place_name.text}",
-//                        realAddress,
-//                        openingHours,
-//                        "${edt_place_phone.text}",
-//                        "${edt_place_text.text}",
-//                        latitude.toBigDecimal(),
-//                        longitude.toBigDecimal(),
-//                        imageUri
-//                    )
-//                    isCreated = false
-//                }, 1000)
-//            }
-            presenter.placeRegister(
-                memberNumber,
-                keywords,
-                "${edt_place_name.text}",
-                realAddress,
-                openingHours,
-                "${edt_place_phone.text}",
-                "${edt_place_text.text}",
-                latitude.toBigDecimal(),
-                longitude.toBigDecimal(),
-                imageUri
-            )
+            if (!isCreated) {
+                isCreated = true
+                presenter.placeRegister(
+                    memberNumber,
+                    keywords,
+                    "${edt_place_name.text}",
+                    realAddress,
+                    openingHours,
+                    "${edt_place_phone.text}",
+                    "${edt_place_text.text}",
+                    latitude.toBigDecimal(),
+                    longitude.toBigDecimal(),
+                    imageUri
+                )
+                Handler().postDelayed({
+                    isCreated = false
+                }, 5000)
+            }
         }
     }
 

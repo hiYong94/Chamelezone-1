@@ -152,7 +152,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 )
                 Handler().postDelayed({
                     isCreated = false
-                }, 1000)
+                }, 5000)
             }
         }
     }
