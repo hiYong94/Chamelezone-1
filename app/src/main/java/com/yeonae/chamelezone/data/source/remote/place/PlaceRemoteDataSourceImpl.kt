@@ -16,12 +16,10 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import okio.Buffer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import java.io.IOException
 import java.math.BigDecimal
 import java.net.URLEncoder
 
@@ -42,13 +40,13 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     ) {
         val imageList = ArrayList<MultipartBody.Part>()
         for (i in images.indices) {
+            val file = File(images[i])
             val extends = images[i].split(".").lastOrNull() ?: "*"
             imageList.add(
                 MultipartBody.Part.createFormData(
                     "images",
-                    images[i],
-//                    URLEncoder.encode(images[i], "utf-8"),
-                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
+                    URLEncoder.encode(file.name, "UTF-8"),
+                    RequestBody.create(MediaType.parse("image/$extends"), file)
                 )
             )
         }
@@ -110,11 +108,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
-                (call.request().body() as MultipartBody).parts().forEach {
-                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
-                }
-                Log.d("courseRegister", response.code().toString())
                 if (response.code() == Network.SUCCESS) {
                     callBack.onSuccess(
                         App.instance.context().getString(R.string.success_register_place)
@@ -123,10 +116,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
-                (call.request().body() as MultipartBody).parts().forEach {
-                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
-                }
                 Log.e("tag", t.toString())
             }
         })
@@ -433,16 +422,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 }
 
             })
-    }
-
-    private fun bodyToString(request: RequestBody): String {
-        return try {
-            val buffer = Buffer()
-            request.writeTo(buffer)
-            buffer.readUtf8()
-        } catch (e: IOException) {
-            "did not work"
-        }
     }
 
     companion object {
