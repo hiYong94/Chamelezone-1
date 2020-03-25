@@ -8,9 +8,11 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.util.Logger
+import com.yeonae.chamelezone.util.distanceByDegree
 import kotlinx.android.synthetic.main.item_place.view.*
 
-class HomePlaceRvAdapter :
+class HomePlaceRvAdapter(private val currentLatitude: Double?, private val currentLongitude: Double?) :
     RecyclerView.Adapter<HomePlaceRvAdapter.Holder>() {
     private val placeList = arrayListOf<PlaceResponse>()
     private lateinit var itemClickListener: OnItemClickListener
@@ -38,6 +40,11 @@ class HomePlaceRvAdapter :
         private val keyword = itemView.keyword
 
         fun bind(place: PlaceResponse) {
+            Logger.d("HomePlaceTabFragment placeLatitude ${place.latitude}")
+            Logger.d("HomePlaceTabFragment placeLongitude ${place.longitude}")
+            val latitude = place.latitude.toDouble()
+            val longitude = place.longitude.toDouble()
+
             placeName.text = place.name
             place.keywordName.forEach {
                 if (it == place.keywordName[0]) {
@@ -60,6 +67,14 @@ class HomePlaceRvAdapter :
                 btn_like.setOnClickListener {
                     likeButtonListener.onLikeClick(place, btn_like.isChecked)
                 }
+
+                Logger.d("HomePlaceTabFragment currentLatitude $currentLatitude")
+                Logger.d("HomePlaceTabFragment currentLongitude $currentLongitude")
+                val distanceCalculator = distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
+
+                Logger.d("HomePlaceTabFragment distanceCalculator $distanceCalculator")
+
+                distance.text = distanceCalculator
             }
         }
     }
