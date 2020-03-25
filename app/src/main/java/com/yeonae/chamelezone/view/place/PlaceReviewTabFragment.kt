@@ -12,7 +12,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.data.model.ReviewItem
+import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
@@ -83,6 +85,9 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
         Logger.d("memberNumber $memberNumber")
 
+
+        val memberNumber = memberNumber
+        Logger.d("memberNumber222222 $memberNumber")
         placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
 
         setAdapter()
