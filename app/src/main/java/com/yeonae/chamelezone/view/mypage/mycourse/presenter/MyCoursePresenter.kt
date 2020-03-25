@@ -17,7 +17,7 @@ class MyCoursePresenter(
         repository.getMyCourseList(memberNumber, object : CourseCallBack<List<CourseResponse>> {
             override fun onSuccess(response: List<CourseResponse>) {
                 val items = mutableListOf<MyCourseItem>()
-                for(i in response.indices){
+                for (i in response.indices) {
                     items.add(response[i].toMyCourseItem(response[i]))
                 }
                 view.showMyCourseList(items)
@@ -34,6 +34,19 @@ class MyCoursePresenter(
         memberRepository.getMember(object : MemberCallBack<UserEntity> {
             override fun onSuccess(response: UserEntity) {
                 view.showUserInfo(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
+
+    override fun deleteCourse(courseNumber: Int, memberNumber: Int) {
+        repository.deleteCourse(courseNumber, memberNumber, object : CourseCallBack<Boolean> {
+            override fun onSuccess(response: Boolean) {
+                view.showDeleteResult(response)
             }
 
             override fun onFailure(message: String) {
