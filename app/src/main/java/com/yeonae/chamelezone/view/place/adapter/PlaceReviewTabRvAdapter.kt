@@ -80,6 +80,7 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
                 reviewImg.measuredWidth,
                 reviewImg.measuredHeight
             )
+
             reviewCount.text = "+" + (imageList.size - 1)
 
             reviewImg.setOnClickListener {
@@ -94,7 +95,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
             moreReviewImg.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-
                     if (::itemClickListener.isInitialized) {
                         itemClickListener.onItemClick(itemView, position, review)
                     }

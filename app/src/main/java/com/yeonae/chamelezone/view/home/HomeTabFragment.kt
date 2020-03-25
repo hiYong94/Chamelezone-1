@@ -32,6 +32,7 @@ import com.yeonae.chamelezone.view.home.presenter.HomePresenter
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
+import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 
@@ -115,7 +116,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+      
         swipe_layout.setOnRefreshListener(this)
         swipe_layout.setColorSchemeResources(R.color.colorOrange)
 
@@ -199,7 +200,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
         if (recyclerViewState != null)
             recycler_view_place.layoutManager?.onRestoreInstanceState(recyclerViewState)
     }
-
+  
     override fun onRefresh() {
         presenter.getHomeList(memberNumber)
         swipe_layout.isRefreshing = false
