@@ -7,6 +7,7 @@ import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.network.api.CourseApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.courseService
 import com.yeonae.chamelezone.network.model.CourseResponse
+import com.yeonae.chamelezone.util.Logger
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -29,12 +30,13 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         image: String,
         callBack: CourseCallBack<String>
     ) {
+
+        val file = File(image)
         val extends = image.split(".").lastOrNull() ?: "*"
         val image = MultipartBody.Part.createFormData(
             "image",
-            image,
-//            URLEncoder.encode(image, "euc-kr"),
-            RequestBody.create(MediaType.parse("image/$extends"), File(image))
+            URLEncoder.encode(file.name, "UTF-8"),
+            RequestBody.create(MediaType.parse("image/$extends"), file)
         )
 
         val memberNumber = RequestBody.create(
@@ -182,7 +184,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     override fun deleteCourse(
         courseNumber: Int,
         memberNumber: Int,
-        callBack: CourseCallBack<String>
+        callBack: CourseCallBack<Boolean>
     ) {
         courseService.deleteCourse(courseNumber, memberNumber)
             .enqueue(object : Callback<ResponseBody> {
@@ -195,7 +197,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == SUCCESS) {
-                        callBack.onSuccess(App.instance.context().getString(R.string.success_delete_course))
+                        callBack.onSuccess(true)
                     }
                 }
 

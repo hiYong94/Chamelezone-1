@@ -42,7 +42,7 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         remoteDataSource.modifyCourse(memberNumber, placeNumbers, title, content, image, callBack)
     }
 
-    override fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<String>) {
+    override fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<Boolean>) {
         remoteDataSource.deleteCourse(courseNumber, memberNumber, callBack)
     }
 
