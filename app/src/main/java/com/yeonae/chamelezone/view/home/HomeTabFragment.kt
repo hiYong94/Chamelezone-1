@@ -125,18 +125,6 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
         }
         currentLocation()
 
-        if (::placeAdapter.isInitialized) {
-            placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
-                override fun onItemClick(view: View, position: Int, place: PlaceResponse) {
-                    placeNumber = place.placeNumber
-                    val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
-                    intent.putExtra(PLACE_NAME, place.name)
-                    intent.putExtra(PLACE_NUMBER, place.placeNumber)
-                    startActivity(intent)
-                }
-            })
-        }
-
         presenter = HomePresenter(
             Injection.placeRepository(), Injection.memberRepository(),
             Injection.likeRepository(),
@@ -181,6 +169,16 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
                         Logger.d("HomeTabFragment location longitude $currentLongitude")
 
                         placeAdapter = HomePlaceRvAdapter(currentLatitude, currentLongitude)
+
+                        placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
+                            override fun onItemClick(view: View, position: Int, place: PlaceResponse) {
+                                placeNumber = place.placeNumber
+                                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
+                                intent.putExtra(PLACE_NAME, place.name)
+                                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                                startActivity(intent)
+                            }
+                        })
 
                     } else {
                         Logger.d("HomeTabFragment current_location 현재 위치 찾기 실패")
