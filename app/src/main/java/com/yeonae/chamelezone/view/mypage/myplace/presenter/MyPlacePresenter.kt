@@ -37,4 +37,17 @@ class MyPlacePresenter(
 
         })
     }
+
+    override fun deletePlace(placeNumber: Int, memberNumber: Int) {
+        placeRepository.deletePlace(placeNumber, memberNumber, object : PlaceCallBack<Boolean>{
+            override fun onSuccess(response: Boolean) {
+                view.showDeleteResult(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+
+        })
+    }
 }

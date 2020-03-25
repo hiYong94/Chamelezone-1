@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,10 +17,29 @@ import com.yeonae.chamelezone.view.mypage.myplace.presenter.MyPlacePresenter
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import kotlinx.android.synthetic.main.activity_my_place.*
 
-class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View {
+class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
+    MoreButtonFragment.OnModifyClickListener, MoreButtonFragment.OnDeleteClickListener {
     private val myPlaceRvAdapter = MyPlaceRvAdapter()
     override lateinit var presenter: MyPlaceContract.Presenter
     var memberNumber: Int = 0
+    lateinit var placeResponse : PlaceResponse
+
+    override fun showDeleteResult(response: Boolean) {
+        if(response){
+            Log.d("placeDelete", response.toString())
+        }
+    }
+
+    override fun onDeleteClick() {
+        presenter.deletePlace(placeResponse.placeNumber, memberNumber)
+        myPlaceRvAdapter.removeData(placeResponse)
+    }
+
+    override fun onModifyClick() {
+        val intent = Intent(this, PlaceModifyActivity::class.java)
+        intent.putExtra("placeNumber", placeResponse.placeNumber)
+        startActivity(intent)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +62,8 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View {
         })
 
         myPlaceRvAdapter.setMoreButtonListener(object : MyPlaceRvAdapter.MoreButtonListener {
-            override fun bottomSheetDialog() {
+            override fun bottomSheetDialog(place: PlaceResponse) {
+                placeResponse = place
                 showBottomSheet()
             }
         })
