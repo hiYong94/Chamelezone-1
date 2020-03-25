@@ -166,4 +166,16 @@
     <string name="changed_pw">비밀번호가 변경되었습니다.\n새로운 비밀번호로 로그인 하실 수 있습니다.</string>
     <string name="not_match_security_code">보안코드가 일치하지 않습니다.</string>
     <string name="select_two_places">2개 이상의 장소를 선택해주세요.</string>
+    <string name="sunday_closed">일요일 휴무</string>
+    <string name="monday_closed">월요일 휴무</string>
+    <string name="tuesday_closed">화요일 휴무</string>
+    <string name="wednesday_closed">수요일 휴무</string>
+    <string name="thursday_closed">목요일 휴무</string>
+    <string name="friday_closed">금요일 휴무</string>
+    <string name="saturday_closed">토요일 휴무</string>
+    <string name="privacy_policy">개인정보 처리방침</string>
+    <string name="first_title">1. 개인정보의 처리 목적</string>
+    <string name="first_content">&lt;연애용&gt;(이하 \&apos;회사\&apos; ) 은(는) 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다.\n<![CDATA[-]]> 고객 가입의사 확인, 고객에 대한 서비스 제공에 따른 본인 식별.인증, 회원자격 유지.관리, 물품 또는 서비스 공급에 따른 금액 결제, 물품 또는 서비스의 공급.배송 등</string>
+    <string name="second_title">2. 개인정보의 처리 및 보유 기간</string>
+    <string name="second_content"><![CDATA[①]]> &lt;연애용&gt;(이하 \&apos;회사\&apos; ) 은(는) 정보주체로부터 개인정보를 수집할 때 동의 받은 개인정보 보유․이용기간 또는 법령에 따른 개인정보 보유․이용기간 내에서 개인정보를 처리․보유합니다.\n<![CDATA[②]]> 구체적인 개인정보 처리 및 보유 기간은 다음과 같습니다.\n<![CDATA[☞]]> 아래 예시를 참고하여 개인정보 처리업무와 개인정보 처리업무에 대한 보유기간 및 관련 법령, 근거 등을 기재합니다.\n(예시) - 고객 가입 및 관리 : 서비스 이용계약 또는 회원가입 해지시까지, 다만 채권․채무관계 잔존시에는 해당 채권․채무관계 정산시까지\n- 전자상거래에서의 계약․청약철회, 대금결제, 재화 등 공급기록 : 5년</string>
 </resources>

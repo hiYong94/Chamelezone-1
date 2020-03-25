@@ -52,6 +52,7 @@ class SearchAddressActivity : AppCompatActivity() {
                     newWebView.webChromeClient = object : WebChromeClient() {
                         override fun onCloseWindow(window: WebView) {
                             dialog.dismiss()
+                            newWebView.destroy()
                         }
                     }
                     (resultMsg?.obj as? WebView.WebViewTransport)?.webView = newWebView
