@@ -44,7 +44,7 @@ class LikePresenter(
         likeRepository.deleteLike(memberNumber, placeNumber, object :
             LikeCallBack<LikeResponse> {
             override fun onSuccess(response: LikeResponse) {
-                view.showLikeState(response.toLikeStatusItem(response))
+                view.showLikeState(response.toLikeStatusItem())
             }
 
             override fun onFailure(message: String) {
