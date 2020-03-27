@@ -12,7 +12,7 @@ import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.util.distanceByDegree
 import kotlinx.android.synthetic.main.item_place.view.*
 
-class HomePlaceRvAdapter(private val currentLatitude: Double?, private val currentLongitude: Double?) :
+class HomePlaceRvAdapter(private val currentLatitude: Double, private val currentLongitude: Double) :
     RecyclerView.Adapter<HomePlaceRvAdapter.Holder>() {
     private val placeList = arrayListOf<PlaceResponse>()
     private lateinit var itemClickListener: OnItemClickListener
