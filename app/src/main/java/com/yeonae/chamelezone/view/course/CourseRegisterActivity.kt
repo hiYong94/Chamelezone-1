@@ -3,7 +3,6 @@ package com.yeonae.chamelezone.view.course
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
@@ -53,13 +52,13 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         toast("$tag")
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val rl = LayoutInflater.from(this).inflate(
+            val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
             ) as RelativeLayout
-            imageContainer.addView(rl)
-            rl.image_item.run {
+            imageContainer.addView(rlSlideImg)
+            rlSlideImg.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
         }
@@ -141,31 +140,38 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
-            if (!isCreated) {
-                isCreated = true
-                presenter.registerCourse(
-                    memberNumber,
-                    placeNumbers,
-                    "${edt_course_title.text}",
-                    "${edt_course_content.text}",
-                    imageUri
-                )
-                Handler().postDelayed({
-                    isCreated = false
-                }, 5000)
-            }
+//            if (!isCreated) {
+//                isCreated = true
+//                presenter.registerCourse(
+//                    memberNumber,
+//                    placeNumbers,
+//                    "${edt_course_title.text}",
+//                    "${edt_course_content.text}",
+//                    imageUri
+//                )
+//                Handler().postDelayed({
+//                    isCreated = false
+//                }, 5000)
+//            }
+            presenter.registerCourse(
+                memberNumber,
+                placeNumbers,
+                "${edt_course_title.text}",
+                "${edt_course_content.text}",
+                imageUri
+            )
         }
     }
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(this@CourseRegisterActivity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@CourseRegisterActivity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
             Toast.makeText(
                 this@CourseRegisterActivity,
-                "권한이 거부되었습니다\n$deniedPermissions",
+                getString(R.string.permission_denied) + "\n$deniedPermissions",
                 Toast.LENGTH_SHORT
             )
                 .show()

@@ -53,13 +53,13 @@ class CourseModifyActivity : AppCompatActivity(), CourseRegisterContract.View,
         toast("$tag")
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val rl = LayoutInflater.from(this).inflate(
+            val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
             ) as RelativeLayout
-            imageContainer.addView(rl)
-            rl.image_item.run {
+            imageContainer.addView(rlSlideImg)
+            rlSlideImg.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
         }
@@ -159,13 +159,13 @@ class CourseModifyActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(this@CourseModifyActivity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@CourseModifyActivity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
             Toast.makeText(
                 this@CourseModifyActivity,
-                "권한이 거부되었습니다\n$deniedPermissions",
+                getString(R.string.permission_denied) + "\n$deniedPermissions",
                 Toast.LENGTH_SHORT
             )
                 .show()
