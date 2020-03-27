@@ -31,6 +31,7 @@ import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
+    override lateinit var presenter: PlaceContract.Presenter
     var memberNumber: Int = 0
     private var imageUri = arrayListOf<String>()
     private var openingHours = ArrayList<String>()
@@ -119,7 +120,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         finish()
     }
 
-    override lateinit var presenter: PlaceContract.Presenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_register)
