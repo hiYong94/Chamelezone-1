@@ -69,66 +69,28 @@ class KeywordTabFragment : Fragment(), KeywordSearchContract.View {
         tv_message.text = message
     }
 
+    private val keywordViewList by lazy {
+        listOf(
+            btn_keyword_1,
+            btn_keyword_2,
+            btn_keyword_3,
+            btn_keyword_4,
+            btn_keyword_5,
+            btn_keyword_6,
+            btn_keyword_7,
+            btn_keyword_8,
+            btn_keyword_9,
+            btn_keyword_10
+        )
+    }
+
     override fun showKeywordList(response: List<KeywordResponse>) {
-        btn_keyword_1.text = response[0].keywordName
-        btn_keyword_2.text = response[1].keywordName
-        btn_keyword_3.text = response[2].keywordName
-        btn_keyword_4.text = response[3].keywordName
-        btn_keyword_5.text = response[4].keywordName
-        btn_keyword_6.text = response[5].keywordName
-        btn_keyword_7.text = response[6].keywordName
-        btn_keyword_8.text = response[7].keywordName
-        btn_keyword_9.text = response[8].keywordName
-        btn_keyword_10.text = response[9].keywordName
-
-        btn_keyword_1.setOnClickListener {
-            listener.keywordSelected(response[0].keywordName)
-            searchByKeyword(response[0].keywordName)
-        }
-
-        btn_keyword_2.setOnClickListener {
-            listener.keywordSelected(response[1].keywordName)
-            searchByKeyword(response[1].keywordName)
-        }
-
-        btn_keyword_3.setOnClickListener {
-            listener.keywordSelected(response[2].keywordName)
-            searchByKeyword(response[2].keywordName)
-        }
-
-        btn_keyword_4.setOnClickListener {
-            listener.keywordSelected(response[3].keywordName)
-            searchByKeyword(response[3].keywordName)
-        }
-
-        btn_keyword_5.setOnClickListener {
-            listener.keywordSelected(response[4].keywordName)
-            searchByKeyword(response[4].keywordName)
-        }
-
-        btn_keyword_6.setOnClickListener {
-            listener.keywordSelected(response[5].keywordName)
-            searchByKeyword(response[5].keywordName)
-        }
-
-        btn_keyword_7.setOnClickListener {
-            listener.keywordSelected(response[6].keywordName)
-            searchByKeyword(response[6].keywordName)
-        }
-
-        btn_keyword_8.setOnClickListener {
-            listener.keywordSelected(response[7].keywordName)
-            searchByKeyword(response[7].keywordName)
-        }
-
-        btn_keyword_9.setOnClickListener {
-            listener.keywordSelected(response[8].keywordName)
-            searchByKeyword(response[8].keywordName)
-        }
-
-        btn_keyword_10.setOnClickListener {
-            listener.keywordSelected(response[9].keywordName)
-            searchByKeyword(response[9].keywordName)
+        keywordViewList.forEachIndexed { index, keywordView ->
+            keywordView.text = response[index].keywordName
+            keywordView.setOnClickListener {
+                listener.keywordSelected(response[index].keywordName)
+                searchByKeyword(response[index].keywordName)
+            }
         }
     }
 
