@@ -22,10 +22,10 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
     private val myPlaceRvAdapter = MyPlaceRvAdapter()
     override lateinit var presenter: MyPlaceContract.Presenter
     var memberNumber: Int = 0
-    lateinit var placeResponse : PlaceResponse
+    lateinit var placeResponse: PlaceResponse
 
     override fun showDeleteResult(response: Boolean) {
-        if(response){
+        if (response) {
             Log.d("placeDelete", response.toString())
         }
     }
@@ -36,9 +36,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
     }
 
     override fun onModifyClick() {
-        val intent = Intent(this, PlaceModifyActivity::class.java)
-        intent.putExtra("placeNumber", placeResponse.placeNumber)
-        startActivity(intent)
+        showPlaceModifyActivity()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,6 +91,12 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
         layout_no_my_place.visibility = View.VISIBLE
         layout_my_place.visibility = View.GONE
         tv_message.text = message
+    }
+
+    private fun showPlaceModifyActivity() {
+        val intent = Intent(this, PlaceModifyActivity::class.java)
+        intent.putExtra("placeNumber", placeResponse.placeNumber)
+        startActivity(intent)
     }
 
     private fun showBottomSheet() {

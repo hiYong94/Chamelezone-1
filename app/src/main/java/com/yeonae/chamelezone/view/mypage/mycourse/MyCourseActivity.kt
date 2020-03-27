@@ -26,17 +26,13 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View,
     lateinit var courseItem: MyCourseItem
 
     override fun showDeleteResult(response: Boolean) {
-        if(response){
-            if(response){
-                Log.d("courseDelete", response.toString())
-            }
+        if (response) {
+            Log.d("courseDelete", response.toString())
         }
     }
 
     override fun onModifyClick() {
-        val intent = Intent(this, CourseModifyActivity::class.java)
-        intent.putExtra("courseNumber", courseItem.courseNumber)
-        startActivity(intent)
+        showCourseModifyActivity()
     }
 
     override fun onDeleteClick() {
@@ -90,6 +86,12 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View,
         layout_no_my_course.visibility = View.VISIBLE
         layout_my_course.visibility = View.GONE
         tv_message.text = message
+    }
+
+    private fun showCourseModifyActivity() {
+        val intent = Intent(this, CourseModifyActivity::class.java)
+        intent.putExtra("courseNumber", courseItem.courseNumber)
+        startActivity(intent)
     }
 
     private fun showBottomSheet() {
