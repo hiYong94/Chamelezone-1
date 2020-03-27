@@ -22,8 +22,8 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         putExtra(PLACE_NUMBER, placeNumber)
         Log.d("More reviewNumber", reviewNumber.toString())
     }
-    private var onModifyClickListener: OnModifyClickListener? = null
-    private var onDeleteClickListener: OnDeleteClickListener? = null
+    private lateinit var onModifyClickListener: OnModifyClickListener
+    private lateinit var onDeleteClickListener: OnDeleteClickListener
 
     interface OnModifyClickListener {
         fun onModifyClick()
@@ -53,13 +53,13 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         }
 
         btn_modify.setOnClickListener {
-            onModifyClickListener?.onModifyClick()
+            onModifyClickListener.onModifyClick()
 //            Toast.makeText(context, "수정", Toast.LENGTH_SHORT).show()
 //            targetFragment?.onActivityResult(targetRequestCode, BTN_EDIT, Intent())
             dismiss()
         }
         btn_delete.setOnClickListener {
-            onDeleteClickListener?.onDeleteClick()
+            onDeleteClickListener.onDeleteClick()
 //            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show()
 //            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
 //            if (::deletedButtonListener.isInitialized)
@@ -67,6 +67,7 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
             dismiss()
         }
     }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         onModifyClickListener = (context as  OnModifyClickListener)
