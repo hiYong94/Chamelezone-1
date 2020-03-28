@@ -71,7 +71,7 @@ interface PlaceApi {
         @Part("longitude") longitude: RequestBody
     ): Call<ResponseBody>
 
-    @DELETE("/place/{placeNumber}")
+    @HTTP(method = "DELETE", path = "/place/{placeNumber}", hasBody = true)
     fun deletePlace(
         @Path("placeNumber") placeNumber: Int,
         @Body user: JsonObject

@@ -33,40 +33,40 @@ data class PlaceResponse(
     @SerializedName("likeStatus")
     val likeStatus: Boolean
 ) {
-    fun toPlaceItem(response: PlaceResponse): PlaceItem {
+    fun toPlaceItem(): PlaceItem {
         var keywordFormat = ""
-        response.keywordName.forEach {
-            keywordFormat = if (it == response.keywordName[0]) {
+        keywordName.forEach {
+            keywordFormat = if (it == keywordName[0]) {
                 it
             } else {
                 "${keywordFormat}${","} $it"
             }
         }
-        val imageFormat = IMAGE_RESOURCE + response.savedImageName[0]
+        val imageFormat = IMAGE_RESOURCE + savedImageName[0]
 
         return PlaceItem(
-            response.placeNumber,
-            response.name,
+            placeNumber,
+            name,
             keywordFormat,
-            response.address,
+            address,
             imageFormat
         )
     }
 
-    fun toLikeItem(response: PlaceResponse): LikeItem {
-        val keyword = response.keywordName.toString().replace(",", ", ")
+    fun toLikeItem(): LikeItem {
+        val keyword = keywordName.toString().replace(",", ", ")
         val images = arrayListOf<String>()
-        for (i in response.savedImageName.indices) {
-            images.add(IMAGE_RESOURCE + response.savedImageName[i])
+        for (i in savedImageName.indices) {
+            images.add(IMAGE_RESOURCE + savedImageName[i])
         }
         val imageFormat = images[0]
 
         return LikeItem(
-            response.likeStatus,
-            response.placeNumber,
-            response.name,
+            likeStatus,
+            placeNumber,
+            name,
             keyword,
-            response.address,
+            address,
             imageFormat
         )
     }

@@ -133,9 +133,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
                 nameBar = ll_title.height
                 tabBar = tabs_detail.height
 
-                Log.d("PlaceDetailActivity nameBar", nameBar.toString())
-                Log.d("PlaceDetailActivity tabBar", tabBar.toString())
-
                 layoutParams = tool_bar.layoutParams.apply {
                     height = nameBar + tabBar
                 }

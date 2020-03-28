@@ -28,7 +28,7 @@ class KeywordSearchPresenter(
             override fun onSuccess(response: List<PlaceResponse>) {
                 val placeItem = mutableListOf<PlaceItem>()
                 for (i in response.indices) {
-                    placeItem.add(response[i].toPlaceItem(response[i]))
+                    placeItem.add(response[i].toPlaceItem())
                 }
                 view.showPlaceList(placeItem)
             }

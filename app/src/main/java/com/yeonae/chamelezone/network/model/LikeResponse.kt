@@ -7,9 +7,9 @@ data class LikeResponse(
     @SerializedName("likeStatus")
     val likeStatus: Boolean
 ) {
-    fun toLikeStatusItem(response: LikeResponse): LikeStatusItem {
+    fun toLikeStatusItem(): LikeStatusItem {
         return LikeStatusItem(
-            response.likeStatus
+            likeStatus
         )
     }
 }

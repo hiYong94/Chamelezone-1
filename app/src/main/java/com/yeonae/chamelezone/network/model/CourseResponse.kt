@@ -31,25 +31,25 @@ data class CourseResponse(
     @SerializedName("courseImage")
     val courseImage: String
 ) {
-    fun toCourseItem(response: CourseResponse): CourseItem {
-        val imageFormat = IMAGE_RESOURCE + response.savedImageName
+    fun toCourseItem(): CourseItem {
+        val imageFormat = IMAGE_RESOURCE + savedImageName
 
         return CourseItem(
-            response.courseNumber,
-            response.nickName,
-            response.title,
+            courseNumber,
+            nickName,
+            title,
             imageFormat,
-            response.regiDate
+            regiDate
         )
     }
 
-    fun toMyCourseItem(response: CourseResponse): MyCourseItem {
-        val imageFormat = IMAGE_RESOURCE + response.savedImageName
+    fun toMyCourseItem(): MyCourseItem {
+        val imageFormat = IMAGE_RESOURCE + savedImageName
 
         return MyCourseItem(
-            response.courseNumber,
-            response.title,
-            response.content,
+            courseNumber,
+            title,
+            content,
             imageFormat
         )
     }
