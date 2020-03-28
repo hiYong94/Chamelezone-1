@@ -10,10 +10,12 @@ interface MyPlaceContract {
         fun showMyPlaceList(response: List<PlaceResponse>)
         fun showUserInfo(user: UserEntity)
         fun showMessage(message: String)
+        fun showDeleteResult(response: Boolean)
     }
 
     interface Presenter {
         fun getMyPlaceList(memberNumber: Int)
         fun getUser()
+        fun deletePlace(placeNumber: Int, memberNumber: Int)
     }
 }

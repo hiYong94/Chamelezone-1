@@ -7,6 +7,7 @@ import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.network.api.CourseApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.courseService
 import com.yeonae.chamelezone.network.model.CourseResponse
+import com.yeonae.chamelezone.util.Logger
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -17,6 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
+import java.net.URLEncoder
 
 class CourseRemoteDataSourceImpl private constructor(private val courseApi: CourseApi) :
     CourseRemoteDataSource {
@@ -29,11 +31,12 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         callBack: CourseCallBack<String>
     ) {
 
+        val file = File(image)
         val extends = image.split(".").lastOrNull() ?: "*"
         val image = MultipartBody.Part.createFormData(
             "image",
-            image,
-            RequestBody.create(MediaType.parse("image/$extends"), File(image))
+            URLEncoder.encode(file.name, "UTF-8"),
+            RequestBody.create(MediaType.parse("image/$extends"), file)
         )
 
         val memberNumber = RequestBody.create(
@@ -181,7 +184,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     override fun deleteCourse(
         courseNumber: Int,
         memberNumber: Int,
-        callBack: CourseCallBack<String>
+        callBack: CourseCallBack<Boolean>
     ) {
         courseService.deleteCourse(courseNumber, memberNumber)
             .enqueue(object : Callback<ResponseBody> {
@@ -194,7 +197,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == SUCCESS) {
-                        callBack.onSuccess(App.instance.context().getString(R.string.success_delete_course))
+                        callBack.onSuccess(true)
                     }
                 }
 

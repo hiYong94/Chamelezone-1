@@ -11,10 +11,12 @@ interface MyCourseContract {
         fun showMyCourseList(response: List<MyCourseItem>)
         fun showUserInfo(user: UserEntity)
         fun showMessage(message: String)
+        fun showDeleteResult(response: Boolean)
     }
 
     interface Presenter {
         fun getMyCourseList(memberNumber: Int)
         fun getUser()
+        fun deleteCourse(courseNumber: Int, memberNumber: Int)
     }
 }

@@ -20,7 +20,7 @@ class MyPlaceRvAdapter :
     }
 
     interface MoreButtonListener {
-        fun bottomSheetDialog()
+        fun bottomSheetDialog(place: PlaceResponse)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -47,6 +47,12 @@ class MyPlaceRvAdapter :
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
+    }
+
+    fun removeData(place: PlaceResponse) {
+        val position = items.indexOf(place)
+        items.remove(place)
+        notifyItemRemoved(position)
     }
 
     class MyPlaceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -78,7 +84,7 @@ class MyPlaceRvAdapter :
                 )
 
                 btn_more.setOnClickListener {
-                    moreButtonListener.bottomSheetDialog()
+                    moreButtonListener.bottomSheetDialog(item)
                 }
             }
         }

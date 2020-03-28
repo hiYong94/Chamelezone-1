@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.view.course
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
@@ -24,7 +25,7 @@ import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import kotlinx.android.synthetic.main.activity_course_register.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 
-class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
+class CourseModifyActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, PlaceCheckDialogFragment.OnClickListener {
     override fun onClick(place: PlaceItem, placeIndex: Int) {
         getVisible(place, placeIndex)
@@ -140,37 +141,30 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
-//            if (!isCreated) {
-//                isCreated = true
-//                presenter.registerCourse(
-//                    memberNumber,
-//                    placeNumbers,
-//                    "${edt_course_title.text}",
-//                    "${edt_course_content.text}",
-//                    imageUri
-//                )
-//                Handler().postDelayed({
-//                    isCreated = false
-//                }, 5000)
-//            }
-            presenter.registerCourse(
-                memberNumber,
-                placeNumbers,
-                "${edt_course_title.text}",
-                "${edt_course_content.text}",
-                imageUri
-            )
+            if (!isCreated) {
+                isCreated = true
+                presenter.registerCourse(
+                    memberNumber,
+                    placeNumbers,
+                    "${edt_course_title.text}",
+                    "${edt_course_content.text}",
+                    imageUri
+                )
+                Handler().postDelayed({
+                    isCreated = false
+                }, 1000)
+            }
         }
     }
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(this@CourseRegisterActivity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@CourseModifyActivity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
             Toast.makeText(
-                this@CourseRegisterActivity,
+                this@CourseModifyActivity,
                 getString(R.string.permission_denied) + "\n$deniedPermissions",
                 Toast.LENGTH_SHORT
             )

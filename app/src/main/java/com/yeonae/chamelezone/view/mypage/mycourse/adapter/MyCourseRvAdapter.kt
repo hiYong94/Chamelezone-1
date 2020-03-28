@@ -20,7 +20,7 @@ class MyCourseRvAdapter :
     }
 
     interface MoreButtonListener {
-        fun bottomSheetDialog()
+        fun bottomSheetDialog(course: MyCourseItem)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -49,6 +49,12 @@ class MyCourseRvAdapter :
         notifyDataSetChanged()
     }
 
+    fun removeData(course: MyCourseItem) {
+        val position = items.indexOf(course)
+        items.remove(course)
+        notifyItemRemoved(position)
+    }
+
     class MyCourseViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_course, parent, false)
     ) {
@@ -70,7 +76,7 @@ class MyCourseRvAdapter :
                 )
 
                 btn_more.setOnClickListener {
-                    moreButtonListener.bottomSheetDialog()
+                    moreButtonListener.bottomSheetDialog(item)
                 }
             }
         }

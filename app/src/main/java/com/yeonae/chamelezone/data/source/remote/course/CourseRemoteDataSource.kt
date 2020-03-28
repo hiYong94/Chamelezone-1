@@ -25,5 +25,5 @@ interface CourseRemoteDataSource {
         callBack: CourseCallBack<String>
     )
 
-    fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<String>)
+    fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<Boolean>)
 }

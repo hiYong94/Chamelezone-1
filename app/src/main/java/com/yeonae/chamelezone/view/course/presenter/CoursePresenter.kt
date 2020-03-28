@@ -30,7 +30,7 @@ class CoursePresenter(
             override fun onSuccess(response: List<CourseResponse>) {
                 val items = mutableListOf<CourseItem>()
                 for(i in response.indices){
-                    items.add(response[i].toCourseItem(response[i]))
+                    items.add(response[i].toCourseItem())
                 }
                 view.showCourseList(items)
             }
