@@ -3,18 +3,16 @@ package com.yeonae.chamelezone.util
 import android.location.Location
 
 fun distanceByDegree(
-    currentLatitude: Double?,
-    currentLongitude: Double?,
+    currentLatitude: Double,
+    currentLongitude: Double,
     latitude: Double,
     longitude: Double
 ): String {
     val startPos = Location("PointA")
     val endPos = Location("PointB")
 
-    if (currentLatitude != null && currentLongitude != null) {
-        startPos.latitude = currentLatitude
-        startPos.longitude = currentLongitude
-    }
+    startPos.latitude = currentLatitude
+    startPos.longitude = currentLongitude
 
     endPos.latitude = latitude
     endPos.longitude = longitude
