@@ -2,9 +2,7 @@ package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
@@ -22,7 +20,6 @@ import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailPresenter
 import kotlinx.android.synthetic.main.activity_place_detail.*
-
 
 class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     override lateinit var presenter: PlaceDetailContract.Presenter
@@ -79,18 +76,15 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
     override fun deliverUserInfo(user: UserEntity) {
         memberNumber = user.userNumber
-        Log.d("PlaceDetailActivity memberNumber1", memberNumber.toString())
         presenter.placeDetail(placeNumber, memberNumber)
     }
 
     override fun showResultView(response: Boolean) {
         if (response) {
             presenter.getUser()
-            Log.d("PlaceDetailActivity memberNumber2", memberNumber.toString())
 
         } else {
             presenter.placeDetail(placeNumber, memberNumber)
-            Log.d("PlaceDetailActivity memberNumber3", memberNumber.toString())
         }
     }
 
@@ -147,7 +141,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
                 }
             }
         }
-
     }
 
     override fun onRestart() {

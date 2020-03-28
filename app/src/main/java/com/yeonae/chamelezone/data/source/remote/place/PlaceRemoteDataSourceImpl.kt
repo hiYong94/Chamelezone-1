@@ -12,6 +12,7 @@ import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceDuplicateResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.util.Logger
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -393,7 +394,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             ) {
                 if (response.code() == Network.SUCCESS) {
                     response.body()?.let { callBack.onSuccess(it) }
-                    Log.d("HomePlaceList", "홈 장소 리스트 성공")
+                    Logger.d("HomePlaceList 홈 장소 리스트 성공")
                 }
             }
         })
