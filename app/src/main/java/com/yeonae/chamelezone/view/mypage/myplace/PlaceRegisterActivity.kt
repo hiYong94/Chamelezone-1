@@ -106,10 +106,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                     glideImageSet(uri, measuredWidth, measuredHeight)
                 }
             }
-
-            rlSlideImg.btn_delete.setOnClickListener {
-                imageContainer.removeView(rlSlideImg)
-            }
             uri.path?.let { imageUri.add(it) }
         }
     }

@@ -168,4 +168,7 @@
     <string name="second_content"><![CDATA[①]]> &lt;연애용&gt;(이하 \&apos;회사\&apos; ) 은(는) 정보주체로부터 개인정보를 수집할 때 동의 받은 개인정보 보유․이용기간 또는 법령에 따른 개인정보 보유․이용기간 내에서 개인정보를 처리․보유합니다.\n<![CDATA[②]]> 구체적인 개인정보 처리 및 보유 기간은 다음과 같습니다.\n<![CDATA[☞]]> 아래 예시를 참고하여 개인정보 처리업무와 개인정보 처리업무에 대한 보유기간 및 관련 법령, 근거 등을 기재합니다.\n(예시) - 고객 가입 및 관리 : 서비스 이용계약 또는 회원가입 해지시까지, 다만 채권․채무관계 잔존시에는 해당 채권․채무관계 정산시까지\n- 전자상거래에서의 계약․청약철회, 대금결제, 재화 등 공급기록 : 5년</string>
     <string name="permission_granted">권한이 허용되었습니다.</string>
     <string name="permission_denied">권한이 거부되었습니다.</string>
+
+    <string name="min_msg">1개의 이미지를 더 선택해주세요.</string>
+    <string name="max_msg">4개의 이미지만 선택 가능합니다.</string>
 </resources>
