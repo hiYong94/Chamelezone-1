@@ -10,20 +10,14 @@
         android:layout_height="60dp"
         android:gravity="center_vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
-
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:background="@color/transparent"
-                android:padding="20dp"
-                android:src="@drawable/ic_keyboard_backspace_black_24dp" />
-        </LinearLayout>
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:background="@color/transparent"
+            android:padding="20dp"
+            android:src="@drawable/ic_keyboard_backspace_black_24dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="개인정보 처리방침"
+                android:text="@string/privacy_policy"
                 android:textSize="20sp" />
         </LinearLayout>
     </RelativeLayout>
@@ -47,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:orientation="vertical">
 
@@ -58,7 +53,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1. 개인정보의 처리 목적"
+                    android:text="@string/first_title"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -66,16 +61,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="&lt;연애용&gt;(이하 &apos;회사&apos; ) 은(는) 다음의 목적을 위하여 개인정보를 처리하고 있으며, 다음의 목적 이외의 용도로는 이용하지 않습니다."
+                    android:text="@string/first_content"
                     android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="- 고객 가입의사 확인, 고객에 대한 서비스 제공에 따른 본인 식별.인증, 회원자격 유지.관리, 물품 또는 서비스 공급에 따른 금액 결제, 물품 또는 서비스의 공급.배송 등"
-                    android:textSize="15sp" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -87,7 +74,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="2. 개인정보의 처리 및 보유 기간"
+                    android:text="@string/second_title"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -95,29 +82,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="① &lt;연애용&gt;(이하 &apos;회사&apos; ) 은(는) 정보주체로부터 개인정보를 수집할 때 동의 받은 개인정보 보유․이용기간 또는 법령에 따른 개인정보 보유․이용기간 내에서 개인정보를 처리․보유합니다."
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="② 구체적인 개인정보 처리 및 보유 기간은 다음과 같습니다."
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="☞ 아래 예시를 참고하여 개인정보 처리업무와 개인정보 처리업무에 대한 보유기간 및 관련 법령, 근거 등을 기재합니다."
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:text="(예시)- 고객 가입 및 관리 : 서비스 이용계약 또는 회원가입 해지시까지, 다만 채권․채무관계 잔존시에는 해당 채권․채무관계 정산시까지
-- 전자상거래에서의 계약․청약철회, 대금결제, 재화 등 공급기록 : 5년"
+                    android:text="@string/second_content"
                     android:textSize="15sp" />
             </LinearLayout>
 
@@ -377,9 +342,9 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:layout_marginBottom="20dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:text="개인정보를 처리하는 데이터베이스시스템에 대한 접근권한의 부여,변경,말소를 통하여 개인정보에 대한 접근통제를 위하여 필요한 조치를 하고 있으며 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있습니다."
                     android:textSize="15sp" />
             </LinearLayout>

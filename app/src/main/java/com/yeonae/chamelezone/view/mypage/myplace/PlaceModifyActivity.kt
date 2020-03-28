@@ -6,7 +6,6 @@ import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +28,7 @@ import kotlinx.android.synthetic.main.activity_place_register.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
 
-class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
+class PlaceModifyActivity : AppCompatActivity(), PlaceContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
     override lateinit var presenter: PlaceContract.Presenter
     var memberNumber: Int = 0
@@ -106,6 +105,10 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                     glideImageSet(uri, measuredWidth, measuredHeight)
                 }
             }
+
+            rlSlideImg.btn_delete.setOnClickListener {
+                imageContainer.removeView(rlSlideImg)
+            }
             uri.path?.let { imageUri.add(it) }
         }
     }
@@ -118,7 +121,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_place_register)
+        setContentView(R.layout.activity_place_modify)
 
         setupGUI()
 
@@ -178,24 +181,36 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
             }
-            if (!isCreated) {
-                isCreated = true
-                presenter.placeRegister(
-                    memberNumber,
-                    keywords,
-                    "${edt_place_name.text}",
-                    realAddress,
-                    openingHours,
-                    "${edt_place_phone.text}",
-                    "${edt_place_text.text}",
-                    latitude.toBigDecimal(),
-                    longitude.toBigDecimal(),
-                    imageUri
-                )
-                Handler().postDelayed({
-                    isCreated = false
-                }, 5000)
-            }
+//            if (!isCreated) {
+//                isCreated = true
+//                Handler().postDelayed({
+//                    presenter.placeRegister(
+//                        memberNumber,
+//                        keywords,
+//                        "${edt_place_name.text}",
+//                        realAddress,
+//                        openingHours,
+//                        "${edt_place_phone.text}",
+//                        "${edt_place_text.text}",
+//                        latitude.toBigDecimal(),
+//                        longitude.toBigDecimal(),
+//                        imageUri
+//                    )
+//                    isCreated = false
+//                }, 1000)
+//            }
+            presenter.placeRegister(
+                memberNumber,
+                keywords,
+                "${edt_place_name.text}",
+                realAddress,
+                openingHours,
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}",
+                latitude.toBigDecimal(),
+                longitude.toBigDecimal(),
+                imageUri
+            )
         }
     }
 

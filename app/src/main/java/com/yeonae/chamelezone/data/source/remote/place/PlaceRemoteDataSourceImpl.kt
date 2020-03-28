@@ -22,6 +22,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.math.BigDecimal
+import java.net.URLEncoder
 
 class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceApi) :
     PlaceRemoteDataSource {
@@ -40,16 +41,16 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     ) {
         val imageList = ArrayList<MultipartBody.Part>()
         for (i in images.indices) {
+            val file = File(images[i])
             val extends = images[i].split(".").lastOrNull() ?: "*"
             imageList.add(
                 MultipartBody.Part.createFormData(
                     "images",
-                    images[i],
-                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
+                    URLEncoder.encode(file.name, "UTF-8"),
+                    RequestBody.create(MediaType.parse("image/$extends"), file)
                 )
             )
         }
-
         val openingTime = ArrayList<RequestBody>()
         for (i in openingTimes.indices) {
             openingTime.add(

@@ -87,7 +87,15 @@
         <activity
             android:name=".view.login.JoinActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".view.mypage.myreview.MyReviewImageDetailActivity"
+        <activity
+            android:name=".view.mypage.myreview.MyReviewImageDetailActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".view.mypage.myplace.PlaceModifyActivity"
+            android:launchMode="singleTask" />
+
+        <activity
+            android:name=".view.course.CourseModifyActivity"
             android:launchMode="singleTask" />
     </application>
 

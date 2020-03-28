@@ -7,7 +7,6 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -21,10 +20,11 @@ import kotlinx.android.synthetic.main.activity_user_modify.*
 import java.util.regex.Pattern
 
 class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
-    var memberNumber: Int = 0
+    private var memberNumber: Int = 0
     private var checkedNickname: Boolean = false
-    var phone = ""
-    var nickname = ""
+    private var phone = ""
+    private var nickname = ""
+    private var checkUserModify: Boolean = false
 
     override fun showUserInfo(user: UserEntity) {
         nickname = user.nickname.toString()
@@ -43,12 +43,16 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
             nickname_layout.isErrorEnabled = false
             checkedNickname = true
         } else if (nicknameCheck == CHECK_NO) {
-            nickname_layout.error = getString(R.string.registered_nickname)
-            checkedNickname = false
+            if ("${user_nickname.text}" == nickname) {
+                nickname_layout.isErrorEnabled = false
+                checkedNickname = true
+            } else {
+                nickname_layout.error = getString(R.string.registered_nickname)
+                checkedNickname = false
+            }
         }
         if (checkedNickname) {
             updateCheck()
-            Log.d("updateMember", checkedNickname.toString())
         }
     }
 
@@ -90,7 +94,11 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         }
 
         btn_user_modify.setOnClickListener {
-            presenter.checkNickname("${user_nickname.text}")
+            if (checkUserModify) {
+                updateMember("${user_password.text}", updateNickname, updatePhone)
+            } else {
+                presenter.checkNickname("${user_nickname.text}")
+            }
         }
     }
 
@@ -110,13 +118,11 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
                     updatePhone = "${user_phone.text}"
                 }
             }
-            updateMember("${user_password.text}", updateNickname, updatePhone)
-            Log.d("updateMember", "$updateNickname $nickname $phone")
+            checkUserModify = true
         }
     }
 
     private fun updateMember(password: String?, nickname: String, phone: String) {
-        Log.d("updateMember", "$password $nickname $phone")
         presenter.updateMember(
             memberNumber,
             password,
@@ -140,8 +146,6 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         val matcher = pattern.matcher(user_nickname.text.toString())
         if (!matcher.matches()) {
             nickname_layout.error = getString(R.string.nickname_format)
-        } else if ("${user_nickname.text}".isEmpty()) {
-            nickname_layout.error = getString(R.string.enter_nickname)
         } else {
             nickname_layout.isErrorEnabled = false
         }
