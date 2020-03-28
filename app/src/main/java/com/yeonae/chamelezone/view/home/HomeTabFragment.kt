@@ -1,10 +1,21 @@
 package com.yeonae.chamelezone.view.home
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -14,6 +25,7 @@ import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
 import com.yeonae.chamelezone.view.home.presenter.HomeContract
 import com.yeonae.chamelezone.view.home.presenter.HomePresenter
@@ -23,15 +35,19 @@ import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
+
 class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
-    private lateinit var placeResponse: PlaceResponse
-    private val placeAdapter = HomePlaceRvAdapter()
+    private lateinit var placeAdapter: HomePlaceRvAdapter
     private var memberNumber: Int = 0
     private var placeNumber = 0
+    private var recyclerViewState: Parcelable? = null
+    private var currentLongitude: Double? = null
+    private var currentLatitude: Double? = null
 
     override fun showHomeList(placeList: List<PlaceResponse>) {
-        placeAdapter.addData(placeList)
+        if (::placeAdapter.isInitialized)
+            placeAdapter.addData(placeList)
 
         placeAdapter.setLikeButtonListener(object : HomePlaceRvAdapter.LikeButtonListener {
             override fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean) {
@@ -92,7 +108,8 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
 
         recycler_view_place?.apply {
             layoutManager = gridlayout
-            adapter = placeAdapter
+            if (::placeAdapter.isInitialized)
+                adapter = placeAdapter
         }
         presenter.checkMember()
     }
@@ -107,22 +124,81 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
             val intent = Intent(requireContext(), SearchActivity::class.java)
             startActivity(intent)
         }
+        currentLocation()
 
         presenter = HomePresenter(
             Injection.placeRepository(), Injection.memberRepository(),
             Injection.likeRepository(),
             this
         )
+    }
 
-        placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, position: Int, place: PlaceResponse) {
-                placeNumber = place.placeNumber
-                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
-                intent.putExtra(PLACE_NAME, place.name)
-                intent.putExtra(PLACE_NUMBER, place.placeNumber)
-                startActivity(intent)
+    private fun currentLocation() {
+
+        val myLocationHandler = Handler()
+        val lm =
+            context?.getSystemService(LOCATION_SERVICE) as LocationManager?
+
+        myLocationHandler.postDelayed(object : Runnable {
+            @SuppressLint("ObsoleteSdkInt")
+            override fun run() {
+
+                if (Build.VERSION.SDK_INT >= 24 &&
+                    ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        0
+                    )
+                } else {
+                    Logger.d("HomeTabFragment current_location 현재 위치 찾기 시작")
+                    var location: Location? =
+                        lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    if (location == null) {
+                        //gps를 이용한 좌표조회 실패시 network로 위치 조회
+                        location = lm?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                    }
+                    if (location != null) {
+                        currentLatitude = location.latitude
+                        currentLongitude = location.longitude
+
+                        Logger.d("HomeTabFragment location latitude $currentLatitude")
+                        Logger.d("HomeTabFragment location longitude $currentLongitude")
+
+                        placeAdapter = HomePlaceRvAdapter(currentLatitude, currentLongitude)
+
+                        placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
+                            override fun onItemClick(view: View, position: Int, place: PlaceResponse) {
+                                placeNumber = place.placeNumber
+                                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
+                                intent.putExtra(PLACE_NAME, place.name)
+                                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                                startActivity(intent)
+                            }
+                        })
+
+                    } else {
+                        Logger.d("HomeTabFragment current_location 현재 위치 찾기 실패")
+                        myLocationHandler.postDelayed(this, 500)
+                    }
+                }
             }
-        })
+        }, 500)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        recyclerViewState = recycler_view_place.layoutManager?.onSaveInstanceState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (recyclerViewState != null)
+            recycler_view_place.layoutManager?.onRestoreInstanceState(recyclerViewState)
     }
   
     override fun onRefresh() {

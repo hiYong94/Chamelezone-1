@@ -6,28 +6,28 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.RelativeLayout
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.kroegerama.imgpicker.BottomSheetImagePicker
-import com.kroegerama.imgpicker.ButtonType
-import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.catchFocus
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
+import gun0912.tedimagepicker.builder.TedImagePicker
+import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_review_create.*
-import kotlinx.android.synthetic.main.slider_item_image.view.*
 
-class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener,
+class ReviewCreateActivity : AppCompatActivity(),
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
     private val uriList = arrayListOf<String>()
+    private var selectedUriList: List<Uri>? = null
     private var isCreated = false
     var memberNumber = 0
 
@@ -44,33 +44,24 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         presenter.getMember()
     }
 
-    override fun onImagesSelected(uris: List<Uri>, tag: String?) {
-        toast("$tag")
-        uris.forEachIndexed { index, uri ->
-            val rl = LayoutInflater.from(this).inflate(
+    private fun showMultiImage(uris: List<Uri>) {
+        this.selectedUriList = uris
+        Logger.d("ted uriList: $uriList")
+
+        image_container.removeAllViews()
+
+        uris.forEachIndexed { _, uri ->
+            val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
-            ) as RelativeLayout
-
-            if (image_container.childCount < 4) {
-                image_container.addView(rl)
-                rl.image_item.run {
-                    glideImageSet(uri, measuredWidth, measuredHeight)
-                }
-                Log.d("childCount", (image_container.childCount).toString())
+            ) as ImageView
+            iv.run {
+                glideImageSet(uri, measuredWidth, measuredHeight)
+                image_container.addView(iv)
             }
-
-            rl.btn_delete.setOnClickListener {
-                image_container.removeView(rl)
-            }
-
             uri.path?.let { uriList.add(it) }
-            Log.d("image", uri.path.toString())
-            Log.d("image childCount uriList", uriList[index])
-
         }
-        Log.d("uriList", uriList.toString())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,13 +82,6 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
 
-            if (!isCreated) {
-                isCreated = true
-            }
-            Handler().postDelayed({
-                isCreated = false
-            }, 1000)
-
             presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
             Log.d("reviewCreate memberNumber", memberNumber.toString())
             Log.d("uriList", uriList.toString())
@@ -107,7 +91,7 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
             Toast.makeText(this@ReviewCreateActivity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
-            pickMulti()
+            setNormalMultiButton()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
@@ -121,20 +105,15 @@ class ReviewCreateActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         }
     }
 
-    private fun pickMulti() {
-        BottomSheetImagePicker.Builder(getString(R.string.file_provider))
-            .cameraButton(ButtonType.Button)
-            .galleryButton(ButtonType.Button)
-            .multiSelect(2, 4)
-            .multiSelectTitles(
-                R.plurals.pick_multi,
-                R.plurals.pick_multi_more,
-                R.string.pick_multi_limit
-            )
-            .peekHeight(R.dimen.peekHeight)
-            .columnSize(R.dimen.columnSize)
-            .requestTag("사진이 선택되었습니다.")
-            .show(supportFragmentManager)
+    private fun setNormalMultiButton() {
+        TedImagePicker.with(this)
+            .mediaType(MediaType.IMAGE)
+            .min(2, R.string.min_msg)
+            .max(4, R.string.max_msg)
+            .errorListener { message -> Log.d("ted", "message: $message") }
+            .selectedUri(selectedUriList)
+            .startMultiImage { list: List<Uri> -> showMultiImage(list) }
+
     }
 
     private fun setupGUI() {

@@ -14,6 +14,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
+import com.yeonae.chamelezone.util.Logger
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
 class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
@@ -21,11 +22,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
     private val reviewList = arrayListOf<ReviewItem>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var moreButtonListener: MoreButtonListener
-    private lateinit var reviewListener: OnReviewTabListener
-
-    interface OnReviewTabListener {
-        fun onReviewTabSelected(review: ReviewItem)
-    }
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, review: ReviewItem)
@@ -33,10 +29,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
 
     interface MoreButtonListener {
         fun bottomSheetDialog(review: ReviewItem)
-    }
-
-    fun setReviewTabListener(listener: OnReviewTabListener) {
-        reviewListener = listener
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -90,8 +82,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
             )
 
             reviewCount.text = "+" + (imageList.size - 1)
-            Log.d("imageList images size1", imageList.size.toString())
-            Log.d("imageList images size2", (imageList.size - 1).toString())
 
             reviewImg.setOnClickListener {
                 val position = adapterPosition
@@ -105,7 +95,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
             moreReviewImg.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-
                     if (::itemClickListener.isInitialized) {
                         itemClickListener.onItemClick(itemView, position, review)
                     }
@@ -114,16 +103,13 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
             }
 
             itemView.apply {
-                Log.d("PlaceReviewTabFragment memberNumber user", memberNumber.toString())
-                Log.d("PlaceReviewTabFragment memberNumber user review review", review.memberNumber.toString())
+                Logger.d("member $memberNumber")
+                Logger.d("reviewmem " + review.memberNumber.toString())
                 btn_more.isVisible = memberNumber == review.memberNumber
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog(review)
                 }
             }
-
-            if (::reviewListener.isInitialized)
-                reviewListener.onReviewTabSelected(review)
         }
     }
 

@@ -34,6 +34,9 @@ android {
     repositories {
         jcenter()
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -56,6 +59,9 @@ dependencies {
 
     // TedPermission Library
     implementation 'gun0912.ted:tedpermission:2.2.2'
+
+    // TedImagePicker Library
+    implementation 'gun0912.ted:tedimagepicker:1.0.12'
 
     // Retrofit Library
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
