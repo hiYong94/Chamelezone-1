@@ -32,7 +32,6 @@ import com.yeonae.chamelezone.view.home.presenter.HomePresenter
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
-import kotlinx.android.synthetic.main.activity_place_detail.*
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 
@@ -41,9 +40,8 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
     private lateinit var placeAdapter: HomePlaceRvAdapter
     private var memberNumber: Int = 0
     private var placeNumber = 0
-    private var recyclerViewState: Parcelable? = null
-    private var currentLongitude: Double? = null
-    private var currentLatitude: Double? = null
+    private var currentLongitude: Double = 0.0
+    private var currentLatitude: Double = 0.0
 
     override fun showHomeList(placeList: List<PlaceResponse>) {
         if (::placeAdapter.isInitialized)
@@ -103,6 +101,45 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
 
     override fun onStart() {
         super.onStart()
+        Logger.d("zzzz")
+
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Logger.d("zzzz")
+
+        swipe_layout.setOnRefreshListener(this)
+        swipe_layout.setColorSchemeResources(R.color.colorOrange)
+
+        btn_search.setOnClickListener {
+            val intent = Intent(requireContext(), SearchActivity::class.java)
+            startActivity(intent)
+        }
+
+        currentLocation()
+
+        Logger.d("HomeTabFragment location latitude33333 $currentLatitude")
+        Logger.d("HomeTabFragment location longitude33333 $currentLongitude")
+
+        placeAdapter = HomePlaceRvAdapter(currentLatitude, currentLongitude)
+
+        placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
+            override fun onItemClick(view: View, position: Int, place: PlaceResponse) {
+                placeNumber = place.placeNumber
+                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
+                intent.putExtra(PLACE_NAME, place.name)
+                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                startActivity(intent)
+            }
+        })
+
+        presenter = HomePresenter(
+            Injection.placeRepository(), Injection.memberRepository(),
+            Injection.likeRepository(),
+            this
+        )
 
         val gridlayout = GridLayoutManager(context, 2)
 
@@ -111,31 +148,15 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
             if (::placeAdapter.isInitialized)
                 adapter = placeAdapter
         }
-        presenter.checkMember()
-    }
+        if (::presenter.isInitialized)
+            presenter.checkMember()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-      
-        swipe_layout.setOnRefreshListener(this)
-        swipe_layout.setColorSchemeResources(R.color.colorOrange)
 
-        btn_search.setOnClickListener {
-            val intent = Intent(requireContext(), SearchActivity::class.java)
-            startActivity(intent)
-        }
-        currentLocation()
-
-        presenter = HomePresenter(
-            Injection.placeRepository(), Injection.memberRepository(),
-            Injection.likeRepository(),
-            this
-        )
     }
 
     private fun currentLocation() {
-
         val myLocationHandler = Handler()
+
         val lm =
             context?.getSystemService(LOCATION_SERVICE) as LocationManager?
 
@@ -169,38 +190,20 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
                         Logger.d("HomeTabFragment location latitude $currentLatitude")
                         Logger.d("HomeTabFragment location longitude $currentLongitude")
 
-                        placeAdapter = HomePlaceRvAdapter(currentLatitude, currentLongitude)
-
-                        placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
-                            override fun onItemClick(view: View, position: Int, place: PlaceResponse) {
-                                placeNumber = place.placeNumber
-                                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
-                                intent.putExtra(PLACE_NAME, place.name)
-                                intent.putExtra(PLACE_NUMBER, place.placeNumber)
-                                startActivity(intent)
-                            }
-                        })
 
                     } else {
                         Logger.d("HomeTabFragment current_location 현재 위치 찾기 실패")
                         myLocationHandler.postDelayed(this, 500)
                     }
                 }
+                Logger.d("HomeTabFragment location latitude2222 $currentLatitude")
+                Logger.d("HomeTabFragment location longitude2222 $currentLongitude")
+
+
             }
         }, 500)
     }
 
-    override fun onPause() {
-        super.onPause()
-        recyclerViewState = recycler_view_place.layoutManager?.onSaveInstanceState()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (recyclerViewState != null)
-            recycler_view_place.layoutManager?.onRestoreInstanceState(recyclerViewState)
-    }
-  
     override fun onRefresh() {
         presenter.getHomeList(memberNumber)
         swipe_layout.isRefreshing = false

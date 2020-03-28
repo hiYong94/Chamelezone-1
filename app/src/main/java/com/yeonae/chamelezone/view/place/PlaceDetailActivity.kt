@@ -21,6 +21,7 @@ import com.yeonae.chamelezone.view.place.presenter.PlaceDetailContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailPresenter
 import kotlinx.android.synthetic.main.activity_place_detail.*
 
+
 class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
     override lateinit var presenter: PlaceDetailContract.Presenter
     private var memberNumber: Int? = null
@@ -117,7 +118,6 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
             }
             setupView()
         }
-
     }
 
     private fun setupView() {
