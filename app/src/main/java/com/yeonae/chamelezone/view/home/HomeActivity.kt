@@ -39,11 +39,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     val drawableList = intArrayOf(
-        R.drawable.home,
-        R.drawable.course,
-        R.drawable.map,
-        R.drawable.like,
-        R.drawable.user
+        R.drawable.ic_home_black_24dp,
+        R.drawable.ic_distance_black,
+        R.drawable.ic_place_black_24dp,
+        R.drawable.ic_favorite_black_24dp,
+        R.drawable.ic_person_black_24dp
     )
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -137,11 +137,11 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setSelectedTabIcon(position: Int) {
         when (position) {
-            0 -> tabLayout.getTabAt(0)?.setIcon(R.drawable.home_orange)
-            1 -> tabLayout.getTabAt(1)?.setIcon(R.drawable.course_orange)
-            2 -> tabLayout.getTabAt(2)?.setIcon(R.drawable.map_orange)
-            3 -> tabLayout.getTabAt(3)?.setIcon(R.drawable.like_orange)
-            4 -> tabLayout.getTabAt(4)?.setIcon(R.drawable.user_orange)
+            0 -> tabLayout.getTabAt(0)?.setIcon(R.drawable.ic_home_orange_24dp)
+            1 -> tabLayout.getTabAt(1)?.setIcon(R.drawable.ic_distance_orange)
+            2 -> tabLayout.getTabAt(2)?.setIcon(R.drawable.ic_place_orange_24dp)
+            3 -> tabLayout.getTabAt(3)?.setIcon(R.drawable.ic_favorite_orange_24dp)
+            4 -> tabLayout.getTabAt(4)?.setIcon(R.drawable.ic_person_orange_24dp)
         }
     }
 
