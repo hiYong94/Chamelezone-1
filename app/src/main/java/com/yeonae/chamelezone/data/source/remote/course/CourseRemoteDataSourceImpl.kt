@@ -7,7 +7,6 @@ import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.network.api.CourseApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.courseService
 import com.yeonae.chamelezone.network.model.CourseResponse
-import com.yeonae.chamelezone.util.Logger
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -147,18 +146,25 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     }
 
     override fun modifyCourse(
+        courseNumber: Int,
         memberNumber: Int,
         placeNumbers: List<Int>,
         title: String,
         content: String,
         image: String,
-        callBack: CourseCallBack<String>
+        imageNumber: Int,
+        callBack: CourseCallBack<Boolean>
     ) {
+        val file = File(image)
         val extends = image.split(".").lastOrNull() ?: "*"
         val image = MultipartBody.Part.createFormData(
             "image",
-            image,
-            RequestBody.create(MediaType.parse("image/$extends"), File(image))
+            URLEncoder.encode(file.name, "UTF-8"),
+            RequestBody.create(MediaType.parse("image/$extends"), file)
+        )
+
+        val imageNumber = RequestBody.create(
+            MediaType.parse("text/plain"), imageNumber.toString()
         )
 
         val memberNumber = RequestBody.create(
@@ -179,6 +185,30 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         val content = RequestBody.create(
             MediaType.parse("text/plain"), content
         )
+        courseService.updateCourse(
+            courseNumber,
+            image,
+            imageNumber,
+            memberNumber,
+            placeNumber,
+            title,
+            content
+        ).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                (call.request().body() as MultipartBody).parts().forEach {
+                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                }
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == SUCCESS) {
+                    callBack.onSuccess(true)
+                }
+            }
+
+        })
     }
 
     override fun deleteCourse(
