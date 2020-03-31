@@ -3,9 +3,11 @@ package com.yeonae.chamelezone.view.course
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
+import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,36 +19,94 @@ import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
-import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
-import kotlinx.android.synthetic.main.activity_course_register.*
+import com.yeonae.chamelezone.network.model.CourseResponse
+import com.yeonae.chamelezone.view.course.presenter.CourseModifyContract
+import com.yeonae.chamelezone.view.course.presenter.CourseModifyPresenter
+import kotlinx.android.synthetic.main.activity_course_modify.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 
-class CourseModifyActivity : AppCompatActivity(), CourseRegisterContract.View,
+class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, PlaceCheckDialogFragment.OnClickListener {
-    override fun onClick(place: PlaceItem, placeIndex: Int) {
-        getVisible(place, placeIndex)
-    }
-
-    override lateinit var presenter: CourseRegisterContract.Presenter
+    override lateinit var presenter: CourseModifyContract.Presenter
     private var imageUri: String = ""
-    var memberNumber: Int = 0
     private var firstPlaceNumber: Int = NOT_SELECTED
     private var secondPlaceNumber: Int = NOT_SELECTED
     private var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
     private var isCreated = false
+    private var imageNumber: Int = 0
 
-    override fun deliverUserInfo(user: UserEntity) {
-        memberNumber = user.userNumber ?: 0
+    override fun showMessage(response: Boolean) {
+        if(response){
+            this.shortToast(R.string.success_update_course)
+            finish()
+        }
     }
 
-    override fun showMessage(message: String) {
-        this.shortToast(message)
-        finish()
+    override fun showCourseDetail(courseList: List<CourseResponse>) {
+        firstPlaceNumber = courseList[0].placeNumber
+        secondPlaceNumber = courseList[1].placeNumber
+        imageNumber = courseList[0].courseImageNumber
+        edt_course_title.text = SpannableStringBuilder(courseList[0].title)
+        edt_course_content.text = SpannableStringBuilder(courseList[0].content)
+
+        iv_place_image1.glideImageSet(
+            IMAGE_RESOURCE + courseList[0].placeImages,
+            iv_place_image1.measuredWidth,
+            iv_place_image1.measuredHeight
+        )
+        tv_place_name1.text = courseList[0].placeName
+        courseList[0].keywordName.forEach {
+            if (it == courseList[0].keywordName[0]) {
+                tv_place_keyword1.text = it
+            } else {
+                tv_place_keyword1.text = "${tv_place_keyword1.text}${","} $it"
+            }
+        }
+        tv_place_address1.text = courseList[0].address
+
+        iv_place_image2.glideImageSet(
+            IMAGE_RESOURCE + courseList[1].placeImages,
+            iv_place_image2.measuredWidth,
+            iv_place_image2.measuredHeight
+        )
+        tv_place_name2.text = courseList[1].placeName
+        courseList[1].keywordName.forEach {
+            if (it == courseList[1].keywordName[0]) {
+                tv_place_keyword2.text = it
+            } else {
+                tv_place_keyword2.text = "${tv_place_keyword2.text}${","} $it"
+            }
+        }
+        tv_place_address2.text = courseList[1].address
+
+        if (courseList.size == 3) {
+            thirdPlaceNumber = courseList[2].placeNumber
+            layout_course3.visibility = View.VISIBLE
+            iv_place_image3.glideImageSet(
+                IMAGE_RESOURCE + courseList[2].placeImages,
+                iv_place_image3.measuredWidth,
+                iv_place_image3.measuredHeight
+            )
+            tv_place_name3.text = courseList[2].placeName
+            courseList[2].keywordName.forEach {
+                if (it == courseList[2].keywordName[0]) {
+                    tv_place_keyword3.text = it
+                } else {
+                    tv_place_keyword3.text = "${tv_place_keyword3.text}${","} $it"
+                }
+            }
+            tv_place_address3.text = courseList[2].address
+        } else {
+            layout_place_add3.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onClick(place: PlaceItem, placeIndex: Int) {
+        getVisible(place, placeIndex)
     }
 
     override fun onImagesSelected(uris: List<Uri>, tag: String?) {
@@ -57,7 +117,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseRegisterContract.View,
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as RelativeLayout
+            ) as ImageView
             imageContainer.addView(rlSlideImg)
             rlSlideImg.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
@@ -70,15 +130,16 @@ class CourseModifyActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_course_register)
+        setContentView(R.layout.activity_course_modify)
 
         setupGUI()
 
-        presenter = CourseRegisterPresenter(
-            Injection.memberRepository(), Injection.courseRepository(), this
+        presenter = CourseModifyPresenter(
+            Injection.courseRepository(), this
         )
-
-        presenter.getUser()
+        val courseNumber = intent.getIntExtra("courseNumber", 0)
+        val memberNumber = intent.getIntExtra("memberNumber", 0)
+        presenter.getCourseDetail(courseNumber)
 
         btn_back.setOnClickListener {
             finish()
@@ -139,27 +200,28 @@ class CourseModifyActivity : AppCompatActivity(), CourseRegisterContract.View,
                 edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
-                imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
+//                imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
-            if (!isCreated) {
-                isCreated = true
-                presenter.registerCourse(
-                    memberNumber,
-                    placeNumbers,
-                    "${edt_course_title.text}",
-                    "${edt_course_content.text}",
-                    imageUri
-                )
-                Handler().postDelayed({
-                    isCreated = false
-                }, 1000)
-            }
+            Log.d("courseNumber", courseNumber.toString())
+            presenter.modifyCourse(
+                courseNumber,
+                memberNumber,
+                placeNumbers,
+                "${edt_course_title.text}",
+                "${edt_course_content.text}",
+                imageUri,
+                imageNumber
+            )
         }
     }
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(this@CourseModifyActivity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@CourseModifyActivity,
+                R.string.permission_granted,
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
