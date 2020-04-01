@@ -25,6 +25,7 @@ import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import kotlinx.android.synthetic.main.activity_place_register.*
+import kotlinx.android.synthetic.main.fragment_more_button.view.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
 
