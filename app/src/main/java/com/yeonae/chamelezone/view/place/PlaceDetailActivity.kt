@@ -44,8 +44,8 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
 
     override fun placeInfo(place: PlaceResponse) {
         val images = arrayListOf<String>()
-        for (i in place.savedImageName.indices) {
-            images.add(IMAGE_RESOURCE + place.savedImageName[i])
+        place.savedImageName.forEach {
+            images.add(IMAGE_RESOURCE + it)
         }
         if (place.likeStatus) {
             btn_like.isChecked = true
