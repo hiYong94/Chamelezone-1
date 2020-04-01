@@ -96,6 +96,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
     private fun showPlaceModifyActivity() {
         val intent = Intent(this, PlaceModifyActivity::class.java)
         intent.putExtra("placeNumber", placeResponse.placeNumber)
+        intent.putExtra("memberNumber", memberNumber)
         startActivity(intent)
     }
 
