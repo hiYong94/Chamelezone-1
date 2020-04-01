@@ -80,7 +80,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
             presenter.getMember()
         } else {
             Logger.d("memberNumbaer $memberNumber")
-            val memberNumber = 0
+            memberNumber = 0
             presenter.getHomeList(memberNumber)
         }
     }
