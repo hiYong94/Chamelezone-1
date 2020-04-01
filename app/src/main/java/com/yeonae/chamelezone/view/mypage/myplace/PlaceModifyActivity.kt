@@ -7,10 +7,10 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
@@ -21,16 +21,16 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.KeywordResponse
-import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
-import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
-import kotlinx.android.synthetic.main.activity_place_register.*
+import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyContract
+import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyPresenter
+import kotlinx.android.synthetic.main.activity_place_modify.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
 
-class PlaceModifyActivity : AppCompatActivity(), PlaceContract.View,
+class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
-    override lateinit var presenter: PlaceContract.Presenter
+    override lateinit var presenter: PlaceModifyContract.Presenter
     var memberNumber: Int = 0
     private var imageUri = arrayListOf<String>()
     private var openingHours = ArrayList<String>()
@@ -44,27 +44,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceContract.View,
     lateinit var latitude: String
     lateinit var longitude: String
 
-    override fun showPlaceMessage(placeCheck: String) {
-        if (placeCheck == CHECK_YES) {
-            layout_check_place.visibility = View.GONE
-            layout_add_view.visibility = View.VISIBLE
-            tv_check_place.visibility = View.GONE
-            edt_place_name.isEnabled = false
-            tv_place_address.isEnabled = false
-            edt_detail_address.isEnabled = false
-            btn_register.visibility = View.VISIBLE
-        } else if (placeCheck == CHECK_NO) {
-            layout_check_place.visibility = View.VISIBLE
-            layout_add_view.visibility = View.GONE
-            tv_check_place.visibility = View.VISIBLE
-            shortToast(R.string.registered_place)
-            edt_place_name.isEnabled = true
-            tv_place_address.isEnabled = true
-            edt_detail_address.isEnabled = true
-            btn_register.visibility = View.GONE
-        }
-    }
-
     override fun onClick(keywordList: ArrayList<String>) {
         keywords.clear()
         for (i in 0 until keywordList.size) {
@@ -76,10 +55,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceContract.View,
         }
         selectedKeyword = keywordList
         tv_place_keyword.text = keywordList.toString().replace("[", "").replace("]", "")
-    }
-
-    override fun showUserInfo(user: UserEntity) {
-        memberNumber = user.userNumber ?: 0
     }
 
     override fun showKeywordList(response: List<KeywordResponse>) {
@@ -106,17 +81,30 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceContract.View,
                 }
             }
 
-            rlSlideImg.btn_delete.setOnClickListener {
-                imageContainer.removeView(rlSlideImg)
-            }
             uri.path?.let { imageUri.add(it) }
         }
     }
 
-    override fun showMessage(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG)
-            .show()
-        finish()
+    override fun showPlaceDetail(place: PlaceResponse) {
+        edt_place_name.text = SpannableStringBuilder(place.name)
+        tv_place_address.text = place.address
+        place.keywordName.forEach {
+            if (it == place.keywordName[0]) {
+                tv_place_keyword.text = it
+            } else {
+                tv_place_keyword.text = "${tv_place_keyword.text}${","} $it"
+            }
+        }
+        tv_opening_time.visibility = View.VISIBLE
+        place.openingTime.forEach {
+            if (it == place.openingTime[0]) {
+                tv_opening_time.text = it
+            } else {
+                tv_opening_time.text = "${tv_opening_time.text}\n$it"
+            }
+        }
+        edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
+        edt_place_text.text = SpannableStringBuilder(place.content)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,26 +113,15 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceContract.View,
 
         setupGUI()
 
-        presenter = PlacePresenter(
-            Injection.memberRepository(), Injection.placeRepository(), this
+        presenter = PlaceModifyPresenter(
+            Injection.placeRepository(), this
         )
 
-        btn_place_check.setOnClickListener {
-            latLng = findLatLng(applicationContext, "${tv_place_address.text}")
-            latitude = latLng.latitude.toString()
-            longitude = latLng.longitude.toString()
-            when {
-                edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
-                tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
-                else -> presenter.checkPlace(
-                    "${edt_place_name.text}",
-                    latitude,
-                    longitude
-                )
-            }
-        }
+        val placeNumber = intent.getIntExtra("placeNumber", 0)
+        val memberNumber = intent.getIntExtra("memberNumber", 0)
 
-        presenter.getUser()
+        presenter.getPlaceDetail(placeNumber, memberNumber)
+
         presenter.getKeyword()
 
         edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
@@ -181,36 +158,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceContract.View,
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
             }
-//            if (!isCreated) {
-//                isCreated = true
-//                Handler().postDelayed({
-//                    presenter.placeRegister(
-//                        memberNumber,
-//                        keywords,
-//                        "${edt_place_name.text}",
-//                        realAddress,
-//                        openingHours,
-//                        "${edt_place_phone.text}",
-//                        "${edt_place_text.text}",
-//                        latitude.toBigDecimal(),
-//                        longitude.toBigDecimal(),
-//                        imageUri
-//                    )
-//                    isCreated = false
-//                }, 1000)
-//            }
-            presenter.placeRegister(
-                memberNumber,
-                keywords,
-                "${edt_place_name.text}",
-                realAddress,
-                openingHours,
-                "${edt_place_phone.text}",
-                "${edt_place_text.text}",
-                latitude.toBigDecimal(),
-                longitude.toBigDecimal(),
-                imageUri
-            )
         }
     }
 
