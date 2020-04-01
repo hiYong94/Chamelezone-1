@@ -10,7 +10,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.RelativeLayout
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
 import com.kroegerama.imgpicker.BottomSheetImagePicker
@@ -72,7 +72,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as RelativeLayout
+            ) as ImageView
 
             if (imageContainer.childCount < 4) {
                 imageContainer.addView(rlSlideImg)
