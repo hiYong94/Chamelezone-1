@@ -10,7 +10,6 @@ import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,11 +43,16 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
     private var currentLatitude: Double = 0.0
 
     override fun showHomeList(placeList: List<PlaceResponse>) {
-        if (::placeAdapter.isInitialized)
+        if (::placeAdapter.isInitialized) {
             placeAdapter.addData(placeList)
+        }
 
-        placeAdapter.setLikeButtonListener(object : HomePlaceRvAdapter.LikeButtonListener {
-            override fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean) {
+        placeAdapter.setLikeButtonListener(object :
+            HomePlaceRvAdapter.LikeButtonListener {
+            override fun onLikeClick(
+                placeResponse: PlaceResponse,
+                isChecked: Boolean
+            ) {
                 placeNumber = placeResponse.placeNumber
 
                 if (memberNumber == 0) {
@@ -75,6 +79,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
         if (response) {
             presenter.getMember()
         } else {
+            Logger.d("memberNumbaer $memberNumber")
             presenter.getHomeList(memberNumber)
         }
     }
@@ -99,16 +104,8 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
         return inflater.inflate(R.layout.fragment_home_tab, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
-        Logger.d("zzzz")
-
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Logger.d("zzzz")
 
         swipe_layout.setOnRefreshListener(this)
         swipe_layout.setColorSchemeResources(R.color.colorOrange)
@@ -118,43 +115,6 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
             startActivity(intent)
         }
 
-        currentLocation()
-
-        Logger.d("HomeTabFragment location latitude33333 $currentLatitude")
-        Logger.d("HomeTabFragment location longitude33333 $currentLongitude")
-
-        placeAdapter = HomePlaceRvAdapter(currentLatitude, currentLongitude)
-
-        placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, position: Int, place: PlaceResponse) {
-                placeNumber = place.placeNumber
-                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
-                intent.putExtra(PLACE_NAME, place.name)
-                intent.putExtra(PLACE_NUMBER, place.placeNumber)
-                startActivity(intent)
-            }
-        })
-
-        presenter = HomePresenter(
-            Injection.placeRepository(), Injection.memberRepository(),
-            Injection.likeRepository(),
-            this
-        )
-
-        val gridlayout = GridLayoutManager(context, 2)
-
-        recycler_view_place?.apply {
-            layoutManager = gridlayout
-            if (::placeAdapter.isInitialized)
-                adapter = placeAdapter
-        }
-        if (::presenter.isInitialized)
-            presenter.checkMember()
-
-
-    }
-
-    private fun currentLocation() {
         val myLocationHandler = Handler()
 
         val lm =
@@ -176,37 +136,68 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
                         0
                     )
                 } else {
-                    Logger.d("HomeTabFragment current_location 현재 위치 찾기 시작")
                     var location: Location? =
                         lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                     if (location == null) {
-                        //gps를 이용한 좌표조회 실패시 network로 위치 조회
                         location = lm?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                     }
                     if (location != null) {
                         currentLatitude = location.latitude
                         currentLongitude = location.longitude
 
-                        Logger.d("HomeTabFragment location latitude $currentLatitude")
-                        Logger.d("HomeTabFragment location longitude $currentLongitude")
+                        Logger.d("HomeTabFragment currentLatitude ${location.latitude}")
+                        Logger.d("HomeTabFragment currentLongitude ${location.longitude}")
 
+                        placeAdapter = HomePlaceRvAdapter(currentLatitude, currentLongitude)
 
+                        placeAdapter.setItemClickListener(object :
+                            HomePlaceRvAdapter.OnItemClickListener {
+                            override fun onItemClick(
+                                view: View,
+                                position: Int,
+                                place: PlaceResponse
+                            ) {
+                                placeNumber = place.placeNumber
+                                val intent =
+                                    Intent(requireContext(), PlaceDetailActivity::class.java)
+                                intent.putExtra(PLACE_NAME, place.name)
+                                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                                startActivity(intent)
+                            }
+                        })
+
+                        recycler_view_place?.apply {
+                            layoutManager = GridLayoutManager(context, 2)
+                            if (::placeAdapter.isInitialized)
+                                adapter = placeAdapter
+                        }
                     } else {
-                        Logger.d("HomeTabFragment current_location 현재 위치 찾기 실패")
                         myLocationHandler.postDelayed(this, 500)
                     }
                 }
-                Logger.d("HomeTabFragment location latitude2222 $currentLatitude")
-                Logger.d("HomeTabFragment location longitude2222 $currentLongitude")
-
-
             }
         }, 500)
+
+        presenter = HomePresenter(
+            Injection.placeRepository(), Injection.memberRepository(),
+            Injection.likeRepository(),
+            this
+        )
+    }
+
+    override fun onResume() {
+        Logger.d("rrrr")
+        super.onResume()
+        if (::presenter.isInitialized)
+            presenter.checkMember()
     }
 
     override fun onRefresh() {
         presenter.getHomeList(memberNumber)
         swipe_layout.isRefreshing = false
+
+        if (::presenter.isInitialized)
+            presenter.checkMember()
     }
 
     companion object {
