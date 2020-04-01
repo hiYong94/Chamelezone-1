@@ -2,6 +2,8 @@ package com.yeonae.chamelezone.view.map
 
 import android.Manifest
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.graphics.Rect
 import android.location.Location
 import android.os.Bundle
@@ -110,15 +112,21 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
             loadMap()
-            Toast.makeText(activity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+            val prefs: SharedPreferences =
+                requireActivity().getSharedPreferences("Pref", MODE_PRIVATE)
+            val isFirstRun = prefs.getBoolean("isFirstRun", true)
+            if (isFirstRun) {
+                Toast.makeText(activity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+                prefs.edit().putBoolean("isFirstRun", false).apply()
+            }
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
             Toast.makeText(
-                activity,
-                "권한이 거부되었습니다\n$deniedPermissions",
-                Toast.LENGTH_SHORT
-            )
+                    activity,
+                    "권한이 거부되었습니다\n$deniedPermissions",
+                    Toast.LENGTH_SHORT
+                )
                 .show()
         }
     }
@@ -148,6 +156,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
         )
 
         checkPermission()
+
+
 
         edt_search.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
