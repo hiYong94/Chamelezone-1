@@ -16,7 +16,15 @@ import com.yeonae.chamelezone.view.mypage.MypageTabFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
-    private val tabList by lazy { listOf("홈", "코스", "지도", "좋아요", "MY") }
+    private val tabList by lazy {
+        listOf(
+            getString(R.string.home),
+            getString(R.string.course),
+            getString(R.string.map),
+            getString(R.string.like),
+            getString(R.string.my)
+        )
+    }
 
     private val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
         override fun getItem(position: Int): Fragment {
