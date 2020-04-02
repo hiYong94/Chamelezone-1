@@ -16,35 +16,7 @@ import com.yeonae.chamelezone.view.mypage.MypageTabFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
-    private val tabList by lazy {
-        listOf(
-            getString(R.string.home),
-            getString(R.string.course),
-            getString(R.string.map),
-            getString(R.string.like),
-            getString(R.string.my)
-        )
-    }
-
-    private val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
-        override fun getItem(position: Int): Fragment {
-            return when (position) {
-                0 -> {
-                    HomeTabFragment()
-                }
-                1 -> {
-                    CourseTabFragment()
-                }
-                2 -> {
-                    MapTabFragment()
-                }
-                3 -> {
-                    LikeTabFragment()
-                }
-                else -> MypageTabFragment()
-            }
-        }
-    }
+    var tabList = arrayOf<String>()
 
     val drawableList = intArrayOf(
         R.drawable.ic_home_black_24dp,
@@ -71,10 +43,31 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+        tabList = resources.getStringArray(R.array.home_tab)
         setupView()
     }
 
     private fun setupView() {
+        val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
+            override fun getItem(position: Int): Fragment {
+                return when (position) {
+                    0 -> {
+                        HomeTabFragment()
+                    }
+                    1 -> {
+                        CourseTabFragment()
+                    }
+                    2 -> {
+                        MapTabFragment()
+                    }
+                    3 -> {
+                        LikeTabFragment()
+                    }
+                    else -> MypageTabFragment()
+                }
+            }
+        }
+
         with(viewPager) {
             adapter = tabPagerAdapter
             offscreenPageLimit = 5
