@@ -46,27 +46,6 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
         if (::placeAdapter.isInitialized) {
             placeAdapter.addData(placeList)
         }
-
-        placeAdapter.setLikeButtonListener(object :
-            HomePlaceRvAdapter.LikeButtonListener {
-            override fun onLikeClick(
-                placeResponse: PlaceResponse,
-                isChecked: Boolean
-            ) {
-                placeNumber = placeResponse.placeNumber
-
-                if (memberNumber == 0) {
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    if (isChecked) {
-                        presenter.selectLike(memberNumber, placeNumber)
-                    } else {
-                        presenter.deleteLike(memberNumber, placeNumber)
-                    }
-                }
-            }
-        })
     }
 
     override fun getMember(user: UserEntity) {
@@ -164,6 +143,27 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomeCo
                                 intent.putExtra(PLACE_NAME, place.name)
                                 intent.putExtra(PLACE_NUMBER, place.placeNumber)
                                 startActivity(intent)
+                            }
+                        })
+
+                        placeAdapter.setLikeButtonListener(object :
+                            HomePlaceRvAdapter.LikeButtonListener {
+                            override fun onLikeClick(
+                                placeResponse: PlaceResponse,
+                                isChecked: Boolean
+                            ) {
+                                placeNumber = placeResponse.placeNumber
+
+                                if (memberNumber == 0) {
+                                    val intent = Intent(context, LoginActivity::class.java)
+                                    startActivity(intent)
+                                } else {
+                                    if (isChecked) {
+                                        presenter.selectLike(memberNumber, placeNumber)
+                                    } else {
+                                        presenter.deleteLike(memberNumber, placeNumber)
+                                    }
+                                }
                             }
                         })
 
