@@ -66,13 +66,11 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
             }
 
             itemView.apply {
+                btn_like.isChecked = place.likeStatus
                 if (place.memberNumber != 0) {
-                    btn_like.isChecked = place.likeStatus
                     btn_like.setOnClickListener {
                         likeButtonListener.onLikeClick(place, btn_like.isChecked)
                     }
-                } else {
-                    btn_like.isChecked = place.likeStatus
                 }
 
                 val distanceCalculator =
