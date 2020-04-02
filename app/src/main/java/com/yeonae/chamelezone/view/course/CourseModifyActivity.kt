@@ -63,7 +63,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
             if (it == courseList[0].keywordName[0]) {
                 tv_place_keyword1.text = it
             } else {
-                tv_place_keyword1.text = "${tv_place_keyword1.text}${","} $it"
+                tv_place_keyword1.text = "${tv_place_keyword1.text}, $it"
             }
         }
         tv_place_address1.text = courseList[0].address
@@ -78,7 +78,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
             if (it == courseList[1].keywordName[0]) {
                 tv_place_keyword2.text = it
             } else {
-                tv_place_keyword2.text = "${tv_place_keyword2.text}${","} $it"
+                tv_place_keyword2.text = "${tv_place_keyword2.text}, $it"
             }
         }
         tv_place_address2.text = courseList[1].address
@@ -96,7 +96,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 if (it == courseList[2].keywordName[0]) {
                     tv_place_keyword3.text = it
                 } else {
-                    tv_place_keyword3.text = "${tv_place_keyword3.text}${","} $it"
+                    tv_place_keyword3.text = "${tv_place_keyword3.text}, $it"
                 }
             }
             tv_place_address3.text = courseList[2].address

@@ -36,7 +36,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
             if (it == courseList[0].keywordName[0]) {
                 tv_first_keyword.text = it
             } else {
-                tv_first_keyword.text = "${tv_first_keyword.text}${","} $it"
+                tv_first_keyword.text = "${tv_first_keyword.text}, $it"
             }
         }
         tv_first_address.text = courseList[0].address
@@ -52,7 +52,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
             if (it == courseList[1].keywordName[0]) {
                 tv_second_keyword.text = it
             } else {
-                tv_second_keyword.text = "${tv_second_keyword.text}${","} $it"
+                tv_second_keyword.text = "${tv_second_keyword.text}, $it"
             }
         }
         tv_second_address.text = courseList[1].address
@@ -68,7 +68,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
                 if (it == courseList[2].keywordName[0]) {
                     tv_third_keyword.text = it
                 } else {
-                    tv_third_keyword.text = "${tv_third_keyword.text}${","} $it"
+                    tv_third_keyword.text = "${tv_third_keyword.text}, $it"
                 }
             }
             tv_third_address.text = courseList[2].address
