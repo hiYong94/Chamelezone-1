@@ -148,6 +148,11 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        presenter.checkMember()
+    }
+
     private fun setAdapter() {
         recycler_place_review.apply {
             layoutManager = LinearLayoutManager(context)
