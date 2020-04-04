@@ -148,17 +148,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        recyclerViewState = recycler_place_review.layoutManager?.onSaveInstanceState()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        if (recyclerViewState != null)
-            recycler_place_review.layoutManager?.onRestoreInstanceState(recyclerViewState)
-    }
-
     private fun setAdapter() {
         recycler_place_review.apply {
             layoutManager = LinearLayoutManager(context)
