@@ -107,4 +107,18 @@
         <item>23:00</item>
         <item>23:30</item>
     </string-array>
+
+    <string-array name="home_tab">
+        <item>홈</item>
+        <item>코스</item>
+        <item>지도</item>
+        <item>좋아요</item>
+        <item>MY</item>
+    </string-array>
+
+    <string-array name="search_tab">
+        <item>장소명</item>
+        <item>지역명</item>
+        <item>키워드명</item>
+    </string-array>
 </resources>

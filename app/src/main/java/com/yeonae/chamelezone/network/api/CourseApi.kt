@@ -32,10 +32,17 @@ interface CourseApi {
         @Path("memberNumber") memberNumber: Int
     ): Call<List<CourseResponse>>
 
+    @Multipart
     @PUT("/course/{courseNumber}")
     fun updateCourse(
-        @Path("courseNumber") courseNumber: Int
-    ): Call<CourseResponse>
+        @Path("courseNumber") courseNumber: Int,
+        @Part image: MultipartBody.Part,
+        @Part("imageNumber") imageNumber: RequestBody,
+        @Part("memberNumber") memberNumber: RequestBody,
+        @Part("placeNumber") placeNumber: ArrayList<RequestBody>,
+        @Part("title") title: RequestBody,
+        @Part("content") content: RequestBody
+    ): Call<ResponseBody>
 
     @DELETE("/course/{courseNumber}")
     fun deleteCourse(
