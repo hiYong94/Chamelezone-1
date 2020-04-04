@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.view.course.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,13 +13,22 @@ class PlaceCheckRvAdapter :
     private var selectedPosition = -1
     private val items = mutableListOf<PlaceItem>()
     private var onClickListener: OnClickListener? = null
+    private var onCheckButtonListener: OnCheckButtonListener? = null
 
     interface OnClickListener {
         fun onClick(place: PlaceItem, isChecked: Boolean)
     }
 
-    fun setOnClickListener(listener: OnClickListener) {
-        onClickListener = listener
+    interface OnCheckButtonListener {
+        fun onClick(place: PlaceItem, isChecked: Boolean)
+    }
+
+    fun setOnClickListener(
+        clickListener: OnClickListener,
+        checkButtonListener: OnCheckButtonListener
+    ) {
+        onClickListener = clickListener
+        onCheckButtonListener = checkButtonListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaceChoiceViewHolder =
@@ -37,6 +45,7 @@ class PlaceCheckRvAdapter :
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
+        selectedPosition = -1
     }
 
     inner class PlaceChoiceViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
@@ -45,9 +54,18 @@ class PlaceCheckRvAdapter :
         fun bind(position: Int, item: PlaceItem, listener: OnClickListener?) {
             itemView.run {
                 btn_check.isChecked = selectedPosition == position
-                Log.d("btn_check", selectedPosition.toString())
-                Log.d("btn_check", position.toString())
                 btn_check.setOnClickListener {
+                    if (selectedPosition == position) {
+                        listener?.onClick(item, false)
+                        btn_check.isChecked = false
+                        selectedPosition = -1
+                    } else {
+                        listener?.onClick(item, true)
+                        selectedPosition = position
+                        notifyDataSetChanged()
+                    }
+                }
+                setOnClickListener {
                     if (selectedPosition == position) {
                         listener?.onClick(item, false)
                         btn_check.isChecked = false

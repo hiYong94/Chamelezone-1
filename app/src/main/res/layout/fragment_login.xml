@@ -110,6 +110,7 @@
         android:weightSum="10">
 
         <CheckBox
+            style="@style/TextViewStyle"
             android:id="@+id/cb_login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

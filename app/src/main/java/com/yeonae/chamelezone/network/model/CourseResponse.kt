@@ -29,7 +29,11 @@ data class CourseResponse(
     @SerializedName("placeImage")
     val placeImages: String,
     @SerializedName("courseImage")
-    val courseImage: String
+    val courseImage: String,
+    @SerializedName("courseImageNumber")
+    val courseImageNumber: Int,
+    @SerializedName("coursePlaceNumber")
+    val coursePlaceNumber: Int
 ) {
     fun toCourseItem(): CourseItem {
         val imageFormat = IMAGE_RESOURCE + savedImageName

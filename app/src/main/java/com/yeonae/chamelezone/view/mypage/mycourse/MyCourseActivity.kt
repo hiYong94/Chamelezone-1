@@ -91,6 +91,7 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View,
     private fun showCourseModifyActivity() {
         val intent = Intent(this, CourseModifyActivity::class.java)
         intent.putExtra("courseNumber", courseItem.courseNumber)
+        intent.putExtra("memberNumber", memberNumber)
         startActivity(intent)
     }
 

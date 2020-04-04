@@ -10,6 +10,7 @@ import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -98,7 +99,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as RelativeLayout
+            ) as ImageView
 
             if (imageContainer.childCount < 4) {
                 imageContainer.addView(rlSlideImg)

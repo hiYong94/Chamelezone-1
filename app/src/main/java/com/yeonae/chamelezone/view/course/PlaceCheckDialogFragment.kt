@@ -72,6 +72,13 @@ class PlaceCheckDialogFragment : DialogFragment(), SearchContract.View {
                     lastCheckedPlace = place
                 }
             }
+        }, object : PlaceCheckRvAdapter.OnCheckButtonListener {
+            override fun onClick(place: PlaceItem, isChecked: Boolean) {
+                checkStatus = isChecked
+                if (isChecked) {
+                    lastCheckedPlace = place
+                }
+            }
         })
 
         btn_search.setOnClickListener {

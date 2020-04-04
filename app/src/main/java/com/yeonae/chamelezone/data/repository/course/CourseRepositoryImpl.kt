@@ -20,7 +20,10 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         remoteDataSource.getCourseList(callBack)
     }
 
-    override fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<List<CourseResponse>>) {
+    override fun getCourseDetail(
+        courseNumber: Int,
+        callBack: CourseCallBack<List<CourseResponse>>
+    ) {
         remoteDataSource.getCourseDetail(courseNumber, callBack)
     }
 
@@ -32,17 +35,32 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
     }
 
     override fun modifyCourse(
+        courseNumber: Int,
         memberNumber: Int,
         placeNumbers: List<Int>,
         title: String,
         content: String,
         image: String,
-        callBack: CourseCallBack<String>
+        imageNumber: Int,
+        callBack: CourseCallBack<Boolean>
     ) {
-        remoteDataSource.modifyCourse(memberNumber, placeNumbers, title, content, image, callBack)
+        remoteDataSource.modifyCourse(
+            courseNumber,
+            memberNumber,
+            placeNumbers,
+            title,
+            content,
+            image,
+            imageNumber,
+            callBack
+        )
     }
 
-    override fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<Boolean>) {
+    override fun deleteCourse(
+        courseNumber: Int,
+        memberNumber: Int,
+        callBack: CourseCallBack<Boolean>
+    ) {
         remoteDataSource.deleteCourse(courseNumber, memberNumber, callBack)
     }
 

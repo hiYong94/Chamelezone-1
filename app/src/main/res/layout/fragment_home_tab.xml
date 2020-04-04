@@ -20,6 +20,7 @@
             android:src="@drawable/logo" />
 
         <LinearLayout
+            android:layout_marginEnd="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right">
@@ -30,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
                 android:padding="10dp"
-                android:src="@drawable/ic_search_black_36dp" />
+                android:src="@drawable/ic_search_24dp" />
         </LinearLayout>
     </LinearLayout>
 
