@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
@@ -167,6 +168,15 @@ class HomeActivity : AppCompatActivity() {
         tabLayout.visibility = View.GONE
     }
 
+    override fun onBackPressed() {
+
+        if (System.currentTimeMillis() > time + 2000) {
+            time = System.currentTimeMillis()
+            Toast.makeText(applicationContext, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (System.currentTimeMillis() <= time + 2000) {
+            finish()
+        }
+    }
 }
-
-

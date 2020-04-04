@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.review
 
 import android.Manifest
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -90,7 +91,13 @@ class ReviewCreateActivity : AppCompatActivity(),
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(this@ReviewCreateActivity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+            val prefs: SharedPreferences =
+                this@ReviewCreateActivity.getSharedPreferences("Pref", MODE_PRIVATE)
+            val isFirstRun = prefs.getBoolean("isFirstRun", true)
+            if (isFirstRun) {
+                Toast.makeText(this@ReviewCreateActivity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+                prefs.edit().putBoolean("isFirstRun", false).apply()
+            }
             setNormalMultiButton()
         }
 
