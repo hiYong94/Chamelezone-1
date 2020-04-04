@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone.adapter
+package com.yeonae.chamelezone.view.place.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,8 +20,6 @@ override fun isViewFromObject(view: View, `object`: Any): Boolean {
             LayoutInflater.from(container.context).inflate(R.layout.slider_image, container, false)
 
         view.post {
-
-            Log.d("size defi", "gggggggggg   ${view.measuredWidth} ${view.measuredHeight}")
             view.image_view.glideImageSet(
                 images[position],
                 view.measuredWidth,
