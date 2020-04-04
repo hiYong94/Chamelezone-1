@@ -4,12 +4,11 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
+import com.yeonae.chamelezone.view.place.adapter.ImageViewPagerAdapter
 import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
@@ -50,7 +49,10 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         if (place.likeStatus) {
             btn_like.isChecked = true
         }
-        val imageAdapter = ImageViewPagerAdapter(images)
+        val imageAdapter =
+            ImageViewPagerAdapter(
+                images
+            )
         vp_image.adapter = imageAdapter
 
         if (memberNumber == null) {
