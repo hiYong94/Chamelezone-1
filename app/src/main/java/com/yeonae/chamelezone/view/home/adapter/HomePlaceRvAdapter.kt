@@ -10,19 +10,14 @@ import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.util.distanceByDegree
-import kotlinx.android.synthetic.main.fragment_home_tab.view.*
 import kotlinx.android.synthetic.main.item_place.view.*
 
-class HomePlaceRvAdapter :
+class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Double) :
     RecyclerView.Adapter<HomePlaceRvAdapter.Holder>() {
     private val placeList = arrayListOf<PlaceResponse>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var likeButtonListener: LikeButtonListener
-    private lateinit var locationListener: LocationListener
-
-    interface LocationListener {
-        fun onLocation(place: PlaceResponse)
-    }
+    private lateinit var locationListener: OnLocationListener
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, place: PlaceResponse)
@@ -30,6 +25,10 @@ class HomePlaceRvAdapter :
 
     interface LikeButtonListener {
         fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean)
+    }
+
+    interface OnLocationListener {
+        fun onLocation()
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -46,8 +45,6 @@ class HomePlaceRvAdapter :
         private val keyword = itemView.keyword
 
         fun bind(place: PlaceResponse) {
-//            Logger.d("HomePlaceTabFragment placeLatitude ${place.latitude}")
-//            Logger.d("HomePlaceTabFragment placeLongitude ${place.longitude}")
             val latitude = place.latitude.toDouble()
             val longitude = place.longitude.toDouble()
 
@@ -59,12 +56,15 @@ class HomePlaceRvAdapter :
                     keyword.text = "${keyword.text}, $it"
                 }
             }
+
             if (place.savedImageName.isNotEmpty()) {
-                Logger.d("imageList ${place.savedImageName}")
-                val image = IMAGE_RESOURCE + place.savedImageName.first()
+                Logger.d("imageList ${place.savedImageName}, ${place.placeNumber}, ${place.memberNumber}")
+                val image = IMAGE_RESOURCE + place.savedImageName[0]
                 Logger.d("image $image")
+                Logger.d("image size ${placeImg.measuredWidth}, ${placeImg.measuredHeight}")
                 placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
             }
+
 
             itemView.setOnClickListener {
                 itemClickListener.onItemClick(itemView, adapterPosition, place)
@@ -72,19 +72,18 @@ class HomePlaceRvAdapter :
             }
 
             itemView.apply {
+                btn_like.isChecked = place.likeStatus
                 if (place.memberNumber != 0) {
-                    btn_like.isChecked = place.likeStatus
                     btn_like.setOnClickListener {
                         likeButtonListener.onLikeClick(place, btn_like.isChecked)
                     }
-                } else {
-                    btn_like.isChecked = place.likeStatus
                 }
-                if (::locationListener.isInitialized)
-                    locationListener.onLocation(place)
-//                val distanceCalculator = distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
-//                distance.text = distanceCalculator
+
+                val distanceCalculator =
+                    distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
+                distance.text = distanceCalculator
             }
+
         }
     }
 

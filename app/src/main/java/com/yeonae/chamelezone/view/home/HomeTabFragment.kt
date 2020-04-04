@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.LikeStatusItem
@@ -25,7 +26,6 @@ import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.util.Logger
-import com.yeonae.chamelezone.util.distanceByDegree
 import com.yeonae.chamelezone.view.home.adapter.HomePlaceRvAdapter
 import com.yeonae.chamelezone.view.home.presenter.HomeContract
 import com.yeonae.chamelezone.view.home.presenter.HomePresenter
@@ -33,84 +33,21 @@ import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
-import kotlinx.android.synthetic.main.item_place.*
 
 
-class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePlaceRvAdapter.LocationListener, HomeContract.View {
+class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePlaceRvAdapter.OnLocationListener
+    , HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
     private lateinit var placeAdapter: HomePlaceRvAdapter
     private var memberNumber: Int = 0
     private var placeNumber = 0
-    private var currentLongitude:Double = 0.0
+    private var currentLongitude: Double = 0.0
     private var currentLatitude: Double = 0.0
 
-    override fun onLocation(place: PlaceResponse) {
-        val myLocationHandler = Handler()
-
-        val lm =
-            context?.getSystemService(LOCATION_SERVICE) as LocationManager?
-
-        myLocationHandler.postDelayed(object : Runnable {
-            @SuppressLint("ObsoleteSdkInt")
-            override fun run() {
-
-                if (Build.VERSION.SDK_INT >= 24 &&
-                    ContextCompat.checkSelfPermission(
-                        requireContext(),
-                        Manifest.permission.ACCESS_FINE_LOCATION
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    ActivityCompat.requestPermissions(
-                        requireActivity(),
-                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                        0
-                    )
-                } else {
-                    var location: Location? =
-                        lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                    if (location == null) {
-                        location = lm?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-                    }
-                    if (location != null) {
-                        currentLatitude = location.latitude
-                        currentLongitude = location.longitude
-
-                        val latitude = place.latitude.toDouble()
-                        val longitude = place.longitude.toDouble()
-
-                        val distanceCalculator = distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
-                        distance.text = distanceCalculator
-                    } else {
-                        myLocationHandler.postDelayed(this, 500)
-                    }
-                }
-            }
-        }, 500)
-    }
-
     override fun showHomeList(placeList: List<PlaceResponse>) {
-        if (::placeAdapter.isInitialized){
+        if (::placeAdapter.isInitialized) {
             placeAdapter.addData(placeList)
-
-
         }
-
-        placeAdapter.setLikeButtonListener(object : HomePlaceRvAdapter.LikeButtonListener {
-            override fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean) {
-                placeNumber = placeResponse.placeNumber
-
-                if (memberNumber == 0) {
-                    val intent = Intent(context, LoginActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    if (isChecked) {
-                        presenter.selectLike(memberNumber, placeNumber)
-                    } else {
-                        presenter.deleteLike(memberNumber, placeNumber)
-                    }
-                }
-            }
-        })
     }
 
     override fun getMember(user: UserEntity) {
@@ -124,6 +61,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePl
             presenter.getMember()
         } else {
             Logger.d("memberNumbaer $memberNumber")
+            memberNumber = 0
             presenter.getHomeList(memberNumber)
         }
     }
@@ -159,36 +97,95 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePl
             startActivity(intent)
         }
 
-        placeAdapter = HomePlaceRvAdapter()
+        val myLocationHandler = Handler()
 
-        placeAdapter.setItemClickListener(object : HomePlaceRvAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, position: Int, place: PlaceResponse) {
-                placeNumber = place.placeNumber
-                val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
-                intent.putExtra(PLACE_NAME, place.name)
-                intent.putExtra(PLACE_NUMBER, place.placeNumber)
-                startActivity(intent)
+        val lm =
+            context?.getSystemService(LOCATION_SERVICE) as LocationManager?
+
+        myLocationHandler.postDelayed(object : Runnable {
+            @SuppressLint("ObsoleteSdkInt")
+            override fun run() {
+
+                if (Build.VERSION.SDK_INT >= 24 &&
+                    ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    ActivityCompat.requestPermissions(
+                        requireActivity(),
+                        arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                        0
+                    )
+                } else {
+                    var location: Location? =
+                        lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    if (location == null) {
+                        location = lm?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                    }
+                    if (location != null) {
+                        currentLatitude = location.latitude
+                        currentLongitude = location.longitude
+
+                        Logger.d("HomeTabFragment currentLatitude ${location.latitude}")
+                        Logger.d("HomeTabFragment currentLongitude ${location.longitude}")
+
+                        placeAdapter = HomePlaceRvAdapter(currentLatitude, currentLongitude)
+
+                        placeAdapter.setItemClickListener(object :
+                            HomePlaceRvAdapter.OnItemClickListener {
+                            override fun onItemClick(
+                                view: View,
+                                position: Int,
+                                place: PlaceResponse
+                            ) {
+                                placeNumber = place.placeNumber
+                                val intent =
+                                    Intent(requireContext(), PlaceDetailActivity::class.java)
+                                intent.putExtra(PLACE_NAME, place.name)
+                                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                                startActivity(intent)
+                            }
+                        })
+
+                        placeAdapter.setLikeButtonListener(object :
+                            HomePlaceRvAdapter.LikeButtonListener {
+                            override fun onLikeClick(
+                                placeResponse: PlaceResponse,
+                                isChecked: Boolean
+                            ) {
+                                placeNumber = placeResponse.placeNumber
+
+                                if (memberNumber == 0) {
+                                    val intent = Intent(context, LoginActivity::class.java)
+                                    startActivity(intent)
+                                } else {
+                                    if (isChecked) {
+                                        presenter.selectLike(memberNumber, placeNumber)
+                                    } else {
+                                        presenter.deleteLike(memberNumber, placeNumber)
+                                    }
+                                }
+                            }
+                        })
+
+                        recycler_view_place?.apply {
+                            layoutManager = GridLayoutManager(context, 2)
+                            if (::placeAdapter.isInitialized)
+                                adapter = placeAdapter
+                        }
+                    } else {
+                        myLocationHandler.postDelayed(this, 500)
+                    }
+                }
             }
-        })
-
-        recycler_view_place?.apply {
-            layoutManager = GridLayoutManager(context, 2)
-            if (::placeAdapter.isInitialized)
-                adapter = placeAdapter
-        }
+        }, 500)
 
         presenter = HomePresenter(
             Injection.placeRepository(), Injection.memberRepository(),
             Injection.likeRepository(),
             this
         )
-    }
-
-    override fun onStart() {
-        Logger.d("ssss")
-        super.onStart()
-        if (::presenter.isInitialized)
-            presenter.checkMember()
     }
 
     override fun onResume() {
@@ -206,10 +203,17 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePl
             presenter.checkMember()
     }
 
+    override fun onLowMemory() {
+        super.onLowMemory()
+        context?.let { Glide.get(it).clearMemory() }
+    }
+
     companion object {
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }
 
+    override fun onLocation() {
 
+    }
 }
