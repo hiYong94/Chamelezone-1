@@ -17,6 +17,7 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
     private val placeList = arrayListOf<PlaceResponse>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var likeButtonListener: LikeButtonListener
+    private lateinit var locationListener: OnLocationListener
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, place: PlaceResponse)
@@ -24,6 +25,10 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
 
     interface LikeButtonListener {
         fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean)
+    }
+
+    interface OnLocationListener {
+        fun onLocation()
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -56,6 +61,7 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
                 Logger.d("imageList ${place.savedImageName}, ${place.placeNumber}, ${place.memberNumber}")
                 val image = IMAGE_RESOURCE + place.savedImageName[0]
                 Logger.d("image $image")
+                Logger.d("image size ${placeImg.measuredWidth}, ${placeImg.measuredHeight}")
                 placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
             }
 
