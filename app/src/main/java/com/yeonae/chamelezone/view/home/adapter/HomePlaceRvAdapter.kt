@@ -12,7 +12,7 @@ import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.util.distanceByDegree
 import kotlinx.android.synthetic.main.item_place.view.*
 
-class HomePlaceRvAdapter(private val currentLatitude: Double, private val currentLongitude: Double) :
+class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Double) :
     RecyclerView.Adapter<HomePlaceRvAdapter.Holder>() {
     private val placeList = arrayListOf<PlaceResponse>()
     private lateinit var itemClickListener: OnItemClickListener
@@ -38,11 +38,8 @@ class HomePlaceRvAdapter(private val currentLatitude: Double, private val curren
         private val placeImg = itemView.place_img
         private val placeName = itemView.place_name
         private val keyword = itemView.keyword
-        private val like = itemView.btn_like
 
         fun bind(place: PlaceResponse) {
-            Logger.d("HomePlaceTabFragment placeLatitude ${place.latitude}")
-            Logger.d("HomePlaceTabFragment placeLongitude ${place.longitude}")
             val latitude = place.latitude.toDouble()
             val longitude = place.longitude.toDouble()
 
@@ -54,29 +51,33 @@ class HomePlaceRvAdapter(private val currentLatitude: Double, private val curren
                     keyword.text = "${keyword.text}, $it"
                 }
             }
+
             if (place.savedImageName.isNotEmpty()) {
+                Logger.d("imageList ${place.savedImageName}, ${place.placeNumber}, ${place.memberNumber}")
                 val image = IMAGE_RESOURCE + place.savedImageName[0]
+                Logger.d("image $image")
                 placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
             }
 
+
             itemView.setOnClickListener {
                 itemClickListener.onItemClick(itemView, adapterPosition, place)
+
             }
 
             itemView.apply {
                 btn_like.isChecked = place.likeStatus
-                btn_like.setOnClickListener {
-                    likeButtonListener.onLikeClick(place, btn_like.isChecked)
+                if (place.memberNumber != 0) {
+                    btn_like.setOnClickListener {
+                        likeButtonListener.onLikeClick(place, btn_like.isChecked)
+                    }
                 }
 
-                Logger.d("HomePlaceTabFragment currentLatitude $currentLatitude")
-                Logger.d("HomePlaceTabFragment currentLongitude $currentLongitude")
-                val distanceCalculator = distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
-
-                Logger.d("HomePlaceTabFragment distanceCalculator $distanceCalculator")
-
+                val distanceCalculator =
+                    distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
                 distance.text = distanceCalculator
             }
+
         }
     }
 
