@@ -198,12 +198,20 @@
 
                     </LinearLayout>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/select_two_places"
+                        android:textColor="@color/darkGray" />
+
                     <LinearLayout
                         android:id="@+id/layout_place_add1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/draw">
+                        android:background="@drawable/draw"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/btn_place_add1"
@@ -220,8 +228,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/draw"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -306,7 +313,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:background="@drawable/draw">
+                        android:background="@drawable/draw"
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/btn_place_add2"
@@ -323,8 +331,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:background="@drawable/draw"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -409,7 +416,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp">
+                        android:visibility="gone">
 
                         <TextView
                             android:id="@+id/btn_place_add3"
@@ -508,6 +515,11 @@
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

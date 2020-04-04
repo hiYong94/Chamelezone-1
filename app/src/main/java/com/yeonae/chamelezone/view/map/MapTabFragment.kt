@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.*
@@ -37,6 +38,14 @@ import kotlinx.android.synthetic.main.fragment_map_tab.*
 
 class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     GoogleMap.OnMarkerClickListener {
+    override lateinit var presenter: MapContract.Presenter
+    private lateinit var map: GoogleMap
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var currentLocation: Location
+    private lateinit var currentLatLng: LatLng
+    private lateinit var locationCallBack: LocationCallback
+
     override fun showMessage(message: String) {
         layout_no_search.visibility = View.VISIBLE
         map_fragment.visibility = View.GONE
@@ -54,14 +63,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
         }
         return false
     }
-
-    override lateinit var presenter: MapContract.Presenter
-    private lateinit var map: GoogleMap
-    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var locationRequest: LocationRequest
-    private lateinit var currentLocation: Location
-    private lateinit var currentLatLng: LatLng
-    private lateinit var locationCallBack: LocationCallback
 
     override fun placeInfo(placeList: List<PlaceResponse>) {
         layout_no_search.visibility = View.GONE
@@ -145,6 +146,14 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
         }
         getCurrentLocation()
         updateLocationUI()
+        val locationButton =
+            (map_view.findViewById<View>(Integer.parseInt("1")).parent as View).findViewById<View>(
+                Integer.parseInt("2")
+            )
+        val layoutParams = locationButton.layoutParams as RelativeLayout.LayoutParams
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
+        layoutParams.setMargins(0, 0, 30, 30)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

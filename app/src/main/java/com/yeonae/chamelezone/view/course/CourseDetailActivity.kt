@@ -13,6 +13,8 @@ import com.yeonae.chamelezone.view.course.presenter.CourseDetailPresenter
 import kotlinx.android.synthetic.main.activity_course_detail.*
 
 class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
+    override lateinit var presenter: CourseDetailContract.Presenter
+
     override fun showCourseDetail(courseList: List<CourseResponse>) {
         iv_course_image.glideImageSet(
             IMAGE_RESOURCE + courseList[0].courseImage,
@@ -23,72 +25,55 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
         tv_course_content.text = courseList[0].content
         tv_user_nickname.text = courseList[0].nickName
         tv_register_date.text = courseList[0].regiDate
+
         iv_place_image1.glideImageSet(
             IMAGE_RESOURCE + courseList[0].placeImages,
             iv_place_image1.measuredWidth,
             iv_place_image1.measuredHeight
         )
+        tv_first_place_name.text = courseList[0].placeName
         courseList[0].keywordName.forEach {
             if (it == courseList[0].keywordName[0]) {
                 tv_first_keyword.text = it
             } else {
-                tv_first_keyword.text = "${tv_first_keyword.text}${","} $it"
+                tv_first_keyword.text = "${tv_first_keyword.text}, $it"
             }
         }
-        tv_first_place_name.text = courseList[0].placeName
         tv_first_address.text = courseList[0].address
 
-        if (courseList.size == 2) {
-            layout_second_place.visibility = View.VISIBLE
-            iv_place_image2.glideImageSet(
-                IMAGE_RESOURCE + courseList[1].placeImages,
-                iv_place_image2.measuredWidth,
-                iv_place_image2.measuredHeight
-            )
-            courseList[1].keywordName.forEach {
-                if (it == courseList[1].keywordName[0]) {
-                    tv_second_keyword.text = it
-                } else {
-                    tv_second_keyword.text = "${tv_second_keyword.text}${","} $it"
-                }
+        layout_second_place.visibility = View.VISIBLE
+        iv_place_image2.glideImageSet(
+            IMAGE_RESOURCE + courseList[1].placeImages,
+            iv_place_image2.measuredWidth,
+            iv_place_image2.measuredHeight
+        )
+        tv_second_place_name.text = courseList[1].placeName
+        courseList[1].keywordName.forEach {
+            if (it == courseList[1].keywordName[0]) {
+                tv_second_keyword.text = it
+            } else {
+                tv_second_keyword.text = "${tv_second_keyword.text}, $it"
             }
-            tv_second_place_name.text = courseList[1].placeName
-            tv_second_address.text = courseList[1].address
-        } else if (courseList.size == 3) {
-            layout_second_place.visibility = View.VISIBLE
-            iv_place_image2.glideImageSet(
-                IMAGE_RESOURCE + courseList[1].placeImages,
-                iv_place_image2.measuredWidth,
-                iv_place_image2.measuredHeight
-            )
-            courseList[1].keywordName.forEach {
-                if (it == courseList[1].keywordName[0]) {
-                    tv_second_keyword.text = it
-                } else {
-                    tv_second_keyword.text = "${tv_second_keyword.text}${","} $it"
-                }
-            }
+        }
+        tv_second_address.text = courseList[1].address
+        if (courseList.size == 3) {
             layout_third_place.visibility = View.VISIBLE
-            tv_second_place_name.text = courseList[1].placeName
-            tv_second_address.text = courseList[1].address
             iv_place_image3.glideImageSet(
                 IMAGE_RESOURCE + courseList[2].placeImages,
                 iv_place_image3.measuredWidth,
                 iv_place_image3.measuredHeight
             )
+            tv_third_place_name.text = courseList[2].placeName
             courseList[2].keywordName.forEach {
                 if (it == courseList[2].keywordName[0]) {
                     tv_third_keyword.text = it
                 } else {
-                    tv_third_keyword.text = "${tv_third_keyword.text}${","} $it"
+                    tv_third_keyword.text = "${tv_third_keyword.text}, $it"
                 }
             }
-            tv_third_place_name.text = courseList[2].placeName
             tv_third_address.text = courseList[2].address
         }
     }
-
-    override lateinit var presenter: CourseDetailContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

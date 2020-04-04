@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.RelativeLayout
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -26,10 +26,6 @@ import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     BottomSheetImagePicker.OnImagesSelectedListener, PlaceCheckDialogFragment.OnClickListener {
-    override fun onClick(place: PlaceItem, placeIndex: Int) {
-        getVisible(place, placeIndex)
-    }
-
     override lateinit var presenter: CourseRegisterContract.Presenter
     private var imageUri: String = ""
     var memberNumber: Int = 0
@@ -38,6 +34,10 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     private var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
     private var isCreated = false
+
+    override fun onClick(place: PlaceItem, placeIndex: Int) {
+        getVisible(place, placeIndex)
+    }
 
     override fun deliverUserInfo(user: UserEntity) {
         memberNumber = user.userNumber ?: 0
@@ -56,7 +56,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as RelativeLayout
+            ) as ImageView
             imageContainer.addView(rlSlideImg)
             rlSlideImg.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
@@ -165,7 +165,11 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(this@CourseRegisterActivity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this@CourseRegisterActivity,
+                R.string.permission_granted,
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {

@@ -17,21 +17,20 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         edt_search.setSelection(edt_search.length())
     }
 
-    private val tabList by lazy { listOf("장소명", "지역명", "키워드명") }
-
-    private val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
-        override fun getItem(position: Int): Fragment {
-            return when (position) {
-                0 -> PlaceNameTabFragment.newInstance()
-                1 -> AddressTabFragment.newInstance()
-                else -> KeywordTabFragment.newInstance()
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        val tabList = resources.getStringArray(R.array.search_tab)
+
+        val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
+            override fun getItem(position: Int): Fragment {
+                return when (position) {
+                    0 -> PlaceNameTabFragment.newInstance()
+                    1 -> AddressTabFragment.newInstance()
+                    else -> KeywordTabFragment.newInstance()
+                }
+            }
+        }
 
         search_tab.setupWithViewPager(search_view_pager)
         search_view_pager.adapter = tabPagerAdapter
