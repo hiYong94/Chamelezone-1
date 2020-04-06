@@ -21,6 +21,7 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         val tabList = resources.getStringArray(R.array.search_tab)
+        val searchWord = "${edt_search.text}".replace(" ", "")
 
         val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
             override fun getItem(position: Int): Fragment {
@@ -43,9 +44,9 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
                 supportFragmentManager.fragments.forEach {
                     when (it) {
-                        is PlaceNameTabFragment -> it.searchByName("${edt_search.text}")
-                        is AddressTabFragment -> it.searchByAddress("${edt_search.text}")
-                        is KeywordTabFragment -> it.searchByKeyword("${edt_search.text}")
+                        is PlaceNameTabFragment -> it.searchByName(searchWord)
+                        is AddressTabFragment -> it.searchByAddress(searchWord)
+                        is KeywordTabFragment -> it.searchByKeyword(searchWord)
                     }
                 }
             }
@@ -63,9 +64,9 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
             imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
             supportFragmentManager.fragments.forEach {
                 when (it) {
-                    is PlaceNameTabFragment -> it.searchByName("${edt_search.text}")
-                    is AddressTabFragment -> it.searchByAddress("${edt_search.text}")
-                    is KeywordTabFragment -> it.searchByKeyword("${edt_search.text}")
+                    is PlaceNameTabFragment -> it.searchByName(searchWord)
+                    is AddressTabFragment -> it.searchByAddress(searchWord)
+                    is KeywordTabFragment -> it.searchByKeyword(searchWord)
                 }
             }
         }
