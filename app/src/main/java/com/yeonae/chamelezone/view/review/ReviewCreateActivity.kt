@@ -78,14 +78,11 @@ class ReviewCreateActivity : AppCompatActivity(),
         presenter.checkMember()
 
         val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
-        Log.d("placeNumber", placeNumber.toString())
 
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
 
             presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
-            Log.d("reviewCreate memberNumber", memberNumber.toString())
-            Log.d("uriList", uriList.toString())
         }
     }
 
