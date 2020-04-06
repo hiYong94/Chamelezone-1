@@ -69,7 +69,7 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
             reviewDate.text = review.regiDate
             reviewContent.text = review.content
 
-            val reviewImages = review.images.split(",")
+            val reviewImages = review.images
             val imageList = arrayListOf<String>()
             reviewImages.forEachIndexed { index, _ ->
                 imageList.add(IMAGE_RESOURCE + reviewImages[index])

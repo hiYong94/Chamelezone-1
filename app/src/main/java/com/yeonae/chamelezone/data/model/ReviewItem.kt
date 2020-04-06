@@ -11,5 +11,5 @@ data class ReviewItem(
     val regiDate: String,
     val content: String,
     val image: String,
-    val images: String
+    val images: ArrayList<String>
 ) : Serializable

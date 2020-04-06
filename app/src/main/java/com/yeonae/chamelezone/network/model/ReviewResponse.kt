@@ -3,6 +3,7 @@ package com.yeonae.chamelezone.network.model
 import com.google.gson.annotations.SerializedName
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
+import com.yeonae.chamelezone.util.Logger
 
 data class ReviewResponse(
     @SerializedName("reviewNumber")
@@ -20,12 +21,12 @@ data class ReviewResponse(
     @SerializedName("name")
     val name: String,
     @SerializedName("savedImageName")
-    val savedImageName: String?
+    val savedImageName: ArrayList<String>
 ) {
     fun toReviewItem(): ReviewItem? {
-        val reviewImages = savedImageName.orEmpty()
+        val reviewImages = savedImageName
         if (reviewImages.isNotEmpty()) {
-            val image = IMAGE_RESOURCE + reviewImages.split(",").first()
+            val image = IMAGE_RESOURCE + savedImageName.first()
             return ReviewItem(
                 reviewNumber,
                 placeNumber,
