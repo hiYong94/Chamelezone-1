@@ -62,6 +62,7 @@ class ReviewCreateActivity : AppCompatActivity(),
                 image_container.addView(iv)
             }
             uri.path?.let { uriList.add(it) }
+            Logger.d("ted uriList2: $uriList")
         }
     }
 
@@ -82,7 +83,13 @@ class ReviewCreateActivity : AppCompatActivity(),
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
 
-            presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
+            if (!isCreated) {
+                isCreated = true
+                presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
+                Handler().postDelayed({
+                    isCreated = false
+                }, 5000)
+            }
         }
     }
 
