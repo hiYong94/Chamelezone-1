@@ -10,6 +10,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.util.Logger
+import com.yeonae.chamelezone.view.place.PlaceReviewTabFragment
 import kotlinx.android.synthetic.main.fragment_more_button.*
 
 
@@ -53,34 +55,31 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         }
 
         btn_modify.setOnClickListener {
-            onModifyClickListener.onModifyClick()
-//            Toast.makeText(context, "수정", Toast.LENGTH_SHORT).show()
-//            targetFragment?.onActivityResult(targetRequestCode, BTN_EDIT, Intent())
+            if (targetRequestCode == PlaceReviewTabFragment.BOTTOM_SHEET) {
+                Toast.makeText(context, "수정", Toast.LENGTH_SHORT).show()
+                targetFragment?.onActivityResult(targetRequestCode, BTN_EDIT, Intent())
+            } else {
+                onModifyClickListener.onModifyClick()
+            }
             dismiss()
         }
         btn_delete.setOnClickListener {
-            onDeleteClickListener.onDeleteClick()
-//            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show()
-//            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
-//            if (::deletedButtonListener.isInitialized)
-//                deletedButtonListener.onDeleteSelected(myReviewData)
+            if (targetRequestCode ==  PlaceReviewTabFragment.BOTTOM_SHEET) {
+                Logger.d("requestCode $targetRequestCode")
+                Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show()
+                targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
+            } else {
+                onDeleteClickListener.onDeleteClick()
+            }
             dismiss()
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onModifyClickListener = (context as  OnModifyClickListener)
-        onDeleteClickListener = (context as  OnDeleteClickListener)
+        onModifyClickListener = (context as OnModifyClickListener)
+        onDeleteClickListener = (context as OnDeleteClickListener)
     }
-
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//
-//        (context as? OnDeletedSelectedListener)?.let {
-//            deletedButtonListener = it
-//        }
-//    }
 
     companion object {
         const val REVIEW_NUMBER = "reviewNumber"
