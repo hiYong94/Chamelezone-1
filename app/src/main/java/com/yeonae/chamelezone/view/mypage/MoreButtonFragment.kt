@@ -16,14 +16,7 @@ import kotlinx.android.synthetic.main.fragment_more_button.*
 
 
 class MoreButtonFragment : BottomSheetDialogFragment() {
-    private lateinit var deletedButtonListener: OnDeletedSelectedListener
     private val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
-    private val placeNumber = arguments?.getInt(PLACE_NUMBER)
-    private val myReviewData = Intent().apply {
-        putExtra(REVIEW_NUMBER, reviewNumber)
-        putExtra(PLACE_NUMBER, placeNumber)
-        Log.d("More reviewNumber", reviewNumber.toString())
-    }
     private lateinit var onModifyClickListener: OnModifyClickListener
     private lateinit var onDeleteClickListener: OnDeleteClickListener
 
@@ -33,10 +26,6 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
     interface OnDeleteClickListener {
         fun onDeleteClick()
-    }
-
-    interface OnDeletedSelectedListener {
-        fun onDeleteSelected(intent: Intent)
     }
 
     override fun onCreateView(
@@ -56,7 +45,6 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
         btn_modify.setOnClickListener {
             if (targetRequestCode == PlaceReviewTabFragment.BOTTOM_SHEET) {
-                Toast.makeText(context, "수정", Toast.LENGTH_SHORT).show()
                 targetFragment?.onActivityResult(targetRequestCode, BTN_EDIT, Intent())
             } else {
                 onModifyClickListener.onModifyClick()
@@ -65,8 +53,6 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         }
         btn_delete.setOnClickListener {
             if (targetRequestCode ==  PlaceReviewTabFragment.BOTTOM_SHEET) {
-                Logger.d("requestCode $targetRequestCode")
-                Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show()
                 targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
             } else {
                 onDeleteClickListener.onDeleteClick()
