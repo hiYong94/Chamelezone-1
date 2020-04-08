@@ -35,7 +35,7 @@ import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
 
-class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePlaceRvAdapter.OnLocationListener
+class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
     , HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
     private lateinit var placeAdapter: HomePlaceRvAdapter
@@ -47,6 +47,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePl
     override fun showHomeList(placeList: List<PlaceResponse>) {
         if (::placeAdapter.isInitialized) {
             placeAdapter.addData(placeList)
+            placeAdapter.itemChange(placeList.lastIndex)
         }
     }
 
@@ -175,7 +176,7 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePl
                                 adapter = placeAdapter
                         }
                     } else {
-                        myLocationHandler.postDelayed(this, 500)
+                        myLocationHandler.postDelayed(this, 1000)
                     }
                 }
             }
@@ -211,9 +212,5 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePl
     companion object {
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
-    }
-
-    override fun onLocation() {
-
     }
 }
