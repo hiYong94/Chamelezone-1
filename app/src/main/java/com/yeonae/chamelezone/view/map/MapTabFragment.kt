@@ -57,7 +57,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
         if (marker != null) {
             (activity as? HomeActivity)?.replace(
                 SingleInfoFragment.newInstance(
-                    marker.title
+                    "${edt_search.text}".replace(" ", "")
                 ), true
             )
         }
@@ -81,7 +81,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 map.addMarker(markerOptions).showInfoWindow()
                 (activity as? HomeActivity)?.replace(
                     SingleInfoFragment.newInstance(
-                        "${edt_search.text}"
+                        "${edt_search.text}".replace(" ", "")
                     ), true
                 )
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
@@ -90,7 +90,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 (activity as? HomeActivity)?.back()
                 (activity as? HomeActivity)?.replace(
                     MarkerInfoFragment.newInstance(
-                        "${edt_search.text}"
+                        "${edt_search.text}".replace(" ", "")
                     ), true
                 )
 
@@ -176,7 +176,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                     val imm =
                         context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
-                    presenter.searchPlace("${edt_search.text}")
+                    val searchWord = "${edt_search.text}".replace(" ", "")
+                    presenter.searchPlace(searchWord)
                 }
             }
             true
@@ -189,7 +190,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 val imm =
                     context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
-                presenter.searchPlace("${edt_search.text}")
+                val searchWord = "${edt_search.text}".replace(" ", "")
+                presenter.searchPlace(searchWord)
             }
         }
 

@@ -2,6 +2,7 @@ package com.yeonae.chamelezone.view.search
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +22,6 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
         val tabList = resources.getStringArray(R.array.search_tab)
-        val searchWord = "${edt_search.text}".replace(" ", "")
 
         val tabPagerAdapter = object : PagerAdapter(supportFragmentManager, tabList) {
             override fun getItem(position: Int): Fragment {
@@ -41,6 +41,7 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         edt_search.setOnEditorActionListener { _, i, _ ->
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
+            val searchWord = "${edt_search.text}".replace(" ", "")
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
                 supportFragmentManager.fragments.forEach {
                     when (it) {
@@ -60,6 +61,7 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         }
 
         btn_search.setOnClickListener {
+            val searchWord = "${edt_search.text}".replace(" ", "")
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
             supportFragmentManager.fragments.forEach {
