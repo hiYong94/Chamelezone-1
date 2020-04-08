@@ -13,6 +13,7 @@ import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.ImageViewPagerAdapter
@@ -32,6 +33,7 @@ class PlaceDetailActivity : AppCompatActivity(),
     private var placeName: String = ""
     private var nameBar = 0
     private var tabBar = 0
+    private lateinit var imageAdapter: ImageViewPagerAdapter
 
     override fun showLikeMessage(response: LikeStatusItem) {
         if (response.likeStatus) {
@@ -53,7 +55,7 @@ class PlaceDetailActivity : AppCompatActivity(),
         if (place.likeStatus) {
             btn_like.isChecked = true
         }
-        val imageAdapter =
+        imageAdapter =
             ImageViewPagerAdapter(
                 images
             )
@@ -144,11 +146,6 @@ class PlaceDetailActivity : AppCompatActivity(),
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        presenter.checkLogin()
     }
 
     companion object {
