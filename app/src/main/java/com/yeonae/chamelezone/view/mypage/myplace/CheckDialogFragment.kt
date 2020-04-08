@@ -1,4 +1,4 @@
-package com.yeonae.chamelezone
+package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.content.Context
 import android.graphics.Color
@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.fragment.app.DialogFragment
+import com.yeonae.chamelezone.R
 import kotlinx.android.synthetic.main.fragment_check_dialog.*
 import kotlinx.android.synthetic.main.fragment_multiple_dialog.btn_cancel
 import kotlinx.android.synthetic.main.fragment_multiple_dialog.btn_ok
