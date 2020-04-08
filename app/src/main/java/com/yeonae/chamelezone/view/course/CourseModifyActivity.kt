@@ -1,21 +1,19 @@
 package com.yeonae.chamelezone.view.course
 
 import android.Manifest
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import com.kroegerama.imgpicker.BottomSheetImagePicker
-import com.kroegerama.imgpicker.ButtonType
-import com.kroegerama.kaiteki.toast
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
@@ -25,11 +23,12 @@ import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyContract
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyPresenter
+import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.android.synthetic.main.activity_course_modify.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
-    BottomSheetImagePicker.OnImagesSelectedListener, PlaceCheckDialogFragment.OnClickListener {
+    PlaceCheckDialogFragment.OnClickListener {
     override lateinit var presenter: CourseModifyContract.Presenter
     private var imageUri: String = ""
     private var firstPlaceNumber: Int = NOT_SELECTED
@@ -40,7 +39,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     private var imageNumber: Int = 0
 
     override fun showMessage(response: Boolean) {
-        if(response){
+        if (response) {
             this.shortToast(R.string.success_update_course)
             finish()
         }
@@ -52,6 +51,17 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         imageNumber = courseList[0].courseImageNumber
         edt_course_title.text = SpannableStringBuilder(courseList[0].title)
         edt_course_content.text = SpannableStringBuilder(courseList[0].content)
+
+        imageContainer.removeAllViews()
+        val rlSlideImg = LayoutInflater.from(this).inflate(
+            R.layout.slider_item_image,
+            imageContainer,
+            false
+        ) as ImageView
+        imageContainer.addView(rlSlideImg)
+        rlSlideImg.image_item.run {
+            glideImageSet(IMAGE_RESOURCE + courseList[0].courseImage, measuredWidth, measuredHeight)
+        }
 
         iv_place_image1.glideImageSet(
             IMAGE_RESOURCE + courseList[0].placeImages,
@@ -109,22 +119,19 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         getVisible(place, placeIndex)
     }
 
-    override fun onImagesSelected(uris: List<Uri>, tag: String?) {
-        toast("$tag")
+    private fun showSingleImage(uri: Uri) {
         imageContainer.removeAllViews()
-        uris.forEach { uri ->
-            val rlSlideImg = LayoutInflater.from(this).inflate(
-                R.layout.slider_item_image,
-                imageContainer,
-                false
-            ) as ImageView
-            imageContainer.addView(rlSlideImg)
-            rlSlideImg.image_item.run {
-                glideImageSet(uri, measuredWidth, measuredHeight)
-            }
+        val rlSlideImg = LayoutInflater.from(this).inflate(
+            R.layout.slider_item_image,
+            imageContainer,
+            false
+        ) as ImageView
+        imageContainer.addView(rlSlideImg)
+        rlSlideImg.image_item.run {
+            glideImageSet(uri, measuredWidth, measuredHeight)
         }
-        if (!uris[0].path.isNullOrEmpty()) {
-            imageUri = uris[0].path.toString()
+        if (!uri.path.isNullOrEmpty()) {
+            imageUri = uri.path.toString()
         }
     }
 
@@ -200,9 +207,8 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
-//                imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
+                imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
-            Log.d("courseNumber", courseNumber.toString())
             presenter.modifyCourse(
                 courseNumber,
                 memberNumber,
@@ -217,14 +223,22 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
-            Toast.makeText(
-                this@CourseModifyActivity,
-                R.string.permission_granted,
-                Toast.LENGTH_SHORT
-            ).show()
+            val prefs: SharedPreferences =
+                this@CourseModifyActivity.getSharedPreferences("Pref", MODE_PRIVATE)
+            val isFirstRun = prefs.getBoolean("isFirstRun", true)
+            if (isFirstRun) {
+                Toast.makeText(
+                    this@CourseModifyActivity,
+                    R.string.permission_granted,
+                    Toast.LENGTH_SHORT
+                ).show()
+                prefs.edit().putBoolean("isFirstRun", false).apply()
+            }
+            setNormalSingleButton()
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
+            isCreated = false
             Toast.makeText(
                 this@CourseModifyActivity,
                 getString(R.string.permission_denied) + "\n$deniedPermissions",
@@ -287,21 +301,20 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         }
     }
 
-    private fun pickSingle() {
-        BottomSheetImagePicker.Builder(getString(R.string.file_provider))
-            .cameraButton(ButtonType.Button)
-            .galleryButton(ButtonType.Button)
-            .singleSelectTitle(R.string.pick_single)
-            .peekHeight(R.dimen.peekHeight)
-            .columnSize(R.dimen.columnSize)
-            .requestTag("사진이 선택되었습니다.")
-            .show(supportFragmentManager)
+    private fun setNormalSingleButton() {
+        TedImagePicker.with(this)
+            .start { uri -> showSingleImage(uri) }
     }
 
     private fun setupGUI() {
         btn_image_create.setOnClickListener {
-            checkPermission()
-            pickSingle()
+            if (!isCreated) {
+                isCreated = true
+                checkPermission()
+            }
+            Handler().postDelayed({
+                isCreated = false
+            }, 1000)
         }
         btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
     }
