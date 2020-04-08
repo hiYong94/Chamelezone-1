@@ -68,32 +68,47 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.getKeyword(callBack)
     }
 
-    override fun modifyPlace(
+    override fun updatePlace(
+        placeNumber: Int,
+        images: List<String>,
         memberNumber: Int,
-        keywordNames: List<Int>,
-        name: String,
         address: String,
-        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        images: List<String>,
+        imageNumber: List<Int>,
         callBack: PlaceCallBack<Boolean>
     ) {
-        remoteDataSource.modifyPlace(
+        remoteDataSource.updatePlace(
+            placeNumber,
+            images,
             memberNumber,
-            keywordNames,
-            name,
             address,
-            openingTimes,
             phoneNumber,
             content,
             latitude,
             longitude,
-            images,
+            imageNumber,
             callBack
         )
+    }
+
+    override fun updateKeyword(
+        placeNumber: Int,
+        keywordNames: List<Int>,
+        placeKeywordNumber: List<Int>,
+        callBack: PlaceCallBack<Boolean>
+    ) {
+        remoteDataSource.updateKeyword(placeNumber, keywordNames, placeKeywordNumber, callBack)
+    }
+
+    override fun updateOpeningHours(
+        placeNumber: Int,
+        openingTimes: List<String>,
+        callBack: PlaceCallBack<Boolean>
+    ) {
+        remoteDataSource.updateOpeningHours(placeNumber, openingTimes, callBack)
     }
 
     override fun deletePlace(
@@ -104,7 +119,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.deletePlace(placeNumber, memberNumber, callBack)
     }
 
-    override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
+    override fun getHomePlaceList(
+        memberNumber: Int?,
+        callBack: PlaceCallBack<List<PlaceResponse>>
+    ) {
         remoteDataSource.getHomePlaceList(memberNumber, callBack)
     }
 

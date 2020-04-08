@@ -28,17 +28,29 @@ interface PlaceRemoteDataSource {
     fun getPlaceDetail(placeNumber: Int, memberNumber: Int?, callBack: PlaceCallBack<PlaceResponse>)
     fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>)
     fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>)
-    fun modifyPlace(
+    fun updatePlace(
+        placeNumber: Int,
+        images: List<String>,
         memberNumber: Int,
-        keywordNames: List<Int>,
-        name: String,
         address: String,
-        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        images: List<String>,
+        imageNumber: List<Int>,
+        callBack: PlaceCallBack<Boolean>
+    )
+
+    fun updateKeyword(
+        placeNumber: Int,
+        keywordNames: List<Int>,
+        placeKeywordNumber: List<Int>,
+        callBack: PlaceCallBack<Boolean>
+    )
+
+    fun updateOpeningHours(
+        placeNumber: Int,
+        openingTimes: List<String>,
         callBack: PlaceCallBack<Boolean>
     )
 

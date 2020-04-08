@@ -31,7 +31,11 @@ data class PlaceResponse(
     @SerializedName("memberNumber")
     val memberNumber: Int,
     @SerializedName("likeStatus")
-    val likeStatus: Boolean
+    val likeStatus: Boolean,
+    @SerializedName("placeKeywordNumber")
+    val placeKeywordNumber: ArrayList<Int>,
+    @SerializedName("imageNumber")
+    val imageNumber: ArrayList<Int>
 ) {
     fun toPlaceItem(): PlaceItem {
         var keywordFormat = ""
