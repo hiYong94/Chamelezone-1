@@ -184,6 +184,11 @@
     <string name="home">홈</string>
     <string name="course">코스</string>
     <string name="my">MY</string>
+    <string name="review_create_msg">리뷰가 등록되었습니다.</string>
+    <string name="review_delete">리뷰가 삭제되었습니다.</string>
+    <string name="review_modify_msg">리뷰가 수정되었습니다.</string>
+    <string name="review_content">리뷰 내용을 입력해주세요.</string>
+    <string name="review_image">리뷰 사진을 선택해주세요.</string>
 
     <string name="min_msg">1개의 이미지를 더 선택해주세요.</string>
     <string name="max_msg">4개의 이미지만 선택 가능합니다.</string>
