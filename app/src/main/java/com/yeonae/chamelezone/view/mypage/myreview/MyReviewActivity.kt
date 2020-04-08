@@ -2,16 +2,16 @@ package com.yeonae.chamelezone.view.mypage.myreview
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
@@ -32,7 +32,7 @@ class MyReviewActivity : AppCompatActivity(),
 
     override fun getMember(user: UserEntity) {
         memberNumber = user.userNumber ?: 0
-        memberNumber.let { presenter.getUserReview(it) }
+        presenter.getUserReview(memberNumber)
     }
 
     override fun getMemberCheck(response: Boolean) {
@@ -40,7 +40,15 @@ class MyReviewActivity : AppCompatActivity(),
     }
 
     override fun showMyReviewList(reviewList: List<ReviewItem>) {
-        myReviewRvAdapter.addData(reviewList)
+        if (reviewList.isNotEmpty()) {
+            rl_my_review.isVisible = true
+            rl_no_my_review.isGone = true
+            myReviewRvAdapter.addData(reviewList)
+        } else {
+            rl_my_review.isGone = true
+            rl_no_my_review.isVisible = true
+            tv_no_my_review.text = getText(R.string.register_my_review)
+        }
     }
 
     override fun showReviewDelete(message: String) {

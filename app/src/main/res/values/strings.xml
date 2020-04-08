@@ -189,6 +189,7 @@
     <string name="review_modify_msg">리뷰가 수정되었습니다.</string>
     <string name="review_content">리뷰 내용을 입력해주세요.</string>
     <string name="review_image">리뷰 사진을 선택해주세요.</string>
+    <string name="register_my_review">리뷰 등록을 해보세요.</string>
 
     <string name="min_msg">1개의 이미지를 더 선택해주세요.</string>
     <string name="max_msg">4개의 이미지만 선택 가능합니다.</string>
