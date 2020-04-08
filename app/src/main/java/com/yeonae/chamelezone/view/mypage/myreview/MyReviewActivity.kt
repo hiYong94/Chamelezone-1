@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
@@ -42,14 +44,19 @@ class MyReviewActivity : AppCompatActivity(),
     }
 
     override fun showReviewDelete(message: String) {
-        Toast.makeText(this, "리뷰가 삭제되었습니다", Toast.LENGTH_LONG).show()
+        shortToast(R.string.review_delete)
+        Toast.makeText(this, "", Toast.LENGTH_LONG).show()
     }
 
     override fun onModifyClick() {
         val intent = Intent(this, ReviewModifyActivity::class.java)
         if (::reviewItem.isInitialized)
             intent.putExtra(PLACE_NAME, reviewItem.name)
+        intent.putExtra(PLACE_NUMBER, placeNumber)
+        intent.putExtra(REVIEW_NUMBER, reviewNumber)
+        intent.putExtra(MEMBER_NUMBER, memberNumber)
         startActivity(intent)
+
     }
 
     override fun onDeleteClick() {
@@ -110,5 +117,6 @@ class MyReviewActivity : AppCompatActivity(),
         const val REVIEW_CONTENT = "content"
         const val PLACE_NUMBER = "placeNumber"
         const val REVIEW_NUMBER = "reviewNumber"
+        const val MEMBER_NUMBER = "memberNumber"
     }
 }

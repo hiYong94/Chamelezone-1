@@ -15,16 +15,32 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
         reviewRemoteDataSource.createReview(memberNumber, placeNumber, content, images, callBack)
     }
 
+    override fun updateReview(
+        images: List<String>,
+        reviewNumber: Int,
+        memberNumber: Int,
+        placeNumber: Int,
+        content: String,
+        imageNumber: List<Int>,
+        callBack: ReviewCallBack<Boolean>
+    ) {
+        reviewRemoteDataSource.updateReview(
+            images,
+            reviewNumber,
+            memberNumber,
+            placeNumber,
+            content,
+            imageNumber,
+            callBack
+        )
+    }
+
     override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
         reviewRemoteDataSource.getReviewList(placeNumber, callBack)
     }
 
     override fun getMyReviewList(memberNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
         reviewRemoteDataSource.getMyReviewList(memberNumber, callBack)
-    }
-
-    override fun updateReview() {
-
     }
 
     override fun deleteReview(
