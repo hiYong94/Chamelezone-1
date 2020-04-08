@@ -134,6 +134,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
         edt_place_text.text = SpannableStringBuilder(place.content)
         placeKeywordNumber = place.placeKeywordNumber
+        selectedKeyword = place.keywordName
+        //openingHoursPosition = place.openingTime
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
