@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.LikeStatusItem
@@ -58,11 +57,13 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
     }
 
     override fun getMemberCheck(response: Boolean) {
+
         if (response) {
             presenter.getMember()
         } else {
             Logger.d("memberNumbaer $memberNumber")
             memberNumber = 0
+
             presenter.getHomeList(memberNumber)
         }
     }
@@ -202,11 +203,6 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
 
         if (::presenter.isInitialized)
             presenter.checkMember()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        context?.let { Glide.get(it).clearMemory() }
     }
 
     companion object {
