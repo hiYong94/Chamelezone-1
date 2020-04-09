@@ -57,7 +57,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
         if (marker != null) {
             (activity as? HomeActivity)?.replace(
                 SingleInfoFragment.newInstance(
-                    "${edt_search.text}".replace(" ", "")
+                    "${edt_search.text}".trim()
                 ), true
             )
         }
@@ -81,7 +81,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 map.addMarker(markerOptions).showInfoWindow()
                 (activity as? HomeActivity)?.replace(
                     SingleInfoFragment.newInstance(
-                        "${edt_search.text}".replace(" ", "")
+                        "${edt_search.text}".trim()
                     ), true
                 )
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(searchLatLng, 15f))
@@ -90,7 +90,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 (activity as? HomeActivity)?.back()
                 (activity as? HomeActivity)?.replace(
                     MarkerInfoFragment.newInstance(
-                        "${edt_search.text}".replace(" ", "")
+                        "${edt_search.text}".trim()
                     ), true
                 )
 

@@ -41,7 +41,7 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         edt_search.setOnEditorActionListener { _, i, _ ->
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
-            val searchWord = "${edt_search.text}".replace(" ", "")
+            val searchWord = "${edt_search.text}".trim()
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
                 supportFragmentManager.fragments.forEach {
                     when (it) {
@@ -61,7 +61,7 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
         }
 
         btn_search.setOnClickListener {
-            val searchWord = "${edt_search.text}".replace(" ", "")
+            val searchWord = "${edt_search.text}".trim()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
             supportFragmentManager.fragments.forEach {
