@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myplace.presenter
 
-import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.data.repository.place.PlaceCallback
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 
 class OpeningHoursPresenter(
@@ -8,7 +8,7 @@ class OpeningHoursPresenter(
     private val view: OpeningHoursContract.View
 ) : OpeningHoursContract.Presenter {
     override fun updateOpeningHours(placeNumber: Int, openingTimes: List<String>) {
-        repository.updateOpeningHours(placeNumber, openingTimes, object : PlaceCallBack<Boolean> {
+        repository.updateOpeningHours(placeNumber, openingTimes, object : PlaceCallback<Boolean> {
             override fun onSuccess(response: Boolean) {
                 view.showResult(response)
             }
