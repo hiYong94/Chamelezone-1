@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.view.mypage.myplace.presenter
 
-import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import java.math.BigDecimal
@@ -26,7 +25,7 @@ interface PlaceModifyContract {
             content: String,
             latitude: BigDecimal,
             longitude: BigDecimal,
-            imageNumber: List<Int>
+            imageNumbers: List<Int>
         )
     }
 }

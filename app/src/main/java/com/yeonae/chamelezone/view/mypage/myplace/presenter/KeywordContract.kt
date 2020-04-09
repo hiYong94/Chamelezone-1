@@ -14,7 +14,7 @@ interface KeywordContract {
         fun updateKeyword(
             placeNumber: Int,
             keywordNames: List<Int>,
-            placeKeywordNumber: List<Int>
+            placeKeywordNumbers: List<Int>
         )
         fun getKeyword()
     }

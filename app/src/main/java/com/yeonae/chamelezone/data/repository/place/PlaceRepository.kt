@@ -17,16 +17,16 @@ interface PlaceRepository {
         latitude: BigDecimal,
         longitude: BigDecimal,
         images: List<String>,
-        callBack: PlaceCallBack<String>
+        callback: PlaceCallback<String>
     )
 
-    fun getSearchByMap(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getSearchByAddress(address: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getSearchByKeyword(keyword: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getPlaceDetail(placeNumber: Int, memberNumber: Int?, callBack: PlaceCallBack<PlaceResponse>)
-    fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>)
+    fun getSearchByMap(placeName: String, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getSearchByName(name: String, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getSearchByAddress(address: String, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getSearchByKeyword(keyword: String, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getPlaceDetail(placeNumber: Int, memberNumber: Int?, callback: PlaceCallback<PlaceResponse>)
+    fun getMyPlaceList(memberNumber: Int, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getKeyword(callback: PlaceCallback<List<KeywordResponse>>)
     fun updatePlace(
         placeNumber: Int,
         images: List<String>,
@@ -36,29 +36,29 @@ interface PlaceRepository {
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        imageNumber: List<Int>,
-        callBack: PlaceCallBack<Boolean>
+        imageNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
     )
 
     fun updateKeyword(
         placeNumber: Int,
         keywordNames: List<Int>,
-        placeKeywordNumber: List<Int>,
-        callBack: PlaceCallBack<Boolean>
+        placeKeywordNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
     )
 
     fun updateOpeningHours(
         placeNumber: Int,
         openingTimes: List<String>,
-        callBack: PlaceCallBack<Boolean>
+        callback: PlaceCallback<Boolean>
     )
 
-    fun deletePlace(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<Boolean>)
-    fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun deletePlace(placeNumber: Int, memberNumber: Int, callback: PlaceCallback<Boolean>)
+    fun getHomePlaceList(memberNumber: Int?, callback: PlaceCallback<List<PlaceResponse>>)
     fun checkPlace(
         name: String,
         latitude: String,
         longitude: String,
-        callBack: PlaceCallBack<PlaceDuplicateResponse>
+        callback: PlaceCallback<PlaceDuplicateResponse>
     )
 }

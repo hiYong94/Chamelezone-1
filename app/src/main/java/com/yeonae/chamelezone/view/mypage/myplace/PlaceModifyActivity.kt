@@ -50,8 +50,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     private lateinit var latLng: LatLng
     lateinit var latitude: String
     lateinit var longitude: String
-    val imageNumber = arrayListOf<Int>()
-    var placeKeywordNumber = arrayListOf<Int>()
+    val imageNumbers = arrayListOf<Int>()
+    var placeKeywordNumbers = arrayListOf<Int>()
     private var selectedUriList: List<Uri>? = null
 
     override fun showResult(response: Boolean) {
@@ -112,7 +112,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             }
         }
         place.imageNumber.forEach {
-            imageNumber.add(it)
+            imageNumbers.add(it)
         }
         edt_place_name.text = SpannableStringBuilder(place.name)
         tv_place_address.text = place.address
@@ -133,7 +133,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
         edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
         edt_place_text.text = SpannableStringBuilder(place.content)
-        placeKeywordNumber = place.placeKeywordNumber
+        placeKeywordNumbers = place.placeKeywordNumber
         selectedKeyword = place.keywordName
         //openingHoursPosition = place.openingTime
     }
@@ -178,7 +178,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             val newFragment =
                 KeywordModifyFragment.newInstance(
                     placeNumber,
-                    placeKeywordNumber,
+                    placeKeywordNumbers,
                     keywordName,
                     selectedKeyword
                 )
@@ -208,7 +208,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 "${edt_place_text.text}",
                 latitude.toBigDecimal(),
                 longitude.toBigDecimal(),
-                imageNumber
+                imageNumbers
             )
         }
     }

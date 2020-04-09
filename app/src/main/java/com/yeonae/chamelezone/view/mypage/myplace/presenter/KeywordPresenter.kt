@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myplace.presenter
 
-import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.data.repository.place.PlaceCallback
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.network.model.KeywordResponse
 
@@ -11,13 +11,13 @@ class KeywordPresenter(
     override fun updateKeyword(
         placeNumber: Int,
         keywordNames: List<Int>,
-        placeKeywordNumber: List<Int>
+        placeKeywordNumbers: List<Int>
     ) {
         repository.updateKeyword(
             placeNumber,
             keywordNames,
-            placeKeywordNumber,
-            object : PlaceCallBack<Boolean> {
+            placeKeywordNumbers,
+            object : PlaceCallback<Boolean> {
                 override fun onSuccess(response: Boolean) {
                     view.showResult(response)
                 }
@@ -30,7 +30,7 @@ class KeywordPresenter(
     }
 
     override fun getKeyword() {
-        repository.getKeyword(object : PlaceCallBack<List<KeywordResponse>> {
+        repository.getKeyword(object : PlaceCallback<List<KeywordResponse>> {
             override fun onSuccess(response: List<KeywordResponse>) {
                 view.showKeywordList(response)
             }

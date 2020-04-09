@@ -1,12 +1,11 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
-import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.Network
-import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.data.repository.place.PlaceCallback
 import com.yeonae.chamelezone.network.api.PlaceApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.keywordService
 import com.yeonae.chamelezone.network.api.RetrofitConnection.placeService
@@ -40,7 +39,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         latitude: BigDecimal,
         longitude: BigDecimal,
         images: List<String>,
-        callBack: PlaceCallBack<String>
+        callback: PlaceCallback<String>
     ) {
         val imageList = ArrayList<MultipartBody.Part>()
         for (i in images.indices) {
@@ -113,7 +112,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    callBack.onSuccess(
+                    callback.onSuccess(
                         App.instance.context().getString(R.string.success_register_place)
                     )
                 }
@@ -125,16 +124,16 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun getSearchByMap(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
+    override fun getSearchByMap(placeName: String, callback: PlaceCallback<List<PlaceResponse>>) {
         placeService.getPlaceListByMap(placeName).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onResponse(
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure("검색하신 장소가 없습니다.")
+                    callback.onFailure("검색하신 장소가 없습니다.")
                 }
             }
 
@@ -145,16 +144,16 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
+    override fun getSearchByName(name: String, callback: PlaceCallback<List<PlaceResponse>>) {
         placeService.getPlaceListByName(name).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onResponse(
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(App.instance.context().getString(R.string.no_place_found))
+                    callback.onFailure(App.instance.context().getString(R.string.no_place_found))
                 }
             }
 
@@ -165,16 +164,16 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun getSearchByAddress(address: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
+    override fun getSearchByAddress(address: String, callback: PlaceCallback<List<PlaceResponse>>) {
         placeService.getPlaceListByAddress(address).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onResponse(
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(App.instance.context().getString(R.string.no_place_found))
+                    callback.onFailure(App.instance.context().getString(R.string.no_place_found))
                 }
             }
 
@@ -185,16 +184,16 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         })
     }
 
-    override fun getSearchByKeyword(keyword: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
+    override fun getSearchByKeyword(keyword: String, callback: PlaceCallback<List<PlaceResponse>>) {
         placeService.getPlaceListByKeyword(keyword).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onResponse(
                 call: Call<List<PlaceResponse>>,
                 response: Response<List<PlaceResponse>>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(App.instance.context().getString(R.string.no_place_found))
+                    callback.onFailure(App.instance.context().getString(R.string.no_place_found))
                 }
             }
 
@@ -207,7 +206,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     override fun getPlaceDetail(
         placeNumber: Int,
         memberNumber: Int?,
-        callBack: PlaceCallBack<PlaceResponse>
+        callback: PlaceCallback<PlaceResponse>
     ) {
         placeService.getPlaceDetail(placeNumber, memberNumber)
             .enqueue(object : Callback<PlaceResponse> {
@@ -216,7 +215,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                     response: Response<PlaceResponse>
                 ) {
                     if (response.code() == Network.SUCCESS) {
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                     }
                 }
 
@@ -227,7 +226,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             })
     }
 
-    override fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>) {
+    override fun getMyPlaceList(memberNumber: Int, callback: PlaceCallback<List<PlaceResponse>>) {
         placeService.getMyPlaceList(memberNumber).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
                 Log.e("tag", t.toString())
@@ -238,16 +237,16 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 response: Response<List<PlaceResponse>>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(App.instance.context().getString(R.string.register_my_place))
+                    callback.onFailure(App.instance.context().getString(R.string.register_my_place))
                 }
             }
 
         })
     }
 
-    override fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>) {
+    override fun getKeyword(callback: PlaceCallback<List<KeywordResponse>>) {
         keywordService.getKeywordList().enqueue(object : Callback<List<KeywordResponse>> {
             override fun onFailure(call: Call<List<KeywordResponse>>, t: Throwable) {
                 Log.e("tag", t.toString())
@@ -258,7 +257,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 response: Response<List<KeywordResponse>>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 }
             }
 
@@ -274,8 +273,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        imageNumber: List<Int>,
-        callBack: PlaceCallBack<Boolean>
+        imageNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
     ) {
         val imageList = ArrayList<MultipartBody.Part>()
         for (i in images.indices) {
@@ -310,11 +309,11 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             MediaType.parse("text/plain"), longitude.toString()
         )
 
-        val imageNumbers = ArrayList<RequestBody>()
-        for (i in imageNumber.indices) {
-            imageNumbers.add(
+        val imageNumberList = ArrayList<RequestBody>()
+        for (i in imageNumbers.indices) {
+            imageNumberList.add(
                 RequestBody.create(
-                    MediaType.parse("text/plain"), imageNumber[i].toString()
+                    MediaType.parse("text/plain"), imageNumbers[i].toString()
                 )
             )
         }
@@ -328,7 +327,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             content,
             latitude,
             longitude,
-            imageNumbers
+            imageNumberList
         ).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
@@ -336,7 +335,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == Network.SUCCESS) {
-                    callBack.onSuccess(true)
+                    callback.onSuccess(true)
                 }
             }
 
@@ -346,12 +345,12 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     override fun updateKeyword(
         placeNumber: Int,
         keywordNames: List<Int>,
-        placeKeywordNumber: List<Int>,
-        callBack: PlaceCallBack<Boolean>
+        placeKeywordNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("keywordName", keywordNames.toString())
-            addProperty("placeKeywordNumber", placeKeywordNumber.toString())
+            addProperty("placeKeywordNumbers", placeKeywordNumbers.toString())
         }
         placeService.updateKeyword(placeNumber, jsonObject)
             .enqueue(object : Callback<ResponseBody> {
@@ -367,10 +366,10 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                     Log.d("responseCode", response.code().toString())
                     Log.d("step5", call.request().body()?.let { bodyToString(it) })
                     if (response.code() == Network.SUCCESS) {
-                        callBack.onSuccess(true)
+                        callback.onSuccess(true)
                     }
                     if (response.code() == Network.SUCCESS) {
-                        callBack.onSuccess(true)
+                        callback.onSuccess(true)
                     }
                 }
 
@@ -380,7 +379,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     override fun updateOpeningHours(
         placeNumber: Int,
         openingTimes: List<String>,
-        callBack: PlaceCallBack<Boolean>
+        callback: PlaceCallback<Boolean>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("openingTime", openingTimes.toString())
@@ -398,7 +397,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                     Log.d("responseCode", response.code().toString())
                     Log.d("step5", call.request().body()?.let { bodyToString(it) })
                     if (response.code() == Network.SUCCESS) {
-                        callBack.onSuccess(true)
+                        callback.onSuccess(true)
                     }
                 }
 
@@ -408,7 +407,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     override fun deletePlace(
         placeNumber: Int,
         memberNumber: Int,
-        callBack: PlaceCallBack<Boolean>
+        callback: PlaceCallback<Boolean>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("memberNumber", memberNumber)
@@ -420,7 +419,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == Network.SUCCESS) {
-                    callBack.onSuccess(true)
+                    callback.onSuccess(true)
                 }
             }
 
@@ -429,7 +428,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
     override fun getHomePlaceList(
         memberNumber: Int?,
-        callBack: PlaceCallBack<List<PlaceResponse>>
+        callback: PlaceCallback<List<PlaceResponse>>
     ) {
         placeService.getHomePlaceList(memberNumber).enqueue(object : Callback<List<PlaceResponse>> {
             override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
@@ -441,7 +440,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 response: Response<List<PlaceResponse>>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                     Logger.d("HomePlaceList 홈 장소 리스트 성공")
                 }
             }
@@ -452,7 +451,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         name: String,
         latitude: String,
         longitude: String,
-        callBack: PlaceCallBack<PlaceDuplicateResponse>
+        callback: PlaceCallback<PlaceDuplicateResponse>
     ) {
         placeService.checkPlace(name, latitude, longitude)
             .enqueue(object : Callback<PlaceDuplicateResponse> {
@@ -465,7 +464,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                     response: Response<PlaceDuplicateResponse>
                 ) {
                     if (response.code() == Network.SUCCESS) {
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                     }
                 }
 

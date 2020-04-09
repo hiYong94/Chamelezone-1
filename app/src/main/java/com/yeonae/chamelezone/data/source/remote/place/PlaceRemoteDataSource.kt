@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
-import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.data.repository.place.PlaceCallback
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceDuplicateResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -18,16 +18,16 @@ interface PlaceRemoteDataSource {
         latitude: BigDecimal,
         longitude: BigDecimal,
         images: List<String>,
-        callBack: PlaceCallBack<String>
+        callback: PlaceCallback<String>
     )
 
-    fun getSearchByMap(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getSearchByAddress(address: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getSearchByKeyword(keyword: String, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getPlaceDetail(placeNumber: Int, memberNumber: Int?, callBack: PlaceCallBack<PlaceResponse>)
-    fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>)
-    fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>)
+    fun getSearchByMap(placeName: String, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getSearchByName(name: String, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getSearchByAddress(address: String, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getSearchByKeyword(keyword: String, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getPlaceDetail(placeNumber: Int, memberNumber: Int?, callback: PlaceCallback<PlaceResponse>)
+    fun getMyPlaceList(memberNumber: Int, callback: PlaceCallback<List<PlaceResponse>>)
+    fun getKeyword(callback: PlaceCallback<List<KeywordResponse>>)
     fun updatePlace(
         placeNumber: Int,
         images: List<String>,
@@ -37,29 +37,29 @@ interface PlaceRemoteDataSource {
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        imageNumber: List<Int>,
-        callBack: PlaceCallBack<Boolean>
+        imageNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
     )
 
     fun updateKeyword(
         placeNumber: Int,
         keywordNames: List<Int>,
-        placeKeywordNumber: List<Int>,
-        callBack: PlaceCallBack<Boolean>
+        placeKeywordNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
     )
 
     fun updateOpeningHours(
         placeNumber: Int,
         openingTimes: List<String>,
-        callBack: PlaceCallBack<Boolean>
+        callback: PlaceCallback<Boolean>
     )
 
-    fun deletePlace(placeNumber: Int, memberNumber: Int, callBack: PlaceCallBack<Boolean>)
-    fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>)
+    fun deletePlace(placeNumber: Int, memberNumber: Int, callback: PlaceCallback<Boolean>)
+    fun getHomePlaceList(memberNumber: Int?, callback: PlaceCallback<List<PlaceResponse>>)
     fun checkPlace(
         name: String,
         latitude: String,
         longitude: String,
-        callBack: PlaceCallBack<PlaceDuplicateResponse>
+        callback: PlaceCallback<PlaceDuplicateResponse>
     )
 }

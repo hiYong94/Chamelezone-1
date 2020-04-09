@@ -75,7 +75,7 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
         )
 
         val placeNumber = arguments?.getInt("placeNumber")
-        val placeKeywordNumber = arguments?.getIntegerArrayList("placeKeywordNumber")
+        val placeKeywordNumbers = arguments?.getIntegerArrayList("placeKeywordNumbers")
         val keyword = arguments?.getStringArrayList("keyword")
         selectedKeyword = arguments?.getStringArrayList("selectedKeyword") as ArrayList<String>
 
@@ -98,8 +98,8 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
                         }
                     }
                 }
-                if (placeNumber != null && placeKeywordNumber != null) {
-                    presenter.updateKeyword(placeNumber, keywords, placeKeywordNumber)
+                if (placeNumber != null && placeKeywordNumbers != null) {
+                    presenter.updateKeyword(placeNumber, keywords, placeKeywordNumbers)
                 }
                 dialog?.cancel()
             }
@@ -144,14 +144,14 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
         const val DIALOG_WIDTH_RATIO = "DIALOG_WIDTH_RATIO"
         fun newInstance(
             placeNumber: Int,
-            placeKeywordNumber: ArrayList<Int>,
+            placeKeywordNumbers: ArrayList<Int>,
             keywordList: ArrayList<String>,
             selectedKeyword: ArrayList<String>
         ): KeywordModifyFragment {
             val frag = KeywordModifyFragment()
             val args = Bundle()
             args.putInt("placeNumber", placeNumber)
-            args.putIntegerArrayList("placeKeywordNumber", placeKeywordNumber)
+            args.putIntegerArrayList("placeKeywordNumbers", placeKeywordNumbers)
             args.putStringArrayList("keyword", keywordList)
             args.putStringArrayList("selectedKeyword", selectedKeyword)
             frag.arguments = args
