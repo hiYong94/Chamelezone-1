@@ -50,7 +50,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     private lateinit var latLng: LatLng
     lateinit var latitude: String
     lateinit var longitude: String
-    val imageNumbers = arrayListOf<Int>()
+    private val imageNumbers = arrayListOf<Int>()
     var placeKeywordNumbers = arrayListOf<Int>()
     private var selectedUriList: List<Uri>? = null
 
@@ -91,7 +91,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 false
             ) as ImageView
             imageContainer.addView(rlSlideImg)
-            rlSlideImg.image_item.run {
+            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
             uri.path?.let { imageUri.add(it) }
@@ -107,11 +107,11 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 false
             ) as ImageView
             imageContainer.addView(rlSlideImg)
-            rlSlideImg.image_item.run {
+            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(IMAGE_RESOURCE + image, measuredWidth, measuredHeight)
             }
         }
-        place.imageNumber.forEach {
+        place.imageNumbers.forEach {
             imageNumbers.add(it)
         }
         edt_place_name.text = SpannableStringBuilder(place.name)
@@ -133,7 +133,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
         edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
         edt_place_text.text = SpannableStringBuilder(place.content)
-        placeKeywordNumbers = place.placeKeywordNumber
+        placeKeywordNumbers = place.placeKeywordNumbers
         selectedKeyword = place.keywordName
         //openingHoursPosition = place.openingTime
     }

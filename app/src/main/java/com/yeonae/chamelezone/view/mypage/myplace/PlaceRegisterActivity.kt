@@ -105,7 +105,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 false
             ) as ImageView
             imageContainer.addView(rlSlideImg)
-            rlSlideImg.image_item.run {
+            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
             uri.path?.let { imageUri.add(it) }
