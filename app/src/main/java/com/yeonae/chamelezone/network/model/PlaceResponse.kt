@@ -32,7 +32,7 @@ data class PlaceResponse(
     val memberNumber: Int,
     @SerializedName("likeStatus")
     val likeStatus: Boolean,
-    @SerializedName("placeKeywordNumber")
+    @SerializedName("placeKeywordNumbers")
     val placeKeywordNumber: ArrayList<Int>,
     @SerializedName("imageNumber")
     val imageNumber: ArrayList<Int>
