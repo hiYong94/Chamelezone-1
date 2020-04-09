@@ -112,7 +112,7 @@ class ReviewCreateActivity : AppCompatActivity(),
             isCreated = false
             Toast.makeText(
                     this@ReviewCreateActivity,
-                    "${R.string.permission_denied}\n$deniedPermissions",
+                    R.string.permission_denied,
                     Toast.LENGTH_SHORT
                 )
                 .show()
