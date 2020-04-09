@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.data.source.remote.place
 
 import android.util.Log
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
@@ -348,9 +349,19 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         placeKeywordNumbers: List<Int>,
         callback: PlaceCallback<Boolean>
     ) {
+        val keywordNamesArray = JsonArray().apply {
+            keywordNames.forEach {
+                add(it)
+            }
+        }
+        val placeKeywordNumbersArray = JsonArray().apply {
+            placeKeywordNumbers.forEach {
+                add(it)
+            }
+        }
         val jsonObject = JsonObject().apply {
-            addProperty("keywordName", keywordNames.toString())
-            addProperty("placeKeywordNumbers", placeKeywordNumbers.toString())
+            add("keywordName", keywordNamesArray)
+            add("placeKeywordNumber", placeKeywordNumbersArray)
         }
         placeService.updateKeyword(placeNumber, jsonObject)
             .enqueue(object : Callback<ResponseBody> {
@@ -381,8 +392,14 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         openingTimes: List<String>,
         callback: PlaceCallback<Boolean>
     ) {
+        val jsonArray = JsonArray().apply {
+            openingTimes.forEach {
+                add(it)
+            }
+        }
+
         val jsonObject = JsonObject().apply {
-            addProperty("openingTime", openingTimes.toString())
+            add("openingTime", jsonArray)
         }
         placeService.updateOpeningHours(placeNumber, jsonObject)
             .enqueue(object : Callback<ResponseBody> {

@@ -35,7 +35,7 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
 
     override fun showResult(response: Boolean) {
         if (response) {
-            context?.shortToast(R.string.success_update_opening_hours)
+            context?.shortToast(R.string.success_update_keyword)
             dialog?.cancel()
         }
     }
