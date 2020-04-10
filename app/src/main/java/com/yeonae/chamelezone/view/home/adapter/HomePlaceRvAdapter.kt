@@ -71,15 +71,23 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
                 }
                 distanceCalculator =
                     distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
-                distance.text = distanceCalculator
+                if (distanceCalculator.isEmpty()) {
+                    distance.text = ""
+                } else {
+                    distance.text = distanceCalculator
+                }
             }
-
         }
 
         fun textChange(text: String) {
             val distance = itemView.distance
             distanceCalculator =
-                distanceByDegree(currentLatitude, currentLongitude, place.latitude.toDouble(), place.longitude.toDouble())
+                distanceByDegree(
+                    currentLatitude,
+                    currentLongitude,
+                    place.latitude.toDouble(),
+                    place.longitude.toDouble()
+                )
             distance.text = distanceCalculator
         }
     }
@@ -97,7 +105,6 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
         } else {
             holder.textChange(distanceCalculator)
         }
-
     }
 
     override fun getItemCount(): Int {
@@ -106,7 +113,7 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
 
     fun itemChange(position: Int) {
 //        notifyItemChanged(placeList.lastIndex, 1)
-        notifyItemChanged(position, itemCount)
+        notifyItemChanged(position, 1)
     }
 
     fun addData(addDataList: List<PlaceResponse>) {
