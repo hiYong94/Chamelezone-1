@@ -7,10 +7,8 @@ import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
 import com.yeonae.chamelezone.network.api.RetrofitConnection.reviewService
 import com.yeonae.chamelezone.network.api.ReviewApi
 import com.yeonae.chamelezone.network.model.ReviewResponse
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
+import com.yeonae.chamelezone.util.Logger
+import okhttp3.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,22 +29,16 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         val content = RequestBody.create(MediaType.parse("text/plain"), content)
 
         val file = ArrayList<MultipartBody.Part>()
-
-        for (i in images.indices) {
-            val extends = images[i].split(".").lastOrNull() ?: "*"
+        images.forEachIndexed { index, _ ->
+            val extends = images[index].split(".").lastOrNull() ?: "*"
             file.add(
                 MultipartBody.Part.createFormData(
                     "images",
-                    images[i],
-                    RequestBody.create(MediaType.parse("image/$extends"), File(images[i]))
+                    images[index],
+                    RequestBody.create(MediaType.parse("image/$extends"), File(images[index]))
                 )
             )
         }
-
-        Log.d("create tag placeNum", placeNumber.toString())
-        Log.d("create tag memberNum", memberNumber.toString())
-        Log.d("create tag content", content.toString())
-        Log.d("create tag file", file.toString())
 
         reviewService.reviewCreate(memberNumber, content, file, placeNumber)
             .enqueue(object : Callback<ResponseBody> {
@@ -56,6 +48,9 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                 ) {
                     if (response.code() == Network.SUCCESS)
                         response.body().let { callBack.onSuccess("리뷰 등록 성공") }
+                    else {
+                        Logger.d("create error ${response.code()}")
+                    }
                 }
 
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -63,6 +58,65 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     Log.d("create tag error", (call.request().toString()))
                 }
             })
+    }
+
+    override fun updateReview(
+        images: List<String>,
+        reviewNumber: Int,
+        memberNumber: Int,
+        placeNumber: Int,
+        content: String,
+        imageNumber: List<Int>,
+        callBack: ReviewCallBack<Boolean>
+    ) {
+        val memberNumber =
+            RequestBody.create(MediaType.parse("text/plain"), memberNumber.toString())
+
+        val content = RequestBody.create(MediaType.parse("text/plain"), content)
+
+        val imageNumberList = ArrayList<RequestBody>()
+        imageNumber.forEach {
+            imageNumberList.add(
+                RequestBody.create(
+                    MediaType.parse("text/plain"), it.toString()
+                )
+            )
+        }
+
+        val file = ArrayList<MultipartBody.Part>()
+        images.forEach {
+            val extends = it.split(".").lastOrNull() ?: "*"
+            file.add(
+                MultipartBody.Part.createFormData(
+                    "images",
+                    it,
+                    RequestBody.create(MediaType.parse("image/$extends"), File(it))
+                )
+            )
+        }
+
+        reviewService.updateReview(
+            placeNumber,
+            file,
+            reviewNumber,
+            memberNumber,
+            content,
+            imageNumberList
+        ).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("create tag error", t.toString())
+                Log.d("create tag error", (call.request().toString()))
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == Network.SUCCESS) {
+                    response.body().let { callBack.onSuccess(true) }
+                    Logger.d("리뷰 수정 성공")
+                } else {
+                    Logger.d("createErrorCode ${response.code()}")
+                }
+            }
+        })
     }
 
     override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
@@ -103,10 +157,6 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     }
                 }
             })
-    }
-
-    override fun updateReview() {
-
     }
 
     override fun deleteReview(

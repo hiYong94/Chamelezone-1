@@ -4,31 +4,36 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.adapter.ImageViewPagerAdapter
 import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
+import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
+import com.yeonae.chamelezone.view.place.adapter.ImageViewPagerAdapter
 import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailPresenter
 import kotlinx.android.synthetic.main.activity_place_detail.*
 
 
-class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
+class PlaceDetailActivity : AppCompatActivity(),
+    MoreButtonFragment.OnModifyClickListener,
+    MoreButtonFragment.OnDeleteClickListener,
+    PlaceDetailContract.View {
     override lateinit var presenter: PlaceDetailContract.Presenter
     private var memberNumber: Int? = null
     private var placeNumber: Int = 0
     private var placeName: String = ""
     private var nameBar = 0
     private var tabBar = 0
+    private lateinit var imageAdapter: ImageViewPagerAdapter
 
     override fun showLikeMessage(response: LikeStatusItem) {
         if (response.likeStatus) {
@@ -50,7 +55,10 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         if (place.likeStatus) {
             btn_like.isChecked = true
         }
-        val imageAdapter = ImageViewPagerAdapter(images)
+        imageAdapter =
+            ImageViewPagerAdapter(
+                images
+            )
         vp_image.adapter = imageAdapter
 
         if (memberNumber == null) {
@@ -140,13 +148,12 @@ class PlaceDetailActivity : AppCompatActivity(), PlaceDetailContract.View {
         }
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        presenter.checkLogin()
-    }
-
     companion object {
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }
+
+    override fun onModifyClick() {}
+
+    override fun onDeleteClick() {}
 }

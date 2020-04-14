@@ -15,7 +15,25 @@ interface ReviewApi {
         @Part("memberNumber") memberNumber: RequestBody,
         @Part("content") content: RequestBody,
         @Part file: ArrayList<MultipartBody.Part>,
-        @Path ("placeNumber") placeNumber: Int
+        @Path("placeNumber") placeNumber: Int
+    ): Call<ResponseBody>
+
+    @Multipart
+    @PUT("/place/{placeNumber}/review/{reviewNumber}")
+    fun updateReview(
+        @Path("placeNumber") placeNumber: Int,
+        @Part file: ArrayList<MultipartBody.Part>,
+        @Path("reviewNumber") reviewNumber: Int,
+        @Part("memberNumber") memberNumber: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part("imageNumber") imageNumber: ArrayList<RequestBody>
+    ): Call<ResponseBody>
+
+    @HTTP(method = "DELETE", path = "/place/{placeNumber}/review/{reviewNumber}", hasBody = true)
+    fun deleteReview(
+        @Path("placeNumber") placeNumber: Int,
+        @Path("reviewNumber") reviewNumber: Int,
+        @Body memberNumber: JsonObject
     ): Call<ResponseBody>
 
     @GET("/place/{placeNumber}/review")
@@ -27,13 +45,6 @@ interface ReviewApi {
     fun getMyReviewList(
         @Path("memberNumber") memberNumber: Int
     ): Call<List<ReviewResponse>>
-
-    @HTTP(method = "DELETE", path = "/place/{placeNumber}/review/{reviewNumber}", hasBody = true)
-    fun deleteReview(
-        @Path("placeNumber") placeNumber: Int,
-        @Path("reviewNumber") reviewNumber: Int,
-        @Body memberNumber: JsonObject
-    ): Call<ResponseBody>
 
     @GET("/place/{placeNumber}/review/{reviewNumber}")
     fun getReviewDetail(

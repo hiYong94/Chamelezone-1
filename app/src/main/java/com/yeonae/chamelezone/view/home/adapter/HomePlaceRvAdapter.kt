@@ -8,7 +8,6 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.network.model.PlaceResponse
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.util.distanceByDegree
 import kotlinx.android.synthetic.main.item_place.view.*
 
@@ -17,8 +16,9 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
     private val placeList = arrayListOf<PlaceResponse>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var likeButtonListener: LikeButtonListener
-    private lateinit var locationListener: OnLocationListener
-
+    private var distanceCalculator = ""
+    private lateinit var place: PlaceResponse
+      
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, place: PlaceResponse)
     }
@@ -58,17 +58,12 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
             }
 
             if (place.savedImageName.isNotEmpty()) {
-                Logger.d("imageList ${place.savedImageName}, ${place.placeNumber}, ${place.memberNumber}")
                 val image = IMAGE_RESOURCE + place.savedImageName[0]
-                Logger.d("image $image")
-                Logger.d("image size ${placeImg.measuredWidth}, ${placeImg.measuredHeight}")
                 placeImg.glideImageSet(image, placeImg.measuredWidth, placeImg.measuredHeight)
             }
 
-
             itemView.setOnClickListener {
                 itemClickListener.onItemClick(itemView, adapterPosition, place)
-
             }
 
             itemView.apply {
@@ -78,12 +73,26 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
                         likeButtonListener.onLikeClick(place, btn_like.isChecked)
                     }
                 }
-
-                val distanceCalculator =
+                distanceCalculator =
                     distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
-                distance.text = distanceCalculator
+                if (distanceCalculator.isEmpty()) {
+                    distance.text = ""
+                } else {
+                    distance.text = distanceCalculator
+                }
             }
+        }
 
+        fun textChange(text: String) {
+            val distance = itemView.distance
+            distanceCalculator =
+                distanceByDegree(
+                    currentLatitude,
+                    currentLongitude,
+                    place.latitude.toDouble(),
+                    place.longitude.toDouble()
+                )
+            distance.text = distanceCalculator
         }
     }
 
@@ -93,17 +102,31 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
         return Holder(view)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(placeList[position])
+    override fun onBindViewHolder(holder: Holder, position: Int, payloads: MutableList<Any>) {
+//        holder.bind(placeList[position])
+        if (payloads.isEmpty()) {
+            holder.bind(placeList[position])
+        } else {
+            holder.textChange(distanceCalculator)
+        }
     }
 
     override fun getItemCount(): Int {
         return placeList.size
     }
 
+    fun itemChange(position: Int) {
+//        notifyItemChanged(placeList.lastIndex, 1)
+        notifyItemChanged(position, 1)
+    }
+
     fun addData(addDataList: List<PlaceResponse>) {
         placeList.clear()
         placeList.addAll(addDataList)
         notifyDataSetChanged()
+    }
+
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(placeList[position])
     }
 }
