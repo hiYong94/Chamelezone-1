@@ -32,7 +32,6 @@ import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_place_modify.*
-import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
 
 class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
@@ -133,6 +132,10 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
         edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
         edt_place_text.text = SpannableStringBuilder(place.content)
+        if(place.addressDetail != null){
+            edt_detail_address.text = SpannableStringBuilder(place.addressDetail)
+        }
+
         placeKeywordNumbers = place.placeKeywordNumbers
         selectedKeyword = place.keywordName
         //openingHoursPosition = place.openingTime
@@ -189,7 +192,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             latLng = findLatLng(applicationContext, "${tv_place_address.text}")
             latitude = latLng.latitude.toString()
             longitude = latLng.longitude.toString()
-            val realAddress = "${tv_place_address.text} ${edt_detail_address.text}"
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
@@ -203,7 +205,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 placeNumber,
                 imageUri,
                 memberNumber,
-                realAddress,
+                "${tv_place_address.text}",
+                "${edt_detail_address.text}",
                 "${edt_place_phone.text}",
                 "${edt_place_text.text}",
                 latitude.toBigDecimal(),
