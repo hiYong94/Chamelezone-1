@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.like.presenter
 
+import com.yeonae.chamelezone.data.model.LikeItem
 import com.yeonae.chamelezone.data.repository.like.LikeCallback
 import com.yeonae.chamelezone.data.repository.like.LikeRepository
 import com.yeonae.chamelezone.data.repository.member.MemberCallback
@@ -27,7 +28,7 @@ class LikePresenter(
     }
 
     override fun getUser() {
-        memberRepository.getMember(object : MemberCallback<UserEntity>{
+        memberRepository.getMember(object : MemberCallback<UserEntity> {
             override fun onSuccess(response: UserEntity) {
                 response.userNumber?.let { getMyLikeList(it) }
             }
@@ -54,9 +55,13 @@ class LikePresenter(
     }
 
     override fun getMyLikeList(memberNumber: Int) {
-        likeRepository.getMyLikeList(memberNumber, object : LikeCallback<List<PlaceResponse>>{
+        likeRepository.getMyLikeList(memberNumber, object : LikeCallback<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
-                view.showMyLikeList(response)
+                val likeItem = mutableListOf<LikeItem>()
+                for (i in response.indices) {
+                    likeItem.add(response[i].toLikeItem())
+                }
+                view.showMyLikeList(likeItem)
             }
 
             override fun onFailure(message: String) {
