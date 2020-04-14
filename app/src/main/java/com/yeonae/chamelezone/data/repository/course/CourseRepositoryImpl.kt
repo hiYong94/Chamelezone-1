@@ -11,27 +11,27 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         title: String,
         content: String,
         image: String,
-        callBack: CourseCallBack<String>
+        callback: CourseCallback<String>
     ) {
-        remoteDataSource.registerCourse(memberNumber, placeNumbers, title, content, image, callBack)
+        remoteDataSource.registerCourse(memberNumber, placeNumbers, title, content, image, callback)
     }
 
-    override fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>) {
-        remoteDataSource.getCourseList(callBack)
+    override fun getCourseList(callback: CourseCallback<List<CourseResponse>>) {
+        remoteDataSource.getCourseList(callback)
     }
 
     override fun getCourseDetail(
         courseNumber: Int,
-        callBack: CourseCallBack<List<CourseResponse>>
+        callback: CourseCallback<List<CourseResponse>>
     ) {
-        remoteDataSource.getCourseDetail(courseNumber, callBack)
+        remoteDataSource.getCourseDetail(courseNumber, callback)
     }
 
     override fun getMyCourseList(
         memberNumber: Int,
-        callBack: CourseCallBack<List<CourseResponse>>
+        callback: CourseCallback<List<CourseResponse>>
     ) {
-        remoteDataSource.getMyCourseList(memberNumber, callBack)
+        remoteDataSource.getMyCourseList(memberNumber, callback)
     }
 
     override fun modifyCourse(
@@ -42,7 +42,7 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         content: String,
         image: String,
         imageNumber: Int,
-        callBack: CourseCallBack<Boolean>
+        callback: CourseCallback<Boolean>
     ) {
         remoteDataSource.modifyCourse(
             courseNumber,
@@ -52,16 +52,16 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
             content,
             image,
             imageNumber,
-            callBack
+            callback
         )
     }
 
     override fun deleteCourse(
         courseNumber: Int,
         memberNumber: Int,
-        callBack: CourseCallBack<Boolean>
+        callback: CourseCallback<Boolean>
     ) {
-        remoteDataSource.deleteCourse(courseNumber, memberNumber, callBack)
+        remoteDataSource.deleteCourse(courseNumber, memberNumber, callback)
     }
 
     companion object {

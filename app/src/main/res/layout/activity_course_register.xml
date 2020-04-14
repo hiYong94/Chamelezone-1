@@ -179,7 +179,7 @@
                         <HorizontalScrollView
                             android:id="@+id/scrollView"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp"
+                            android:layout_height="150dp"
                             android:layout_marginTop="10dp"
                             android:background="@color/colorWhite"
                             android:clipToPadding="false"

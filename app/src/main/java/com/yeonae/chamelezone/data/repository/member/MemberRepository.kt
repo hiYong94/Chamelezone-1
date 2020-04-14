@@ -10,51 +10,51 @@ interface MemberRepository {
         name: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callback: MemberCallback<String>
     )
 
-    fun getMember(callBack: MemberCallBack<UserEntity>)
+    fun getMember(callback: MemberCallback<UserEntity>)
 
     fun login(
         email: String,
         password: String,
-        callBack: MemberCallBack<MemberResponse>,
-        localCallBack: MemberCallBack<Boolean>
+        callback: MemberCallback<MemberResponse>,
+        localCallback: MemberCallback<Boolean>
     )
 
-    fun logout(callBack: MemberCallBack<String>)
+    fun logout(callback: MemberCallback<String>)
 
     fun updateMember(
         memberNumber: Int,
         password: String?,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<Boolean>,
-        localCallBack: MemberCallBack<Boolean>
+        callback: MemberCallback<Boolean>,
+        localCallback: MemberCallback<Boolean>
     )
 
-    fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>)
+    fun deleteMember(memberNumber: Int, callback: MemberCallback<String>)
 
-    fun checkLogin(callBack: MemberCallBack<Boolean>)
+    fun checkLogin(callback: MemberCallback<Boolean>)
 
-    fun deleteLoginUser(callBack: MemberCallBack<Boolean>)
+    fun deleteLoginUser(callback: MemberCallback<Boolean>)
 
-    fun checkEmail(email: String, callBack: MemberCallBack<EmailResponse>)
+    fun checkEmail(email: String, callback: MemberCallback<EmailResponse>)
 
-    fun checkNickname(nickname: String, callBack: MemberCallBack<NicknameResponse>)
+    fun checkNickname(nickname: String, callback: MemberCallback<NicknameResponse>)
 
-    fun findEmail(name: String, phone: String, callBack: MemberCallBack<List<EmailResponse>>)
+    fun findEmail(name: String, phone: String, callback: MemberCallback<List<EmailResponse>>)
 
-    fun findPassword(email: String, phone: String, callBack: MemberCallBack<FindPasswordResponse>)
+    fun findPassword(email: String, phone: String, callback: MemberCallback<FindPasswordResponse>)
 
     fun checkSecurityCode(
         securityCode: String,
         email: String,
         phone: String,
-        callBack: MemberCallBack<SecurityCodeResponse>
+        callback: MemberCallback<SecurityCodeResponse>
     )
 
-    fun changePassword(password: String, memberNumber: Int, callBack: MemberCallBack<Boolean>)
+    fun changePassword(password: String, memberNumber: Int, callback: MemberCallback<Boolean>)
 }
 
 

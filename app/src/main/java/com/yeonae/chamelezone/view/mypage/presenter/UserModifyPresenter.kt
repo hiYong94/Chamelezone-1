@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.presenter
 
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.model.NicknameResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
@@ -10,7 +10,7 @@ class UserModifyPresenter(
     private val view: UserModifyContract.View
 ) : UserModifyContract.Presenter {
     override fun getUser() {
-        repository.getMember(object : MemberCallBack<UserEntity> {
+        repository.getMember(object : MemberCallback<UserEntity> {
             override fun onSuccess(response: UserEntity) {
                 view.showUserInfo(response)
             }
@@ -33,7 +33,7 @@ class UserModifyPresenter(
             password,
             nickName,
             phone,
-            object : MemberCallBack<Boolean> {
+            object : MemberCallback<Boolean> {
                 override fun onSuccess(response: Boolean) {
                     view.showMessage(response)
                 }
@@ -43,7 +43,7 @@ class UserModifyPresenter(
                 }
 
             },
-            object : MemberCallBack<Boolean> {
+            object : MemberCallback<Boolean> {
                 override fun onSuccess(response: Boolean) {
 
                 }
@@ -56,7 +56,7 @@ class UserModifyPresenter(
     }
 
     override fun checkNickname(nickName: String) {
-        repository.checkNickname(nickName, object : MemberCallBack<NicknameResponse> {
+        repository.checkNickname(nickName, object : MemberCallback<NicknameResponse> {
             override fun onSuccess(response: NicknameResponse) {
                 view.showNicknameMessage(response.nicknameCheck)
             }
