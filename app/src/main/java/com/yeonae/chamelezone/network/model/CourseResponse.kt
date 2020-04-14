@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.network.model
 
 import com.google.gson.annotations.SerializedName
+import com.yeonae.chamelezone.data.model.CourseDetailItem
 import com.yeonae.chamelezone.data.model.CourseItem
 import com.yeonae.chamelezone.data.model.MyCourseItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
@@ -26,6 +27,8 @@ data class CourseResponse(
     val placeName: String,
     @SerializedName("address")
     val address: String,
+    @SerializedName("addressDetail")
+    var addressDetail: String,
     @SerializedName("placeImage")
     val placeImages: String,
     @SerializedName("courseImage")
@@ -55,6 +58,26 @@ data class CourseResponse(
             title,
             content,
             imageFormat
+        )
+    }
+
+    fun toCourseDetailItem(): CourseDetailItem {
+        val courseImgFormat = IMAGE_RESOURCE + courseImage
+        val placeImgFormat = IMAGE_RESOURCE + placeImages
+        if(addressDetail == null){
+            addressDetail = ""
+        }
+        val realAddress = "$address $addressDetail"
+        return CourseDetailItem(
+            nickName,
+            title,
+            content,
+            regiDate,
+            keywordName,
+            placeName,
+            realAddress,
+            placeImgFormat,
+            courseImgFormat
         )
     }
 }
