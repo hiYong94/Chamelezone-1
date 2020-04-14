@@ -1,9 +1,8 @@
 package com.yeonae.chamelezone.view.like.presenter
 
-import com.yeonae.chamelezone.data.model.LikeStatusItem
-import com.yeonae.chamelezone.data.repository.like.LikeCallBack
+import com.yeonae.chamelezone.data.repository.like.LikeCallback
 import com.yeonae.chamelezone.data.repository.like.LikeRepository
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.model.LikeResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
@@ -15,7 +14,7 @@ class LikePresenter(
     private val view: LikeContract.View
 ) : LikeContract.Presenter {
     override fun checkLogin() {
-        memberRepository.checkLogin(object : MemberCallBack<Boolean> {
+        memberRepository.checkLogin(object : MemberCallback<Boolean> {
             override fun onSuccess(response: Boolean) {
                 view.showResultView(response)
             }
@@ -28,7 +27,7 @@ class LikePresenter(
     }
 
     override fun getUser() {
-        memberRepository.getMember(object : MemberCallBack<UserEntity>{
+        memberRepository.getMember(object : MemberCallback<UserEntity>{
             override fun onSuccess(response: UserEntity) {
                 response.userNumber?.let { getMyLikeList(it) }
             }
@@ -42,7 +41,7 @@ class LikePresenter(
 
     override fun deleteLike(memberNumber: Int, placeNumber: Int) {
         likeRepository.deleteLike(memberNumber, placeNumber, object :
-            LikeCallBack<LikeResponse> {
+            LikeCallback<LikeResponse> {
             override fun onSuccess(response: LikeResponse) {
                 view.showLikeState(response.toLikeStatusItem())
             }
@@ -55,7 +54,7 @@ class LikePresenter(
     }
 
     override fun getMyLikeList(memberNumber: Int) {
-        likeRepository.getMyLikeList(memberNumber, object : LikeCallBack<List<PlaceResponse>>{
+        likeRepository.getMyLikeList(memberNumber, object : LikeCallback<List<PlaceResponse>>{
             override fun onSuccess(response: List<PlaceResponse>) {
                 view.showMyLikeList(response)
             }

@@ -27,6 +27,10 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
         fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean)
     }
 
+    interface OnLocationListener {
+        fun onLocation()
+    }
+
     fun setItemClickListener(clickListener: OnItemClickListener) {
         itemClickListener = clickListener
     }

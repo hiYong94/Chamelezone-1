@@ -59,16 +59,27 @@ interface PlaceApi {
     @Multipart
     @PUT("/place/{placeNumber}")
     fun updatePlace(
-        @Part image: ArrayList<MultipartBody.Part>,
+        @Path("placeNumber") placeNumber: Int,
+        @Part images: ArrayList<MultipartBody.Part>,
         @Part("memberNumber") memberNumber: RequestBody,
-        @Part("keywordName") keywordName: ArrayList<RequestBody>,
-        @Part("name") name: RequestBody,
         @Part("address") address: RequestBody,
-        @Part("openingTime") openingTime: ArrayList<RequestBody>,
         @Part("phoneNumber") phoneNumber: RequestBody,
         @Part("content") content: RequestBody,
         @Part("latitude") latitude: RequestBody,
-        @Part("longitude") longitude: RequestBody
+        @Part("longitude") longitude: RequestBody,
+        @Part("imageNumber") imageNumber: ArrayList<RequestBody>
+    ): Call<ResponseBody>
+
+    @PUT("/place/{placeNumber}/keyword")
+    fun updateKeyword(
+        @Path("placeNumber") placeNumber: Int,
+        @Body keyword: JsonObject
+    ): Call<ResponseBody>
+
+    @PUT("/place/{placeNumber}/openingTime")
+    fun updateOpeningHours(
+        @Path("placeNumber") placeNumber: Int,
+        @Body openingTime: JsonObject
     ): Call<ResponseBody>
 
     @HTTP(method = "DELETE", path = "/place/{placeNumber}", hasBody = true)

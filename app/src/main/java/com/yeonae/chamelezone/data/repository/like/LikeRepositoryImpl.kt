@@ -11,21 +11,21 @@ class LikeRepositoryImpl private constructor(
     override fun selectLike(
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<LikeResponse>
+        callback: LikeCallback<LikeResponse>
     ) {
-        remoteDataSource.selectLike(memberNumber, placeNumber, callBack)
+        remoteDataSource.selectLike(memberNumber, placeNumber, callback)
     }
 
     override fun deleteLike(
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<LikeResponse>
+        callback: LikeCallback<LikeResponse>
     ) {
-        remoteDataSource.deleteLike(memberNumber, placeNumber, callBack)
+        remoteDataSource.deleteLike(memberNumber, placeNumber, callback)
     }
 
-    override fun getMyLikeList(memberNumber: Int, callBack: LikeCallBack<List<PlaceResponse>>) {
-        remoteDataSource.getMyLikeList(memberNumber, callBack)
+    override fun getMyLikeList(memberNumber: Int, callback: LikeCallback<List<PlaceResponse>>) {
+        remoteDataSource.getMyLikeList(memberNumber, callback)
     }
 
     companion object {

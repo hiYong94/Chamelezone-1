@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.view.login.presenter
 
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.model.EmailResponse
 import com.yeonae.chamelezone.network.model.NicknameResponse
@@ -22,7 +22,7 @@ class JoinPresenter(
             name,
             nickName,
             phone,
-            object : MemberCallBack<String> {
+            object : MemberCallback<String> {
                 override fun onSuccess(response: String) {
                     joinView.showMessage(response)
                 }
@@ -35,7 +35,7 @@ class JoinPresenter(
     }
 
     override fun checkEmail(email: String) {
-        memberRepository.checkEmail(email, object : MemberCallBack<EmailResponse>{
+        memberRepository.checkEmail(email, object : MemberCallback<EmailResponse>{
             override fun onSuccess(response: EmailResponse) {
                 joinView.showEmailMessage(response.emailCheck)
             }
@@ -48,7 +48,7 @@ class JoinPresenter(
     }
 
     override fun checkNickname(nickName: String) {
-        memberRepository.checkNickname(nickName, object : MemberCallBack<NicknameResponse>{
+        memberRepository.checkNickname(nickName, object : MemberCallback<NicknameResponse>{
             override fun onSuccess(response: NicknameResponse) {
                 joinView.showNicknameMessage(response.nicknameCheck)
             }
