@@ -3,7 +3,7 @@ package com.yeonae.chamelezone.data.source.remote.course
 import android.util.Log
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.repository.course.CourseCallBack
+import com.yeonae.chamelezone.data.repository.course.CourseCallback
 import com.yeonae.chamelezone.network.api.CourseApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.courseService
 import com.yeonae.chamelezone.network.model.CourseResponse
@@ -27,7 +27,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         title: String,
         content: String,
         image: String,
-        callBack: CourseCallBack<String>
+        callback: CourseCallback<String>
     ) {
 
         val file = File(image)
@@ -68,9 +68,9 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == SUCCESS) {
-                        callBack.onSuccess(App.instance.context().getString(R.string.success_register_course))
+                        callback.onSuccess(App.instance.context().getString(R.string.success_register_course))
                     } else {
-                        callBack.onFailure("코스 등록 실패")
+                        callback.onFailure("코스 등록 실패")
                     }
                     Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
                     (call.request().body() as MultipartBody).parts().forEach {
@@ -82,7 +82,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             })
     }
 
-    override fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>) {
+    override fun getCourseList(callback: CourseCallback<List<CourseResponse>>) {
         courseService.getCourseList().enqueue(object : Callback<List<CourseResponse>> {
             override fun onFailure(call: Call<List<CourseResponse>>, t: Throwable) {
                 Log.e("tag", t.toString())
@@ -93,7 +93,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                 response: Response<List<CourseResponse>>
             ) {
                 if (response.code() == SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 }
             }
         })
@@ -101,7 +101,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
 
     override fun getCourseDetail(
         courseNumber: Int,
-        callBack: CourseCallBack<List<CourseResponse>>
+        callback: CourseCallback<List<CourseResponse>>
     ) {
         courseService.getCourseDetail(courseNumber)
             .enqueue(object : Callback<List<CourseResponse>> {
@@ -114,7 +114,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     response: Response<List<CourseResponse>>
                 ) {
                     if (response.code() == SUCCESS) {
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                     }
                 }
 
@@ -123,7 +123,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
 
     override fun getMyCourseList(
         memberNumber: Int,
-        callBack: CourseCallBack<List<CourseResponse>>
+        callback: CourseCallback<List<CourseResponse>>
     ) {
         courseService.getMyCourseList(memberNumber)
             .enqueue(object : Callback<List<CourseResponse>> {
@@ -136,9 +136,9 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     response: Response<List<CourseResponse>>
                 ) {
                     if (response.code() == SUCCESS) {
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                     } else if (response.code() == REQUEST_ERR) {
-                        callBack.onFailure(App.instance.context().getString(R.string.register_my_course))
+                        callback.onFailure(App.instance.context().getString(R.string.register_my_course))
                     }
                 }
 
@@ -153,7 +153,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         content: String,
         image: String,
         imageNumber: Int,
-        callBack: CourseCallBack<Boolean>
+        callback: CourseCallback<Boolean>
     ) {
         val file = File(image)
         val extends = image.split(".").lastOrNull() ?: "*"
@@ -204,7 +204,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(true)
+                    callback.onSuccess(true)
                 }
             }
 
@@ -214,7 +214,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     override fun deleteCourse(
         courseNumber: Int,
         memberNumber: Int,
-        callBack: CourseCallBack<Boolean>
+        callback: CourseCallback<Boolean>
     ) {
         courseService.deleteCourse(courseNumber, memberNumber)
             .enqueue(object : Callback<ResponseBody> {
@@ -227,7 +227,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == SUCCESS) {
-                        callBack.onSuccess(true)
+                        callback.onSuccess(true)
                     }
                 }
 

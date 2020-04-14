@@ -1,7 +1,7 @@
 package com.yeonae.chamelezone.view.mypage.myreview.presenter
 
 import com.yeonae.chamelezone.data.model.ReviewItem
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
 import com.yeonae.chamelezone.data.repository.review.ReviewRepository
@@ -30,7 +30,7 @@ class MyReviewPresenter(
     }
 
     override fun getMember() {
-        memberRepository.getMember(object : MemberCallBack<UserEntity> {
+        memberRepository.getMember(object : MemberCallback<UserEntity> {
             override fun onSuccess(response: UserEntity) {
                 myReviewView.getMember(response)
             }
@@ -42,7 +42,7 @@ class MyReviewPresenter(
     }
 
     override fun checkMember() {
-        memberRepository.checkLogin(object : MemberCallBack<Boolean> {
+        memberRepository.checkLogin(object : MemberCallback<Boolean> {
             override fun onSuccess(response: Boolean) {
                 myReviewView.getMemberCheck(response)
             }

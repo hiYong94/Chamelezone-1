@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.network.api.MemberApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.memberService
 import com.yeonae.chamelezone.network.model.*
@@ -21,7 +21,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         name: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callback: MemberCallback<String>
     ) {
         val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
@@ -38,7 +38,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 response: Response<ResponseBody>
             ) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(App.instance.context().getString(R.string.success_register_member))
+                    callback.onSuccess(App.instance.context().getString(R.string.success_register_member))
                 }
             }
 
@@ -52,7 +52,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
     override fun login(
         email: String,
         password: String,
-        callBack: MemberCallBack<MemberResponse>
+        callback: MemberCallback<MemberResponse>
     ) {
         val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
@@ -66,9 +66,9 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 response: Response<MemberResponse>
             ) {
                 if (response.code() == SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 } else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(App.instance.context().getString(R.string.check_email_password_again))
+                    callback.onFailure(App.instance.context().getString(R.string.check_email_password_again))
                 }
             }
 
@@ -83,7 +83,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         password: String?,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<Boolean>
+        callback: MemberCallback<Boolean>
     ) {
         val requestBody = JsonObject().apply {
             addProperty(MEMBER_NUMBER, memberNumber)
@@ -98,7 +98,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == SUCCESS) {
-                        callBack.onSuccess(true)
+                        callback.onSuccess(true)
                     }
                 }
 
@@ -109,11 +109,11 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
     }
 
-    override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {
+    override fun deleteMember(memberNumber: Int, callback: MemberCallback<String>) {
         memberService.deleteMember(memberNumber).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(App.instance.context().getString(R.string.success_delete_member))
+                    callback.onSuccess(App.instance.context().getString(R.string.success_delete_member))
                 }
             }
 
@@ -123,7 +123,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         })
     }
 
-    override fun checkEmail(email: String, callBack: MemberCallBack<EmailResponse>) {
+    override fun checkEmail(email: String, callback: MemberCallback<EmailResponse>) {
         memberService.checkEmail(email).enqueue(object : Callback<EmailResponse> {
             override fun onFailure(call: Call<EmailResponse>, t: Throwable) {
                 Log.e("tag", t.toString())
@@ -131,14 +131,14 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
             override fun onResponse(call: Call<EmailResponse>, response: Response<EmailResponse>) {
                 if (response.code() == SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 }
             }
 
         })
     }
 
-    override fun checkNickname(nickname: String, callBack: MemberCallBack<NicknameResponse>) {
+    override fun checkNickname(nickname: String, callback: MemberCallback<NicknameResponse>) {
         memberService.checkNickname(nickname).enqueue(object : Callback<NicknameResponse> {
             override fun onFailure(call: Call<NicknameResponse>, t: Throwable) {
                 Log.e("tag", t.toString())
@@ -149,7 +149,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                 response: Response<NicknameResponse>
             ) {
                 if (response.code() == SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 }
             }
 
@@ -159,7 +159,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
     override fun findEmail(
         name: String,
         phone: String,
-        callBack: MemberCallBack<List<EmailResponse>>
+        callback: MemberCallback<List<EmailResponse>>
     ) {
         val requestBody = JsonObject().apply {
             addProperty(NAME, name)
@@ -176,9 +176,9 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                     response: Response<List<EmailResponse>>
                 ) {
                     if (response.code() == SUCCESS) {
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                     } else if (response.code() == REQUEST_ERR) {
-                        callBack.onFailure(App.instance.context().getString(R.string.information_not_exist))
+                        callback.onFailure(App.instance.context().getString(R.string.information_not_exist))
                     }
                 }
 
@@ -188,7 +188,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
     override fun findPassword(
         email: String,
         phone: String,
-        callBack: MemberCallBack<FindPasswordResponse>
+        callback: MemberCallback<FindPasswordResponse>
     ) {
         val requestBody = JsonObject().apply {
             addProperty(EMAIL, email)
@@ -205,9 +205,9 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                     response: Response<FindPasswordResponse>
                 ) {
                     if (response.code() == SUCCESS) {
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                     } else if (response.code() == REQUEST_ERR) {
-                        callBack.onFailure(App.instance.context().getString(R.string.information_not_exist))
+                        callback.onFailure(App.instance.context().getString(R.string.information_not_exist))
                     }
                 }
 
@@ -218,7 +218,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         securityCode: String,
         email: String,
         phone: String,
-        callBack: MemberCallBack<SecurityCodeResponse>
+        callback: MemberCallback<SecurityCodeResponse>
     ) {
         val requestBody = JsonObject().apply {
             addProperty(SECURITY_CODE, securityCode)
@@ -236,9 +236,9 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
                     response: Response<SecurityCodeResponse>
                 ) {
                     if (response.code() == SUCCESS) {
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                     } else if (response.code() == REQUEST_ERR) {
-                        callBack.onFailure(App.instance.context().getString(R.string.not_match_security_code))
+                        callback.onFailure(App.instance.context().getString(R.string.not_match_security_code))
                     }
                 }
 
@@ -248,7 +248,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
     override fun changePassword(
         password: String,
         memberNumber: Int,
-        callBack: MemberCallBack<Boolean>
+        callback: MemberCallback<Boolean>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty(PASSWORD, password)
@@ -261,7 +261,7 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == SUCCESS) {
-                    callBack.onSuccess(true)
+                    callback.onSuccess(true)
                 }
             }
 

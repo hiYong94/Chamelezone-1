@@ -19,7 +19,7 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         latitude: BigDecimal,
         longitude: BigDecimal,
         images: List<String>,
-        callBack: PlaceCallBack<String>
+        callback: PlaceCallback<String>
     ) {
         remoteDataSource.registerPlace(
             memberNumber,
@@ -32,89 +32,107 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
             latitude,
             longitude,
             images,
-            callBack
+            callback
         )
     }
 
-    override fun getSearchByMap(placeName: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
-        remoteDataSource.getSearchByMap(placeName, callBack)
+    override fun getSearchByMap(placeName: String, callback: PlaceCallback<List<PlaceResponse>>) {
+        remoteDataSource.getSearchByMap(placeName, callback)
     }
 
-    override fun getSearchByName(name: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
-        remoteDataSource.getSearchByName(name, callBack)
+    override fun getSearchByName(name: String, callback: PlaceCallback<List<PlaceResponse>>) {
+        remoteDataSource.getSearchByName(name, callback)
     }
 
-    override fun getSearchByAddress(address: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
-        remoteDataSource.getSearchByAddress(address, callBack)
+    override fun getSearchByAddress(address: String, callback: PlaceCallback<List<PlaceResponse>>) {
+        remoteDataSource.getSearchByAddress(address, callback)
     }
 
-    override fun getSearchByKeyword(keyword: String, callBack: PlaceCallBack<List<PlaceResponse>>) {
-        remoteDataSource.getSearchByKeyword(keyword, callBack)
+    override fun getSearchByKeyword(keyword: String, callback: PlaceCallback<List<PlaceResponse>>) {
+        remoteDataSource.getSearchByKeyword(keyword, callback)
     }
 
     override fun getPlaceDetail(
         placeNumber: Int,
         memberNumber: Int?,
-        callBack: PlaceCallBack<PlaceResponse>
+        callback: PlaceCallback<PlaceResponse>
     ) {
-        remoteDataSource.getPlaceDetail(placeNumber, memberNumber, callBack)
+        remoteDataSource.getPlaceDetail(placeNumber, memberNumber, callback)
     }
 
-    override fun getMyPlaceList(memberNumber: Int, callBack: PlaceCallBack<List<PlaceResponse>>) {
-        remoteDataSource.getMyPlaceList(memberNumber, callBack)
+    override fun getMyPlaceList(memberNumber: Int, callback: PlaceCallback<List<PlaceResponse>>) {
+        remoteDataSource.getMyPlaceList(memberNumber, callback)
     }
 
-    override fun getKeyword(callBack: PlaceCallBack<List<KeywordResponse>>) {
-        remoteDataSource.getKeyword(callBack)
+    override fun getKeyword(callback: PlaceCallback<List<KeywordResponse>>) {
+        remoteDataSource.getKeyword(callback)
     }
 
-    override fun modifyPlace(
+    override fun updatePlace(
+        placeNumber: Int,
+        images: List<String>,
         memberNumber: Int,
-        keywordNames: List<Int>,
-        name: String,
         address: String,
-        openingTimes: List<String>,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        images: List<String>,
-        callBack: PlaceCallBack<Boolean>
+        imageNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
     ) {
-        remoteDataSource.modifyPlace(
+        remoteDataSource.updatePlace(
+            placeNumber,
+            images,
             memberNumber,
-            keywordNames,
-            name,
             address,
-            openingTimes,
             phoneNumber,
             content,
             latitude,
             longitude,
-            images,
-            callBack
+            imageNumbers,
+            callback
         )
+    }
+
+    override fun updateKeyword(
+        placeNumber: Int,
+        keywordNames: List<Int>,
+        placeKeywordNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
+    ) {
+        remoteDataSource.updateKeyword(placeNumber, keywordNames, placeKeywordNumbers, callback)
+    }
+
+    override fun updateOpeningHours(
+        placeNumber: Int,
+        openingTimes: List<String>,
+        callback: PlaceCallback<Boolean>
+    ) {
+        remoteDataSource.updateOpeningHours(placeNumber, openingTimes, callback)
     }
 
     override fun deletePlace(
         placeNumber: Int,
         memberNumber: Int,
-        callBack: PlaceCallBack<Boolean>
+        callback: PlaceCallback<Boolean>
     ) {
-        remoteDataSource.deletePlace(placeNumber, memberNumber, callBack)
+        remoteDataSource.deletePlace(placeNumber, memberNumber, callback)
     }
 
-    override fun getHomePlaceList(memberNumber: Int?, callBack: PlaceCallBack<List<PlaceResponse>>) {
-        remoteDataSource.getHomePlaceList(memberNumber, callBack)
+    override fun getHomePlaceList(
+        memberNumber: Int?,
+        callback: PlaceCallback<List<PlaceResponse>>
+    ) {
+        remoteDataSource.getHomePlaceList(memberNumber, callback)
     }
 
     override fun checkPlace(
         name: String,
         latitude: String,
         longitude: String,
-        callBack: PlaceCallBack<PlaceDuplicateResponse>
+        callback: PlaceCallback<PlaceDuplicateResponse>
     ) {
-        remoteDataSource.checkPlace(name, latitude, longitude, callBack)
+        remoteDataSource.checkPlace(name, latitude, longitude, callback)
     }
 
     companion object {

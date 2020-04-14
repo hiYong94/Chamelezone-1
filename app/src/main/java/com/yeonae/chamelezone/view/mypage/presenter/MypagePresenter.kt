@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.presenter
 
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
@@ -9,7 +9,7 @@ class MypagePresenter(
     private val view: MypageContract.View
 ) : MypageContract.Presenter {
     override fun logout() {
-        repository.logout(object : MemberCallBack<String>{
+        repository.logout(object : MemberCallback<String>{
             override fun onSuccess(response: String) {
 
             }
@@ -22,7 +22,7 @@ class MypagePresenter(
     }
 
     override fun checkLogin() {
-        repository.checkLogin(object : MemberCallBack<Boolean>{
+        repository.checkLogin(object : MemberCallback<Boolean>{
             override fun onSuccess(response: Boolean) {
                 view.showResultView(response)
             }
@@ -35,7 +35,7 @@ class MypagePresenter(
     }
 
     override fun getUser() {
-        repository.getMember(object : MemberCallBack<UserEntity>{
+        repository.getMember(object : MemberCallback<UserEntity>{
             override fun onSuccess(response: UserEntity) {
                 view.showUserInfo(response)
             }
@@ -48,7 +48,7 @@ class MypagePresenter(
     }
 
     override fun deleteUser(memberNumber: Int) {
-        repository.deleteMember(memberNumber, object : MemberCallBack<String>{
+        repository.deleteMember(memberNumber, object : MemberCallback<String>{
             override fun onSuccess(response: String) {
                 view.showMessage(response)
             }

@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.view.login.presenter
 
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 
 class ChangePasswordPresenter(
@@ -8,7 +8,7 @@ class ChangePasswordPresenter(
     private val view: ChangePasswordContract.View
 ) : ChangePasswordContract.Presenter {
     override fun changePassword(password: String, memberNumber: Int) {
-        repository.changePassword(password, memberNumber, object : MemberCallBack<Boolean> {
+        repository.changePassword(password, memberNumber, object : MemberCallback<Boolean> {
             override fun onSuccess(response: Boolean) {
                 view.showResultView(response)
             }

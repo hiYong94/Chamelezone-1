@@ -1,9 +1,9 @@
 package com.yeonae.chamelezone.view.course.presenter
 
 import android.util.Log
-import com.yeonae.chamelezone.data.repository.course.CourseCallBack
+import com.yeonae.chamelezone.data.repository.course.CourseCallback
 import com.yeonae.chamelezone.data.repository.course.CourseRepository
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 
@@ -25,7 +25,7 @@ class CourseRegisterPresenter(
             title,
             content,
             image,
-            object : CourseCallBack<String> {
+            object : CourseCallback<String> {
                 override fun onSuccess(response: String) {
                     view.showMessage(response)
                 }
@@ -38,7 +38,7 @@ class CourseRegisterPresenter(
     }
 
     override fun getUser() {
-        memberRepository.getMember(object : MemberCallBack<UserEntity> {
+        memberRepository.getMember(object : MemberCallback<UserEntity> {
             override fun onSuccess(response: UserEntity) {
                 view.deliverUserInfo(response)
             }

@@ -9,12 +9,12 @@ interface CourseRepository {
         title: String,
         content: String,
         image: String,
-        callBack: CourseCallBack<String>
+        callback: CourseCallback<String>
     )
 
-    fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>)
-    fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<List<CourseResponse>>)
-    fun getMyCourseList(memberNumber: Int, callBack: CourseCallBack<List<CourseResponse>>)
+    fun getCourseList(callback: CourseCallback<List<CourseResponse>>)
+    fun getCourseDetail(courseNumber: Int, callback: CourseCallback<List<CourseResponse>>)
+    fun getMyCourseList(memberNumber: Int, callback: CourseCallback<List<CourseResponse>>)
     fun modifyCourse(
         courseNumber: Int,
         memberNumber: Int,
@@ -23,8 +23,8 @@ interface CourseRepository {
         content: String,
         image: String,
         imageNumber: Int,
-        callBack: CourseCallBack<Boolean>
+        callback: CourseCallback<Boolean>
     )
 
-    fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<Boolean>)
+    fun deleteCourse(courseNumber: Int, memberNumber: Int, callback: CourseCallback<Boolean>)
 }

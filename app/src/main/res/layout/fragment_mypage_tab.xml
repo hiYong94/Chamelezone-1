@@ -34,203 +34,214 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_nick_name"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:visibility="gone">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/btn_nick_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="20dp"
-            android:padding="10dp"
-            android:textSize="18sp" />
-    </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="15dp"
-        android:background="@color/lightGray" />
-
-    <LinearLayout
-        android:id="@+id/layout_user_modify"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/btn_user_modify"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:padding="10dp"
-            android:text="@string/member_info_modify"
-            android:textSize="15dp" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/lightGray" />
+            <LinearLayout
+                android:id="@+id/layout_nick_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:visibility="gone">
 
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/btn_nick_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="20dp"
+                    android:padding="10dp"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/layout_my_review"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/lightGray" />
 
-        <TextView
-            android:id="@+id/btn_my_review"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:padding="10dp"
-            android:text="@string/my_review"
-            android:textSize="15dp" />
+            <LinearLayout
+                android:id="@+id/layout_user_modify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/lightGray" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/btn_user_modify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:text="@string/member_info_modify"
+                    android:textSize="15dp" />
 
-    <LinearLayout
-        android:id="@+id/layout_my_place"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/lightGray" />
 
-        <TextView
-            android:id="@+id/btn_my_place"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:padding="10dp"
-            android:text="@string/my_place"
-            android:textSize="15dp" />
+            </LinearLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/lightGray" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_my_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-    <LinearLayout
-        android:id="@+id/layout_my_course"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+                <TextView
+                    android:id="@+id/btn_my_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:text="@string/my_review"
+                    android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/btn_my_course"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:padding="10dp"
-            android:text="@string/my_course"
-            android:textSize="15dp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/lightGray" />
+            </LinearLayout>
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/lightGray" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_my_place"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-    <TextView
-        android:id="@+id/btn_intro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:padding="10dp"
-        android:text="@string/chamelezone_info"
-        android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/btn_my_place"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:text="@string/my_place"
+                    android:textSize="15dp" />
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/lightGray" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/lightGray" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/btn_personal_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
-        android:padding="10dp"
-        android:text="@string/privacy"
-        android:textSize="15dp" />
+            <LinearLayout
+                android:id="@+id/layout_my_course"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/lightGray" />
+                <TextView
+                    android:id="@+id/btn_my_course"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:text="@string/my_course"
+                    android:textSize="15dp" />
 
-    <LinearLayout
-        android:id="@+id/layout_logout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/lightGray" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/btn_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:padding="10dp"
-            android:text="@string/logout"
-            android:textSize="15dp" />
+            <TextView
+                android:id="@+id/btn_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+                android:text="@string/chamelezone_info"
+                android:textSize="15dp" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/lightGray" />
-    </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/lightGray" />
 
-    <LinearLayout
-        android:id="@+id/layout_user_delete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+            <TextView
+                android:id="@+id/btn_personal_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="5dp"
+                android:padding="10dp"
+                android:text="@string/privacy"
+                android:textSize="15dp" />
 
-        <TextView
-            android:id="@+id/btn_user_delete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:padding="10dp"
-            android:text="@string/member_delete"
-            android:textSize="15dp" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/lightGray" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/lightGray" />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/layout_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/btn_logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:text="@string/logout"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/lightGray" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_user_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/btn_user_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="5dp"
+                    android:padding="10dp"
+                    android:text="@string/member_delete"
+                    android:textSize="15dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/lightGray" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

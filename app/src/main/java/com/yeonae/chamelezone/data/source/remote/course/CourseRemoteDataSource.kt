@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.data.source.remote.course
 
-import com.yeonae.chamelezone.data.repository.course.CourseCallBack
+import com.yeonae.chamelezone.data.repository.course.CourseCallback
 import com.yeonae.chamelezone.network.model.CourseResponse
 
 interface CourseRemoteDataSource {
@@ -10,12 +10,12 @@ interface CourseRemoteDataSource {
         title: String,
         content: String,
         image: String,
-        callBack: CourseCallBack<String>
+        callback: CourseCallback<String>
     )
 
-    fun getCourseList(callBack: CourseCallBack<List<CourseResponse>>)
-    fun getCourseDetail(courseNumber: Int, callBack: CourseCallBack<List<CourseResponse>>)
-    fun getMyCourseList(memberNumber: Int, callBack: CourseCallBack<List<CourseResponse>>)
+    fun getCourseList(callback: CourseCallback<List<CourseResponse>>)
+    fun getCourseDetail(courseNumber: Int, callback: CourseCallback<List<CourseResponse>>)
+    fun getMyCourseList(memberNumber: Int, callback: CourseCallback<List<CourseResponse>>)
     fun modifyCourse(
         courseNumber: Int,
         memberNumber: Int,
@@ -24,8 +24,8 @@ interface CourseRemoteDataSource {
         content: String,
         image: String,
         imageNumber: Int,
-        callBack: CourseCallBack<Boolean>
+        callback: CourseCallback<Boolean>
     )
 
-    fun deleteCourse(courseNumber: Int, memberNumber: Int, callBack: CourseCallBack<Boolean>)
+    fun deleteCourse(courseNumber: Int, memberNumber: Int, callback: CourseCallback<Boolean>)
 }
