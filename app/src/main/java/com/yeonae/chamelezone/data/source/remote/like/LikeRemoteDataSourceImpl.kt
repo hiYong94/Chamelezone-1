@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.repository.like.LikeCallBack
+import com.yeonae.chamelezone.data.repository.like.LikeCallback
 import com.yeonae.chamelezone.network.api.LikeApi
 import com.yeonae.chamelezone.network.api.RetrofitConnection.likeService
 import com.yeonae.chamelezone.network.model.LikeResponse
@@ -15,7 +15,7 @@ import retrofit2.Response
 
 class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi) :
     LikeRemoteDataSource {
-    override fun selectLike(memberNumber: Int, placeNumber: Int, callBack: LikeCallBack<LikeResponse>) {
+    override fun selectLike(memberNumber: Int, placeNumber: Int, callback: LikeCallback<LikeResponse>) {
         val jsonObject = JsonObject().apply {
             addProperty("placeNumber", placeNumber)
         }
@@ -26,7 +26,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
 
             override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
                 if (response.code() == SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                     Log.d("like", response.body().toString())
                 }
             }
@@ -37,7 +37,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
     override fun deleteLike(
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<LikeResponse>
+        callback: LikeCallback<LikeResponse>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty("placeNumber", placeNumber)
@@ -49,7 +49,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
 
             override fun onResponse(call: Call<LikeResponse>, response: Response<LikeResponse>) {
                 if (response.code() == SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                     Log.d("like", response.body().toString())
                 }
             }
@@ -57,7 +57,7 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
         })
     }
 
-    override fun getMyLikeList(memberNumber: Int, callBack: LikeCallBack<List<PlaceResponse>>) {
+    override fun getMyLikeList(memberNumber: Int, callback: LikeCallback<List<PlaceResponse>>) {
         likeService.getMyLikeList(memberNumber).enqueue(object :Callback<List<PlaceResponse>>{
             override fun onFailure(call: Call<List<PlaceResponse>>, t: Throwable) {
                 Log.e("tag", t.toString())
@@ -68,9 +68,9 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
                 response: Response<List<PlaceResponse>>
             ) {
                 if (response.code() == SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                 }else if (response.code() == REQUEST_ERR) {
-                    callBack.onFailure(App.instance.context().getString(R.string.click_heart))
+                    callback.onFailure(App.instance.context().getString(R.string.click_heart))
                 }
             }
 

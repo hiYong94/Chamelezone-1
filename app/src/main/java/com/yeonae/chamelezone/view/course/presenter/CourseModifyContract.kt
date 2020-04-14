@@ -1,6 +1,5 @@
 package com.yeonae.chamelezone.view.course.presenter
 
-import com.yeonae.chamelezone.data.repository.course.CourseCallBack
 import com.yeonae.chamelezone.network.model.CourseResponse
 
 interface CourseModifyContract {

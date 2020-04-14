@@ -1,7 +1,6 @@
 package com.yeonae.chamelezone.view.login.presenter
 
-import android.util.Log
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.model.SecurityCodeResponse
 
@@ -14,7 +13,7 @@ class SecurityCodePresenter(
             securityCode,
             email,
             phone,
-            object : MemberCallBack<SecurityCodeResponse> {
+            object : MemberCallback<SecurityCodeResponse> {
                 override fun onSuccess(response: SecurityCodeResponse) {
                     view.showResultView(response.matchResult)
                 }

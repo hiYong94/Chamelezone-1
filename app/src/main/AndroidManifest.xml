@@ -98,6 +98,11 @@
         <activity
             android:name=".view.course.CourseModifyActivity"
             android:launchMode="singleTask" />
+
+        <activity
+            android:name=".view.mypage.myplace.OpeningHoursModifyActivity"
+            android:launchMode="singleTask" />
+
     </application>
 
 </manifest>

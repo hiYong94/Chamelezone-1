@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.bumptech.glide.Glide
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.LikeStatusItem
@@ -33,9 +34,11 @@ import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
-
-class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
-    , HomeContract.View {
+class HomeTabFragment :
+    Fragment(),
+    SwipeRefreshLayout.OnRefreshListener,
+    HomeContract.View {
+      
     override lateinit var presenter: HomeContract.Presenter
     private lateinit var placeAdapter: HomePlaceRvAdapter
     private var memberNumber: Int = 0
@@ -205,8 +208,17 @@ class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener
             presenter.checkMember()
     }
 
+    override fun onLowMemory() {
+        super.onLowMemory()
+        context?.let { Glide.get(it).clearMemory() }
+    }
+
     companion object {
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
+    }
+
+    override fun onLocation() {
+
     }
 }

@@ -1,8 +1,8 @@
 package com.yeonae.chamelezone.view.mypage.myplace.presenter
 
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
-import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.data.repository.place.PlaceCallback
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceDuplicateResponse
@@ -37,7 +37,7 @@ class PlacePresenter(
             latitude,
             longitude,
             images,
-            object : PlaceCallBack<String> {
+            object : PlaceCallback<String> {
                 override fun onSuccess(response: String) {
                     view.showMessage(response)
                 }
@@ -51,7 +51,7 @@ class PlacePresenter(
     }
 
     override fun getKeyword() {
-        placeRepository.getKeyword(object : PlaceCallBack<List<KeywordResponse>> {
+        placeRepository.getKeyword(object : PlaceCallback<List<KeywordResponse>> {
             override fun onSuccess(response: List<KeywordResponse>) {
                 view.showKeywordList(response)
             }
@@ -64,7 +64,7 @@ class PlacePresenter(
     }
 
     override fun getUser() {
-        memberRepository.getMember(object : MemberCallBack<UserEntity> {
+        memberRepository.getMember(object : MemberCallback<UserEntity> {
             override fun onSuccess(response: UserEntity) {
                 view.showUserInfo(response)
             }
@@ -81,7 +81,7 @@ class PlacePresenter(
             name,
             latitude,
             longitude,
-            object : PlaceCallBack<PlaceDuplicateResponse> {
+            object : PlaceCallback<PlaceDuplicateResponse> {
                 override fun onSuccess(response: PlaceDuplicateResponse) {
                     view.showPlaceMessage(response.placeCheck)
                 }

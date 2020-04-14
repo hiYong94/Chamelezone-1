@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.view.home.presenter
 
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.network.model.MemberResponse
 
@@ -9,7 +9,7 @@ class StartPresenter(
     private val view: StartContract.View
 ) : StartContract.Presenter {
     override fun userLogin(email: String, password: String) {
-        repository.login(email, password, object : MemberCallBack<MemberResponse> {
+        repository.login(email, password, object : MemberCallback<MemberResponse> {
             override fun onSuccess(response: MemberResponse) {
                 view.showMessage(true)
             }
@@ -18,7 +18,7 @@ class StartPresenter(
                 view.showDialog(message)
             }
 
-        }, object : MemberCallBack<Boolean> {
+        }, object : MemberCallback<Boolean> {
             override fun onSuccess(response: Boolean) {
 
             }
@@ -31,7 +31,7 @@ class StartPresenter(
     }
 
     override fun logout() {
-        repository.deleteLoginUser(object : MemberCallBack<Boolean> {
+        repository.deleteLoginUser(object : MemberCallback<Boolean> {
             override fun onSuccess(response: Boolean) {
                 view.showMessage(response)
             }

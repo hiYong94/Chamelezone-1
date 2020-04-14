@@ -7,14 +7,14 @@ interface LikeRepository {
     fun selectLike(
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<LikeResponse>
+        callback: LikeCallback<LikeResponse>
     )
 
     fun deleteLike(
         memberNumber: Int,
         placeNumber: Int,
-        callBack: LikeCallBack<LikeResponse>
+        callback: LikeCallback<LikeResponse>
     )
 
-    fun getMyLikeList(memberNumber: Int, callBack: LikeCallBack<List<PlaceResponse>>)
+    fun getMyLikeList(memberNumber: Int, callback: LikeCallback<List<PlaceResponse>>)
 }

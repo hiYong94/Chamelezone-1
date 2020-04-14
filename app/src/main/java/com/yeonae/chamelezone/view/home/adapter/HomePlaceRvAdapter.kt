@@ -18,13 +18,17 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
     private lateinit var likeButtonListener: LikeButtonListener
     private var distanceCalculator = ""
     private lateinit var place: PlaceResponse
-
+      
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, place: PlaceResponse)
     }
 
     interface LikeButtonListener {
         fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean)
+    }
+
+    interface OnLocationListener {
+        fun onLocation()
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
