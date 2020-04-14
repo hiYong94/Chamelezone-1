@@ -1,16 +1,65 @@
 package com.yeonae.chamelezone.view.review
 
+import android.Manifest
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.kroegerama.imgpicker.BottomSheetImagePicker
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
+import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.ReviewItem
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
+import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
+import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
+import gun0912.tedimagepicker.builder.TedImagePicker
+import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_review_modify.*
 
-class ReviewModifyActivity : AppCompatActivity(), BottomSheetImagePicker.OnImagesSelectedListener {
+class ReviewModifyActivity : AppCompatActivity(),
+    ReviewModifyContract.View {
+    override lateinit var presenter: ReviewModifyContract.Presenter
+    private val uriList = arrayListOf<String>()
+    private var selectedUriList: List<Uri>? = null
+    private var isCreated = false
+    private var isChecked = false
+    private var placeNumber = 0
+    private var memberNumber = 0
+    private var reviewNumber = 0
+    private var imageNumber = arrayListOf<Int>()
+
+    override fun reviewModify(response: Boolean) {
+        if (response) {
+            shortToast(R.string.review_modify_msg)
+            finish()
+        }
+    }
+
+    override fun showReview(review: ReviewItem) {
+        imageNumber = review.imageNumber
+        tv_title.text = review.name
+        edt_review.text = SpannableStringBuilder(review.content)
+        review.images.forEachIndexed { _, image ->
+            val iv = LayoutInflater.from(this).inflate(
+                R.layout.slider_item_image,
+                image_container,
+                false
+            ) as ImageView
+            iv.run {
+                glideImageSet(IMAGE_RESOURCE + image, measuredWidth, measuredHeight)
+                image_container.addView(iv)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,39 +72,120 @@ class ReviewModifyActivity : AppCompatActivity(), BottomSheetImagePicker.OnImage
         }
         setupGUI()
 
-        tv_title.text = intent.getStringExtra("placeName")
+        presenter = ReviewModifyPresenter(
+            Injection.reviewRepository(), this
+        )
+
+        placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
+        memberNumber = intent.getIntExtra(MEMBER_NUMBER, 0)
+        reviewNumber = intent.getIntExtra(REVIEW_NUMBER, 0)
+
+        presenter.getReview(placeNumber, reviewNumber)
+
+        btn_review_modify.setOnClickListener {
+            val content = "${edt_review.text}"
+            if (!isCreated) {
+                isCreated = true
+                presenter.modifyReview(
+                    uriList,
+                    reviewNumber,
+                    memberNumber,
+                    placeNumber,
+                    content,
+                    imageNumber
+                )
+                Handler().postDelayed({
+                    isCreated = false
+                }, 5000)
+            }
+        }
     }
 
-    override fun onImagesSelected(uris: List<Uri>, tag: String?) {
+    private val permissionListener: PermissionListener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            val prefs: SharedPreferences =
+                this@ReviewModifyActivity.getSharedPreferences("pref", MODE_PRIVATE)
+            val isFirstRun = prefs.getBoolean("isFirstRun", true)
+            if (isFirstRun) {
+                Toast.makeText(
+                    this@ReviewModifyActivity,
+                    R.string.permission_granted,
+                    Toast.LENGTH_SHORT
+                ).show()
+                prefs.edit().putBoolean("isFirstRun", false).apply()
+            }
+            setNormalMultiButton()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: List<String>) {
+            isCreated = false
+            Toast.makeText(
+                    this@ReviewModifyActivity,
+                    "${R.string.permission_denied}\n$deniedPermissions",
+                    Toast.LENGTH_SHORT
+                )
+                .show()
+        }
+    }
+
+    private fun showMultiImage(uris: List<Uri>) {
+        this.selectedUriList = uris
 
         image_container.removeAllViews()
-        uris.forEach { uri ->
+
+        uris.forEachIndexed { _, uri ->
             val iv = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
             ) as ImageView
-            image_container.addView(iv)
-            Glide.with(this).load(uri).into(iv)
+            iv.run {
+                glideImageSet(uri, measuredWidth, measuredHeight)
+                image_container.addView(iv)
+            }
+            uri.path?.let { uriList.add(it) }
         }
     }
 
-    private fun pickMulti() {
-        BottomSheetImagePicker.Builder(getString(R.string.file_provider))
-            .multiSelect(2, 4)
-            .multiSelectTitles(
-                R.plurals.pick_multi,
-                R.plurals.pick_multi_more,
-                R.string.pick_multi_limit
-            )
-            .peekHeight(R.dimen.peekHeight)
-            .columnSize(R.dimen.columnSize)
-            .requestTag("사진이 선택되었습니다.")
-            .show(supportFragmentManager)
+    private fun setNormalMultiButton() {
+        TedImagePicker.with(this)
+            .mediaType(MediaType.IMAGE)
+            .min(1, R.string.min_msg)
+            .max(4, R.string.max_msg)
+            .errorListener { message -> Log.d("ted", "message: $message") }
+            .selectedUri(selectedUriList)
+            .startMultiImage { list: List<Uri> -> showMultiImage(list) }
     }
 
     private fun setupGUI() {
-        btn_image_create.setOnClickListener { pickMulti() }
-        btn_image_create.setOnClickListener { image_container.removeAllViews() }
+        btn_image_create.setOnClickListener {
+            if (!isChecked) {
+                isChecked = true
+                checkPermission()
+            }
+            Handler().postDelayed({
+                isChecked = false
+            }, 1000)
+        }
+        btn_clear.setOnClickListener { image_container.removeAllViews() }
+    }
+
+    private fun checkPermission() {
+        TedPermission.with(this)
+            .setPermissionListener(permissionListener)
+            .setRationaleTitle(R.string.rationale_title)
+            .setRationaleMessage(R.string.album_rationale_message)
+            .setDeniedTitle(R.string.Permission_denied)
+            .setDeniedMessage(R.string.permission_msg)
+            .setGotoSettingButtonText(R.string.setting)
+            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .check()
+    }
+
+    companion object {
+        const val PLACE_NAME = "placeName"
+        const val PLACE_NUMBER = "placeNumber"
+        const val MEMBER_NUMBER = "memberNumber"
+        const val REVIEW_NUMBER = "reviewNumber"
     }
 }

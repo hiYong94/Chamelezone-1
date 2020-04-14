@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
     var tabList = arrayOf<String>()
+    private var time: Long = 0
 
     val drawableList = intArrayOf(
         R.drawable.ic_home_black_24dp,

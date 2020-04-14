@@ -16,6 +16,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.catchFocus
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
@@ -30,10 +31,11 @@ class ReviewCreateActivity : AppCompatActivity(),
     private val uriList = arrayListOf<String>()
     private var selectedUriList: List<Uri>? = null
     private var isCreated = false
+    private var isChecked = false
     var memberNumber = 0
 
     override fun review(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        shortToast(R.string.review_create_msg)
         finish()
     }
 
@@ -47,7 +49,6 @@ class ReviewCreateActivity : AppCompatActivity(),
 
     private fun showMultiImage(uris: List<Uri>) {
         this.selectedUriList = uris
-        Logger.d("ted uriList: $uriList")
 
         image_container.removeAllViews()
 
@@ -78,24 +79,30 @@ class ReviewCreateActivity : AppCompatActivity(),
         presenter.checkMember()
 
         val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
-        Log.d("placeNumber", placeNumber.toString())
 
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
-
-            presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
-            Log.d("reviewCreate memberNumber", memberNumber.toString())
-            Log.d("uriList", uriList.toString())
+            when {
+                edt_review.text.isEmpty() -> shortToast(R.string.review_content)
+                uriList.isEmpty() -> shortToast(R.string.review_image)
+            }
+            if (!isCreated) {
+                isCreated = true
+                presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
+                Handler().postDelayed({
+                    isCreated = false
+                }, 5000)
+            }
         }
     }
 
     private val permissionListener: PermissionListener = object : PermissionListener {
         override fun onPermissionGranted() {
             val prefs: SharedPreferences =
-                this@ReviewCreateActivity.getSharedPreferences("Pref", MODE_PRIVATE)
+                this@ReviewCreateActivity.getSharedPreferences("pref", MODE_PRIVATE)
             val isFirstRun = prefs.getBoolean("isFirstRun", true)
             if (isFirstRun) {
-                Toast.makeText(this@ReviewCreateActivity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ReviewCreateActivity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
                 prefs.edit().putBoolean("isFirstRun", false).apply()
             }
             setNormalMultiButton()
@@ -105,7 +112,7 @@ class ReviewCreateActivity : AppCompatActivity(),
             isCreated = false
             Toast.makeText(
                     this@ReviewCreateActivity,
-                    "권한이 거부되었습니다\n$deniedPermissions",
+                    R.string.permission_denied,
                     Toast.LENGTH_SHORT
                 )
                 .show()
@@ -115,12 +122,11 @@ class ReviewCreateActivity : AppCompatActivity(),
     private fun setNormalMultiButton() {
         TedImagePicker.with(this)
             .mediaType(MediaType.IMAGE)
-            .min(2, R.string.min_msg)
+            .min(1, R.string.min_msg)
             .max(4, R.string.max_msg)
             .errorListener { message -> Log.d("ted", "message: $message") }
             .selectedUri(selectedUriList)
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
-
     }
 
     private fun setupGUI() {
@@ -131,12 +137,12 @@ class ReviewCreateActivity : AppCompatActivity(),
             finish()
         }
         btn_image_create.setOnClickListener {
-            if (!isCreated) {
-                isCreated = true
+            if (!isChecked) {
+                isChecked = true
                 checkPermission()
             }
             Handler().postDelayed({
-                isCreated = false
+                isChecked = false
             }, 1000)
         }
         btn_image_clear.setOnClickListener { image_container.removeAllViews() }

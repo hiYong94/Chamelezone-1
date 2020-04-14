@@ -36,6 +36,7 @@ fun ImageView.glideImageSet(image: String, width: Int, height: Int) {
         .error(R.drawable.ic_x)
         .override(width, height)
         .centerCrop()
+        .thumbnail(0.1f)
         .into(this)
 }
 

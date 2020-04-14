@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.data.model.ReviewItem
-import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
+import com.yeonae.chamelezone.view.mypage.MoreButtonFragment.Companion.BTN_DELETE
+import com.yeonae.chamelezone.view.mypage.MoreButtonFragment.Companion.BTN_EDIT
 import com.yeonae.chamelezone.view.place.adapter.PlaceReviewTabRvAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceReviewContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceReviewPresenter
@@ -27,18 +26,18 @@ import com.yeonae.chamelezone.view.review.ReviewImageActivity
 import com.yeonae.chamelezone.view.review.ReviewModifyActivity
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 
-class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
+class PlaceReviewTabFragment : Fragment(),
+    PlaceReviewContract.View {
     override lateinit var presenter: PlaceReviewContract.Presenter
     private lateinit var placeReviewRvAdapter: PlaceReviewTabRvAdapter
     private var reviewNumber = 0
     private var placeNumber = 0
     var memberNumber = 0
     var placeName: String = ""
-    private var recyclerViewState: Parcelable? = null
 
     override fun showPlaceReview(reviewList: List<ReviewItem>) {
         if (::placeReviewRvAdapter.isInitialized)
-            placeReviewRvAdapter.addData(reviewList)
+            placeReviewRvAdapter.addDataList(reviewList)
     }
 
     override fun showReviewDelete(message: String) {
@@ -57,8 +56,6 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
             review.setOnClickListener {
                 placeName = arguments?.getString(PLACE_NAME).orEmpty()
                 val intent = Intent(context, ReviewCreateActivity::class.java)
-                Log.d("placeNumber", placeNumber.toString())
-                Log.d("PlaceReviewTabFragment placeName", placeName)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
                 intent.putExtra(PLACE_NAME, placeName)
                 startActivity(intent)
@@ -83,11 +80,8 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
 
         placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
         memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
-        Logger.d("memberNumber $memberNumber")
-
 
         val memberNumber = memberNumber
-        Logger.d("memberNumber222222 $memberNumber")
         placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
 
         setAdapter()
@@ -106,13 +100,9 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
             PlaceReviewTabRvAdapter.OnItemClickListener {
             override fun onItemClick(view: View, position: Int, review: ReviewItem) {
                 reviewNumber = review.reviewNumber
-//                reviewMemberNumber = review.memberNumber
-//                Log.d("PlaceReviewTabFragment reviewMemberNumber1", reviewMemberNum.toString())
                 val intent = Intent(context, ReviewImageActivity::class.java)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
                 intent.putExtra(REVIEW_NUMBER, reviewNumber)
-                Log.d("rr PlaceReviewTabFragment placeNumber2", placeNumber.toString())
-                Log.d("rr PlaceReviewTabFragment reviewNumber2", reviewNumber.toString())
                 startActivity(intent)
             }
         })
@@ -131,21 +121,24 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             BOTTOM_SHEET -> {
-                if (resultCode == MoreButtonFragment.BTN_EDIT) {
+                if (resultCode == BTN_EDIT) {
                     reviewNumber = data?.getIntExtra(REVIEW_NUMBER, 0) ?: 0
                     Toast.makeText(context, "수정 받음", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, ReviewModifyActivity::class.java)
+                    intent.putExtra(PLACE_NAME, placeName)
                     startActivity(intent)
 
-                } else if (resultCode == MoreButtonFragment.BTN_DELETE) {
+                } else if (resultCode == BTN_DELETE) {
                     Toast.makeText(context, "삭제 받음", Toast.LENGTH_SHORT).show()
                     presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
-                    Log.d("placeDetailReviewTab reviewNumber", reviewNumber.toString())
-                    Log.d("placeDetailReviewTab placeNumber", placeNumber.toString())
-                    Log.d("placeDetailReviewTab memberNumber", memberNumber.toString())
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        presenter.checkMember()
     }
 
     private fun setAdapter() {
@@ -189,5 +182,4 @@ class PlaceReviewTabFragment : Fragment(), PlaceReviewContract.View {
                 }
             }
     }
-
 }
