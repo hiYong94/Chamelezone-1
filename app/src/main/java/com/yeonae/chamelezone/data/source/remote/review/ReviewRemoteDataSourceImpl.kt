@@ -3,7 +3,7 @@ package com.yeonae.chamelezone.data.source.remote.review
 import android.util.Log
 import com.google.gson.JsonObject
 import com.yeonae.chamelezone.data.Network
-import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.data.repository.review.ReviewCallback
 import com.yeonae.chamelezone.network.api.RetrofitConnection.reviewService
 import com.yeonae.chamelezone.network.api.ReviewApi
 import com.yeonae.chamelezone.network.model.ReviewResponse
@@ -21,7 +21,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         placeNumber: Int,
         content: String,
         images: List<String>,
-        callBack: ReviewCallBack<String>
+        callback: ReviewCallback<String>
     ) {
         val memberNumber =
             RequestBody.create(MediaType.parse("text/plain"), memberNumber.toString())
@@ -47,7 +47,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == Network.SUCCESS)
-                        response.body().let { callBack.onSuccess("리뷰 등록 성공") }
+                        response.body().let { callback.onSuccess("리뷰 등록 성공") }
                     else {
                         Logger.d("create error ${response.code()}")
                     }
@@ -67,7 +67,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         placeNumber: Int,
         content: String,
         imageNumber: List<Int>,
-        callBack: ReviewCallBack<Boolean>
+        callback: ReviewCallback<Boolean>
     ) {
         val memberNumber =
             RequestBody.create(MediaType.parse("text/plain"), memberNumber.toString())
@@ -110,7 +110,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body().let { callBack.onSuccess(true) }
+                    response.body().let { callback.onSuccess(true) }
                     Logger.d("리뷰 수정 성공")
                 } else {
                     Logger.d("createErrorCode ${response.code()}")
@@ -119,7 +119,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         })
     }
 
-    override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
+    override fun getReviewList(placeNumber: Int, callback: ReviewCallback<List<ReviewResponse>>) {
         reviewService.getReviewList(placeNumber).enqueue(object : Callback<List<ReviewResponse>> {
             override fun onFailure(call: Call<List<ReviewResponse>>, t: Throwable) {
                 Log.d("review tag", t.toString())
@@ -130,7 +130,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                 response: Response<List<ReviewResponse>>
             ) {
                 if (response.code() == Network.SUCCESS) {
-                    response.body()?.let { callBack.onSuccess(it) }
+                    response.body()?.let { callback.onSuccess(it) }
                     Log.d("PlaceReviewList", "장소 리뷰 리스트 성공")
                 }
             }
@@ -139,7 +139,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
 
     override fun getMyReviewList(
         memberNumber: Int,
-        callBack: ReviewCallBack<List<ReviewResponse>>
+        callback: ReviewCallback<List<ReviewResponse>>
     ) {
         reviewService.getMyReviewList(memberNumber)
             .enqueue(object : Callback<List<ReviewResponse>> {
@@ -152,7 +152,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     response: Response<List<ReviewResponse>>
                 ) {
                     if (response.code() == Network.SUCCESS) {
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                         Log.d("HomePlaceList", "나의 리뷰 리스트 성공")
                     }
                 }
@@ -163,7 +163,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         placeNumber: Int,
         reviewNumber: Int,
         memberNumber: Int,
-        callBack: ReviewCallBack<String>
+        callback: ReviewCallback<String>
     ) {
         val jsonObject = JsonObject().apply {
             addProperty(MEMBER_NUMBER, memberNumber)
@@ -179,7 +179,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     response: Response<ResponseBody>
                 ) {
                     if (response.code() == Network.SUCCESS) {
-                        callBack.onSuccess("리뷰 삭제 성공")
+                        callback.onSuccess("리뷰 삭제 성공")
                     }
                 }
             })
@@ -188,7 +188,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
     override fun getReviewDetail(
         placeNumber: Int,
         reviewNumber: Int,
-        callBack: ReviewCallBack<ReviewResponse>
+        callback: ReviewCallback<ReviewResponse>
     ) {
         reviewService.getReviewDetail(placeNumber, reviewNumber)
             .enqueue(object : Callback<ReviewResponse> {
@@ -201,7 +201,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     response: Response<ReviewResponse>
                 ) {
                     if (response.code() == Network.SUCCESS)
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                 }
             })
     }
@@ -209,7 +209,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
     override fun getMyReviewDetail(
         placeNumber: Int,
         reviewNumber: Int,
-        callBack: ReviewCallBack<ReviewResponse>
+        callback: ReviewCallback<ReviewResponse>
     ) {
         reviewService.getMyReviewDetail(placeNumber, reviewNumber)
             .enqueue(object : Callback<ReviewResponse> {
@@ -222,7 +222,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     response: Response<ReviewResponse>
                 ) {
                     if (response.code() == Network.SUCCESS)
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                 }
             })
     }
@@ -230,7 +230,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
     override fun getMyReviewImageDetail(
         placeNumber: Int,
         reviewNumber: Int,
-        callBack: ReviewCallBack<ReviewResponse>
+        callback: ReviewCallback<ReviewResponse>
     ) {
         reviewService.getMyReviewImageDetail(placeNumber, reviewNumber)
             .enqueue(object : Callback<ReviewResponse> {
@@ -243,7 +243,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
                     response: Response<ReviewResponse>
                 ) {
                     if (response.code() == Network.SUCCESS)
-                        response.body()?.let { callBack.onSuccess(it) }
+                        response.body()?.let { callback.onSuccess(it) }
                 }
             })
     }

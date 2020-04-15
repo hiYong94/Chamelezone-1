@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myreview.presenter
 
-import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.data.repository.review.ReviewCallback
 import com.yeonae.chamelezone.data.repository.review.ReviewRepository
 import com.yeonae.chamelezone.network.model.ReviewResponse
 
@@ -12,7 +12,7 @@ class MyReviewDetailPresenter(
         reviewRepository.getMyReviewDetail(
             placeNumber,
             reviewNumber,
-            object : ReviewCallBack<ReviewResponse> {
+            object : ReviewCallback<ReviewResponse> {
                 override fun onSuccess(response: ReviewResponse) {
                     response.toReviewItem()?.let { myReviewDetailView.showMyReviewDetail(it) }
                 }
