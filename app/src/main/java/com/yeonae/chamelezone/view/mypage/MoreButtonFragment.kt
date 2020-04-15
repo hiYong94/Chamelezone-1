@@ -3,20 +3,15 @@ package com.yeonae.chamelezone.view.mypage
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.place.PlaceReviewTabFragment
 import kotlinx.android.synthetic.main.fragment_more_button.*
 
-
 class MoreButtonFragment : BottomSheetDialogFragment() {
-    private val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
     private lateinit var onModifyClickListener: OnModifyClickListener
     private lateinit var onDeleteClickListener: OnDeleteClickListener
 
@@ -39,23 +34,27 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
+
         val data = Intent().apply {
             putExtra(REVIEW_NUMBER, reviewNumber)
         }
 
         btn_modify.setOnClickListener {
             if (targetRequestCode == PlaceReviewTabFragment.BOTTOM_SHEET) {
-                targetFragment?.onActivityResult(targetRequestCode, BTN_EDIT, Intent())
+                targetFragment?.onActivityResult(targetRequestCode, BTN_EDIT, data)
             } else {
-                onModifyClickListener.onModifyClick()
+                if (::onModifyClickListener.isInitialized)
+                    onModifyClickListener.onModifyClick()
             }
             dismiss()
         }
         btn_delete.setOnClickListener {
-            if (targetRequestCode ==  PlaceReviewTabFragment.BOTTOM_SHEET) {
+            if (targetRequestCode == PlaceReviewTabFragment.BOTTOM_SHEET) {
                 targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
             } else {
-                onDeleteClickListener.onDeleteClick()
+                if (::onDeleteClickListener.isInitialized)
+                    onDeleteClickListener.onDeleteClick()
             }
             dismiss()
         }
@@ -63,8 +62,12 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onModifyClickListener = (context as OnModifyClickListener)
-        onDeleteClickListener = (context as OnDeleteClickListener)
+        (context as? OnModifyClickListener)?.let {
+            onModifyClickListener = it
+        }
+        (context as? OnDeleteClickListener)?.let {
+            onDeleteClickListener = it
+        }
     }
 
     companion object {
