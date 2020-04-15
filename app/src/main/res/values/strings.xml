@@ -74,15 +74,19 @@
     <string name="password_search">비밀번호 찾기</string>
     <string name="login">로그인</string>
     <string name="logout">로그아웃</string>
-    <string name="chamelezone_info">카멜레존 소개</string>
+    <string name="info">샵인샵 소개</string>
     <string name="privacy">개인정보 수집 및 이용</string>
     <string name="member_delete">회원 탈퇴</string>
 
     <string name="search_word">장소 검색</string>
     <string name="place_name_test">구슬모아당구장</string>
 
-    <string name="intro">카멜레존(Chamelezone)은 카멜레온과 공간을 뜻하는 존(zone)을 합친 신조어로 원래의 용도와는 달리 상황에 맞게 변화하는 공간을 뜻합니다.
-        저희 어플은 이러한 공간들을 소개하고 사용자들이 보다 쉽게 찾고, 찾아갈 수 있도록 서비스를 제공하고자 합니다.</string>
+    <string name="introduction">샵인샵 소개</string>
+    <string name="intro">샵인샵(# in shop)은 \&apos;가게 안에 테마(해시태그(#))\&apos;라는 뜻입니다.
+        \n\n 또 다른 말로 카멜레존(Chamelezone)\&apos;이라고도 소개 할 수 있는데요.
+        \n 카멜레존이란 \&apos;카멜레온\&apos;과 공간을 뜻하는 \&apos;존(zone)\&apos;을 합친 신조어로 원래의 용도와는 달리 상황에 맞게 변화하는 공간을 뜻합니다.
+        \n\n 저희 샵인샵 어플은 카멜레존이라는 단어처럼 한 공간에 여러 상점이나 테마들이 있는 곳들을 소개하는 것이 목적입니다.
+        \n 또한 사용자들이 보다 쉽게 찾고, 찾아갈 수 있도록 서비스를 제공하고자 합니다.</string>
 
     <string name="permission_msg">만약 권한 허가를 거부한다면, 이 서비스를 사용할 수 없습니다. [설정] > [사용 권한]에서 사용 권한을 설정하십시오.</string>
     <string name="Permission_denied">권한 거부</string>
