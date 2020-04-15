@@ -16,35 +16,35 @@ class MemberRepositoryImpl private constructor(
         name: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callback: MemberCallback<String>
     ) {
-        remoteDataSource.createMember(email, password, name, nickName, phone, callBack)
+        remoteDataSource.createMember(email, password, name, nickName, phone, callback)
     }
 
-    override fun getMember(callBack: MemberCallBack<UserEntity>) {
-        localDataSource.getMember(callBack)
+    override fun getMember(callback: MemberCallback<UserEntity>) {
+        localDataSource.getMember(callback)
     }
 
     override fun login(
         email: String,
         password: String,
-        callBack: MemberCallBack<MemberResponse>,
-        localCallBack: MemberCallBack<Boolean>
+        callback: MemberCallback<MemberResponse>,
+        localCallback: MemberCallback<Boolean>
     ) {
-        remoteDataSource.login(email, password, object : MemberCallBack<MemberResponse> {
+        remoteDataSource.login(email, password, object : MemberCallback<MemberResponse> {
             override fun onSuccess(response: MemberResponse) {
-                callBack.onSuccess(response)
-                localDataSource.loggedLogin(response, localCallBack)
+                callback.onSuccess(response)
+                localDataSource.loggedLogin(response, localCallback)
             }
 
             override fun onFailure(message: String) {
-                callBack.onFailure(message)
+                callback.onFailure(message)
             }
         })
     }
 
-    override fun logout(callBack: MemberCallBack<String>) {
-        localDataSource.logout(callBack)
+    override fun logout(callback: MemberCallback<String>) {
+        localDataSource.logout(callback)
     }
 
     override fun updateMember(
@@ -52,72 +52,72 @@ class MemberRepositoryImpl private constructor(
         password: String?,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<Boolean>,
-        localCallBack: MemberCallBack<Boolean>
+        callback: MemberCallback<Boolean>,
+        localCallback: MemberCallback<Boolean>
     ) {
         remoteDataSource.updateMember(
             memberNumber,
             password,
             nickName,
             phone,
-            object : MemberCallBack<Boolean> {
+            object : MemberCallback<Boolean> {
                 override fun onSuccess(response: Boolean) {
-                    callBack.onSuccess(response)
+                    callback.onSuccess(response)
                     if (response) {
-                        localDataSource.updateMember(nickName, phone, localCallBack)
+                        localDataSource.updateMember(nickName, phone, localCallback)
                     }
                 }
 
                 override fun onFailure(message: String) {
-                    callBack.onFailure(message)
+                    callback.onFailure(message)
                 }
 
             })
     }
 
-    override fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>) {
-        remoteDataSource.deleteMember(memberNumber, callBack)
+    override fun deleteMember(memberNumber: Int, callback: MemberCallback<String>) {
+        remoteDataSource.deleteMember(memberNumber, callback)
     }
 
-    override fun checkLogin(callBack: MemberCallBack<Boolean>) {
-        localDataSource.isLogged(callBack)
+    override fun checkLogin(callback: MemberCallback<Boolean>) {
+        localDataSource.isLogged(callback)
     }
 
-    override fun deleteLoginUser(callBack: MemberCallBack<Boolean>) {
-        localDataSource.deleteAll(callBack)
+    override fun deleteLoginUser(callback: MemberCallback<Boolean>) {
+        localDataSource.deleteAll(callback)
     }
 
-    override fun checkEmail(email: String, callBack: MemberCallBack<EmailResponse>) {
-        remoteDataSource.checkEmail(email, callBack)
+    override fun checkEmail(email: String, callback: MemberCallback<EmailResponse>) {
+        remoteDataSource.checkEmail(email, callback)
     }
 
-    override fun checkNickname(nickname: String, callBack: MemberCallBack<NicknameResponse>) {
-        remoteDataSource.checkNickname(nickname, callBack)
+    override fun checkNickname(nickname: String, callback: MemberCallback<NicknameResponse>) {
+        remoteDataSource.checkNickname(nickname, callback)
     }
 
-    override fun findEmail(name: String, phone: String, callBack: MemberCallBack<List<EmailResponse>>) {
-        remoteDataSource.findEmail(name, phone, callBack)
+    override fun findEmail(name: String, phone: String, callback: MemberCallback<List<EmailResponse>>) {
+        remoteDataSource.findEmail(name, phone, callback)
     }
 
-    override fun findPassword(email: String, phone: String, callBack: MemberCallBack<FindPasswordResponse>) {
-        remoteDataSource.findPassword(email, phone, callBack)
+    override fun findPassword(email: String, phone: String, callback: MemberCallback<FindPasswordResponse>) {
+        remoteDataSource.findPassword(email, phone, callback)
     }
 
     override fun checkSecurityCode(
         securityCode: String,
         email: String,
         phone: String,
-        callBack: MemberCallBack<SecurityCodeResponse>
+        callback: MemberCallback<SecurityCodeResponse>
     ) {
-        remoteDataSource.checkSecurityCode(securityCode, email, phone, callBack)
+        remoteDataSource.checkSecurityCode(securityCode, email, phone, callback)
     }
 
     override fun changePassword(
         password: String,
         memberNumber: Int,
-        callBack: MemberCallBack<Boolean>
+        callback: MemberCallback<Boolean>
     ) {
-        remoteDataSource.changePassword(password, memberNumber, callBack)
+        remoteDataSource.changePassword(password, memberNumber, callback)
     }
 
     companion object {

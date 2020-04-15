@@ -18,7 +18,6 @@ class HomePlaceRvAdapter :
     private lateinit var likeButtonListener: LikeButtonListener
     private var distanceCalculator = ""
     private lateinit var place: PlaceResponse
-
     private var currentLatitude = 0.0
     private var currentLongitude = 0.0
 

@@ -1,7 +1,7 @@
 package com.yeonae.chamelezone.view.search.presenter
 
 import com.yeonae.chamelezone.data.model.PlaceItem
-import com.yeonae.chamelezone.data.repository.place.PlaceCallBack
+import com.yeonae.chamelezone.data.repository.place.PlaceCallback
 import com.yeonae.chamelezone.data.repository.place.PlaceRepository
 import com.yeonae.chamelezone.network.model.PlaceResponse
 
@@ -10,7 +10,7 @@ class SearchPresenter(
     private val searchView: SearchContract.View
 ) : SearchContract.Presenter {
     override fun searchByName(placeName: String) {
-        placeRepository.getSearchByName(placeName, object : PlaceCallBack<List<PlaceResponse>> {
+        placeRepository.getSearchByName(placeName, object : PlaceCallback<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
                 val placeItem = mutableListOf<PlaceItem>()
                 for (i in response.indices) {
@@ -27,7 +27,7 @@ class SearchPresenter(
     }
 
     override fun searchByAddress(address: String) {
-        placeRepository.getSearchByAddress(address, object : PlaceCallBack<List<PlaceResponse>> {
+        placeRepository.getSearchByAddress(address, object : PlaceCallback<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
                 val placeItem = mutableListOf<PlaceItem>()
                 for (i in response.indices) {

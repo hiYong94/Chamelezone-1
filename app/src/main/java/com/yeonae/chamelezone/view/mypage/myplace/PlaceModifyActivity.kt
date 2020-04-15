@@ -1,35 +1,42 @@
 package com.yeonae.chamelezone.view.mypage.myplace
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
-import com.kroegerama.imgpicker.BottomSheetImagePicker
-import com.kroegerama.kaiteki.toast
-import com.yeonae.chamelezone.CheckDialogFragment
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyPresenter
+import gun0912.tedimagepicker.builder.TedImagePicker
+import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_place_modify.*
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
 
 class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
-    BottomSheetImagePicker.OnImagesSelectedListener, CheckDialogFragment.OnClickListener {
+    KeywordModifyFragment.OnClickListener {
     override lateinit var presenter: PlaceModifyContract.Presenter
     var memberNumber: Int = 0
     private var imageUri = arrayListOf<String>()
@@ -43,6 +50,16 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     private lateinit var latLng: LatLng
     lateinit var latitude: String
     lateinit var longitude: String
+    private val imageNumbers = arrayListOf<Int>()
+    var placeKeywordNumbers = arrayListOf<Int>()
+    private var selectedUriList: List<Uri>? = null
+
+    override fun showResult(response: Boolean) {
+        if (response) {
+            shortToast(R.string.success_update_place)
+            finish()
+        }
+    }
 
     override fun onClick(keywordList: ArrayList<String>) {
         keywords.clear()
@@ -64,8 +81,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
     }
 
-    override fun onImagesSelected(uris: List<Uri>, tag: String?) {
-        toast("$tag")
+    private fun showMultiImage(uris: List<Uri>) {
+        this.selectedUriList = uris
         imageContainer.removeAllViews()
         uris.forEach { uri ->
             val rlSlideImg = LayoutInflater.from(this).inflate(
@@ -73,19 +90,30 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 imageContainer,
                 false
             ) as ImageView
-
-            if (imageContainer.childCount < 4) {
-                imageContainer.addView(rlSlideImg)
-                rlSlideImg.image_item.run {
-                    glideImageSet(uri, measuredWidth, measuredHeight)
-                }
+            imageContainer.addView(rlSlideImg)
+            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+                glideImageSet(uri, measuredWidth, measuredHeight)
             }
-
             uri.path?.let { imageUri.add(it) }
         }
     }
 
     override fun showPlaceDetail(place: PlaceResponse) {
+        imageContainer.removeAllViews()
+        place.savedImageName.forEach { image ->
+            val rlSlideImg = LayoutInflater.from(this).inflate(
+                R.layout.slider_item_image,
+                imageContainer,
+                false
+            ) as ImageView
+            imageContainer.addView(rlSlideImg)
+            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+                glideImageSet(IMAGE_RESOURCE + image, measuredWidth, measuredHeight)
+            }
+        }
+        place.imageNumbers.forEach {
+            imageNumbers.add(it)
+        }
         edt_place_name.text = SpannableStringBuilder(place.name)
         tv_place_address.text = place.address
         place.keywordName.forEach {
@@ -105,6 +133,9 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
         edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
         edt_place_text.text = SpannableStringBuilder(place.content)
+        placeKeywordNumbers = place.placeKeywordNumbers
+        selectedKeyword = place.keywordName
+        //openingHoursPosition = place.openingTime
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,8 +163,9 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
 
         tv_opening_hour.setOnClickListener {
-            val intent = Intent(this, OpeningHoursActivity::class.java)
+            val intent = Intent(this, OpeningHoursModifyActivity::class.java)
             intent.putExtra("selectedPosition", openingHoursPosition)
+            intent.putExtra("placeNumber", placeNumber)
             startActivityForResult(intent, OPENING_HOURS_REQUEST_CODE)
         }
 
@@ -143,11 +175,20 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
 
         btn_category_choice.setOnClickListener {
-            val newFragment = CheckDialogFragment.newInstance(keywordName, selectedKeyword)
+            val newFragment =
+                KeywordModifyFragment.newInstance(
+                    placeNumber,
+                    placeKeywordNumbers,
+                    keywordName,
+                    selectedKeyword
+                )
             newFragment.show(supportFragmentManager, "dialog")
         }
 
         btn_register.setOnClickListener {
+            latLng = findLatLng(applicationContext, "${tv_place_address.text}")
+            latitude = latLng.latitude.toString()
+            longitude = latLng.longitude.toString()
             val realAddress = "${tv_place_address.text} ${edt_detail_address.text}"
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
@@ -158,6 +199,17 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
             }
+            presenter.updatePlace(
+                placeNumber,
+                imageUri,
+                memberNumber,
+                realAddress,
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}",
+                latitude.toBigDecimal(),
+                longitude.toBigDecimal(),
+                imageNumbers
+            )
         }
     }
 
@@ -202,23 +254,67 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         return latLng
     }
 
-    private fun pickMulti() {
-        BottomSheetImagePicker.Builder(getString(R.string.file_provider))
-            .multiSelect(2, 4)
-            .multiSelectTitles(
-                R.plurals.pick_multi,
-                R.plurals.pick_multi_more,
-                R.string.pick_multi_limit
-            )
-            .peekHeight(R.dimen.peekHeight)
-            .columnSize(R.dimen.columnSize)
-            .requestTag("사진이 선택되었습니다.")
-            .show(supportFragmentManager)
+    private fun setNormalMultiButton() {
+        TedImagePicker.with(this)
+            .mediaType(MediaType.IMAGE)
+            .min(2, R.string.min_msg)
+            .max(4, R.string.max_msg)
+            .errorListener { message -> Log.d("ted", "message: $message") }
+            .selectedUri(selectedUriList)
+            .startMultiImage { list: List<Uri> -> showMultiImage(list) }
+
     }
 
     private fun setupGUI() {
-        btn_image_create.setOnClickListener { pickMulti() }
+        btn_image_create.setOnClickListener {
+            if (!isCreated) {
+                isCreated = true
+                checkPermission()
+            }
+            Handler().postDelayed({
+                isCreated = false
+            }, 1000)
+        }
         btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+    }
+
+    private fun checkPermission() {
+        TedPermission.with(this)
+            .setPermissionListener(permissionListener)
+            .setRationaleTitle(R.string.rationale_title)
+            .setRationaleMessage(R.string.album_rationale_message)
+            .setDeniedTitle(R.string.Permission_denied)
+            .setDeniedMessage(R.string.permission_msg)
+            .setGotoSettingButtonText(R.string.setting)
+            .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            .check()
+    }
+
+    private val permissionListener: PermissionListener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            val prefs: SharedPreferences =
+                this@PlaceModifyActivity.getSharedPreferences("Pref", MODE_PRIVATE)
+            val isFirstRun = prefs.getBoolean("isFirstRun", true)
+            if (isFirstRun) {
+                Toast.makeText(
+                    this@PlaceModifyActivity,
+                    R.string.permission_granted,
+                    Toast.LENGTH_SHORT
+                ).show()
+                prefs.edit().putBoolean("isFirstRun", false).apply()
+            }
+            setNormalMultiButton()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: List<String>) {
+            isCreated = false
+            Toast.makeText(
+                this@PlaceModifyActivity,
+                getString(R.string.permission_denied) + "\n$deniedPermissions",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
     }
 
     companion object {

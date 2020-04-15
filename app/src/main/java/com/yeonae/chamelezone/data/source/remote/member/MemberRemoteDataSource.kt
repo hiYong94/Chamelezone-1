@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.data.source.remote.member
 
-import com.yeonae.chamelezone.data.repository.member.MemberCallBack
+import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.network.model.*
 
 interface MemberRemoteDataSource {
@@ -10,35 +10,35 @@ interface MemberRemoteDataSource {
         name: String,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<String>
+        callback: MemberCallback<String>
     )
 
-    fun login(email: String, password: String, callBack: MemberCallBack<MemberResponse>)
+    fun login(email: String, password: String, callback: MemberCallback<MemberResponse>)
 
     fun updateMember(
         memberNumber: Int,
         password: String?,
         nickName: String,
         phone: String,
-        callBack: MemberCallBack<Boolean>
+        callback: MemberCallback<Boolean>
     )
 
-    fun deleteMember(memberNumber: Int, callBack: MemberCallBack<String>)
+    fun deleteMember(memberNumber: Int, callback: MemberCallback<String>)
 
-    fun checkEmail(email: String, callBack: MemberCallBack<EmailResponse>)
+    fun checkEmail(email: String, callback: MemberCallback<EmailResponse>)
 
-    fun checkNickname(nickname: String, callBack: MemberCallBack<NicknameResponse>)
+    fun checkNickname(nickname: String, callback: MemberCallback<NicknameResponse>)
 
-    fun findEmail(name: String, phone: String, callBack: MemberCallBack<List<EmailResponse>>)
+    fun findEmail(name: String, phone: String, callback: MemberCallback<List<EmailResponse>>)
 
-    fun findPassword(email: String, phone: String, callBack: MemberCallBack<FindPasswordResponse>)
+    fun findPassword(email: String, phone: String, callback: MemberCallback<FindPasswordResponse>)
 
     fun checkSecurityCode(
         securityCode: String,
         email: String,
         phone: String,
-        callBack: MemberCallBack<SecurityCodeResponse>
+        callback: MemberCallback<SecurityCodeResponse>
     )
 
-    fun changePassword(password: String, memberNumber: Int, callBack: MemberCallBack<Boolean>)
+    fun changePassword(password: String, memberNumber: Int, callback: MemberCallback<Boolean>)
 }
