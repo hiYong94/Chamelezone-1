@@ -34,7 +34,6 @@ import com.yeonae.chamelezone.view.place.PlaceDetailActivity
 import com.yeonae.chamelezone.view.search.SearchActivity
 import kotlinx.android.synthetic.main.fragment_home_tab.*
 
-
 class HomeTabFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener, HomePlaceRvAdapter.OnLocationListener
     , HomeContract.View {
     override lateinit var presenter: HomeContract.Presenter
