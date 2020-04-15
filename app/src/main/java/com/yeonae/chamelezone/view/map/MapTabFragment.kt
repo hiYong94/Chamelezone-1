@@ -117,17 +117,17 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 requireActivity().getSharedPreferences("Pref", MODE_PRIVATE)
             val isFirstRun = prefs.getBoolean("isFirstRun", true)
             if (isFirstRun) {
-                Toast.makeText(activity, "권한이 허용되었습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
                 prefs.edit().putBoolean("isFirstRun", false).apply()
             }
         }
 
         override fun onPermissionDenied(deniedPermissions: List<String>) {
             Toast.makeText(
-                    activity,
-                    "권한이 거부되었습니다\n$deniedPermissions",
-                    Toast.LENGTH_SHORT
-                )
+                activity,
+                R.string.permission_denied,
+                Toast.LENGTH_SHORT
+            )
                 .show()
         }
     }
@@ -202,11 +202,9 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
             .setPermissionListener(permissionListener)
             .setRationaleTitle(R.string.rationale_title)
             .setRationaleMessage(R.string.rationale_message)
-            .setDeniedTitle("권한 거부")
-            .setDeniedMessage(
-                "만약 권한 허가를 거부한다면, 이 서비스를 사용할 수 없습니다.\n\n[설정] > [사용 권한]에서 사용 권한을 설정하십시오."
-            )
-            .setGotoSettingButtonText("설정")
+            .setDeniedTitle(R.string.Permission_denied)
+            .setDeniedMessage(R.string.permission_msg)
+            .setGotoSettingButtonText(R.string.setting)
             .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION)
             .check()
     }
