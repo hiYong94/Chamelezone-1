@@ -138,7 +138,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
 
         placeKeywordNumbers = place.placeKeywordNumbers
         selectedKeyword = place.keywordName
-        //openingHoursPosition = place.openingTime
+        openingHoursPosition = place.openingTime
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
