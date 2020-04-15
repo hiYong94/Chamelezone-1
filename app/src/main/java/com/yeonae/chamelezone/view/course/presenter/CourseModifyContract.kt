@@ -21,5 +21,15 @@ interface CourseModifyContract {
             image: String,
             imageNumber: Int
         )
+
+        fun modifyCourse(
+            courseNumber: Int,
+            memberNumber: Int,
+            placeNumbers: List<Int>,
+            title: String,
+            content: String,
+            imageNumber: Int,
+            savedImageName: String
+        )
     }
 }

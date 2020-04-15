@@ -44,6 +44,18 @@ interface CourseApi {
         @Part("content") content: RequestBody
     ): Call<ResponseBody>
 
+    @Multipart
+    @PUT("/course/{courseNumber}")
+    fun updateCourse(
+        @Path("courseNumber") courseNumber: Int,
+        @Part("imageNumber") imageNumber: RequestBody,
+        @Part("memberNumber") memberNumber: RequestBody,
+        @Part("placeNumber") placeNumber: ArrayList<RequestBody>,
+        @Part("title") title: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part("savedImageName") savedImageName: RequestBody
+    ): Call<ResponseBody>
+
     @DELETE("/course/{courseNumber}")
     fun deleteCourse(
         @Path("courseNumber") courseNumber: Int,
