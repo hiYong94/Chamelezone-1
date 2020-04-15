@@ -2,32 +2,37 @@ package com.yeonae.chamelezone.view.mypage.myreview
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewPresenter
+import com.yeonae.chamelezone.view.review.ReviewModifyActivity
 import kotlinx.android.synthetic.main.activity_my_review.*
 
-class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelectedListener,
+class MyReviewActivity : AppCompatActivity(),
+    MoreButtonFragment.OnModifyClickListener,
+    MoreButtonFragment.OnDeleteClickListener,
     MyReviewContract.View {
     override lateinit var presenter: MyReviewContract.Presenter
     private val myReviewRvAdapter = MyReviewRvAdapter()
-    private val moreFragment = MoreButtonFragment()
     private var placeNumber = 0
     private var reviewNumber = 0
     private var memberNumber: Int = 0
+    lateinit var reviewItem: ReviewItem
 
     override fun getMember(user: UserEntity) {
         memberNumber = user.userNumber ?: 0
-        memberNumber.let { presenter.getUserReview(it) }
+        presenter.getUserReview(memberNumber)
     }
 
     override fun getMemberCheck(response: Boolean) {
@@ -35,11 +40,35 @@ class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelect
     }
 
     override fun showMyReviewList(reviewList: List<ReviewItem>) {
-        myReviewRvAdapter.addData(reviewList)
+        if (reviewList.isNotEmpty()) {
+            rl_my_review.isVisible = true
+            rl_no_my_review.isGone = true
+            myReviewRvAdapter.addData(reviewList)
+        } else {
+            rl_my_review.isGone = true
+            rl_no_my_review.isVisible = true
+            tv_no_my_review.text = getText(R.string.register_my_review)
+        }
     }
 
     override fun showReviewDelete(message: String) {
-        Toast.makeText(this, "리뷰가 삭제되었습니다", Toast.LENGTH_LONG).show()
+        shortToast(R.string.review_delete)
+        Toast.makeText(this, "", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onModifyClick() {
+        val intent = Intent(this, ReviewModifyActivity::class.java)
+        if (::reviewItem.isInitialized)
+            intent.putExtra(PLACE_NAME, reviewItem.name)
+        intent.putExtra(PLACE_NUMBER, placeNumber)
+        intent.putExtra(REVIEW_NUMBER, reviewNumber)
+        intent.putExtra(MEMBER_NUMBER, memberNumber)
+        startActivity(intent)
+
+    }
+
+    override fun onDeleteClick() {
+        presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,14 +110,6 @@ class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelect
         }
     }
 
-    override fun onDeleteSelected(intent: Intent) {
-        Toast.makeText(applicationContext, "삭제 받음", Toast.LENGTH_SHORT).show()
-        Log.d("MyReviewActivity reviewNumber", reviewNumber.toString())
-        Log.d("MyReviewActivity placeNumber", placeNumber.toString())
-        Log.d("MyReviewActivity memberNumber", memberNumber.toString())
-        presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
-    }
-
     private fun showBottomSheet(placeNumber: Int, reviewNumber: Int) {
         val bottomSheetDialogFragment = MoreButtonFragment()
         bottomSheetDialogFragment.show(supportFragmentManager, bottomSheetDialogFragment.tag)
@@ -100,10 +121,10 @@ class MyReviewActivity : AppCompatActivity(), MoreButtonFragment.OnDeletedSelect
     }
 
     companion object {
-        const val BOTTOM_SHEET = 100
         const val PLACE_NAME = "placeName"
         const val REVIEW_CONTENT = "content"
         const val PLACE_NUMBER = "placeNumber"
         const val REVIEW_NUMBER = "reviewNumber"
+        const val MEMBER_NUMBER = "memberNumber"
     }
 }

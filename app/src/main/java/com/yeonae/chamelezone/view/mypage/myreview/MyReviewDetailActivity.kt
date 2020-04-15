@@ -21,7 +21,7 @@ class MyReviewDetailActivity : AppCompatActivity(), MyReviewDetailContract.View 
     private var reviewNumber = 0
 
     override fun showMyReviewDetail(review: ReviewItem) {
-        val reviewImages = review.images.split(",")
+        val reviewImages = review.images
         val imageList = arrayListOf<String>()
         reviewImages.forEachIndexed { index, _ ->
             imageList.add(IMAGE_RESOURCE + reviewImages[index])

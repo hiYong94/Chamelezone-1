@@ -15,8 +15,8 @@ class ReviewImageActivity : AppCompatActivity(), ReviewDetailContract.View {
     override lateinit var presenter: ReviewDetailContract.Presenter
 
     override fun showReviewImage(review: ReviewResponse) {
-        val reviewImages = review.savedImageName?.split(",")
-        val imageList = reviewImages?.map {
+        val reviewImages = review.savedImageName
+        val imageList = reviewImages.map {
             IMAGE_RESOURCE + it
         }
         val imageAdapter = PlaceReviewImageVpAdapter(imageList)

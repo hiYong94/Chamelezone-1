@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.Review
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
@@ -69,7 +70,7 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
             reviewDate.text = review.regiDate
             reviewContent.text = review.content
 
-            val reviewImages = review.images.split(",")
+            val reviewImages = review.images
             val imageList = arrayListOf<String>()
             reviewImages.forEachIndexed { index, _ ->
                 imageList.add(IMAGE_RESOURCE + reviewImages[index])
@@ -113,7 +114,7 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
         }
     }
 
-    fun addData(addDataList: List<ReviewItem>) {
+    fun addDataList(addDataList: List<ReviewItem>) {
         Log.d("addDataList", "$addDataList")
         reviewList.clear()
         reviewList.addAll(addDataList)

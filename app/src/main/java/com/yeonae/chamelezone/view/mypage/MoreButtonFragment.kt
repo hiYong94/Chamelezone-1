@@ -10,18 +10,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.util.Logger
+import com.yeonae.chamelezone.view.place.PlaceReviewTabFragment
 import kotlinx.android.synthetic.main.fragment_more_button.*
 
 
 class MoreButtonFragment : BottomSheetDialogFragment() {
-    private lateinit var deletedButtonListener: OnDeletedSelectedListener
     private val reviewNumber = arguments?.getInt(REVIEW_NUMBER)
-    private val placeNumber = arguments?.getInt(PLACE_NUMBER)
-    private val myReviewData = Intent().apply {
-        putExtra(REVIEW_NUMBER, reviewNumber)
-        putExtra(PLACE_NUMBER, placeNumber)
-        Log.d("More reviewNumber", reviewNumber.toString())
-    }
     private lateinit var onModifyClickListener: OnModifyClickListener
     private lateinit var onDeleteClickListener: OnDeleteClickListener
 
@@ -31,10 +26,6 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
 
     interface OnDeleteClickListener {
         fun onDeleteClick()
-    }
-
-    interface OnDeletedSelectedListener {
-        fun onDeleteSelected(intent: Intent)
     }
 
     override fun onCreateView(
@@ -53,34 +44,28 @@ class MoreButtonFragment : BottomSheetDialogFragment() {
         }
 
         btn_modify.setOnClickListener {
-            onModifyClickListener.onModifyClick()
-//            Toast.makeText(context, "수정", Toast.LENGTH_SHORT).show()
-//            targetFragment?.onActivityResult(targetRequestCode, BTN_EDIT, Intent())
+            if (targetRequestCode == PlaceReviewTabFragment.BOTTOM_SHEET) {
+                targetFragment?.onActivityResult(targetRequestCode, BTN_EDIT, Intent())
+            } else {
+                onModifyClickListener.onModifyClick()
+            }
             dismiss()
         }
         btn_delete.setOnClickListener {
-            onDeleteClickListener.onDeleteClick()
-//            Toast.makeText(context, "삭제", Toast.LENGTH_SHORT).show()
-//            targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
-//            if (::deletedButtonListener.isInitialized)
-//                deletedButtonListener.onDeleteSelected(myReviewData)
+            if (targetRequestCode ==  PlaceReviewTabFragment.BOTTOM_SHEET) {
+                targetFragment?.onActivityResult(targetRequestCode, BTN_DELETE, data)
+            } else {
+                onDeleteClickListener.onDeleteClick()
+            }
             dismiss()
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        onModifyClickListener = (context as  OnModifyClickListener)
-        onDeleteClickListener = (context as  OnDeleteClickListener)
+        onModifyClickListener = (context as OnModifyClickListener)
+        onDeleteClickListener = (context as OnDeleteClickListener)
     }
-
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//
-//        (context as? OnDeletedSelectedListener)?.let {
-//            deletedButtonListener = it
-//        }
-//    }
 
     companion object {
         const val REVIEW_NUMBER = "reviewNumber"
