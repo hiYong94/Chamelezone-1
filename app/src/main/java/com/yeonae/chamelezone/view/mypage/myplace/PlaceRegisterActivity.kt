@@ -98,13 +98,13 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         this.selectedUriList = uris
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val rlSlideImg = LayoutInflater.from(this).inflate(
+            val ivSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
             ) as ImageView
-            imageContainer.addView(rlSlideImg)
-            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+            imageContainer.addView(ivSlideImg)
+            ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
             uri.path?.let { imageUri.add(it) }

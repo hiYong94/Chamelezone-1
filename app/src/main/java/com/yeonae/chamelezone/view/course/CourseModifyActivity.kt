@@ -53,13 +53,13 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         edt_course_content.text = SpannableStringBuilder(courseList[0].content)
 
         imageContainer.removeAllViews()
-        val rlSlideImg = LayoutInflater.from(this).inflate(
+        val ivSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
         ) as ImageView
-        imageContainer.addView(rlSlideImg)
-        rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        imageContainer.addView(ivSlideImg)
+        ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(IMAGE_RESOURCE + courseList[0].courseImage, measuredWidth, measuredHeight)
         }
 
