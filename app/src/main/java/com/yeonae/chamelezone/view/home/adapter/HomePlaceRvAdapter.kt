@@ -116,10 +116,10 @@ class HomePlaceRvAdapter :
         notifyItemChanged(position, 1)
     }
 
-    fun addDataDistance(lat: Double, log: Double) {
+    fun replaceDataDistance(lat: Double, log: Double) {
         currentLatitude = lat
         currentLongitude = log
-        notifyItemRangeChanged(0, itemCount, 1)
+        notifyItemRangeChanged(0, itemCount, PAYLOAD)
     }
 
     fun addData(addDataList: List<PlaceResponse>) {
@@ -130,5 +130,9 @@ class HomePlaceRvAdapter :
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(placeList[position])
+    }
+
+    companion object {
+        const val PAYLOAD = 1
     }
 }
