@@ -110,7 +110,7 @@ class PlaceDetailActivity :
         )
         presenter.checkLogin()
 
-        btn_back.setColorFilter(Color.parseColor("#F0843F"), PorterDuff.Mode.SRC_IN)
+        btn_back.setColorFilter(getColor(R.color.colorOrange), PorterDuff.Mode.SRC_IN)
 
         btn_back.setOnClickListener {
             finish()
