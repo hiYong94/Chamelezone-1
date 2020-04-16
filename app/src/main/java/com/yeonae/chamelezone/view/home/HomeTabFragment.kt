@@ -98,7 +98,8 @@ class HomeTabFragment :
         }
 
         presenter = HomePresenter(
-            Injection.placeRepository(), Injection.memberRepository(),
+            Injection.placeRepository(),
+            Injection.memberRepository(),
             Injection.likeRepository(),
             this
         )
@@ -142,7 +143,7 @@ class HomeTabFragment :
             }
         })
 
-        recycler_view_place?.apply {
+        recycler_view_place.run {
             layoutManager = GridLayoutManager(context, 2)
             if (::placeAdapter.isInitialized)
                 adapter = placeAdapter
@@ -167,7 +168,7 @@ class HomeTabFragment :
 
     private fun calculatorLocation() {
 
-        if (Build.VERSION.SDK_INT >= 24 &&
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
             ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -180,7 +181,7 @@ class HomeTabFragment :
             )
         } else {
             val lm =
-                context?.getSystemService(LOCATION_SERVICE) as LocationManager?
+                context?.getSystemService(LOCATION_SERVICE) as? LocationManager
             var location: Location? =
                 lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (location == null) {
@@ -189,7 +190,7 @@ class HomeTabFragment :
             if (location != null) {
                 currentLatitude = location.latitude
                 currentLongitude = location.longitude
-                placeAdapter.addDataDistance(currentLatitude, currentLongitude)
+                placeAdapter.replaceDataDistance(currentLatitude, currentLongitude)
 
             }
         }
