@@ -3,9 +3,9 @@ package com.yeonae.chamelezone.view.mypage.myplace
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -39,98 +39,48 @@ class OpeningHoursModifyActivity : AppCompatActivity(), OpeningHoursContract.Vie
         val placeNumber = intent.getIntExtra("placeNumber", 0)
         var openTimePosition = 0
         var closeTimePosition = 0
+        val checkBoxList = mapOf<CheckBox, LinearLayout>(
+            checkbox_sun to opening_hour_sun,
+            checkbox_mon to opening_hour_mon,
+            checkbox_tue to opening_hour_tue,
+            checkbox_wed to opening_hour_wed,
+            checkbox_thu to opening_hour_thu,
+            checkbox_fri to opening_hour_fri,
+            checkbox_sat to opening_hour_sat
+        )
 
         selectedPosition.forEach {
             val openingHours = it.split(" ")
-
-            if(openingHours[1] != "휴무"){
-                val openTime = openingHours[1].split(":")
-                openTimePosition = if(openTime[1].toInt() == 30){
+            val openTime = openingHours[1].split(":")
+            if (openingHours[1] != "휴무" && openTime.size != 1) {
+                openTimePosition = if (openTime[1].toInt() == 30) {
                     openTime[0].toInt() * 2 + 1
                 } else {
                     openTime[0].toInt() * 2
                 }
                 val closeTime = openingHours[3].split(":")
-                closeTimePosition = if(closeTime[1].toInt() == 30){
+                closeTimePosition = if (closeTime[1].toInt() == 30) {
                     closeTime[0].toInt() * 2 + 1
                 } else {
                     closeTime[0].toInt() * 2
                 }
+            } else if (openingHours[1] != "휴무" && openTime.size == 1) {
+                openTimePosition = openingHours[1].toInt()
+                closeTimePosition = openingHours[2].toInt()
             }
 
-            when {
-                openingHours[0] == checkbox_sun.text -> {
-                    if (openingHours[1] != "휴무") {
-                        checkbox_sun.isChecked = true
+            if (openingHours[1] != "휴무") {
+                checkBoxList.forEach { checkBox ->
+                    if (openingHours[0] == checkBox.key.text) {
+                        checkBox.key.isChecked = true
                         addOpeningHourLayout(
-                            opening_hour_sun,
+                            checkBox.value,
                             1,
                             openTimePosition,
                             closeTimePosition
                         )
                     }
                 }
-                openingHours[0] == checkbox_mon.text -> {
-                    if (openingHours[1] != "휴무") {
-                        checkbox_mon.isChecked = true
-                        addOpeningHourLayout(
-                            opening_hour_mon, 1,
-                            openTimePosition,
-                            closeTimePosition
-                        )
-                    }
-                }
-                openingHours[0] == checkbox_tue.text -> {
-                    if (openingHours[1] != "휴무") {
-                        checkbox_tue.isChecked = true
-                        addOpeningHourLayout(
-                            opening_hour_tue, 1,
-                            openTimePosition,
-                            closeTimePosition
-                        )
-                    }
-                }
-                openingHours[0] == checkbox_wed.text -> {
-                    if (openingHours[1] != "휴무") {
-                        checkbox_wed.isChecked = true
-                        addOpeningHourLayout(
-                            opening_hour_wed, 1,
-                            openTimePosition,
-                            closeTimePosition
-                        )
-                    }
-                }
-                openingHours[0] == checkbox_thu.text -> {
-                    if (openingHours[1] != "휴무") {
-                        checkbox_thu.isChecked = true
-                        addOpeningHourLayout(
-                            opening_hour_thu, 1,
-                            openTimePosition,
-                            closeTimePosition
-                        )
-                    }
-                }
-                openingHours[0] == checkbox_fri.text -> {
-                    if (openingHours[1] != "휴무") {
-                        checkbox_fri.isChecked = true
-                        addOpeningHourLayout(
-                            opening_hour_fri, 1,
-                            openTimePosition,
-                            closeTimePosition
-                        )
-                    }
-                }
-                openingHours[0] == checkbox_sat.text -> {
-                    if (openingHours[1] != "휴무") {
-                        checkbox_sat.isChecked = true
-                        addOpeningHourLayout(
-                            opening_hour_sat, 1,
-                            openTimePosition,
-                            closeTimePosition
-                        )
-                    }
-                }
-
             }
         }
 
