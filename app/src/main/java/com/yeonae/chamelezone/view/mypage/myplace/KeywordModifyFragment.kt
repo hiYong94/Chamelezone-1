@@ -148,14 +148,14 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
             keywordList: ArrayList<String>,
             selectedKeyword: ArrayList<String>
         ): KeywordModifyFragment {
-            val frag = KeywordModifyFragment()
-            val args = Bundle()
-            args.putInt("placeNumber", placeNumber)
-            args.putIntegerArrayList("placeKeywordNumbers", placeKeywordNumbers)
-            args.putStringArrayList("keyword", keywordList)
-            args.putStringArrayList("selectedKeyword", selectedKeyword)
-            frag.arguments = args
-            return frag
+            return KeywordModifyFragment().apply {
+                arguments = Bundle().apply {
+                    putInt("placeNumber", placeNumber)
+                    putIntegerArrayList("placeKeywordNumbers", placeKeywordNumbers)
+                    putStringArrayList("keyword", keywordList)
+                    putStringArrayList("selectedKeyword", selectedKeyword)
+                }
+            }
         }
     }
 }
