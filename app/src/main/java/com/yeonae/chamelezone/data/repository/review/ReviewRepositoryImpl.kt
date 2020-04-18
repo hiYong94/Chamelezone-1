@@ -10,9 +10,9 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
         placeNumber: Int,
         content: String,
         images: List<String>,
-        callBack: ReviewCallBack<String>
+        callback: ReviewCallback<String>
     ) {
-        reviewRemoteDataSource.createReview(memberNumber, placeNumber, content, images, callBack)
+        reviewRemoteDataSource.createReview(memberNumber, placeNumber, content, images, callback)
     }
 
     override fun updateReview(
@@ -22,7 +22,7 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
         placeNumber: Int,
         content: String,
         imageNumber: List<Int>,
-        callBack: ReviewCallBack<Boolean>
+        callback: ReviewCallback<Boolean>
     ) {
         reviewRemoteDataSource.updateReview(
             images,
@@ -31,49 +31,49 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
             placeNumber,
             content,
             imageNumber,
-            callBack
+            callback
         )
     }
 
-    override fun getReviewList(placeNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
-        reviewRemoteDataSource.getReviewList(placeNumber, callBack)
+    override fun getReviewList(placeNumber: Int, callback: ReviewCallback<List<ReviewResponse>>) {
+        reviewRemoteDataSource.getReviewList(placeNumber, callback)
     }
 
-    override fun getMyReviewList(memberNumber: Int, callBack: ReviewCallBack<List<ReviewResponse>>) {
-        reviewRemoteDataSource.getMyReviewList(memberNumber, callBack)
+    override fun getMyReviewList(memberNumber: Int, callback: ReviewCallback<List<ReviewResponse>>) {
+        reviewRemoteDataSource.getMyReviewList(memberNumber, callback)
     }
 
     override fun deleteReview(
         placeNumber: Int,
         reviewNumber: Int,
         memberNumber: Int,
-        callBack: ReviewCallBack<String>
+        callback: ReviewCallback<String>
     ) {
-        reviewRemoteDataSource.deleteReview(placeNumber, reviewNumber, memberNumber, callBack)
+        reviewRemoteDataSource.deleteReview(placeNumber, reviewNumber, memberNumber, callback)
     }
 
     override fun getReviewDetail(
         placeNumber: Int,
         reviewNumber: Int,
-        callBack: ReviewCallBack<ReviewResponse>
+        callback: ReviewCallback<ReviewResponse>
     ) {
-        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callBack)
+        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callback)
     }
 
     override fun getMyReviewDetail(
         placeNumber: Int,
         reviewNumber: Int,
-        callBack: ReviewCallBack<ReviewResponse>
+        callback: ReviewCallback<ReviewResponse>
     ) {
-        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callBack)
+        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callback)
     }
 
     override fun getMyReviewImageDetail(
         placeNumber: Int,
         reviewNumber: Int,
-        callBack: ReviewCallBack<ReviewResponse>
+        callback: ReviewCallback<ReviewResponse>
     ) {
-        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callBack)
+        reviewRemoteDataSource.getReviewDetail(placeNumber, reviewNumber, callback)
     }
 
     companion object {

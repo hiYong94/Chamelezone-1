@@ -1,21 +1,20 @@
 package com.yeonae.chamelezone.view.place.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Review
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
-import com.yeonae.chamelezone.util.Logger
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
 class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
@@ -76,13 +75,29 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
                 imageList.add(IMAGE_RESOURCE + reviewImages[index])
             }
 
-            reviewImg.glideTransformations(
-                imageList.first(),
-                reviewImg.measuredWidth,
-                reviewImg.measuredHeight
-            )
-
-            reviewCount.text = "+" + (imageList.size - 1)
+            if (imageList.size >= 2) {
+                reviewCount.text = "+" + (imageList.size - 1)
+                reviewImg.glideTransformations(
+                    imageList.first(),
+                    reviewImg.measuredWidth,
+                    reviewImg.measuredHeight
+                )
+            } else {
+                val backgroundColor = ContextCompat.getDrawable(App.instance.context(), R.drawable.color)
+                itemView.iv_image.background = backgroundColor
+                reviewCount.text = ""
+                itemView.post {
+                    itemView.iv_image.layoutParams.width = 0
+                    reviewImg.layoutParams = reviewImg.layoutParams.apply {
+                        width = itemView.ll_image.measuredWidth
+                    }
+                    reviewImg.glideTransformations(
+                        imageList.first(),
+                        reviewImg.layoutParams.width,
+                        reviewImg.measuredHeight
+                    )
+                }
+            }
 
             reviewImg.setOnClickListener {
                 val position = adapterPosition
@@ -104,8 +119,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
             }
 
             itemView.apply {
-                Logger.d("member $memberNumber")
-                Logger.d("reviewmem " + review.memberNumber.toString())
                 btn_more.isVisible = memberNumber == review.memberNumber
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog(review)
@@ -115,7 +128,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
     }
 
     fun addDataList(addDataList: List<ReviewItem>) {
-        Log.d("addDataList", "$addDataList")
         reviewList.clear()
         reviewList.addAll(addDataList)
         notifyDataSetChanged()

@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment.Companion.BTN_DELETE
@@ -26,7 +24,8 @@ import com.yeonae.chamelezone.view.review.ReviewImageActivity
 import com.yeonae.chamelezone.view.review.ReviewModifyActivity
 import kotlinx.android.synthetic.main.fragment_place_review_tab.*
 
-class PlaceReviewTabFragment : Fragment(),
+class PlaceReviewTabFragment :
+    Fragment(),
     PlaceReviewContract.View {
     override lateinit var presenter: PlaceReviewContract.Presenter
     private lateinit var placeReviewRvAdapter: PlaceReviewTabRvAdapter
@@ -44,11 +43,7 @@ class PlaceReviewTabFragment : Fragment(),
         Toast.makeText(context, "리뷰가 삭제되었습니다", Toast.LENGTH_LONG).show()
     }
 
-    override fun showMemberReview(user: UserEntity) {
-//        Logger.d("memberNumber1 " + user.userNumber)
-//        memberNumber = user.userNumber ?:0
-//        Logger.d("memberNumber2 $memberNumber")
-    }
+    override fun showMemberReview(user: UserEntity) { }
 
     override fun getMemberCheck(response: Boolean) {
         if (response) {
@@ -78,19 +73,20 @@ class PlaceReviewTabFragment : Fragment(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
+        presenter = PlaceReviewPresenter(
+            Injection.reviewRepository(), Injection.memberRepository(), this
+        )
+
         placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
         memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
 
         val memberNumber = memberNumber
         placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
 
-        setAdapter()
-
-        presenter = PlaceReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(), this
-        )
-
         presenter.checkMember()
+
+        setAdapter()
 
         placeNumber.let {
             presenter.placeDetailReview(it)
@@ -123,13 +119,13 @@ class PlaceReviewTabFragment : Fragment(),
             BOTTOM_SHEET -> {
                 if (resultCode == BTN_EDIT) {
                     reviewNumber = data?.getIntExtra(REVIEW_NUMBER, 0) ?: 0
-                    Toast.makeText(context, "수정 받음", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, ReviewModifyActivity::class.java)
-                    intent.putExtra(PLACE_NAME, placeName)
+                    intent.putExtra(PLACE_NUMBER, placeNumber)
+                    intent.putExtra(REVIEW_NUMBER, reviewNumber)
+                    intent.putExtra(MEMBER_NUMBER, memberNumber)
                     startActivity(intent)
 
                 } else if (resultCode == BTN_DELETE) {
-                    Toast.makeText(context, "삭제 받음", Toast.LENGTH_SHORT).show()
                     presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
                 }
             }
@@ -150,7 +146,7 @@ class PlaceReviewTabFragment : Fragment(),
     }
 
     private fun showBottomSheet(reviewNumber: Int) {
-        val bottomSheetDialogFragment = MoreButtonFragment()
+        val bottomSheetDialogFragment = MoreButtonFragment.newInstance(placeNumber, reviewNumber)
         bottomSheetDialogFragment.setTargetFragment(this, BOTTOM_SHEET)
         activity?.supportFragmentManager?.let {
             bottomSheetDialogFragment.show(

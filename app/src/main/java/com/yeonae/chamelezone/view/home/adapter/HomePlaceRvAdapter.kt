@@ -11,13 +11,15 @@ import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.util.distanceByDegree
 import kotlinx.android.synthetic.main.item_place.view.*
 
-class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Double) :
+class HomePlaceRvAdapter :
     RecyclerView.Adapter<HomePlaceRvAdapter.Holder>() {
     private val placeList = arrayListOf<PlaceResponse>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var likeButtonListener: LikeButtonListener
     private var distanceCalculator = ""
     private lateinit var place: PlaceResponse
+    private var currentLatitude = 0.0
+    private var currentLongitude = 0.0
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, place: PlaceResponse)
@@ -25,10 +27,6 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
 
     interface LikeButtonListener {
         fun onLikeClick(placeResponse: PlaceResponse, isChecked: Boolean)
-    }
-
-    interface OnLocationListener {
-        fun onLocation()
     }
 
     fun setItemClickListener(clickListener: OnItemClickListener) {
@@ -75,8 +73,8 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
                 }
                 distanceCalculator =
                     distanceByDegree(currentLatitude, currentLongitude, latitude, longitude)
-                if (distanceCalculator.isEmpty()) {
-                    distance.text = ""
+                if (currentLatitude == 0.0 || currentLongitude == 0.0) {
+                    distance.text = "0km"
                 } else {
                     distance.text = distanceCalculator
                 }
@@ -103,7 +101,6 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int, payloads: MutableList<Any>) {
-//        holder.bind(placeList[position])
         if (payloads.isEmpty()) {
             holder.bind(placeList[position])
         } else {
@@ -116,8 +113,13 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
     }
 
     fun itemChange(position: Int) {
-//        notifyItemChanged(placeList.lastIndex, 1)
         notifyItemChanged(position, 1)
+    }
+
+    fun replaceDataDistance(lat: Double, log: Double) {
+        currentLatitude = lat
+        currentLongitude = log
+        notifyItemRangeChanged(0, itemCount, PAYLOAD)
     }
 
     fun addData(addDataList: List<PlaceResponse>) {
@@ -128,5 +130,9 @@ class HomePlaceRvAdapter(val currentLatitude: Double, val currentLongitude: Doub
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(placeList[position])
+    }
+
+    companion object {
+        const val PAYLOAD = 1
     }
 }

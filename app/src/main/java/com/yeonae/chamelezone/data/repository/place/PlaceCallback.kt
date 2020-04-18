@@ -1,6 +1,6 @@
 package com.yeonae.chamelezone.data.repository.place
 
-interface PlaceCallBack<T>{
+interface PlaceCallback<T>{
     fun onSuccess(response: T)
     fun onFailure(message: String)
 }
