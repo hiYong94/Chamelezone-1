@@ -18,21 +18,21 @@ import com.yeonae.chamelezone.ext.catchFocus
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_review_create.*
 
-class ReviewCreateActivity : AppCompatActivity(),
+class ReviewCreateActivity :
+    AppCompatActivity(),
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
     private val uriList = arrayListOf<String>()
     private var selectedUriList: List<Uri>? = null
     private var isCreated = false
     private var isChecked = false
-    var memberNumber = 0
+    private var memberNumber = 0
 
     override fun review(message: String) {
         shortToast(R.string.review_create_msg)
