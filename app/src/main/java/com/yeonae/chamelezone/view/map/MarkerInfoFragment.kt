@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.MapItem
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.map.adapter.MakerInfoRvAdapter
 import com.yeonae.chamelezone.view.map.presenter.MarkerInfoContract
@@ -22,7 +23,7 @@ class MarkerInfoFragment : Fragment(), MarkerInfoContract.View {
     private val makerInfoRvAdapter = MakerInfoRvAdapter()
     override lateinit var presenter: MarkerInfoContract.Presenter
 
-    override fun placeInfo(placeList: List<PlaceResponse>) {
+    override fun placeInfo(placeList: List<MapItem>) {
         makerInfoRvAdapter.addData(placeList)
     }
 
@@ -43,10 +44,10 @@ class MarkerInfoFragment : Fragment(), MarkerInfoContract.View {
         val bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
 
         makerInfoRvAdapter.setOnClickListener(object : MakerInfoRvAdapter.OnClickListener {
-            override fun onClick(place: PlaceResponse) {
+            override fun onClick(mapItem: MapItem) {
                 val intent = Intent(requireContext(), PlaceDetailActivity::class.java)
-                intent.putExtra(PLACE_NAME, place.name)
-                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                intent.putExtra(PLACE_NAME, mapItem.name)
+                intent.putExtra(PLACE_NUMBER, mapItem.placeNumber)
                 startActivity(intent)
             }
         })

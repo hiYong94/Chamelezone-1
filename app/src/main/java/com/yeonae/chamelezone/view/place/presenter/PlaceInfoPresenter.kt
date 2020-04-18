@@ -13,15 +13,18 @@ class PlaceInfoPresenter(
     private val view: PlaceInfoContract.View
 ) : PlaceInfoContract.Presenter {
     override fun placeDetail(placeNumber: Int, memberNumber: Int?) {
-        placeRepository.getPlaceDetail(placeNumber, memberNumber, object : PlaceCallback<PlaceResponse>{
-            override fun onSuccess(response: PlaceResponse) {
-                view.placeInfo(response)
-            }
+        placeRepository.getPlaceDetail(
+            placeNumber,
+            memberNumber,
+            object : PlaceCallback<PlaceResponse> {
+                override fun onSuccess(response: PlaceResponse) {
+                    view.placeInfo(response.toPlaceInfoItem())
+                }
 
-            override fun onFailure(message: String) {
-            }
+                override fun onFailure(message: String) {
+                }
 
-        })
+            })
     }
 
     override fun getUser() {

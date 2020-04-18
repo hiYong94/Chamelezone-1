@@ -49,4 +49,33 @@ class CourseModifyPresenter(
 
             })
     }
+
+    override fun modifyCourse(
+        courseNumber: Int,
+        memberNumber: Int,
+        placeNumbers: List<Int>,
+        title: String,
+        content: String,
+        imageNumber: Int,
+        savedImageName: String
+    ) {
+        repository.modifyCourse(
+            courseNumber,
+            memberNumber,
+            placeNumbers,
+            title,
+            content,
+            imageNumber,
+            savedImageName,
+            object : CourseCallback<Boolean> {
+                override fun onSuccess(response: Boolean) {
+                    view.showMessage(response)
+                }
+
+                override fun onFailure(message: String) {
+
+                }
+
+            })
+    }
 }

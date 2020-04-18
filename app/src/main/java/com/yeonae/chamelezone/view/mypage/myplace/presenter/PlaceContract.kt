@@ -20,6 +20,7 @@ interface PlaceContract {
             keywordName: List<Int>,
             name: String,
             address: String,
+            addressDetail: String,
             openingTime: List<String>,
             phoneNumber: String,
             content: String,

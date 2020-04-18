@@ -4,23 +4,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.model.PlaceResponse
 import kotlinx.android.synthetic.main.item_my_place.view.*
 
 class MyPlaceRvAdapter :
     RecyclerView.Adapter<MyPlaceRvAdapter.MyPlaceViewHolder>() {
 
-    private val items = mutableListOf<PlaceResponse>()
+    private val items = mutableListOf<PlaceItem>()
     private lateinit var onClickListener: OnClickListener
     private lateinit var moreButtonListener: MoreButtonListener
 
     interface OnClickListener {
-        fun onClick(place: PlaceResponse)
+        fun onClick(place: PlaceItem)
     }
 
     interface MoreButtonListener {
-        fun bottomSheetDialog(place: PlaceResponse)
+        fun bottomSheetDialog(place: PlaceItem)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -43,13 +43,13 @@ class MyPlaceRvAdapter :
         }
     }
 
-    fun addData(addDataList: List<PlaceResponse>) {
+    fun addData(addDataList: List<PlaceItem>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
     }
 
-    fun removeData(place: PlaceResponse) {
+    fun removeData(place: PlaceItem) {
         val position = items.indexOf(place)
         items.remove(place)
         notifyItemRemoved(position)
@@ -59,7 +59,7 @@ class MyPlaceRvAdapter :
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_place, parent, false)
     ) {
         fun bind(
-            item: PlaceResponse,
+            item: PlaceItem,
             clickListener: OnClickListener,
             moreButtonListener: MoreButtonListener
         ) {
@@ -68,17 +68,10 @@ class MyPlaceRvAdapter :
                     clickListener.onClick(item)
                 }
                 tv_place_name.text = item.name
-                item.keywordName.forEach {
-                    if (it == item.keywordName[0]) {
-                        tv_place_keyword.text = it
-                    } else {
-                        tv_place_keyword.text = "${tv_place_keyword.text}, $it"
-                    }
-                }
+                tv_place_keyword.text = item.keyword
                 tv_place_address.text = item.address
-                val image = IMAGE_RESOURCE + item.savedImageName[0]
                 iv_place_image.glideImageSet(
-                    image,
+                    item.image,
                     iv_place_image.measuredWidth,
                     iv_place_image.measuredHeight
                 )
@@ -88,10 +81,5 @@ class MyPlaceRvAdapter :
                 }
             }
         }
-
-        companion object {
-            private const val IMAGE_RESOURCE = "http://13.209.136.122:3000/image/"
-        }
-
     }
 }

@@ -12,7 +12,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.data.model.PlaceInfoItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.place.presenter.PlaceInfoContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceInfoPresenter
@@ -31,23 +31,11 @@ class PlaceInfoTabFragment : Fragment(), PlaceInfoContract.View, OnMapReadyCallb
         user.userNumber?.let { presenter.placeDetail(placeNumber, it) }
     }
 
-    override fun placeInfo(place: PlaceResponse) {
-        place.keywordName.forEach {
-            if (it == place.keywordName[0]) {
-                tv_keyword.text = it
-            } else {
-                tv_keyword.text = "${tv_keyword.text}, $it"
-            }
-        }
+    override fun placeInfo(place: PlaceInfoItem) {
+        tv_keyword.text = place.keyword
         tv_address.text = place.address
         tv_phone.text = place.phoneNumber
-        place.openingTime.forEach {
-            if (it == place.openingTime[0]) {
-                tv_opening_time.text = it
-            } else {
-                tv_opening_time.text = "${tv_opening_time.text}\n$it"
-            }
-        }
+        tv_opening_time.text = place.openingTime
         tv_content.text = place.content
 
         val latLng = LatLng(place.latitude.toDouble(), place.longitude.toDouble())

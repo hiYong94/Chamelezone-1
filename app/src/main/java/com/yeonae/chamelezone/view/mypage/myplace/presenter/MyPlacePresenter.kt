@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.mypage.myplace.presenter
 
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
 import com.yeonae.chamelezone.data.repository.place.PlaceCallback
@@ -15,7 +16,11 @@ class MyPlacePresenter(
     override fun getMyPlaceList(memberNumber: Int) {
         placeRepository.getMyPlaceList(memberNumber, object : PlaceCallback<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
-                view.showMyPlaceList(response)
+                val placeItem = mutableListOf<PlaceItem>()
+                for (i in response.indices) {
+                    placeItem.add(response[i].toPlaceItem())
+                }
+                view.showMyPlaceList(placeItem)
             }
 
             override fun onFailure(message: String) {
@@ -39,7 +44,7 @@ class MyPlacePresenter(
     }
 
     override fun deletePlace(placeNumber: Int, memberNumber: Int) {
-        placeRepository.deletePlace(placeNumber, memberNumber, object : PlaceCallback<Boolean>{
+        placeRepository.deletePlace(placeNumber, memberNumber, object : PlaceCallback<Boolean> {
             override fun onSuccess(response: Boolean) {
                 view.showDeleteResult(response)
             }

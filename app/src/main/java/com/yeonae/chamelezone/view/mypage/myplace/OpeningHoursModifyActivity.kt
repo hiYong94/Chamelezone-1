@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -36,67 +37,50 @@ class OpeningHoursModifyActivity : AppCompatActivity(), OpeningHoursContract.Vie
         )
         selectedPosition = intent.getStringArrayListExtra("selectedPosition")
         val placeNumber = intent.getIntExtra("placeNumber", 0)
+        var openTimePosition = 0
+        var closeTimePosition = 0
+        val checkBoxMap = mapOf<CheckBox, LinearLayout>(
+            checkbox_sun to opening_hour_sun,
+            checkbox_mon to opening_hour_mon,
+            checkbox_tue to opening_hour_tue,
+            checkbox_wed to opening_hour_wed,
+            checkbox_thu to opening_hour_thu,
+            checkbox_fri to opening_hour_fri,
+            checkbox_sat to opening_hour_sat
+        )
+
         selectedPosition.forEach {
             val openingHours = it.split(" ")
-            when {
-                openingHours[0] == checkbox_sun.text -> {
-                    checkbox_sun.isChecked = true
-                    addOpeningHourLayout(
-                        opening_hour_sun,
-                        1,
-                        openingHours[1].toInt(),
-                        openingHours[2].toInt()
-                    )
+            val openTime = openingHours[1].split(":")
+            if (openingHours[1] != "휴무" && openTime.size != 1) {
+                openTimePosition = if (openTime[1].toInt() == 30) {
+                    openTime[0].toInt() * 2 + 1
+                } else {
+                    openTime[0].toInt() * 2
                 }
-                openingHours[0] == checkbox_mon.text -> {
-                    checkbox_mon.isChecked = true
-                    addOpeningHourLayout(
-                        opening_hour_mon, 1,
-                        openingHours[1].toInt(),
-                        openingHours[2].toInt()
-                    )
+                val closeTime = openingHours[3].split(":")
+                closeTimePosition = if (closeTime[1].toInt() == 30) {
+                    closeTime[0].toInt() * 2 + 1
+                } else {
+                    closeTime[0].toInt() * 2
                 }
-                openingHours[0] == checkbox_tue.text -> {
-                    checkbox_tue.isChecked = true
-                    addOpeningHourLayout(
-                        opening_hour_tue, 1,
-                        openingHours[1].toInt(),
-                        openingHours[2].toInt()
-                    )
-                }
-                openingHours[0] == checkbox_wed.text -> {
-                    checkbox_wed.isChecked = true
-                    addOpeningHourLayout(
-                        opening_hour_wed, 1,
-                        openingHours[1].toInt(),
-                        openingHours[2].toInt()
-                    )
-                }
-                openingHours[0] == checkbox_thu.text -> {
-                    checkbox_thu.isChecked = true
-                    addOpeningHourLayout(
-                        opening_hour_thu, 1,
-                        openingHours[1].toInt(),
-                        openingHours[2].toInt()
-                    )
-                }
-                openingHours[0] == checkbox_fri.text -> {
-                    checkbox_fri.isChecked = true
-                    addOpeningHourLayout(
-                        opening_hour_fri, 1,
-                        openingHours[1].toInt(),
-                        openingHours[2].toInt()
-                    )
-                }
-                openingHours[0] == checkbox_sat.text -> {
-                    checkbox_sat.isChecked = true
-                    addOpeningHourLayout(
-                        opening_hour_sat, 1,
-                        openingHours[1].toInt(),
-                        openingHours[2].toInt()
-                    )
-                }
+            } else if (openingHours[1] != "휴무" && openTime.size == 1) {
+                openTimePosition = openingHours[1].toInt()
+                closeTimePosition = openingHours[2].toInt()
+            }
 
+            if (openingHours[1] != "휴무") {
+                checkBoxMap.forEach { checkBox ->
+                    if (openingHours[0] == checkBox.key.text) {
+                        checkBox.key.isChecked = true
+                        addOpeningHourLayout(
+                            checkBox.value,
+                            1,
+                            openTimePosition,
+                            closeTimePosition
+                        )
+                    }
+                }
             }
         }
 

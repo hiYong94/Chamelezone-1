@@ -30,6 +30,7 @@ import com.yeonae.chamelezone.App
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
+import com.yeonae.chamelezone.data.model.MapItem
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.home.HomeActivity
 import com.yeonae.chamelezone.view.map.presenter.MapContract
@@ -64,7 +65,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
         return false
     }
 
-    override fun placeInfo(placeList: List<PlaceResponse>) {
+    override fun placeInfo(placeList: List<MapItem>) {
         layout_no_search.visibility = View.GONE
         map_fragment.visibility = View.VISIBLE
         map.clear()
@@ -165,8 +166,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
         )
 
         checkPermission()
-
-
 
         edt_search.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {

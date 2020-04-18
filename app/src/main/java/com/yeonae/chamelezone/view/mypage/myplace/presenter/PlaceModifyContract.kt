@@ -21,6 +21,7 @@ interface PlaceModifyContract {
             images: List<String>,
             memberNumber: Int,
             address: String,
+            addressDetail: String,
             phoneNumber: String,
             content: String,
             latitude: BigDecimal,

@@ -1,15 +1,14 @@
 package com.yeonae.chamelezone.view.like.presenter
 
+import com.yeonae.chamelezone.data.model.LikeItem
 import com.yeonae.chamelezone.data.model.LikeStatusItem
-import com.yeonae.chamelezone.network.model.LikeResponse
-import com.yeonae.chamelezone.network.model.PlaceResponse
 
 interface LikeContract {
     interface View {
         var presenter: Presenter
         fun showResultView(response: Boolean)
         fun showLikeState(response: LikeStatusItem)
-        fun showMyLikeList(response: List<PlaceResponse>)
+        fun showMyLikeList(response: List<LikeItem>)
         fun showMessage(message: String)
     }
 
