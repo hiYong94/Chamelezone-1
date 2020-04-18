@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.LikeItem
 import com.yeonae.chamelezone.data.model.LikeStatusItem
 import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.like.adapter.LikeTabRvAdapter
 import com.yeonae.chamelezone.view.like.presenter.LikeContract
 import com.yeonae.chamelezone.view.like.presenter.LikePresenter
@@ -32,7 +32,7 @@ class LikeTabFragment : Fragment(), LikeContract.View {
         }
     }
 
-    override fun showMyLikeList(response: List<PlaceResponse>) {
+    override fun showMyLikeList(response: List<LikeItem>) {
         layout_no_like_list.visibility = View.GONE
         layout_like_list.visibility = View.VISIBLE
         likeTabRvAdapter.addData(response)
@@ -70,22 +70,22 @@ class LikeTabFragment : Fragment(), LikeContract.View {
 
         setAdapter()
         likeTabRvAdapter.setOnClickListener(object : LikeTabRvAdapter.OnClickListener {
-            override fun onClick(place: PlaceResponse) {
+            override fun onClick(likeItem: LikeItem) {
                 val intent = Intent(context, PlaceDetailActivity::class.java)
-                intent.putExtra(PLACE_NAME, place.name)
-                intent.putExtra(PLACE_NUMBER, place.placeNumber)
+                intent.putExtra(PLACE_NAME, likeItem.name)
+                intent.putExtra(PLACE_NUMBER, likeItem.placeNumber)
                 startActivity(intent)
             }
         })
 
         likeTabRvAdapter.setOnLikeClickListener(object : LikeTabRvAdapter.OnLikeClickListener {
-            override fun onLikeClick(place: PlaceResponse) {
-                place.memberNumber?.let {
+            override fun onLikeClick(likeItem: LikeItem) {
+                likeItem.memberNumber.let {
                     presenter.deleteLike(
-                        it, place.placeNumber
+                        it, likeItem.placeNumber
                     )
                 }
-                likeTabRvAdapter.removeData(place)
+                likeTabRvAdapter.removeData(likeItem)
             }
         })
     }

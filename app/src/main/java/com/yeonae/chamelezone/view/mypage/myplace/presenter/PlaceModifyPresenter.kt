@@ -40,13 +40,14 @@ class PlaceModifyPresenter(
         images: List<String>,
         memberNumber: Int,
         address: String,
+        addressDetail: String,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
         imageNumbers: List<Int>
     ) {
-        repository.updatePlace(placeNumber, images, memberNumber, address, phoneNumber, content, latitude, longitude, imageNumbers, object : PlaceCallback<Boolean>{
+        repository.updatePlace(placeNumber, images, memberNumber, address, addressDetail, phoneNumber, content, latitude, longitude, imageNumbers, object : PlaceCallback<Boolean>{
             override fun onSuccess(response: Boolean) {
                 view.showResult(response)
             }

@@ -107,12 +107,12 @@ class CheckDialogFragment : DialogFragment() {
             keywordList: ArrayList<String>,
             selectedKeyword: ArrayList<String>
         ): CheckDialogFragment {
-            val frag = CheckDialogFragment()
-            val args = Bundle()
-            args.putStringArrayList("keyword", keywordList)
-            args.putStringArrayList("selectedKeyword", selectedKeyword)
-            frag.arguments = args
-            return frag
+            return CheckDialogFragment().apply {
+                arguments = Bundle().apply {
+                    putStringArrayList("keyword", keywordList)
+                    putStringArrayList("selectedKeyword", selectedKeyword)
+                }
+            }
         }
     }
 }

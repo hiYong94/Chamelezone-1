@@ -2,16 +2,14 @@ package com.yeonae.chamelezone.view.map
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
+import com.yeonae.chamelezone.data.model.MapItem
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.map.presenter.MarkerInfoContract
 import com.yeonae.chamelezone.view.map.presenter.MarkerInfoPresenter
 import com.yeonae.chamelezone.view.place.PlaceDetailActivity
@@ -22,22 +20,14 @@ class SingleInfoFragment : Fragment(), MarkerInfoContract.View {
     var placeNumber: Int = 0
     var placeName: String = ""
 
-    override fun placeInfo(placeList: List<PlaceResponse>) {
+    override fun placeInfo(placeList: List<MapItem>) {
         placeName = placeList[0].name
-        Log.d("placeListName", placeList[0].name)
         tv_place_name.text = placeName
         placeNumber = placeList[0].placeNumber
-        placeList[0].keywordName.forEach {
-            if (it == placeList[0].keywordName[0]) {
-                tv_place_keyword.text = it
-            } else {
-                tv_place_keyword.text = "${tv_place_keyword.text}${","} $it"
-            }
-        }
+        tv_place_keyword.text = placeList[0].keyword
         tv_place_address.text = placeList[0].address
-        val image = IMAGE_RESOURCE + placeList[0].savedImageName[0]
         iv_place_image.glideImageSet(
-            image, iv_place_image.measuredWidth,
+            placeList[0].image, iv_place_image.measuredWidth,
             iv_place_image.measuredHeight
         )
     }
