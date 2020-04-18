@@ -19,13 +19,15 @@ import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_review_modify.*
 
-class ReviewModifyActivity : AppCompatActivity(),
+class ReviewModifyActivity :
+    AppCompatActivity(),
     ReviewModifyContract.View {
     override lateinit var presenter: ReviewModifyContract.Presenter
     private val uriList = arrayListOf<String>()

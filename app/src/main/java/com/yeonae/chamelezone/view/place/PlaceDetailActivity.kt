@@ -13,19 +13,15 @@ import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
-import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.place.adapter.ImageViewPagerAdapter
 import com.yeonae.chamelezone.view.place.adapter.PlaceDetailPagerAdapter
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailContract
 import com.yeonae.chamelezone.view.place.presenter.PlaceDetailPresenter
 import kotlinx.android.synthetic.main.activity_place_detail.*
 
-
-class PlaceDetailActivity : AppCompatActivity(),
-    MoreButtonFragment.OnModifyClickListener,
-    MoreButtonFragment.OnDeleteClickListener,
+class PlaceDetailActivity :
+    AppCompatActivity(),
     PlaceDetailContract.View {
     override lateinit var presenter: PlaceDetailContract.Presenter
     private var memberNumber: Int? = null
@@ -114,7 +110,7 @@ class PlaceDetailActivity : AppCompatActivity(),
         )
         presenter.checkLogin()
 
-        btn_back.setColorFilter(Color.parseColor("#F5DA81"), PorterDuff.Mode.SRC_IN)
+        btn_back.setColorFilter(getColor(R.color.colorOrange), PorterDuff.Mode.SRC_IN)
 
         btn_back.setOnClickListener {
             finish()
@@ -152,8 +148,4 @@ class PlaceDetailActivity : AppCompatActivity(),
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }
-
-    override fun onModifyClick() {}
-
-    override fun onDeleteClick() {}
 }

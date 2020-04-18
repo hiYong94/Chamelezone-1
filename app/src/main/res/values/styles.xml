@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorOrange</item>
         <item name="colorPrimaryDark">@color/colorOrange</item>
-        <item name="colorAccent">@color/yellowOrange</item>
+        <item name="colorAccent">@color/colorOrange</item>
 
         <item name="android:textViewStyle">@style/TextViewStyle</item>
         <item name="android:buttonStyle">@style/ButtonStyle</item>

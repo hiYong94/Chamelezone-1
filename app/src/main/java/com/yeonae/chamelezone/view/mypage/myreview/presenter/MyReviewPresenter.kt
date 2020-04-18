@@ -3,7 +3,7 @@ package com.yeonae.chamelezone.view.mypage.myreview.presenter
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.data.repository.member.MemberCallback
 import com.yeonae.chamelezone.data.repository.member.MemberRepository
-import com.yeonae.chamelezone.data.repository.review.ReviewCallBack
+import com.yeonae.chamelezone.data.repository.review.ReviewCallback
 import com.yeonae.chamelezone.data.repository.review.ReviewRepository
 import com.yeonae.chamelezone.network.model.ReviewResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
@@ -14,7 +14,7 @@ class MyReviewPresenter(
     private val myReviewView: MyReviewContract.View
 ) : MyReviewContract.Presenter {
     override fun getUserReview(memberNumber: Int) {
-        reviewRepository.getMyReviewList(memberNumber, object : ReviewCallBack<List<ReviewResponse>> {
+        reviewRepository.getMyReviewList(memberNumber, object : ReviewCallback<List<ReviewResponse>> {
             override fun onSuccess(response: List<ReviewResponse>) {
                 val reviewItemList = arrayListOf<ReviewItem>()
                 response.forEach {
@@ -54,7 +54,7 @@ class MyReviewPresenter(
     }
 
     override fun deleteReview(placeNumber: Int, reviewNumber: Int, memberNumber: Int) {
-        reviewRepository.deleteReview(placeNumber, reviewNumber, memberNumber, object : ReviewCallBack<String> {
+        reviewRepository.deleteReview(placeNumber, reviewNumber, memberNumber, object : ReviewCallback<String> {
             override fun onSuccess(response: String) {
                 myReviewView.showReviewDelete(response)
             }
