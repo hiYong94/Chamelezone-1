@@ -21,7 +21,6 @@ import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.android.synthetic.main.activity_course_register.*
-import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     PlaceCheckDialogFragment.OnClickListener {
@@ -49,13 +48,13 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     private fun showSingleImage(uri: Uri) {
         imageContainer.removeAllViews()
-        val rlSlideImg = LayoutInflater.from(this).inflate(
+        val ivSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
         ) as ImageView
-        imageContainer.addView(rlSlideImg)
-        rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        imageContainer.addView(ivSlideImg)
+        ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(uri, measuredWidth, measuredHeight)
         }
         if (!uri.path.isNullOrEmpty()) {

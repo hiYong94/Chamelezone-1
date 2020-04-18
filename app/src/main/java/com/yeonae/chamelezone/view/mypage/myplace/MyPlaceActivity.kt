@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.network.model.PlaceResponse
+import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myplace.adapter.MyPlaceRvAdapter
@@ -22,7 +22,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
     private val myPlaceRvAdapter = MyPlaceRvAdapter()
     override lateinit var presenter: MyPlaceContract.Presenter
     var memberNumber: Int = 0
-    lateinit var placeResponse: PlaceResponse
+    lateinit var placeResponse: PlaceItem
 
     override fun showDeleteResult(response: Boolean) {
         if (response) {
@@ -51,7 +51,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
         presenter.getUser()
 
         myPlaceRvAdapter.setOnClickListener(object : MyPlaceRvAdapter.OnClickListener {
-            override fun onClick(place: PlaceResponse) {
+            override fun onClick(place: PlaceItem) {
                 val intent = Intent(this@MyPlaceActivity, PlaceDetailActivity::class.java)
                 intent.putExtra(PLACE_NAME, place.name)
                 intent.putExtra(PLACE_NUMBER, place.placeNumber)
@@ -60,7 +60,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
         })
 
         myPlaceRvAdapter.setMoreButtonListener(object : MyPlaceRvAdapter.MoreButtonListener {
-            override fun bottomSheetDialog(place: PlaceResponse) {
+            override fun bottomSheetDialog(place: PlaceItem) {
                 placeResponse = place
                 showBottomSheet()
             }
@@ -81,7 +81,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
         presenter.getMyPlaceList(memberNumber)
     }
 
-    override fun showMyPlaceList(response: List<PlaceResponse>) {
+    override fun showMyPlaceList(response: List<PlaceItem>) {
         layout_no_my_place.visibility = View.GONE
         layout_my_place.visibility = View.VISIBLE
         myPlaceRvAdapter.addData(response)

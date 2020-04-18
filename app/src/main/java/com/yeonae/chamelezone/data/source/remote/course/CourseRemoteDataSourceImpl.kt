@@ -19,6 +19,7 @@ import java.io.File
 import java.io.IOException
 import java.net.URLEncoder
 
+
 class CourseRemoteDataSourceImpl private constructor(private val courseApi: CourseApi) :
     CourseRemoteDataSource {
     override fun registerCourse(
@@ -185,6 +186,7 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         val content = RequestBody.create(
             MediaType.parse("text/plain"), content
         )
+
         courseService.updateCourse(
             courseNumber,
             image,
@@ -203,6 +205,77 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                (call.request().body() as MultipartBody).parts().forEach {
+                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                }
+                if (response.code() == SUCCESS) {
+                    callback.onSuccess(true)
+                }
+            }
+
+        })
+    }
+
+    override fun modifyCourse(
+        courseNumber: Int,
+        memberNumber: Int,
+        placeNumbers: List<Int>,
+        title: String,
+        content: String,
+        imageNumber: Int,
+        savedImageName: String,
+        callback: CourseCallback<Boolean>
+    ) {
+
+        val imageNumber = RequestBody.create(
+            MediaType.parse("text/plain"), imageNumber.toString()
+        )
+
+        val memberNumber = RequestBody.create(
+            MediaType.parse("text/plain"), memberNumber.toString()
+        )
+
+        val placeNumber = ArrayList<RequestBody>()
+        for (i in placeNumbers.indices) {
+            placeNumber.add(
+                RequestBody.create(
+                    MediaType.parse("text/plain"), placeNumbers[i].toString()
+                )
+            )
+        }
+        val title = RequestBody.create(
+            MediaType.parse("text/plain"), title
+        )
+        val content = RequestBody.create(
+            MediaType.parse("text/plain"), content
+        )
+        val savedImageName = RequestBody.create(
+            MediaType.parse("text/plain"), savedImageName
+        )
+
+        courseService.updateCourse(
+            courseNumber,
+            imageNumber,
+            memberNumber,
+            placeNumber,
+            title,
+            content,
+            savedImageName
+        ).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                (call.request().body() as MultipartBody).parts().forEach {
+                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                }
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                (call.request().body() as MultipartBody).parts().forEach {
+                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                }
                 if (response.code() == SUCCESS) {
                     callback.onSuccess(true)
                 }

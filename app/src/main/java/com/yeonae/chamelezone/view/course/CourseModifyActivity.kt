@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -25,7 +24,6 @@ import com.yeonae.chamelezone.view.course.presenter.CourseModifyContract
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.android.synthetic.main.activity_course_modify.*
-import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     PlaceCheckDialogFragment.OnClickListener {
@@ -37,6 +35,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     private val placeNumbers = mutableListOf<Int>()
     private var isCreated = false
     private var imageNumber: Int = 0
+    private var savedImageName: String = ""
 
     override fun showMessage(response: Boolean) {
         if (response) {
@@ -46,6 +45,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     }
 
     override fun showCourseDetail(courseList: List<CourseResponse>) {
+        savedImageName = courseList[0].courseImage
         firstPlaceNumber = courseList[0].placeNumber
         secondPlaceNumber = courseList[1].placeNumber
         imageNumber = courseList[0].courseImageNumber
@@ -53,13 +53,13 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         edt_course_content.text = SpannableStringBuilder(courseList[0].content)
 
         imageContainer.removeAllViews()
-        val rlSlideImg = LayoutInflater.from(this).inflate(
+        val ivSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
         ) as ImageView
-        imageContainer.addView(rlSlideImg)
-        rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        imageContainer.addView(ivSlideImg)
+        ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(IMAGE_RESOURCE + courseList[0].courseImage, measuredWidth, measuredHeight)
         }
 
@@ -207,17 +207,28 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
-                imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
-            presenter.modifyCourse(
-                courseNumber,
-                memberNumber,
-                placeNumbers,
-                "${edt_course_title.text}",
-                "${edt_course_content.text}",
-                imageUri,
-                imageNumber
-            )
+            if (imageUri == "") {
+                presenter.modifyCourse(
+                    courseNumber,
+                    memberNumber,
+                    placeNumbers,
+                    "${edt_course_title.text}",
+                    "${edt_course_content.text}",
+                    imageNumber,
+                    savedImageName
+                )
+            } else {
+                presenter.modifyCourse(
+                    courseNumber,
+                    memberNumber,
+                    placeNumbers,
+                    "${edt_course_title.text}",
+                    "${edt_course_content.text}",
+                    imageUri,
+                    imageNumber
+                )
+            }
         }
     }
 

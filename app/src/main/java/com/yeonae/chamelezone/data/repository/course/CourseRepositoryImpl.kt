@@ -56,6 +56,28 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         )
     }
 
+    override fun modifyCourse(
+        courseNumber: Int,
+        memberNumber: Int,
+        placeNumbers: List<Int>,
+        title: String,
+        content: String,
+        imageNumber: Int,
+        savedImageName: String,
+        callback: CourseCallback<Boolean>
+    ) {
+        remoteDataSource.modifyCourse(
+            courseNumber,
+            memberNumber,
+            placeNumbers,
+            title,
+            content,
+            imageNumber,
+            savedImageName,
+            callback
+        )
+    }
+
     override fun deleteCourse(
         courseNumber: Int,
         memberNumber: Int,

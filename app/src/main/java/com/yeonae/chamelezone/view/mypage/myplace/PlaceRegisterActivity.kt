@@ -30,7 +30,6 @@ import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlacePresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_place_register.*
-import kotlinx.android.synthetic.main.slider_item_image.view.*
 import java.io.IOException
 
 class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
@@ -99,13 +98,13 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         this.selectedUriList = uris
         imageContainer.removeAllViews()
         uris.forEach { uri ->
-            val rlSlideImg = LayoutInflater.from(this).inflate(
+            val ivSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
             ) as ImageView
-            imageContainer.addView(rlSlideImg)
-            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+            imageContainer.addView(ivSlideImg)
+            ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
             uri.path?.let { imageUri.add(it) }
@@ -170,7 +169,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_register.setOnClickListener {
-            val realAddress = "${tv_place_address.text} ${edt_detail_address.text}"
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
@@ -186,7 +184,8 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                     memberNumber,
                     keywords,
                     "${edt_place_name.text}",
-                    realAddress,
+                    "${tv_place_address.text}",
+                    "${edt_detail_address.text}",
                     openingHours,
                     "${edt_place_phone.text}",
                     "${edt_place_text.text}",

@@ -26,5 +26,16 @@ interface CourseRepository {
         callback: CourseCallback<Boolean>
     )
 
+    fun modifyCourse(
+        courseNumber: Int,
+        memberNumber: Int,
+        placeNumbers: List<Int>,
+        title: String,
+        content: String,
+        imageNumber: Int,
+        savedImageName: String,
+        callback: CourseCallback<Boolean>
+    )
+
     fun deleteCourse(courseNumber: Int, memberNumber: Int, callback: CourseCallback<Boolean>)
 }

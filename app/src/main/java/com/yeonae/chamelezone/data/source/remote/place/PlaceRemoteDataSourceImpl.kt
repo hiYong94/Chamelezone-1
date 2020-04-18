@@ -34,6 +34,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         keywordNames: List<Int>,
         name: String,
         address: String,
+        addressDetail: String,
         openingTimes: List<String>,
         phoneNumber: String,
         content: String,
@@ -82,6 +83,9 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         val address = RequestBody.create(
             MediaType.parse("text/plain"), address
         )
+        val addressDetail = RequestBody.create(
+            MediaType.parse("text/plain"), addressDetail
+        )
         val phoneNumber = RequestBody.create(
             MediaType.parse("text/plain"), phoneNumber
         )
@@ -101,6 +105,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             keywords,
             name,
             address,
+            addressDetail,
             openingTime,
             phoneNumber,
             content,
@@ -116,6 +121,11 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                     callback.onSuccess(
                         App.instance.context().getString(R.string.success_register_place)
                     )
+                }
+                Log.d("responseCode", response.code().toString())
+                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                (call.request().body() as MultipartBody).parts().forEach {
+                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
                 }
             }
 
@@ -270,6 +280,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         images: List<String>,
         memberNumber: Int,
         address: String,
+        addressDetail: String,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
@@ -296,6 +307,9 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
         val address = RequestBody.create(
             MediaType.parse("text/plain"), address
+        )
+        val addressDetail = RequestBody.create(
+            MediaType.parse("text/plain"), addressDetail
         )
         val phoneNumber = RequestBody.create(
             MediaType.parse("text/plain"), phoneNumber
@@ -324,6 +338,7 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             imageList,
             memberNumber,
             address,
+            addressDetail,
             phoneNumber,
             content,
             latitude,
@@ -376,9 +391,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                 ) {
                     Log.d("responseCode", response.code().toString())
                     Log.d("step5", call.request().body()?.let { bodyToString(it) })
-                    if (response.code() == Network.SUCCESS) {
-                        callback.onSuccess(true)
-                    }
                     if (response.code() == Network.SUCCESS) {
                         callback.onSuccess(true)
                     }

@@ -4,24 +4,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
+import com.yeonae.chamelezone.data.model.LikeItem
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.model.PlaceResponse
 import kotlinx.android.synthetic.main.item_like.view.*
 
 class LikeTabRvAdapter :
     RecyclerView.Adapter<LikeTabRvAdapter.LikeViewHolder>() {
 
-    private val items = mutableListOf<PlaceResponse>()
+    private val items = mutableListOf<LikeItem>()
     private var onClickListener: OnClickListener? = null
     private var onLikeClickListener: OnLikeClickListener? = null
 
     interface OnClickListener {
-        fun onClick(place: PlaceResponse)
+        fun onClick(likeItem: LikeItem)
     }
 
     interface OnLikeClickListener {
-        fun onLikeClick(place: PlaceResponse)
+        fun onLikeClick(likeItem: LikeItem)
     }
 
     fun setOnClickListener(listener: OnClickListener) {
@@ -41,13 +40,13 @@ class LikeTabRvAdapter :
     override fun onBindViewHolder(holder: LikeViewHolder, position: Int) =
         holder.bind(items[position], onClickListener, onLikeClickListener)
 
-    fun addData(addDataList: List<PlaceResponse>) {
+    fun addData(addDataList: List<LikeItem>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
     }
 
-    fun removeData(place: PlaceResponse) {
+    fun removeData(place: LikeItem) {
         val position = items.indexOf(place)
         items.remove(place)
         notifyItemRemoved(position)
@@ -57,7 +56,7 @@ class LikeTabRvAdapter :
         LayoutInflater.from(parent.context).inflate(R.layout.item_like, parent, false)
     ) {
         fun bind(
-            item: PlaceResponse,
+            item: LikeItem,
             listener: OnClickListener?,
             likeListener: OnLikeClickListener?
         ) {
@@ -65,20 +64,13 @@ class LikeTabRvAdapter :
                 setOnClickListener {
                     listener?.onClick(item)
                 }
-                val image = IMAGE_RESOURCE + item.savedImageName[0]
                 iv_place_image.glideImageSet(
-                    image,
+                    item.image,
                     iv_place_image.measuredWidth,
                     iv_place_image.measuredHeight
                 )
                 tv_place_name.text = item.name
-                item.keywordName.forEach {
-                    if (it == item.keywordName[0]) {
-                        tv_place_keyword.text = it
-                    } else {
-                        tv_place_keyword.text = "${tv_place_keyword.text}, $it"
-                    }
-                }
+                tv_place_keyword.text = item.keyword
                 tv_place_address.text = item.address
                 btn_like.isChecked = true
                 btn_like.setOnClickListener {

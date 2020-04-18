@@ -5,9 +5,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
+import com.yeonae.chamelezone.data.model.CourseDetailItem
 import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.view.course.presenter.CourseDetailContract
 import com.yeonae.chamelezone.view.course.presenter.CourseDetailPresenter
 import kotlinx.android.synthetic.main.activity_course_detail.*
@@ -15,9 +14,9 @@ import kotlinx.android.synthetic.main.activity_course_detail.*
 class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
     override lateinit var presenter: CourseDetailContract.Presenter
 
-    override fun showCourseDetail(courseList: List<CourseResponse>) {
+    override fun showCourseDetail(courseList: List<CourseDetailItem>) {
         iv_course_image.glideImageSet(
-            IMAGE_RESOURCE + courseList[0].courseImage,
+            courseList[0].courseImage,
             iv_course_image.measuredWidth,
             iv_course_image.measuredHeight
         )
@@ -27,7 +26,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
         tv_register_date.text = courseList[0].regiDate
 
         iv_place_image1.glideImageSet(
-            IMAGE_RESOURCE + courseList[0].placeImages,
+            courseList[0].placeImages,
             iv_place_image1.measuredWidth,
             iv_place_image1.measuredHeight
         )
@@ -43,7 +42,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
 
         layout_second_place.visibility = View.VISIBLE
         iv_place_image2.glideImageSet(
-            IMAGE_RESOURCE + courseList[1].placeImages,
+            courseList[1].placeImages,
             iv_place_image2.measuredWidth,
             iv_place_image2.measuredHeight
         )
@@ -59,7 +58,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
         if (courseList.size == 3) {
             layout_third_place.visibility = View.VISIBLE
             iv_place_image3.glideImageSet(
-                IMAGE_RESOURCE + courseList[2].placeImages,
+                courseList[2].placeImages,
                 iv_place_image3.measuredWidth,
                 iv_place_image3.measuredHeight
             )
