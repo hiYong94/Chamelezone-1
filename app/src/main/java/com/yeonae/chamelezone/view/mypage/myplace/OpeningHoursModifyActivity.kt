@@ -39,7 +39,7 @@ class OpeningHoursModifyActivity : AppCompatActivity(), OpeningHoursContract.Vie
         val placeNumber = intent.getIntExtra("placeNumber", 0)
         var openTimePosition = 0
         var closeTimePosition = 0
-        val checkBoxList = mapOf<CheckBox, LinearLayout>(
+        val checkBoxMap = mapOf<CheckBox, LinearLayout>(
             checkbox_sun to opening_hour_sun,
             checkbox_mon to opening_hour_mon,
             checkbox_tue to opening_hour_tue,
@@ -70,7 +70,7 @@ class OpeningHoursModifyActivity : AppCompatActivity(), OpeningHoursContract.Vie
             }
 
             if (openingHours[1] != "휴무") {
-                checkBoxList.forEach { checkBox ->
+                checkBoxMap.forEach { checkBox ->
                     if (openingHours[0] == checkBox.key.text) {
                         checkBox.key.isChecked = true
                         addOpeningHourLayout(
