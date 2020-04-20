@@ -28,7 +28,6 @@ interface CourseModifyContract {
             placeNumbers: List<Int>,
             title: String,
             content: String,
-            imageNumber: Int,
             savedImageName: String
         )
     }

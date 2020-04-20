@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableStringBuilder
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -36,6 +37,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     private var isCreated = false
     private var imageNumber: Int = 0
     private var savedImageName: String = ""
+    private var isClicked = false
 
     override fun showMessage(response: Boolean) {
         if (response) {
@@ -215,19 +217,24 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                     placeNumbers,
                     "${edt_course_title.text}",
                     "${edt_course_content.text}",
-                    imageNumber,
                     savedImageName
                 )
             } else {
-                presenter.modifyCourse(
-                    courseNumber,
-                    memberNumber,
-                    placeNumbers,
-                    "${edt_course_title.text}",
-                    "${edt_course_content.text}",
-                    imageUri,
-                    imageNumber
-                )
+                if (!isClicked) {
+                    isClicked = true
+                    presenter.modifyCourse(
+                        courseNumber,
+                        memberNumber,
+                        placeNumbers,
+                        "${edt_course_title.text}",
+                        "${edt_course_content.text}",
+                        imageUri,
+                        imageNumber
+                    )
+                    Handler().postDelayed({
+                        isClicked = false
+                    }, 5000)
+                }
             }
         }
     }
