@@ -69,6 +69,7 @@ class MyReviewActivity : AppCompatActivity(),
 
     override fun onDeleteClick() {
         presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
+        myReviewRvAdapter.removeData(reviewItem)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +78,9 @@ class MyReviewActivity : AppCompatActivity(),
         setAdapter()
 
         presenter = MyReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(), this
+            Injection.reviewRepository(),
+            Injection.memberRepository(),
+            this
         )
 
         presenter.checkMember()
@@ -99,6 +102,7 @@ class MyReviewActivity : AppCompatActivity(),
 
         myReviewRvAdapter.setMoreButtonListener(object : MyReviewRvAdapter.MoreButtonListener {
             override fun bottomSheetDialog(review: ReviewItem) {
+                reviewItem = review
                 placeNumber = review.placeNumber
                 reviewNumber = review.reviewNumber
                 showBottomSheet(placeNumber, reviewNumber)
