@@ -55,7 +55,7 @@
                         android:layout_gravity="center_vertical"
                         android:background="@color/transparent"
                         android:padding="10dp"
-                        android:src="@drawable/ic_search_black_24dp" />
+                        android:src="@drawable/ic_search_18dp" />
                 </LinearLayout>
             </LinearLayout>
 
