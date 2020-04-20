@@ -73,8 +73,8 @@ class ReviewCreateActivity :
                 image_container.removeView(rl)
             }
             uri.path?.let { uriDataList.add(it) }
-            val distincData = uriDataList.distinct()
-            uriList = ArrayList(distincData)
+            val distinctData = uriDataList.distinct()
+            uriList = ArrayList(distinctData)
         }
     }
 
