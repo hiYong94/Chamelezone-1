@@ -7,36 +7,27 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-        <LinearLayout
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="?android:selectableItemBackgroundBorderless"
+            android:padding="10dp"
+            android:src="@drawable/ic_keyboard_backspace_black_24dp" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical">
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/course_share"
+            android:textColor="@color/colorBlack"
+            android:textSize="20sp" />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?android:selectableItemBackgroundBorderless"
-                android:padding="10dp"
-                android:layout_marginStart="10dp"
-                android:src="@drawable/ic_keyboard_backspace_black_24dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/course_share"
-                android:textSize="20sp" />
-        </LinearLayout>
     </RelativeLayout>
 
     <ScrollView
@@ -48,15 +39,10 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/iv_course_image"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:id="@+id/iv_course_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp" />
-            </LinearLayout>
+                android:layout_height="180dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
