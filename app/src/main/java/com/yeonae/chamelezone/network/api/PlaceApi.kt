@@ -11,7 +11,7 @@ import retrofit2.http.*
 
 interface PlaceApi {
     @Multipart
-    @POST("/place")
+    @POST("/v1.0/place")
     fun placeRegister(
         @Part image: ArrayList<MultipartBody.Part>,
         @Part("memberNumber") memberNumber: RequestBody,
@@ -26,39 +26,39 @@ interface PlaceApi {
         @Part("longitude") longitude: RequestBody
     ): Call<ResponseBody>
 
-    @GET("/map/place/{name}")
+    @GET("/v1.0/map/place/{name}")
     fun getPlaceListByMap(
         @Path("name") placeName: String
     ): Call<List<PlaceResponse>>
 
-    @GET("/search/place/{name}")
+    @GET("/v1.0/search/place/{name}")
     fun getPlaceListByName(
         @Path("name") placeName: String
     ): Call<List<PlaceResponse>>
 
-    @GET("/search/area/{name}")
+    @GET("/v1.0/search/area/{name}")
     fun getPlaceListByAddress(
         @Path("name") address: String
     ): Call<List<PlaceResponse>>
 
-    @GET("/search/keyword/{name}")
+    @GET("/v1.0/search/keyword/{name}")
     fun getPlaceListByKeyword(
         @Path("name") keyword: String
     ): Call<List<PlaceResponse>>
 
-    @GET("/place/{placeNumber}")
+    @GET("/v1.0/place/{placeNumber}")
     fun getPlaceDetail(
         @Path("placeNumber") placeNumber: Int,
         @Query("memberNumber") memberNumber: Int?
     ): Call<PlaceResponse>
 
-    @GET("/user/{MemberNumber}/place")
+    @GET("/v1.0/user/{MemberNumber}/place")
     fun getMyPlaceList(
         @Path("MemberNumber") memberNumber: Int
     ): Call<List<PlaceResponse>>
 
     @Multipart
-    @PUT("/place/{placeNumber}")
+    @PUT("/v1.0/place/{placeNumber}")
     fun updatePlace(
         @Path("placeNumber") placeNumber: Int,
         @Part images: ArrayList<MultipartBody.Part>,
@@ -72,30 +72,30 @@ interface PlaceApi {
         @Part("imageNumber") imageNumber: ArrayList<RequestBody>
     ): Call<ResponseBody>
 
-    @PUT("/place/{placeNumber}/keyword")
+    @PUT("/v1.0/place/{placeNumber}/keyword")
     fun updateKeyword(
         @Path("placeNumber") placeNumber: Int,
         @Body keyword: JsonObject
     ): Call<ResponseBody>
 
-    @PUT("/place/{placeNumber}/openingTime")
+    @PUT("/v1.0/place/{placeNumber}/openingTime")
     fun updateOpeningHours(
         @Path("placeNumber") placeNumber: Int,
         @Body openingTime: JsonObject
     ): Call<ResponseBody>
 
-    @HTTP(method = "DELETE", path = "/place/{placeNumber}", hasBody = true)
+    @HTTP(method = "DELETE", path = "/v1.0/place/{placeNumber}", hasBody = true)
     fun deletePlace(
         @Path("placeNumber") placeNumber: Int,
         @Body user: JsonObject
     ): Call<ResponseBody>
 
-    @GET("/place")
+    @GET("/v1.0/place")
     fun getHomePlaceList(
         @Query("memberNumber") memberNumber: Int?
     ): Call<List<PlaceResponse>>
 
-    @GET("/place/duplicate-check")
+    @GET("/v1.0/place/duplicate-check")
     fun checkPlace(
         @Query("name") name: String,
         @Query("latitude") latitude: String,

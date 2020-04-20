@@ -10,7 +10,7 @@ import retrofit2.http.*
 
 interface ReviewApi {
     @Multipart
-    @POST("/place/{placeNumber}/review")
+    @POST("/v1.0/place/{placeNumber}/review")
     fun reviewCreate(
         @Part("memberNumber") memberNumber: RequestBody,
         @Part("content") content: RequestBody,
@@ -19,7 +19,7 @@ interface ReviewApi {
     ): Call<ResponseBody>
 
     @Multipart
-    @PUT("/place/{placeNumber}/review/{reviewNumber}")
+    @PUT("/v1.0/place/{placeNumber}/review/{reviewNumber}")
     fun updateReview(
         @Path("placeNumber") placeNumber: Int,
         @Part file: ArrayList<MultipartBody.Part>,
@@ -29,36 +29,36 @@ interface ReviewApi {
         @Part("imageNumber") imageNumber: ArrayList<RequestBody>
     ): Call<ResponseBody>
 
-    @HTTP(method = "DELETE", path = "/place/{placeNumber}/review/{reviewNumber}", hasBody = true)
+    @HTTP(method = "DELETE", path = "/v1.0/place/{placeNumber}/review/{reviewNumber}", hasBody = true)
     fun deleteReview(
         @Path("placeNumber") placeNumber: Int,
         @Path("reviewNumber") reviewNumber: Int,
         @Body memberNumber: JsonObject
     ): Call<ResponseBody>
 
-    @GET("/place/{placeNumber}/review")
+    @GET("/v1.0/place/{placeNumber}/review")
     fun getReviewList(
         @Path("placeNumber") placeNumber: Int
     ): Call<List<ReviewResponse>>
 
-    @GET("/user/{memberNumber}/review")
+    @GET("/v1.0/user/{memberNumber}/review")
     fun getMyReviewList(
         @Path("memberNumber") memberNumber: Int
     ): Call<List<ReviewResponse>>
 
-    @GET("/place/{placeNumber}/review/{reviewNumber}")
+    @GET("/v1.0/place/{placeNumber}/review/{reviewNumber}")
     fun getReviewDetail(
         @Path("placeNumber") placeNumber: Int,
         @Path("reviewNumber") reviewNumber: Int
     ): Call<ReviewResponse>
 
-    @GET("/place/{placeNumber}/review/{reviewNumber}")
+    @GET("/v1.0/place/{placeNumber}/review/{reviewNumber}")
     fun getMyReviewDetail(
         @Path("placeNumber") placeNumber: Int,
         @Path("reviewNumber") reviewNumber: Int
     ): Call<ReviewResponse>
 
-    @GET("/place/{placeNumber}/review/{reviewNumber}")
+    @GET("/v1.0/place/{placeNumber}/review/{reviewNumber}")
     fun getMyReviewImageDetail(
         @Path("placeNumber") placeNumber: Int,
         @Path("reviewNumber") reviewNumber: Int
