@@ -8,8 +8,10 @@ import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
@@ -18,17 +20,21 @@ import com.yeonae.chamelezone.ext.catchFocus
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_review_create.*
+import kotlinx.android.synthetic.main.slider_item_image.*
+import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class ReviewCreateActivity :
     AppCompatActivity(),
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
-    private val uriList = arrayListOf<String>()
+    private var uriList = ArrayList<String>()
+    private var uriDataList = arrayListOf<String>()
     private var selectedUriList: List<Uri>? = null
     private var isCreated = false
     private var isChecked = false
@@ -53,16 +59,22 @@ class ReviewCreateActivity :
         image_container.removeAllViews()
 
         uris.forEachIndexed { _, uri ->
-            val iv = LayoutInflater.from(this).inflate(
+            val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
-            ) as ImageView
-            iv.run {
+            ) as RelativeLayout
+            image_container.addView(rl)
+            rl.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
-                image_container.addView(iv)
             }
-            uri.path?.let { uriList.add(it) }
+
+            rl.btn_delete.setOnClickListener {
+                image_container.removeView(rl)
+            }
+            uri.path?.let { uriDataList.add(it) }
+            val distincData = uriDataList.distinct()
+            uriList = ArrayList(distincData)
         }
     }
 
@@ -88,6 +100,7 @@ class ReviewCreateActivity :
             }
             if (!isCreated) {
                 isCreated = true
+                rl_loading.isVisible
                 presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
                 Handler().postDelayed({
                     isCreated = false
