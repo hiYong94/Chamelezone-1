@@ -9,7 +9,7 @@ import retrofit2.http.*
 
 interface CourseApi {
     @Multipart
-    @POST("/course")
+    @POST("/v1.0/course")
     fun courseRegister(
         @Part image: MultipartBody.Part,
         @Part("memberNumber") memberNumber: RequestBody,
@@ -18,22 +18,22 @@ interface CourseApi {
         @Part("content") content: RequestBody
     ): Call<ResponseBody>
 
-    @GET("/course")
+    @GET("/v1.0/course")
     fun getCourseList(
     ): Call<List<CourseResponse>>
 
-    @GET("/course/{courseNumber}")
+    @GET("/v1.0/course/{courseNumber}")
     fun getCourseDetail(
         @Path("courseNumber") courseNumber: Int
     ): Call<List<CourseResponse>>
 
-    @GET("/user/{memberNumber}/course")
+    @GET("/v1.0/user/{memberNumber}/course")
     fun getMyCourseList(
         @Path("memberNumber") memberNumber: Int
     ): Call<List<CourseResponse>>
 
     @Multipart
-    @PUT("/course/{courseNumber}")
+    @PUT("/v1.0/course/{courseNumber}")
     fun updateCourse(
         @Path("courseNumber") courseNumber: Int,
         @Part image: MultipartBody.Part,
@@ -45,7 +45,7 @@ interface CourseApi {
     ): Call<ResponseBody>
 
     @Multipart
-    @PUT("/course/{courseNumber}")
+    @PUT("/v1.0/course/{courseNumber}")
     fun updateCourse(
         @Path("courseNumber") courseNumber: Int,
         @Part("imageNumber") imageNumber: RequestBody,
@@ -56,7 +56,7 @@ interface CourseApi {
         @Part("savedImageName") savedImageName: RequestBody
     ): Call<ResponseBody>
 
-    @DELETE("/course/{courseNumber}")
+    @DELETE("/v1.0/course/{courseNumber}")
     fun deleteCourse(
         @Path("courseNumber") courseNumber: Int,
         @Query("memberNumber") memberNumber: Int
