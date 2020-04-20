@@ -33,6 +33,7 @@ class PlaceReviewTabFragment :
     private var placeNumber = 0
     var memberNumber = 0
     var placeName: String = ""
+    private lateinit var reviewItem: ReviewItem
 
     override fun showPlaceReview(reviewList: List<ReviewItem>) {
         if (::placeReviewRvAdapter.isInitialized)
@@ -106,6 +107,7 @@ class PlaceReviewTabFragment :
         placeReviewRvAdapter.setMoreButtonListener(object :
             PlaceReviewTabRvAdapter.MoreButtonListener {
             override fun bottomSheetDialog(review: ReviewItem) {
+                reviewItem = review
                 reviewNumber = review.reviewNumber
                 showBottomSheet(reviewNumber)
             }
@@ -127,6 +129,7 @@ class PlaceReviewTabFragment :
 
                 } else if (resultCode == BTN_DELETE) {
                     presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
+                    placeReviewRvAdapter.removeData(reviewItem)
                 }
             }
         }
