@@ -55,6 +55,7 @@ fun ImageView.glideOriginImageSet(image: String, width: Int, height: Int) {
         .error(R.drawable.ic_x)
         .override(width, height)
         .fitCenter()
+        .placeholder(ContextCompat.getDrawable(context, R.drawable.square_shape))
         .into(this)
 }
 
@@ -77,7 +78,7 @@ fun ImageView.glideTransformations(image: String, width: Int, height: Int) {
                 )
             )
         )
-        .placeholder(ContextCompat.getDrawable(context, R.drawable.home))
+        .placeholder(ContextCompat.getDrawable(context, R.drawable.square_shape))
         .into(this)
 }
 
