@@ -22,7 +22,9 @@ import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
@@ -48,6 +50,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     lateinit var latitude: String
     lateinit var longitude: String
     private var selectedUriList: List<Uri>? = null
+    private var isClicked = false
 
     override fun showPlaceMessage(placeCheck: String) {
         if (placeCheck == CHECK_YES) {
@@ -114,6 +117,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     override fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG)
             .show()
+        hideLoading()
         finish()
     }
 
@@ -178,8 +182,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
             }
-            if (!isCreated) {
-                isCreated = true
+            showLoading()
+            if (!isClicked) {
+                isClicked = true
                 presenter.placeRegister(
                     memberNumber,
                     keywords,
@@ -194,7 +199,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                     imageUri
                 )
                 Handler().postDelayed({
-                    isCreated = false
+                    isClicked = false
                 }, 5000)
             }
         }

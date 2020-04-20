@@ -24,7 +24,9 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyContract
@@ -50,12 +52,14 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     lateinit var latitude: String
     lateinit var longitude: String
     private val imageNumbers = arrayListOf<Int>()
-    var placeKeywordNumbers = arrayListOf<Int>()
+    private var placeKeywordNumbers = arrayListOf<Int>()
     private var selectedUriList: List<Uri>? = null
+    private var isClicked = false
 
     override fun showResult(response: Boolean) {
         if (response) {
             shortToast(R.string.success_update_place)
+            hideLoading()
             finish()
         }
     }
@@ -132,7 +136,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
         edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
         edt_place_text.text = SpannableStringBuilder(place.content)
-        if(place.addressDetail != null){
+        if (place.addressDetail != null) {
             edt_detail_address.text = SpannableStringBuilder(place.addressDetail)
         }
 
@@ -201,18 +205,25 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
             }
-            presenter.updatePlace(
-                placeNumber,
-                imageUri,
-                memberNumber,
-                "${tv_place_address.text}",
-                "${edt_detail_address.text}",
-                "${edt_place_phone.text}",
-                "${edt_place_text.text}",
-                latitude.toBigDecimal(),
-                longitude.toBigDecimal(),
-                imageNumbers
-            )
+            showLoading()
+            if (!isClicked) {
+                isClicked = true
+                presenter.updatePlace(
+                    placeNumber,
+                    imageUri,
+                    memberNumber,
+                    "${tv_place_address.text}",
+                    "${edt_detail_address.text}",
+                    "${edt_place_phone.text}",
+                    "${edt_place_text.text}",
+                    latitude.toBigDecimal(),
+                    longitude.toBigDecimal(),
+                    imageNumbers
+                )
+                Handler().postDelayed({
+                    isClicked = false
+                }, 5000)
+            }
         }
     }
 

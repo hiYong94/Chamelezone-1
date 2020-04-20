@@ -19,7 +19,9 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyContract
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyPresenter
@@ -42,6 +44,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     override fun showMessage(response: Boolean) {
         if (response) {
             this.shortToast(R.string.success_update_course)
+            hideLoading()
             finish()
         }
     }
@@ -210,6 +213,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
             }
+            showLoading()
             if (imageUri == "") {
                 presenter.modifyCourse(
                     courseNumber,

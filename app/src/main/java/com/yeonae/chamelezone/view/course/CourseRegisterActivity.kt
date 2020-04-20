@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -15,8 +16,11 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.view.LoadingDialogFragment
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -32,6 +36,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     private var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
     private var isCreated = false
+    private var isClicked = false
 
     override fun onClick(place: PlaceItem, placeIndex: Int) {
         getVisible(place, placeIndex)
@@ -43,6 +48,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     override fun showMessage(message: String) {
         this.shortToast(message)
+        hideLoading()
         finish()
     }
 
@@ -135,26 +141,20 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
             }
-//            if (!isCreated) {
-//                isCreated = true
-//                presenter.registerCourse(
-//                    memberNumber,
-//                    placeNumbers,
-//                    "${edt_course_title.text}",
-//                    "${edt_course_content.text}",
-//                    imageUri
-//                )
-//                Handler().postDelayed({
-//                    isCreated = false
-//                }, 5000)
-//            }
-            presenter.registerCourse(
-                memberNumber,
-                placeNumbers,
-                "${edt_course_title.text}",
-                "${edt_course_content.text}",
-                imageUri
-            )
+            showLoading()
+            if (!isClicked) {
+                isClicked = true
+                presenter.registerCourse(
+                    memberNumber,
+                    placeNumbers,
+                    "${edt_course_title.text}",
+                    "${edt_course_content.text}",
+                    imageUri
+                )
+                Handler().postDelayed({
+                    isClicked = false
+                }, 5000)
+            }
         }
     }
 
