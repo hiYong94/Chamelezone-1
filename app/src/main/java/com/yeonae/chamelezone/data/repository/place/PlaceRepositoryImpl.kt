@@ -72,7 +72,8 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
 
     override fun updatePlace(
         placeNumber: Int,
-        images: List<String>,
+        insertImages: List<String>,
+        deleteImageNumbers: List<Int>,
         memberNumber: Int,
         address: String,
         addressDetail: String,
@@ -80,12 +81,12 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        imageNumbers: List<Int>,
         callback: PlaceCallback<Boolean>
     ) {
         remoteDataSource.updatePlace(
             placeNumber,
-            images,
+            insertImages,
+            deleteImageNumbers,
             memberNumber,
             address,
             addressDetail,
@@ -93,7 +94,6 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
             content,
             latitude,
             longitude,
-            imageNumbers,
             callback
         )
     }

@@ -277,7 +277,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
     override fun updatePlace(
         placeNumber: Int,
-        images: List<String>,
+        insertImages: List<String>,
+        deleteImageNumbers: List<Int>,
         memberNumber: Int,
         address: String,
         addressDetail: String,
@@ -285,18 +286,26 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        imageNumbers: List<Int>,
         callback: PlaceCallback<Boolean>
     ) {
-        val imageList = ArrayList<MultipartBody.Part>()
-        for (i in images.indices) {
-            val file = File(images[i])
-            val extends = images[i].split(".").lastOrNull() ?: "*"
-            imageList.add(
+        val insertImageList = ArrayList<MultipartBody.Part>()
+        for (i in insertImages.indices) {
+            val file = File(insertImages[i])
+            val extends = insertImages[i].split(".").lastOrNull() ?: "*"
+            insertImageList.add(
                 MultipartBody.Part.createFormData(
                     "images",
                     URLEncoder.encode(file.name, "UTF-8"),
                     RequestBody.create(MediaType.parse("image/$extends"), file)
+                )
+            )
+        }
+
+        val deleteImageNumberList = ArrayList<RequestBody>()
+        for (i in deleteImageNumbers.indices) {
+            deleteImageNumberList.add(
+                RequestBody.create(
+                    MediaType.parse("text/plain"), deleteImageNumbers[i].toString()
                 )
             )
         }
@@ -324,32 +333,31 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             MediaType.parse("text/plain"), longitude.toString()
         )
 
-        val imageNumberList = ArrayList<RequestBody>()
-        for (i in imageNumbers.indices) {
-            imageNumberList.add(
-                RequestBody.create(
-                    MediaType.parse("text/plain"), imageNumbers[i].toString()
-                )
-            )
-        }
-
         placeService.updatePlace(
             placeNumber,
-            imageList,
+            insertImageList,
+            deleteImageNumberList,
             memberNumber,
             address,
             addressDetail,
             phoneNumber,
             content,
             latitude,
-            longitude,
-            imageNumberList
+            longitude
         ).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
+                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                (call.request().body() as MultipartBody).parts().forEach {
+                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                }
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
+                (call.request().body() as MultipartBody).parts().forEach {
+                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                }
                 if (response.code() == Network.SUCCESS) {
                     callback.onSuccess(true)
                 }

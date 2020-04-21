@@ -35,28 +35,40 @@ class PlaceModifyPresenter(
 
         })
     }
+
     override fun updatePlace(
         placeNumber: Int,
-        images: List<String>,
+        insertImages: List<String>,
+        deleteImageNumbers: List<Int>,
         memberNumber: Int,
         address: String,
         addressDetail: String,
         phoneNumber: String,
         content: String,
         latitude: BigDecimal,
-        longitude: BigDecimal,
-        imageNumbers: List<Int>
+        longitude: BigDecimal
     ) {
-        repository.updatePlace(placeNumber, images, memberNumber, address, addressDetail, phoneNumber, content, latitude, longitude, imageNumbers, object : PlaceCallback<Boolean>{
-            override fun onSuccess(response: Boolean) {
-                view.showResult(response)
-            }
+        repository.updatePlace(
+            placeNumber,
+            insertImages,
+            deleteImageNumbers,
+            memberNumber,
+            address,
+            addressDetail,
+            phoneNumber,
+            content,
+            latitude,
+            longitude,
+            object : PlaceCallback<Boolean> {
+                override fun onSuccess(response: Boolean) {
+                    view.showResult(response)
+                }
 
-            override fun onFailure(message: String) {
+                override fun onFailure(message: String) {
 
-            }
+                }
 
-        })
+            })
     }
 
 }

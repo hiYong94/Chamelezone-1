@@ -61,15 +61,15 @@ interface PlaceApi {
     @PUT("/v1.0/place/{placeNumber}")
     fun updatePlace(
         @Path("placeNumber") placeNumber: Int,
-        @Part images: ArrayList<MultipartBody.Part>,
+        @Part insertImages: ArrayList<MultipartBody.Part>,
+        @Part("deleteImageNumber") imageNumber: ArrayList<RequestBody>,
         @Part("memberNumber") memberNumber: RequestBody,
         @Part("address") address: RequestBody,
         @Part("addressDetail") addressDetail: RequestBody,
         @Part("phoneNumber") phoneNumber: RequestBody,
         @Part("content") content: RequestBody,
         @Part("latitude") latitude: RequestBody,
-        @Part("longitude") longitude: RequestBody,
-        @Part("imageNumber") imageNumber: ArrayList<RequestBody>
+        @Part("longitude") longitude: RequestBody
     ): Call<ResponseBody>
 
     @PUT("/v1.0/place/{placeNumber}/keyword")

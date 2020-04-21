@@ -52,6 +52,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     lateinit var latitude: String
     lateinit var longitude: String
     private val imageNumbers = arrayListOf<Int>()
+    private var deleteImageNumbers = arrayListOf<Int>()
     private var placeKeywordNumbers = arrayListOf<Int>()
     private var selectedUriList: List<Uri>? = null
     private var isClicked = false
@@ -86,7 +87,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
 
     private fun showMultiImage(uris: List<Uri>) {
         this.selectedUriList = uris
-        imageContainer.removeAllViews()
         uris.forEach { uri ->
             val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
@@ -211,14 +211,14 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 presenter.updatePlace(
                     placeNumber,
                     imageUri,
+                    deleteImageNumbers,
                     memberNumber,
                     "${tv_place_address.text}",
                     "${edt_detail_address.text}",
                     "${edt_place_phone.text}",
                     "${edt_place_text.text}",
                     latitude.toBigDecimal(),
-                    longitude.toBigDecimal(),
-                    imageNumbers
+                    longitude.toBigDecimal()
                 )
                 Handler().postDelayed({
                     isClicked = false
@@ -289,7 +289,10 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 isCreated = false
             }, 1000)
         }
-        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+        btn_image_clear.setOnClickListener {
+            imageContainer.removeAllViews()
+            deleteImageNumbers = imageNumbers
+        }
     }
 
     private fun checkPermission() {
@@ -337,7 +340,5 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         const val RESULT = "result"
         const val OPENING_HOURS = "openingHours"
         const val OPENING_HOURS_POSITION = "openingHoursPosition"
-        const val CHECK_YES = "Y"
-        const val CHECK_NO = "N"
     }
 }
