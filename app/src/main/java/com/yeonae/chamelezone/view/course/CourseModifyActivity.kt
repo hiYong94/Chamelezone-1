@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.text.SpannableStringBuilder
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -212,6 +211,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
+                savedImageName == "" -> (R.string.enter_course_image)
             }
             showLoading()
             if (imageUri == "") {
@@ -338,7 +338,11 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 isCreated = false
             }, 1000)
         }
-        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+
+        btn_image_clear.setOnClickListener {
+            savedImageName = ""
+            imageContainer.removeAllViews()
+        }
     }
 
     private fun checkPermission() {
