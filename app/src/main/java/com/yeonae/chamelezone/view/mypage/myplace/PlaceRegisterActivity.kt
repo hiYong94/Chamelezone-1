@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -14,6 +15,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
@@ -49,7 +51,8 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private lateinit var latLng: LatLng
     lateinit var latitude: String
     lateinit var longitude: String
-    private var selectedUriList: List<Uri>? = null
+    private var uriDataList = arrayListOf<String>()
+    private var selectedUriList = mutableListOf<Uri>()
     private var isClicked = false
 
     override fun showPlaceMessage(placeCheck: String) {
@@ -60,6 +63,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             edt_place_name.isEnabled = false
             tv_place_address.isEnabled = false
             edt_detail_address.isEnabled = false
+            btn_address_search.isEnabled = false
             btn_register.visibility = View.VISIBLE
         } else if (placeCheck == CHECK_NO) {
             layout_check_place.visibility = View.VISIBLE
@@ -69,6 +73,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             edt_place_name.isEnabled = true
             tv_place_address.isEnabled = true
             edt_detail_address.isEnabled = true
+            btn_address_search.isEnabled = true
             btn_register.visibility = View.GONE
         }
     }
@@ -76,7 +81,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     override fun onClick(keywordList: ArrayList<String>) {
         keywords.clear()
         for (i in 0 until keywordList.size) {
-            for (j in 0 until keywordMap.size) {
+            for (j in 1..keywordMap.size) {
                 if (keywordMap[j] == keywordList[i]) {
                     keywords.add(j)
                 }
@@ -98,19 +103,34 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     }
 
     private fun showMultiImage(uris: List<Uri>) {
-        this.selectedUriList = uris
+        if (uriDataList.count() != 0)
+            uriDataList.clear()
+        this.selectedUriList = uris.toMutableList()
         imageContainer.removeAllViews()
-        uris.forEach { uri ->
-            val ivSlideImg = LayoutInflater.from(this).inflate(
+        uris.forEachIndexed { index, uri ->
+            val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as ImageView
-            imageContainer.addView(ivSlideImg)
-            ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
+            ) as RelativeLayout
+            imageContainer.addView(rlSlideImg)
+            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
-            uri.path?.let { imageUri.add(it) }
+            rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+                imageContainer.removeView(rlSlideImg)
+                if (this.selectedUriList.count() != 0)
+                    this.selectedUriList.removeAt(index)
+            }
+
+            btn_image_clear.setOnClickListener {
+                imageContainer.removeAllViews()
+                if (this.selectedUriList.count() != 0)
+                    this.selectedUriList.removeAll(uris)
+            }
+            uri.path?.let { uriDataList.add(it) }
+            val distinctData = uriDataList.distinct()
+            imageUri = ArrayList(distinctData)
         }
     }
 
@@ -118,6 +138,8 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         Toast.makeText(this, message, Toast.LENGTH_LONG)
             .show()
         hideLoading()
+        val intent = Intent(this, MyPlaceActivity::class.java)
+        setResult(Activity.RESULT_OK, intent)
         finish()
     }
 
@@ -181,26 +203,29 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 edt_place_phone.text.isEmpty() -> shortToast(R.string.enter_place_phone)
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
-            }
-            showLoading()
-            if (!isClicked) {
-                isClicked = true
-                presenter.placeRegister(
-                    memberNumber,
-                    keywords,
-                    "${edt_place_name.text}",
-                    "${tv_place_address.text}",
-                    "${edt_detail_address.text}",
-                    openingHours,
-                    "${edt_place_phone.text}",
-                    "${edt_place_text.text}",
-                    latitude.toBigDecimal(),
-                    longitude.toBigDecimal(),
-                    imageUri
-                )
-                Handler().postDelayed({
-                    isClicked = false
-                }, 5000)
+                else -> {
+                    Log.d("imageUri", imageUri.toString())
+                    showLoading()
+                    if (!isClicked) {
+                        isClicked = true
+                        presenter.placeRegister(
+                            memberNumber,
+                            keywords,
+                            "${edt_place_name.text}",
+                            "${tv_place_address.text}",
+                            "${edt_detail_address.text}",
+                            openingHours,
+                            "${edt_place_phone.text}",
+                            "${edt_place_text.text}",
+                            latitude.toBigDecimal(),
+                            longitude.toBigDecimal(),
+                            imageUri
+                        )
+                        Handler().postDelayed({
+                            isClicked = false
+                        }, 5000)
+                    }
+                }
             }
         }
     }
@@ -267,7 +292,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 isCreated = false
             }, 1000)
         }
-        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
     }
 
     private fun checkPermission() {
