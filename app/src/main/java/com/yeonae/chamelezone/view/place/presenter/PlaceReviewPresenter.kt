@@ -18,7 +18,7 @@ class PlaceReviewPresenter(
             override fun onSuccess(response: List<ReviewResponse>) {
                 val reviewItemList = arrayListOf<ReviewItem>()
                 response.forEach {
-                    it.toReviewItem()?.let { it1 -> reviewItemList.add(it1) }
+                    it.toReviewItem().let { reviewItem -> reviewItemList.add(reviewItem) }
                 }
                 placeReviewView.showPlaceReview(reviewItemList)
             }
@@ -62,6 +62,21 @@ class PlaceReviewPresenter(
         memberRepository.checkLogin(object : MemberCallback<Boolean> {
             override fun onSuccess(response: Boolean) {
                 placeReviewView.getMemberCheck(response)
+            }
+
+            override fun onFailure(message: String) {
+
+            }
+        })
+    }
+
+    override fun getReview(placeNumber: Int, reviewNumber: Int) {
+        reviewRepository.getReviewDetail(
+            placeNumber,
+            reviewNumber,
+            object : ReviewCallback<ReviewResponse> {
+            override fun onSuccess(response: ReviewResponse) {
+                response.toReviewItem().let { placeReviewView.getReview(it) }
             }
 
             override fun onFailure(message: String) {

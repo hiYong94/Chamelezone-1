@@ -83,7 +83,8 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
                     reviewImg.measuredHeight
                 )
             } else {
-                val backgroundColor = ContextCompat.getDrawable(App.instance.context(), R.drawable.color)
+                val backgroundColor =
+                    ContextCompat.getDrawable(App.instance.context(), R.drawable.color)
                 itemView.iv_image.background = backgroundColor
                 reviewCount.text = ""
                 itemView.post {
@@ -130,6 +131,19 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
     fun addDataList(addDataList: List<ReviewItem>) {
         reviewList.clear()
         reviewList.addAll(addDataList)
+        notifyDataSetChanged()
+    }
+
+    fun addData(review: ReviewItem) {
+        val position = reviewList.indexOf(review)
+        reviewList.add(0, review)
+        notifyItemInserted(position)
+    }
+
+    fun updateData(review: ReviewItem) {
+        val position = reviewList.indexOf(review)
+        reviewList[position] = review
+        notifyItemChanged(position)
         notifyDataSetChanged()
     }
 

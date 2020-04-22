@@ -12,6 +12,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment.Companion.BTN_DELETE
@@ -44,12 +45,19 @@ class PlaceReviewTabFragment :
         Toast.makeText(context, "리뷰가 삭제되었습니다", Toast.LENGTH_LONG).show()
     }
 
-    override fun showMemberReview(user: UserEntity) { }
+    override fun getReview(review: ReviewItem) {
+        reviewItem = review
+        Logger.d("reviewItem $reviewItem")
+//        placeReviewRvAdapter.addData(reviewItem)
+        placeReviewRvAdapter.updateData(reviewItem)
+    }
+
+    override fun showMemberReview(user: UserEntity) {}
 
     override fun getMemberCheck(response: Boolean) {
         if (response) {
             presenter.getMember()
-            review.setOnClickListener {
+            btn_review.setOnClickListener {
                 placeName = arguments?.getString(PLACE_NAME).orEmpty()
                 val intent = Intent(context, ReviewCreateActivity::class.java)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
@@ -57,7 +65,7 @@ class PlaceReviewTabFragment :
                 startActivity(intent)
             }
         } else {
-            review.setOnClickListener {
+            btn_review.setOnClickListener {
                 val intent = Intent(context, LoginActivity::class.java)
                 startActivity(intent)
             }
@@ -115,6 +123,7 @@ class PlaceReviewTabFragment :
 
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -138,6 +147,15 @@ class PlaceReviewTabFragment :
     override fun onResume() {
         super.onResume()
         presenter.checkMember()
+
+        Logger.d("placeNumber $placeNumber")
+        Logger.d("reviewNumber $reviewNumber")
+
+        if(::reviewItem.isInitialized) {
+            reviewNumber = reviewItem.reviewNumber
+            Logger.d("reviewNumber $reviewNumber")
+        }
+        presenter.getReview(placeNumber, reviewNumber)
     }
 
     private fun setAdapter() {

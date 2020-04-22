@@ -10,6 +10,7 @@ interface PlaceReviewContract {
         fun showReviewDelete(message: String)
         fun showMemberReview(user: UserEntity)
         fun getMemberCheck(response: Boolean)
+        fun getReview(review: ReviewItem)
     }
 
     interface Presenter {
@@ -17,5 +18,6 @@ interface PlaceReviewContract {
         fun deleteReview(placeNumber: Int, reviewNumber: Int, memberNumber: Int)
         fun getMember()
         fun checkMember()
+        fun getReview(placeNumber: Int, reviewNumber: Int)
     }
 }
