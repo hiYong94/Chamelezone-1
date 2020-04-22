@@ -8,6 +8,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -20,7 +21,6 @@ import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.view.LoadingDialogFragment
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -54,14 +54,18 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     private fun showSingleImage(uri: Uri) {
         imageContainer.removeAllViews()
-        val ivSlideImg = LayoutInflater.from(this).inflate(
+        val rlSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
-        ) as ImageView
-        imageContainer.addView(ivSlideImg)
-        ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        ) as RelativeLayout
+        imageContainer.addView(rlSlideImg)
+        rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(uri, measuredWidth, measuredHeight)
+        }
+        rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            imageContainer.removeView(rlSlideImg)
+            imageUri = ""
         }
         if (!uri.path.isNullOrEmpty()) {
             imageUri = uri.path.toString()
@@ -140,20 +144,22 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
-            }
-            showLoading()
-            if (!isClicked) {
-                isClicked = true
-                presenter.registerCourse(
-                    memberNumber,
-                    placeNumbers,
-                    "${edt_course_title.text}",
-                    "${edt_course_content.text}",
-                    imageUri
-                )
-                Handler().postDelayed({
-                    isClicked = false
-                }, 5000)
+                else -> {
+                    showLoading()
+                    if (!isClicked) {
+                        isClicked = true
+                        presenter.registerCourse(
+                            memberNumber,
+                            placeNumbers,
+                            "${edt_course_title.text}",
+                            "${edt_course_content.text}",
+                            imageUri
+                        )
+                        Handler().postDelayed({
+                            isClicked = false
+                        }, 5000)
+                    }
+                }
             }
         }
     }
@@ -247,7 +253,11 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         btn_image_create.setOnClickListener {
             checkPermission()
         }
-        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+
+        btn_image_clear.setOnClickListener {
+            imageUri = ""
+            imageContainer.removeAllViews()
+        }
     }
 
     private fun checkPermission() {

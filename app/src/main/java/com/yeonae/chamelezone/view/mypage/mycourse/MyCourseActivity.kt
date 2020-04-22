@@ -71,6 +71,15 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View,
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                presenter.getMyCourseList(memberNumber)
+            }
+        }
+    }
+
     override fun showUserInfo(user: UserEntity) {
         memberNumber = user.userNumber ?: 0
         presenter.getMyCourseList(memberNumber)
@@ -92,7 +101,7 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View,
         val intent = Intent(this, CourseModifyActivity::class.java)
         intent.putExtra("courseNumber", courseItem.courseNumber)
         intent.putExtra("memberNumber", memberNumber)
-        startActivity(intent)
+        startActivityForResult(intent, UPDATE_REQUEST_CODE)
     }
 
     private fun showBottomSheet() {
@@ -106,6 +115,7 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View,
     }
 
     companion object {
+        const val UPDATE_REQUEST_CODE = 1
         private const val COURSE_NUMBER = "courseNumber"
     }
 }

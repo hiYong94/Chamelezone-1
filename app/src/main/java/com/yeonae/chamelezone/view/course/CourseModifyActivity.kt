@@ -1,6 +1,8 @@
 package com.yeonae.chamelezone.view.course
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +11,7 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -24,6 +27,7 @@ import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyContract
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyPresenter
+import com.yeonae.chamelezone.view.mypage.mycourse.MyCourseActivity
 import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.android.synthetic.main.activity_course_modify.*
 
@@ -38,12 +42,13 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     private var isCreated = false
     private var imageNumber: Int = 0
     private var savedImageName: String = ""
-    private var isClicked = false
 
     override fun showMessage(response: Boolean) {
         if (response) {
             this.shortToast(R.string.success_update_course)
             hideLoading()
+            val intent = Intent(this, MyCourseActivity::class.java)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
@@ -57,14 +62,19 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         edt_course_content.text = SpannableStringBuilder(courseList[0].content)
 
         imageContainer.removeAllViews()
-        val ivSlideImg = LayoutInflater.from(this).inflate(
+        val rlSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
-        ) as ImageView
-        imageContainer.addView(ivSlideImg)
-        ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        ) as RelativeLayout
+        imageContainer.addView(rlSlideImg)
+        rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(IMAGE_RESOURCE + courseList[0].courseImage, measuredWidth, measuredHeight)
+        }
+        rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            imageContainer.removeView(rlSlideImg)
+            imageUri = ""
+            savedImageName = ""
         }
 
         iv_place_image1.glideImageSet(
@@ -124,15 +134,21 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     }
 
     private fun showSingleImage(uri: Uri) {
+        savedImageName = ""
         imageContainer.removeAllViews()
         val rlSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
-        ) as ImageView
+        ) as RelativeLayout
         imageContainer.addView(rlSlideImg)
         rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(uri, measuredWidth, measuredHeight)
+        }
+        rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            imageContainer.removeView(rlSlideImg)
+            imageUri = ""
+            savedImageName = ""
         }
         if (!uri.path.isNullOrEmpty()) {
             imageUri = uri.path.toString()
@@ -211,33 +227,29 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
-                savedImageName == "" -> (R.string.enter_course_image)
-            }
-            showLoading()
-            if (imageUri == "") {
-                presenter.modifyCourse(
-                    courseNumber,
-                    memberNumber,
-                    placeNumbers,
-                    "${edt_course_title.text}",
-                    "${edt_course_content.text}",
-                    savedImageName
-                )
-            } else {
-                if (!isClicked) {
-                    isClicked = true
-                    presenter.modifyCourse(
-                        courseNumber,
-                        memberNumber,
-                        placeNumbers,
-                        "${edt_course_title.text}",
-                        "${edt_course_content.text}",
-                        imageUri,
-                        imageNumber
-                    )
-                    Handler().postDelayed({
-                        isClicked = false
-                    }, 5000)
+                savedImageName.isEmpty() && imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
+                else -> {
+                    showLoading()
+                    if (imageUri.isEmpty() && savedImageName.isNotEmpty()) {
+                        presenter.modifyCourse(
+                            courseNumber,
+                            memberNumber,
+                            placeNumbers,
+                            "${edt_course_title.text}",
+                            "${edt_course_content.text}",
+                            savedImageName
+                        )
+                    } else {
+                        presenter.modifyCourse(
+                            courseNumber,
+                            memberNumber,
+                            placeNumbers,
+                            "${edt_course_title.text}",
+                            "${edt_course_content.text}",
+                            imageUri,
+                            imageNumber
+                        )
+                    }
                 }
             }
         }
@@ -340,6 +352,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         }
 
         btn_image_clear.setOnClickListener {
+            imageUri = ""
             savedImageName = ""
             imageContainer.removeAllViews()
         }
