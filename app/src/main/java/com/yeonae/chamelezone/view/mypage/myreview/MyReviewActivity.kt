@@ -12,6 +12,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
@@ -43,7 +44,7 @@ class MyReviewActivity : AppCompatActivity(),
         if (reviewList.isNotEmpty()) {
             rl_my_review.isVisible = true
             rl_no_my_review.isGone = true
-            myReviewRvAdapter.addData(reviewList)
+            myReviewRvAdapter.addDataList(reviewList)
         } else {
             rl_my_review.isGone = true
             rl_no_my_review.isVisible = true
@@ -56,6 +57,12 @@ class MyReviewActivity : AppCompatActivity(),
         Toast.makeText(this, "", Toast.LENGTH_LONG).show()
     }
 
+    override fun getReview(review: ReviewItem) {
+        reviewItem = review
+        Logger.d("reviewItem $reviewItem")
+        myReviewRvAdapter.updateData(reviewItem)
+    }
+
     override fun onModifyClick() {
         val intent = Intent(this, ReviewModifyActivity::class.java)
         if (::reviewItem.isInitialized)
@@ -65,6 +72,9 @@ class MyReviewActivity : AppCompatActivity(),
         intent.putExtra(MEMBER_NUMBER, memberNumber)
         startActivity(intent)
 
+        Logger.d("placeNumber $placeNumber")
+        Logger.d("reviewNumber $reviewNumber")
+        presenter.getReview(placeNumber, reviewNumber)
     }
 
     override fun onDeleteClick() {
@@ -108,6 +118,8 @@ class MyReviewActivity : AppCompatActivity(),
                 showBottomSheet(placeNumber, reviewNumber)
             }
         })
+
+
 
         btn_back.setOnClickListener {
             finish()

@@ -14,19 +14,21 @@ class MyReviewPresenter(
     private val myReviewView: MyReviewContract.View
 ) : MyReviewContract.Presenter {
     override fun getUserReview(memberNumber: Int) {
-        reviewRepository.getMyReviewList(memberNumber, object : ReviewCallback<List<ReviewResponse>> {
-            override fun onSuccess(response: List<ReviewResponse>) {
-                val reviewItemList = arrayListOf<ReviewItem>()
-                response.forEach {
-                    it.toReviewItem().let { reviewItem -> reviewItemList.add(reviewItem) }
+        reviewRepository.getMyReviewList(
+            memberNumber,
+            object : ReviewCallback<List<ReviewResponse>> {
+                override fun onSuccess(response: List<ReviewResponse>) {
+                    val reviewItemList = arrayListOf<ReviewItem>()
+                    response.forEach {
+                        it.toReviewItem().let { reviewItem -> reviewItemList.add(reviewItem) }
+                    }
+                    myReviewView.showMyReviewList(reviewItemList)
                 }
-                myReviewView.showMyReviewList(reviewItemList)
-            }
 
-            override fun onFailure(message: String) {
+                override fun onFailure(message: String) {
 
-            }
-        })
+                }
+            })
     }
 
     override fun getMember() {
@@ -54,14 +56,33 @@ class MyReviewPresenter(
     }
 
     override fun deleteReview(placeNumber: Int, reviewNumber: Int, memberNumber: Int) {
-        reviewRepository.deleteReview(placeNumber, reviewNumber, memberNumber, object : ReviewCallback<String> {
-            override fun onSuccess(response: String) {
-                myReviewView.showReviewDelete(response)
-            }
+        reviewRepository.deleteReview(
+            placeNumber,
+            reviewNumber,
+            memberNumber,
+            object : ReviewCallback<String> {
+                override fun onSuccess(response: String) {
+                    myReviewView.showReviewDelete(response)
+                }
 
-            override fun onFailure(message: String) {
+                override fun onFailure(message: String) {
 
-            }
-        })
+                }
+            })
+    }
+
+    override fun getReview(placeNumber: Int, reviewNumber: Int) {
+        reviewRepository.getReviewDetail(
+            placeNumber,
+            reviewNumber,
+            object : ReviewCallback<ReviewResponse> {
+                override fun onSuccess(response: ReviewResponse) {
+                    response.toReviewItem().let { myReviewView.getReview(it) }
+                }
+
+                override fun onFailure(message: String) {
+
+                }
+            })
     }
 }

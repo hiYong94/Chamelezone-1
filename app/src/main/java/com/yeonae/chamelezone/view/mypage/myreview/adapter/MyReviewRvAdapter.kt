@@ -43,7 +43,7 @@ class MyReviewRvAdapter :
         }
     }
 
-    fun addData(addDataList: List<ReviewItem>) {
+    fun addDataList(addDataList: List<ReviewItem>) {
         items.clear()
         items.addAll(addDataList)
         notifyDataSetChanged()
@@ -53,6 +53,12 @@ class MyReviewRvAdapter :
         val position = items.indexOf(review)
         items.remove(review)
         notifyItemRemoved(position)
+    }
+
+    fun updateData(review: ReviewItem) {
+        val position = items.indexOf(review)
+        items[position] = review
+        notifyItemChanged(position)
     }
 
     class MyReviewViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
