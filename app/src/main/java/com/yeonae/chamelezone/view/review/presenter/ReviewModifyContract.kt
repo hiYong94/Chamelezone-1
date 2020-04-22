@@ -16,7 +16,7 @@ interface ReviewModifyContract {
             memberNumber: Int,
             placeNumber: Int,
             content: String,
-            imageNumber: List<Int>
+            deleteImageNumber: List<Int>
         )
         fun getReview(placeNumber: Int, reviewNumber: Int)
     }

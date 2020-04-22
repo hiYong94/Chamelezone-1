@@ -18,7 +18,7 @@ interface ReviewRemoteDataSource {
         memberNumber: Int,
         placeNumber: Int,
         content: String,
-        imageNumber: List<Int>,
+        deleteImageNumber: List<Int>,
         callback: ReviewCallback<Boolean>
     )
 

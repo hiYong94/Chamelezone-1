@@ -34,8 +34,6 @@ class ReviewModifyActivity :
     AppCompatActivity(),
     ReviewModifyContract.View {
     override lateinit var presenter: ReviewModifyContract.Presenter
-
-    //    private var selectedUriList: List<Uri>? = null
     private var uriList = ArrayList<String>()
     private var uriDataList = arrayListOf<String>()
     private var selectedUriList = mutableListOf<Uri>()
@@ -45,6 +43,7 @@ class ReviewModifyActivity :
     private var memberNumber = 0
     private var reviewNumber = 0
     private var imageNumber = arrayListOf<Int>()
+    private var deleteImageNumber = ArrayList<Int>()
 
     override fun reviewModify(response: Boolean) {
         if (response) {
@@ -57,7 +56,7 @@ class ReviewModifyActivity :
         imageNumber = review.imageNumber
         tv_title.text = review.name
         edt_review.text = SpannableStringBuilder(review.content)
-        review.images.forEachIndexed { _, image ->
+        review.images.forEachIndexed { index, image ->
             val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
@@ -67,8 +66,10 @@ class ReviewModifyActivity :
             rl.image_item.run {
                 glideImageSet(IMAGE_RESOURCE + image, measuredWidth, measuredHeight)
             }
+
             rl.btn_delete.setOnClickListener {
                 image_container.removeView(rl)
+                deleteImageNumber.add(imageNumber[index])
             }
         }
     }
@@ -104,12 +105,13 @@ class ReviewModifyActivity :
                     memberNumber,
                     placeNumber,
                     content,
-                    imageNumber
+                    deleteImageNumber
                 )
                 Handler().postDelayed({
                     isCreated = false
                 }, 5000)
             }
+
         }
     }
 

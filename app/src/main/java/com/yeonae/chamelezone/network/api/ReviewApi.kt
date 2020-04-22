@@ -26,7 +26,7 @@ interface ReviewApi {
         @Path("reviewNumber") reviewNumber: Int,
         @Part("memberNumber") memberNumber: RequestBody,
         @Part("content") content: RequestBody,
-        @Part("imageNumber") imageNumber: ArrayList<RequestBody>
+        @Part("deleteImageNumber") deleteImageNumber: ArrayList<RequestBody>
     ): Call<ResponseBody>
 
     @HTTP(method = "DELETE", path = "/v1.0/place/{placeNumber}/review/{reviewNumber}", hasBody = true)
