@@ -72,6 +72,19 @@ interface PlaceApi {
         @Part("longitude") longitude: RequestBody
     ): Call<ResponseBody>
 
+    @Multipart
+    @PUT("/v1.0/place/{placeNumber}")
+    fun updatePlace(
+        @Path("placeNumber") placeNumber: Int,
+        @Part("memberNumber") memberNumber: RequestBody,
+        @Part("address") address: RequestBody,
+        @Part("addressDetail") addressDetail: RequestBody,
+        @Part("phoneNumber") phoneNumber: RequestBody,
+        @Part("content") content: RequestBody,
+        @Part("latitude") latitude: RequestBody,
+        @Part("longitude") longitude: RequestBody
+    ): Call<ResponseBody>
+
     @PUT("/v1.0/place/{placeNumber}/keyword")
     fun updateKeyword(
         @Path("placeNumber") placeNumber: Int,

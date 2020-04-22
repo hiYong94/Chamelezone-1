@@ -42,6 +42,18 @@ interface PlaceRepository {
         callback: PlaceCallback<Boolean>
     )
 
+    fun updatePlace(
+        placeNumber: Int,
+        memberNumber: Int,
+        address: String,
+        addressDetail: String,
+        phoneNumber: String,
+        content: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
+        callback: PlaceCallback<Boolean>
+    )
+
     fun updateKeyword(
         placeNumber: Int,
         keywordNames: List<Int>,

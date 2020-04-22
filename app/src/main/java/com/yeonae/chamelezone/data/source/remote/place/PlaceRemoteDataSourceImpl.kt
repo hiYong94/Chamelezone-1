@@ -347,17 +347,66 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         ).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
-                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
-                (call.request().body() as MultipartBody).parts().forEach {
-                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
-                }
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
-                (call.request().body() as MultipartBody).parts().forEach {
-                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
+                if (response.code() == Network.SUCCESS) {
+                    callback.onSuccess(true)
                 }
+            }
+
+        })
+    }
+
+    override fun updatePlace(
+        placeNumber: Int,
+        memberNumber: Int,
+        address: String,
+        addressDetail: String,
+        phoneNumber: String,
+        content: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
+        callback: PlaceCallback<Boolean>
+    ) {
+        val memberNumber = RequestBody.create(
+            MediaType.parse("text/plain"), memberNumber.toString()
+        )
+
+        val address = RequestBody.create(
+            MediaType.parse("text/plain"), address
+        )
+        val addressDetail = RequestBody.create(
+            MediaType.parse("text/plain"), addressDetail
+        )
+        val phoneNumber = RequestBody.create(
+            MediaType.parse("text/plain"), phoneNumber
+        )
+        val content = RequestBody.create(
+            MediaType.parse("text/plain"), content
+        )
+        val latitude = RequestBody.create(
+            MediaType.parse("text/plain"), latitude.toString()
+        )
+        val longitude = RequestBody.create(
+            MediaType.parse("text/plain"), longitude.toString()
+        )
+
+        placeService.updatePlace(
+            placeNumber,
+            memberNumber,
+            address,
+            addressDetail,
+            phoneNumber,
+            content,
+            latitude,
+            longitude
+        ).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.code() == Network.SUCCESS) {
                     callback.onSuccess(true)
                 }

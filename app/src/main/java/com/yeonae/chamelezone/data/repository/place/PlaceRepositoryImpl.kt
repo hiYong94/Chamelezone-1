@@ -98,6 +98,30 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         )
     }
 
+    override fun updatePlace(
+        placeNumber: Int,
+        memberNumber: Int,
+        address: String,
+        addressDetail: String,
+        phoneNumber: String,
+        content: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
+        callback: PlaceCallback<Boolean>
+    ) {
+        remoteDataSource.updatePlace(
+            placeNumber,
+            memberNumber,
+            address,
+            addressDetail,
+            phoneNumber,
+            content,
+            latitude,
+            longitude,
+            callback
+        )
+    }
+
     override fun updateKeyword(
         placeNumber: Int,
         keywordNames: List<Int>,
