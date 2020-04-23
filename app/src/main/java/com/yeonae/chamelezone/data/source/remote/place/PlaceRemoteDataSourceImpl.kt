@@ -122,11 +122,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                         App.instance.context().getString(R.string.success_register_place)
                     )
                 }
-                Log.d("responseCode", response.code().toString())
-                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
-                (call.request().body() as MultipartBody).parts().forEach {
-                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
-                }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -439,15 +434,12 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             .enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("tag", t.toString())
-                    Log.d("step5", call.request().body()?.let { bodyToString(it) })
                 }
 
                 override fun onResponse(
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    Log.d("responseCode", response.code().toString())
-                    Log.d("step5", call.request().body()?.let { bodyToString(it) })
                     if (response.code() == Network.SUCCESS) {
                         callback.onSuccess(true)
                     }
@@ -480,8 +472,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    Log.d("responseCode", response.code().toString())
-                    Log.d("step5", call.request().body()?.let { bodyToString(it) })
                     if (response.code() == Network.SUCCESS) {
                         callback.onSuccess(true)
                     }
