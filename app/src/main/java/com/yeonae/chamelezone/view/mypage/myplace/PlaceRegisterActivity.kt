@@ -154,17 +154,19 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         )
 
         btn_place_check.setOnClickListener {
-            latLng = findLatLng(applicationContext, "${tv_place_address.text}")
-            latitude = latLng.latitude.toString()
-            longitude = latLng.longitude.toString()
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
-                else -> presenter.checkPlace(
-                    "${edt_place_name.text}",
-                    latitude,
-                    longitude
-                )
+                else -> {
+                    latLng = findLatLng(applicationContext, "${tv_place_address.text}")
+                    latitude = latLng.latitude.toString()
+                    longitude = latLng.longitude.toString()
+                    presenter.checkPlace(
+                        "${edt_place_name.text}",
+                        latitude,
+                        longitude
+                    )
+                }
             }
         }
 
