@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.review
 
 import android.Manifest
+import android.app.Activity
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
@@ -18,7 +19,6 @@ import com.yeonae.chamelezone.ext.catchFocus
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -39,6 +39,7 @@ class ReviewCreateActivity :
 
     override fun review(message: String) {
         shortToast(R.string.review_create_msg)
+        setResult(Activity.RESULT_OK)
         finish()
     }
 

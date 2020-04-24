@@ -1,6 +1,8 @@
 package com.yeonae.chamelezone.view.review
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
@@ -19,15 +21,12 @@ import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.util.Logger
+import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
-import kotlinx.android.synthetic.main.activity_place_modify.*
 import kotlinx.android.synthetic.main.activity_review_modify.*
-import kotlinx.android.synthetic.main.activity_review_modify.btn_back
-import kotlinx.android.synthetic.main.activity_review_modify.btn_image_create
 import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class ReviewModifyActivity :
@@ -48,6 +47,8 @@ class ReviewModifyActivity :
     override fun reviewModify(response: Boolean) {
         if (response) {
             shortToast(R.string.review_modify_msg)
+            val intent = Intent(this, MyReviewActivity::class.java)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
@@ -186,6 +187,7 @@ class ReviewModifyActivity :
                 image_container,
                 false
             ) as RelativeLayout
+
             rl.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
                 image_container.addView(rl)

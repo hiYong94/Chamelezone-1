@@ -1,18 +1,18 @@
 package com.yeonae.chamelezone.view.place
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment.Companion.BTN_DELETE
@@ -42,14 +42,7 @@ class PlaceReviewTabFragment :
     }
 
     override fun showReviewDelete(message: String) {
-        Toast.makeText(context, "리뷰가 삭제되었습니다", Toast.LENGTH_LONG).show()
-    }
-
-    override fun getReview(review: ReviewItem) {
-        reviewItem = review
-        Logger.d("reviewItem $reviewItem")
-//        placeReviewRvAdapter.addData(reviewItem)
-        placeReviewRvAdapter.updateData(reviewItem)
+        requireContext().shortToast(R.string.review_delete)
     }
 
     override fun showMemberReview(user: UserEntity) {}
@@ -62,7 +55,7 @@ class PlaceReviewTabFragment :
                 val intent = Intent(context, ReviewCreateActivity::class.java)
                 intent.putExtra(PLACE_NUMBER, placeNumber)
                 intent.putExtra(PLACE_NAME, placeName)
-                startActivity(intent)
+                startActivityForResult(intent, ADD_REQUEST)
             }
         } else {
             btn_review.setOnClickListener {
@@ -123,7 +116,6 @@ class PlaceReviewTabFragment :
 
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
@@ -134,12 +126,23 @@ class PlaceReviewTabFragment :
                     intent.putExtra(PLACE_NUMBER, placeNumber)
                     intent.putExtra(REVIEW_NUMBER, reviewNumber)
                     intent.putExtra(MEMBER_NUMBER, memberNumber)
-                    startActivity(intent)
+                    startActivityForResult(intent, UPDATE_REQUEST)
 
                 } else if (resultCode == BTN_DELETE) {
                     presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
                     placeReviewRvAdapter.removeData(reviewItem)
                 }
+            }
+
+            ADD_REQUEST -> {
+                if (resultCode == RESULT_OK) {
+                    presenter.placeDetailReview(placeNumber)
+                }
+            }
+
+            UPDATE_REQUEST -> {
+                if (resultCode == RESULT_OK)
+                    presenter.placeDetailReview(placeNumber)
             }
         }
     }
@@ -147,15 +150,6 @@ class PlaceReviewTabFragment :
     override fun onResume() {
         super.onResume()
         presenter.checkMember()
-
-        Logger.d("placeNumber $placeNumber")
-        Logger.d("reviewNumber $reviewNumber")
-
-        if(::reviewItem.isInitialized) {
-            reviewNumber = reviewItem.reviewNumber
-            Logger.d("reviewNumber $reviewNumber")
-        }
-        presenter.getReview(placeNumber, reviewNumber)
     }
 
     private fun setAdapter() {
@@ -179,6 +173,8 @@ class PlaceReviewTabFragment :
 
     companion object {
         const val BOTTOM_SHEET = 100
+        const val ADD_REQUEST = 101
+        const val UPDATE_REQUEST = 102
         private const val PLACE_NUMBER = "placeNumber"
         private const val PLACE_NAME = "placeName"
         private const val MEMBER_NUMBER = "memberNumber"

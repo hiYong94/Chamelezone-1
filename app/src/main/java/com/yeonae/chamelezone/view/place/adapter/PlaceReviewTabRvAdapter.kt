@@ -134,19 +134,6 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
         notifyDataSetChanged()
     }
 
-    fun addData(review: ReviewItem) {
-        val position = reviewList.indexOf(review)
-        reviewList.add(0, review)
-        notifyItemInserted(position)
-    }
-
-    fun updateData(review: ReviewItem) {
-        val position = reviewList.indexOf(review)
-        reviewList[position] = review
-        notifyItemChanged(position)
-        notifyDataSetChanged()
-    }
-
     fun removeData(review: ReviewItem) {
         val position = reviewList.indexOf(review)
         reviewList.remove(review)

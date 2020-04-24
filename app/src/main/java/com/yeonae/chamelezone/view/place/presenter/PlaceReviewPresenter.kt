@@ -69,19 +69,4 @@ class PlaceReviewPresenter(
             }
         })
     }
-
-    override fun getReview(placeNumber: Int, reviewNumber: Int) {
-        reviewRepository.getReviewDetail(
-            placeNumber,
-            reviewNumber,
-            object : ReviewCallback<ReviewResponse> {
-            override fun onSuccess(response: ReviewResponse) {
-                response.toReviewItem().let { placeReviewView.getReview(it) }
-            }
-
-            override fun onFailure(message: String) {
-
-            }
-        })
-    }
 }
