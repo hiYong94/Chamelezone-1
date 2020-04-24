@@ -30,7 +30,7 @@ data class CourseResponse(
     @SerializedName("addressDetail")
     var addressDetail: String,
     @SerializedName("placeImage")
-    val placeImages: String,
+    val placeImage: String,
     @SerializedName("courseImage")
     val courseImage: String,
     @SerializedName("courseImageNumber")
@@ -63,7 +63,7 @@ data class CourseResponse(
 
     fun toCourseDetailItem(): CourseDetailItem {
         val courseImgFormat = IMAGE_RESOURCE + courseImage
-        val placeImgFormat = IMAGE_RESOURCE + placeImages
+        val placeImgFormat = IMAGE_RESOURCE + placeImage
         if(addressDetail == null){
             addressDetail = ""
         }
