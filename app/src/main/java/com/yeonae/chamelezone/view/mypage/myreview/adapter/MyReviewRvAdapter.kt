@@ -55,12 +55,6 @@ class MyReviewRvAdapter :
         notifyItemRemoved(position)
     }
 
-    fun updateData(review: ReviewItem) {
-        val position = items.indexOf(review)
-        items[position] = review
-        notifyItemChanged(position)
-    }
-
     class MyReviewViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_my_review, parent, false)
     ) {

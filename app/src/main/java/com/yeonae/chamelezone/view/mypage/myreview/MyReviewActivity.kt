@@ -1,8 +1,8 @@
 package com.yeonae.chamelezone.view.mypage.myreview
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -12,7 +12,6 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.myreview.adapter.MyReviewRvAdapter
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewContract
@@ -54,13 +53,6 @@ class MyReviewActivity : AppCompatActivity(),
 
     override fun showReviewDelete(message: String) {
         shortToast(R.string.review_delete)
-        Toast.makeText(this, "", Toast.LENGTH_LONG).show()
-    }
-
-    override fun getReview(review: ReviewItem) {
-        reviewItem = review
-        Logger.d("reviewItem $reviewItem")
-        myReviewRvAdapter.updateData(reviewItem)
     }
 
     override fun onModifyClick() {
@@ -70,11 +62,7 @@ class MyReviewActivity : AppCompatActivity(),
         intent.putExtra(PLACE_NUMBER, placeNumber)
         intent.putExtra(REVIEW_NUMBER, reviewNumber)
         intent.putExtra(MEMBER_NUMBER, memberNumber)
-        startActivity(intent)
-
-        Logger.d("placeNumber $placeNumber")
-        Logger.d("reviewNumber $reviewNumber")
-        presenter.getReview(placeNumber, reviewNumber)
+        startActivityForResult(intent, UPDATE_REQUEST)
     }
 
     override fun onDeleteClick() {
@@ -119,10 +107,18 @@ class MyReviewActivity : AppCompatActivity(),
             }
         })
 
-
-
         btn_back.setOnClickListener {
             finish()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            UPDATE_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK)
+                    presenter.getUserReview(memberNumber)
+            }
         }
     }
 
@@ -137,6 +133,7 @@ class MyReviewActivity : AppCompatActivity(),
     }
 
     companion object {
+        const val UPDATE_REQUEST = 102
         const val PLACE_NAME = "placeName"
         const val REVIEW_CONTENT = "content"
         const val PLACE_NUMBER = "placeNumber"
