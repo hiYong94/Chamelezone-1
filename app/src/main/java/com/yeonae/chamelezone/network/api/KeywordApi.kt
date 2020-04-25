@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 interface KeywordApi {
-    @GET("/keyword")
+    @GET("/v1.0/keyword")
     fun getKeywordList(
     ): Call<List<KeywordResponse>>
 }

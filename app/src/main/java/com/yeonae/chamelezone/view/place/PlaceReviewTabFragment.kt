@@ -1,16 +1,17 @@
 package com.yeonae.chamelezone.view.place
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
@@ -33,6 +34,7 @@ class PlaceReviewTabFragment :
     private var placeNumber = 0
     var memberNumber = 0
     var placeName: String = ""
+    private lateinit var reviewItem: ReviewItem
 
     override fun showPlaceReview(reviewList: List<ReviewItem>) {
         if (::placeReviewRvAdapter.isInitialized)
@@ -40,53 +42,15 @@ class PlaceReviewTabFragment :
     }
 
     override fun showReviewDelete(message: String) {
-        Toast.makeText(context, "리뷰가 삭제되었습니다", Toast.LENGTH_LONG).show()
+        requireContext().shortToast(R.string.review_delete)
     }
 
-    override fun showMemberReview(user: UserEntity) { }
-
-    override fun getMemberCheck(response: Boolean) {
-        if (response) {
-            presenter.getMember()
-            review.setOnClickListener {
-                placeName = arguments?.getString(PLACE_NAME).orEmpty()
-                val intent = Intent(context, ReviewCreateActivity::class.java)
-                intent.putExtra(PLACE_NUMBER, placeNumber)
-                intent.putExtra(PLACE_NAME, placeName)
-                startActivity(intent)
-            }
-        } else {
-            review.setOnClickListener {
-                val intent = Intent(context, LoginActivity::class.java)
-                startActivity(intent)
-            }
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_place_review_tab, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        presenter = PlaceReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(), this
-        )
-
-        placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
-        memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
-
-        val memberNumber = memberNumber
-        placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
-
-        presenter.checkMember()
+    override fun showMemberReview(user: UserEntity) {
+        memberNumber = user.userNumber ?: 0
 
         setAdapter()
+
+        placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
 
         placeNumber.let {
             presenter.placeDetailReview(it)
@@ -106,11 +70,48 @@ class PlaceReviewTabFragment :
         placeReviewRvAdapter.setMoreButtonListener(object :
             PlaceReviewTabRvAdapter.MoreButtonListener {
             override fun bottomSheetDialog(review: ReviewItem) {
+                reviewItem = review
                 reviewNumber = review.reviewNumber
                 showBottomSheet(reviewNumber)
             }
         })
+    }
 
+    override fun getMemberCheck(response: Boolean) {
+        if (response) {
+            presenter.getMember()
+            btn_review.setOnClickListener {
+                placeName = arguments?.getString(PLACE_NAME).orEmpty()
+                val intent = Intent(context, ReviewCreateActivity::class.java)
+                intent.putExtra(PLACE_NUMBER, placeNumber)
+                intent.putExtra(PLACE_NAME, placeName)
+                startActivityForResult(intent, ADD_REQUEST)
+            }
+        } else {
+            btn_review.setOnClickListener {
+                val intent = Intent(context, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_place_review_tab, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter = PlaceReviewPresenter(
+            Injection.reviewRepository(), Injection.memberRepository(), this
+        )
+
+        presenter.checkMember()
+
+        placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -123,11 +124,23 @@ class PlaceReviewTabFragment :
                     intent.putExtra(PLACE_NUMBER, placeNumber)
                     intent.putExtra(REVIEW_NUMBER, reviewNumber)
                     intent.putExtra(MEMBER_NUMBER, memberNumber)
-                    startActivity(intent)
+                    startActivityForResult(intent, UPDATE_REQUEST)
 
                 } else if (resultCode == BTN_DELETE) {
                     presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
+                    placeReviewRvAdapter.removeData(reviewItem)
                 }
+            }
+
+            ADD_REQUEST -> {
+                if (resultCode == RESULT_OK) {
+                    presenter.placeDetailReview(placeNumber)
+                }
+            }
+
+            UPDATE_REQUEST -> {
+                if (resultCode == RESULT_OK)
+                    presenter.placeDetailReview(placeNumber)
             }
         }
     }
@@ -158,6 +171,8 @@ class PlaceReviewTabFragment :
 
     companion object {
         const val BOTTOM_SHEET = 100
+        const val ADD_REQUEST = 101
+        const val UPDATE_REQUEST = 102
         private const val PLACE_NUMBER = "placeNumber"
         private const val PLACE_NAME = "placeName"
         private const val MEMBER_NUMBER = "memberNumber"

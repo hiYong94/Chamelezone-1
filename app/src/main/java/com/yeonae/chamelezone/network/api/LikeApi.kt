@@ -8,19 +8,19 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface LikeApi {
-    @POST("/user/{memberNumber}/like")
+    @POST("/v1.0/user/{memberNumber}/like")
     fun selectLike(
         @Path("memberNumber") memberNumber: Int,
         @Body placeNumber: JsonObject
     ): Call<LikeResponse>
 
-    @HTTP(method = "DELETE", path = "/user/{memberNumber}/like", hasBody = true)
+    @HTTP(method = "DELETE", path = "/v1.0/user/{memberNumber}/like", hasBody = true)
     fun deleteLike(
         @Path("memberNumber") memberNumber: Int,
         @Body placeNumber: JsonObject
     ): Call<LikeResponse>
 
-    @GET("/user/{memberNumber}/likes")
+    @GET("/v1.0/user/{memberNumber}/likes")
     fun getMyLikeList(
         @Path("memberNumber") memberNumber: Int
     ): Call<List<PlaceResponse>>
