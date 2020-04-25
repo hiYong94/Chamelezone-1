@@ -122,11 +122,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                         App.instance.context().getString(R.string.success_register_place)
                     )
                 }
-                Log.d("responseCode", response.code().toString())
-                Log.d("STEP 4", "${bodyToString(call.request().body() as MultipartBody)}")
-                (call.request().body() as MultipartBody).parts().forEach {
-                    Log.d("STEP 5", "${bodyToString(it.body() as RequestBody)}")
-                }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
@@ -277,7 +272,8 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
 
     override fun updatePlace(
         placeNumber: Int,
-        images: List<String>,
+        insertImages: List<String>,
+        deleteImageNumbers: List<Int>,
         memberNumber: Int,
         address: String,
         addressDetail: String,
@@ -285,18 +281,26 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        imageNumbers: List<Int>,
         callback: PlaceCallback<Boolean>
     ) {
-        val imageList = ArrayList<MultipartBody.Part>()
-        for (i in images.indices) {
-            val file = File(images[i])
-            val extends = images[i].split(".").lastOrNull() ?: "*"
-            imageList.add(
+        val insertImageList = ArrayList<MultipartBody.Part>()
+        for (i in insertImages.indices) {
+            val file = File(insertImages[i])
+            val extends = insertImages[i].split(".").lastOrNull() ?: "*"
+            insertImageList.add(
                 MultipartBody.Part.createFormData(
                     "images",
                     URLEncoder.encode(file.name, "UTF-8"),
                     RequestBody.create(MediaType.parse("image/$extends"), file)
+                )
+            )
+        }
+
+        val deleteImageNumberList = ArrayList<RequestBody>()
+        for (i in deleteImageNumbers.indices) {
+            deleteImageNumberList.add(
+                RequestBody.create(
+                    MediaType.parse("text/plain"), deleteImageNumbers[i].toString()
                 )
             )
         }
@@ -324,26 +328,74 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             MediaType.parse("text/plain"), longitude.toString()
         )
 
-        val imageNumberList = ArrayList<RequestBody>()
-        for (i in imageNumbers.indices) {
-            imageNumberList.add(
-                RequestBody.create(
-                    MediaType.parse("text/plain"), imageNumbers[i].toString()
-                )
-            )
-        }
-
         placeService.updatePlace(
             placeNumber,
-            imageList,
+            insertImageList,
+            deleteImageNumberList,
             memberNumber,
             address,
             addressDetail,
             phoneNumber,
             content,
             latitude,
-            longitude,
-            imageNumberList
+            longitude
+        ).enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.code() == Network.SUCCESS) {
+                    callback.onSuccess(true)
+                }
+            }
+
+        })
+    }
+
+    override fun updatePlace(
+        placeNumber: Int,
+        memberNumber: Int,
+        address: String,
+        addressDetail: String,
+        phoneNumber: String,
+        content: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
+        callback: PlaceCallback<Boolean>
+    ) {
+        val memberNumber = RequestBody.create(
+            MediaType.parse("text/plain"), memberNumber.toString()
+        )
+
+        val address = RequestBody.create(
+            MediaType.parse("text/plain"), address
+        )
+        val addressDetail = RequestBody.create(
+            MediaType.parse("text/plain"), addressDetail
+        )
+        val phoneNumber = RequestBody.create(
+            MediaType.parse("text/plain"), phoneNumber
+        )
+        val content = RequestBody.create(
+            MediaType.parse("text/plain"), content
+        )
+        val latitude = RequestBody.create(
+            MediaType.parse("text/plain"), latitude.toString()
+        )
+        val longitude = RequestBody.create(
+            MediaType.parse("text/plain"), longitude.toString()
+        )
+
+        placeService.updatePlace(
+            placeNumber,
+            memberNumber,
+            address,
+            addressDetail,
+            phoneNumber,
+            content,
+            latitude,
+            longitude
         ).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("tag", t.toString())
@@ -382,15 +434,12 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             .enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                     Log.e("tag", t.toString())
-                    Log.d("step5", call.request().body()?.let { bodyToString(it) })
                 }
 
                 override fun onResponse(
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    Log.d("responseCode", response.code().toString())
-                    Log.d("step5", call.request().body()?.let { bodyToString(it) })
                     if (response.code() == Network.SUCCESS) {
                         callback.onSuccess(true)
                     }
@@ -423,8 +472,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
                     call: Call<ResponseBody>,
                     response: Response<ResponseBody>
                 ) {
-                    Log.d("responseCode", response.code().toString())
-                    Log.d("step5", call.request().body()?.let { bodyToString(it) })
                     if (response.code() == Network.SUCCESS) {
                         callback.onSuccess(true)
                     }

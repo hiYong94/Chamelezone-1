@@ -6,35 +6,28 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/course_share"
-                android:textSize="20sp" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/course_share"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:gravity="right|center_vertical">
+            android:layout_height="wrap_content"
+            android:gravity="end|center_vertical">
 
             <ImageButton
                 android:id="@+id/btn_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:adjustViewBounds="true"
-                android:background="@color/transparent"
+                android:layout_margin="10dp"
+                android:background="?android:selectableItemBackgroundBorderless"
                 android:padding="10dp"
                 android:src="@drawable/ic_mode_edit_black_24dp" />
         </LinearLayout>

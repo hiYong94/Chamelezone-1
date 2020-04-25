@@ -72,7 +72,16 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
 
         btn_register.setOnClickListener {
             val intent = Intent(this, PlaceRegisterActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, UPDATE_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                presenter.getMyPlaceList(memberNumber)
+            }
         }
     }
 
@@ -97,7 +106,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
         val intent = Intent(this, PlaceModifyActivity::class.java)
         intent.putExtra("placeNumber", placeResponse.placeNumber)
         intent.putExtra("memberNumber", memberNumber)
-        startActivity(intent)
+        startActivityForResult(intent, UPDATE_REQUEST_CODE)
     }
 
     private fun showBottomSheet() {
@@ -111,6 +120,7 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
     }
 
     companion object {
+        const val UPDATE_REQUEST_CODE = 1
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }

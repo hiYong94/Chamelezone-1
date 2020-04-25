@@ -70,8 +70,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:background="@color/transparent"
-                    android:padding="10dp"
+                    android:layout_margin="5dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:padding="5dp"
                     android:src="@drawable/ic_search_18dp" />
 
             </LinearLayout>

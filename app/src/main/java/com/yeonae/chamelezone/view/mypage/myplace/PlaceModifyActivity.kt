@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.mypage.myplace
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -15,6 +16,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.model.LatLng
@@ -24,8 +26,9 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.network.model.KeywordResponse
+import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyPresenter
@@ -45,17 +48,23 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     private var keywords = mutableListOf<Int>()
     private var selectedKeyword = arrayListOf<String>()
     private var isCreated = false
-    val keywordName = arrayListOf<String>()
     private lateinit var latLng: LatLng
     lateinit var latitude: String
     lateinit var longitude: String
     private val imageNumbers = arrayListOf<Int>()
-    var placeKeywordNumbers = arrayListOf<Int>()
-    private var selectedUriList: List<Uri>? = null
+    private var deleteImageNumbers = arrayListOf<Int>()
+    private var placeKeywordNumbers = arrayListOf<Int>()
+    private var uriDataList = arrayListOf<String>()
+    private var selectedUriList = mutableListOf<Uri>()
+    private var savedImageList = arrayListOf<String>()
 
     override fun showResult(response: Boolean) {
         if (response) {
             shortToast(R.string.success_update_place)
+            hideLoading()
+            val intent = Intent(this, MyPlaceActivity::class.java)
+            intent.putExtra("update", true)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
@@ -73,45 +82,69 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         tv_place_keyword.text = keywordList.toString().replace("[", "").replace("]", "")
     }
 
-    override fun showKeywordList(response: List<KeywordResponse>) {
-        for (i in response.indices) {
-            keywordName.add(response[i].keywordName)
-            keywordMap[response[i].keywordNumber] = response[i].keywordName
-        }
-    }
-
     private fun showMultiImage(uris: List<Uri>) {
-        this.selectedUriList = uris
-        imageContainer.removeAllViews()
-        uris.forEach { uri ->
+        if (uriDataList.count() != 0)
+            uriDataList.clear()
+        this.selectedUriList = uris.toMutableList()
+        uris.forEachIndexed { index, uri ->
             val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as ImageView
+            ) as RelativeLayout
             imageContainer.addView(rlSlideImg)
             rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
-            uri.path?.let { imageUri.add(it) }
+            rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+                imageContainer.removeView(rlSlideImg)
+                if (this.selectedUriList.count() != 0)
+                    this.selectedUriList.removeAt(index)
+            }
+
+            btn_image_clear.setOnClickListener {
+                imageContainer.removeAllViews()
+                deleteImageNumbers = imageNumbers
+                if (this.selectedUriList.count() != 0)
+                    this.selectedUriList.removeAll(uris)
+            }
+
+            uri.path?.let { uriDataList.add(it) }
+            val distinctData = uriDataList.distinct()
+            imageUri = ArrayList(distinctData)
         }
     }
 
     override fun showPlaceDetail(place: PlaceResponse) {
+        place.imageNumbers.forEach {
+            imageNumbers.add(it)
+        }
         imageContainer.removeAllViews()
-        place.savedImageName.forEach { image ->
-            val ivSlideImg = LayoutInflater.from(this).inflate(
+        place.savedImageName.forEachIndexed { index, image ->
+            savedImageList.add(image)
+            val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as ImageView
-            imageContainer.addView(ivSlideImg)
-            ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
+            ) as RelativeLayout
+            imageContainer.addView(rlSlideImg)
+            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(IMAGE_RESOURCE + image, measuredWidth, measuredHeight)
             }
-        }
-        place.imageNumbers.forEach {
-            imageNumbers.add(it)
+            rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+                imageContainer.removeView(rlSlideImg)
+                deleteImageNumbers.add(imageNumbers[index])
+                savedImageList.removeAt(index)
+            }
+
+            btn_image_clear.setOnClickListener {
+                if (deleteImageNumbers.count() != 0)
+                    deleteImageNumbers.clear()
+                if (savedImageList.count() != 0)
+                    savedImageList.clear()
+                imageContainer.removeAllViews()
+                deleteImageNumbers = imageNumbers
+            }
         }
         edt_place_name.text = SpannableStringBuilder(place.name)
         tv_place_address.text = place.address
@@ -132,7 +165,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
         edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
         edt_place_text.text = SpannableStringBuilder(place.content)
-        if(place.addressDetail != null){
+        if (place.addressDetail != null) {
             edt_detail_address.text = SpannableStringBuilder(place.addressDetail)
         }
 
@@ -155,8 +188,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         val memberNumber = intent.getIntExtra("memberNumber", 0)
 
         presenter.getPlaceDetail(placeNumber, memberNumber)
-
-        presenter.getKeyword()
 
         edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
         edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
@@ -182,16 +213,12 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 KeywordModifyFragment.newInstance(
                     placeNumber,
                     placeKeywordNumbers,
-                    keywordName,
                     selectedKeyword
                 )
             newFragment.show(supportFragmentManager, "dialog")
         }
 
         btn_register.setOnClickListener {
-            latLng = findLatLng(applicationContext, "${tv_place_address.text}")
-            latitude = latLng.latitude.toString()
-            longitude = latLng.longitude.toString()
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
@@ -199,20 +226,39 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 tv_opening_time.text.isEmpty() -> shortToast(R.string.enter_place_opening_hours)
                 edt_place_phone.text.isEmpty() -> shortToast(R.string.enter_place_phone)
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
-                imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+                savedImageList.isEmpty() && imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+                else -> {
+                    latLng = findLatLng(applicationContext, "${tv_place_address.text}")
+                    latitude = latLng.latitude.toString()
+                    longitude = latLng.longitude.toString()
+                    showLoading()
+                    if (uriDataList.isEmpty()) {
+                        presenter.updatePlace(
+                            placeNumber,
+                            memberNumber,
+                            "${tv_place_address.text}",
+                            "${edt_detail_address.text}",
+                            "${edt_place_phone.text}",
+                            "${edt_place_text.text}",
+                            latitude.toBigDecimal(),
+                            longitude.toBigDecimal()
+                        )
+                    } else {
+                        presenter.updatePlace(
+                            placeNumber,
+                            imageUri,
+                            deleteImageNumbers,
+                            memberNumber,
+                            "${tv_place_address.text}",
+                            "${edt_detail_address.text}",
+                            "${edt_place_phone.text}",
+                            "${edt_place_text.text}",
+                            latitude.toBigDecimal(),
+                            longitude.toBigDecimal()
+                        )
+                    }
+                }
             }
-            presenter.updatePlace(
-                placeNumber,
-                imageUri,
-                memberNumber,
-                "${tv_place_address.text}",
-                "${edt_detail_address.text}",
-                "${edt_place_phone.text}",
-                "${edt_place_text.text}",
-                latitude.toBigDecimal(),
-                longitude.toBigDecimal(),
-                imageNumbers
-            )
         }
     }
 
@@ -278,7 +324,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 isCreated = false
             }, 1000)
         }
-        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
     }
 
     private fun checkPermission() {
@@ -326,7 +371,5 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         const val RESULT = "result"
         const val OPENING_HOURS = "openingHours"
         const val OPENING_HOURS_POSITION = "openingHoursPosition"
-        const val CHECK_YES = "Y"
-        const val CHECK_NO = "N"
     }
 }

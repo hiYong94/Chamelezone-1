@@ -48,7 +48,6 @@ interface CourseApi {
     @PUT("/v1.0/course/{courseNumber}")
     fun updateCourse(
         @Path("courseNumber") courseNumber: Int,
-        @Part("imageNumber") imageNumber: RequestBody,
         @Part("memberNumber") memberNumber: RequestBody,
         @Part("placeNumber") placeNumber: ArrayList<RequestBody>,
         @Part("title") title: RequestBody,

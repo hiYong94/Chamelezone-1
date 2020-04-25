@@ -10,6 +10,6 @@ data class CourseDetailItem(
     val keywordName: ArrayList<String>,
     val placeName: String,
     val address: String,
-    val placeImages: String,
+    val placeImage: String,
     val courseImage: String
 ) : Serializable

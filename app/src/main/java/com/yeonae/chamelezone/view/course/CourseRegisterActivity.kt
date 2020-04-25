@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -15,7 +17,9 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
@@ -32,6 +36,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     private var thirdPlaceNumber: Int = NOT_SELECTED
     private val placeNumbers = mutableListOf<Int>()
     private var isCreated = false
+    private var isClicked = false
 
     override fun onClick(place: PlaceItem, placeIndex: Int) {
         getVisible(place, placeIndex)
@@ -43,19 +48,24 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     override fun showMessage(message: String) {
         this.shortToast(message)
+        hideLoading()
         finish()
     }
 
     private fun showSingleImage(uri: Uri) {
         imageContainer.removeAllViews()
-        val ivSlideImg = LayoutInflater.from(this).inflate(
+        val rlSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
-        ) as ImageView
-        imageContainer.addView(ivSlideImg)
-        ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        ) as RelativeLayout
+        imageContainer.addView(rlSlideImg)
+        rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(uri, measuredWidth, measuredHeight)
+        }
+        rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            imageContainer.removeView(rlSlideImg)
+            imageUri = ""
         }
         if (!uri.path.isNullOrEmpty()) {
             imageUri = uri.path.toString()
@@ -134,27 +144,23 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
+                else -> {
+                    showLoading()
+                    if (!isClicked) {
+                        isClicked = true
+                        presenter.registerCourse(
+                            memberNumber,
+                            placeNumbers,
+                            "${edt_course_title.text}",
+                            "${edt_course_content.text}",
+                            imageUri
+                        )
+                        Handler().postDelayed({
+                            isClicked = false
+                        }, 5000)
+                    }
+                }
             }
-//            if (!isCreated) {
-//                isCreated = true
-//                presenter.registerCourse(
-//                    memberNumber,
-//                    placeNumbers,
-//                    "${edt_course_title.text}",
-//                    "${edt_course_content.text}",
-//                    imageUri
-//                )
-//                Handler().postDelayed({
-//                    isCreated = false
-//                }, 5000)
-//            }
-            presenter.registerCourse(
-                memberNumber,
-                placeNumbers,
-                "${edt_course_title.text}",
-                "${edt_course_content.text}",
-                imageUri
-            )
         }
     }
 
@@ -247,7 +253,11 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         btn_image_create.setOnClickListener {
             checkPermission()
         }
-        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+
+        btn_image_clear.setOnClickListener {
+            imageUri = ""
+            imageContainer.removeAllViews()
+        }
     }
 
     private fun checkPermission() {

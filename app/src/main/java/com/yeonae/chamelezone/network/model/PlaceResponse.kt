@@ -94,7 +94,7 @@ data class PlaceResponse(
             keywordFormat = if (it == keywordName[0]) {
                 it
             } else {
-                "${keywordFormat}${","} $it"
+                "${keywordFormat}, $it"
             }
         }
         if (addressDetail == null) {

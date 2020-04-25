@@ -31,7 +31,8 @@ interface PlaceRemoteDataSource {
     fun getKeyword(callback: PlaceCallback<List<KeywordResponse>>)
     fun updatePlace(
         placeNumber: Int,
-        images: List<String>,
+        insertImages: List<String>,
+        deleteImageNumbers: List<Int>,
         memberNumber: Int,
         address: String,
         addressDetail: String,
@@ -39,7 +40,18 @@ interface PlaceRemoteDataSource {
         content: String,
         latitude: BigDecimal,
         longitude: BigDecimal,
-        imageNumbers: List<Int>,
+        callback: PlaceCallback<Boolean>
+    )
+
+    fun updatePlace(
+        placeNumber: Int,
+        memberNumber: Int,
+        address: String,
+        addressDetail: String,
+        phoneNumber: String,
+        content: String,
+        latitude: BigDecimal,
+        longitude: BigDecimal,
         callback: PlaceCallback<Boolean>
     )
 

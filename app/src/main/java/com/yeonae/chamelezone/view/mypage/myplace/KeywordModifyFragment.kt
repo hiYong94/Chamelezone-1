@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,10 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
         for (i in response.indices) {
             keywordMap[response[i].keywordNumber] = response[i].keywordName
         }
+        keywordMap.values.forEach {
+            addKeywordView(it)
+        }
+        Log.d("Keyword", keywordMap.toString())
     }
 
     override fun showResult(response: Boolean) {
@@ -76,14 +81,7 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
 
         val placeNumber = arguments?.getInt("placeNumber")
         val placeKeywordNumbers = arguments?.getIntegerArrayList("placeKeywordNumbers")
-        val keyword = arguments?.getStringArrayList("keyword")
         selectedKeyword = arguments?.getStringArrayList("selectedKeyword") as ArrayList<String>
-
-        if (keyword != null) {
-            for (i in 0 until keyword.size) {
-                addKeywordView(keyword[i])
-            }
-        }
 
         btn_ok.setOnClickListener {
             if (selectedKeyword.isEmpty()) {
@@ -92,7 +90,7 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
                 onClickListener?.onClick(selectedKeyword)
                 keywords.clear()
                 for (i in 0 until selectedKeyword.size) {
-                    for (j in 0 until keywordMap.size) {
+                    for (j in 1..keywordMap.size) {
                         if (keywordMap[j] == selectedKeyword[i]) {
                             keywords.add(j)
                         }
@@ -145,14 +143,12 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
         fun newInstance(
             placeNumber: Int,
             placeKeywordNumbers: ArrayList<Int>,
-            keywordList: ArrayList<String>,
             selectedKeyword: ArrayList<String>
         ): KeywordModifyFragment {
             return KeywordModifyFragment().apply {
                 arguments = Bundle().apply {
                     putInt("placeNumber", placeNumber)
                     putIntegerArrayList("placeKeywordNumbers", placeKeywordNumbers)
-                    putStringArrayList("keyword", keywordList)
                     putStringArrayList("selectedKeyword", selectedKeyword)
                 }
             }
