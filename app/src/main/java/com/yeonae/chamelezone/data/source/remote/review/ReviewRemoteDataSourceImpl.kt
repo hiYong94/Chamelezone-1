@@ -66,7 +66,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         memberNumber: Int,
         placeNumber: Int,
         content: String,
-        imageNumber: List<Int>,
+        deleteImageNumber: List<Int>,
         callback: ReviewCallback<Boolean>
     ) {
         val memberNumber =
@@ -74,9 +74,9 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
 
         val content = RequestBody.create(MediaType.parse("text/plain"), content)
 
-        val imageNumberList = ArrayList<RequestBody>()
-        imageNumber.forEach {
-            imageNumberList.add(
+        val deleteImageNumberList = ArrayList<RequestBody>()
+        deleteImageNumber.forEach {
+            deleteImageNumberList.add(
                 RequestBody.create(
                     MediaType.parse("text/plain"), it.toString()
                 )
@@ -101,7 +101,7 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
             reviewNumber,
             memberNumber,
             content,
-            imageNumberList
+            deleteImageNumberList
         ).enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("create tag error", t.toString())

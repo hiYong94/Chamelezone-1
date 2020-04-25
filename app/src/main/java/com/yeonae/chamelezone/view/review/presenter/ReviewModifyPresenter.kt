@@ -14,7 +14,7 @@ class ReviewModifyPresenter(
         memberNumber: Int,
         placeNumber: Int,
         content: String,
-        imageNumber: List<Int>
+        deleteImageNumber: List<Int>
     ) {
         reviewRepository.updateReview(
             images,
@@ -22,7 +22,7 @@ class ReviewModifyPresenter(
             memberNumber,
             placeNumber,
             content,
-            imageNumber,
+            deleteImageNumber,
             object : ReviewCallback<Boolean> {
                 override fun onSuccess(response: Boolean) {
                     reviewView.reviewModify(response)

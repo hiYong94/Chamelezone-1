@@ -1,6 +1,8 @@
 package com.yeonae.chamelezone.view.review
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
@@ -8,7 +10,7 @@ import android.os.Handler
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -19,29 +21,34 @@ import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.util.Logger
+import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_review_modify.*
+import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class ReviewModifyActivity :
     AppCompatActivity(),
     ReviewModifyContract.View {
     override lateinit var presenter: ReviewModifyContract.Presenter
-    private val uriList = arrayListOf<String>()
-    private var selectedUriList: List<Uri>? = null
+    private var uriList = ArrayList<String>()
+    private var uriDataList = arrayListOf<String>()
+    private var selectedUriList = mutableListOf<Uri>()
     private var isCreated = false
     private var isChecked = false
     private var placeNumber = 0
     private var memberNumber = 0
     private var reviewNumber = 0
     private var imageNumber = arrayListOf<Int>()
+    private var deleteImageNumber = ArrayList<Int>()
 
     override fun reviewModify(response: Boolean) {
         if (response) {
             shortToast(R.string.review_modify_msg)
+            val intent = Intent(this, MyReviewActivity::class.java)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
@@ -50,15 +57,20 @@ class ReviewModifyActivity :
         imageNumber = review.imageNumber
         tv_title.text = review.name
         edt_review.text = SpannableStringBuilder(review.content)
-        review.images.forEachIndexed { _, image ->
-            val iv = LayoutInflater.from(this).inflate(
+        review.images.forEachIndexed { index, image ->
+            val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
-            ) as ImageView
-            iv.run {
+            ) as RelativeLayout
+            image_container.addView(rl)
+            rl.image_item.run {
                 glideImageSet(IMAGE_RESOURCE + image, measuredWidth, measuredHeight)
-                image_container.addView(iv)
+            }
+
+            rl.btn_delete.setOnClickListener {
+                image_container.removeView(rl)
+                deleteImageNumber.add(imageNumber[index])
             }
         }
     }
@@ -94,69 +106,14 @@ class ReviewModifyActivity :
                     memberNumber,
                     placeNumber,
                     content,
-                    imageNumber
+                    deleteImageNumber
                 )
                 Handler().postDelayed({
                     isCreated = false
                 }, 5000)
             }
+
         }
-    }
-
-    private val permissionListener: PermissionListener = object : PermissionListener {
-        override fun onPermissionGranted() {
-            val prefs: SharedPreferences =
-                this@ReviewModifyActivity.getSharedPreferences("pref", MODE_PRIVATE)
-            val isFirstRun = prefs.getBoolean("isFirstRun", true)
-            if (isFirstRun) {
-                Toast.makeText(
-                    this@ReviewModifyActivity,
-                    R.string.permission_granted,
-                    Toast.LENGTH_SHORT
-                ).show()
-                prefs.edit().putBoolean("isFirstRun", false).apply()
-            }
-            setNormalMultiButton()
-        }
-
-        override fun onPermissionDenied(deniedPermissions: List<String>) {
-            isCreated = false
-            Toast.makeText(
-                    this@ReviewModifyActivity,
-                    "${R.string.permission_denied}\n$deniedPermissions",
-                    Toast.LENGTH_SHORT
-                )
-                .show()
-        }
-    }
-
-    private fun showMultiImage(uris: List<Uri>) {
-        this.selectedUriList = uris
-
-        image_container.removeAllViews()
-
-        uris.forEachIndexed { _, uri ->
-            val iv = LayoutInflater.from(this).inflate(
-                R.layout.slider_item_image,
-                image_container,
-                false
-            ) as ImageView
-            iv.run {
-                glideImageSet(uri, measuredWidth, measuredHeight)
-                image_container.addView(iv)
-            }
-            uri.path?.let { uriList.add(it) }
-        }
-    }
-
-    private fun setNormalMultiButton() {
-        TedImagePicker.with(this)
-            .mediaType(MediaType.IMAGE)
-            .min(1, R.string.min_msg)
-            .max(4, R.string.max_msg)
-            .errorListener { message -> Log.d("ted", "message: $message") }
-            .selectedUri(selectedUriList)
-            .startMultiImage { list: List<Uri> -> showMultiImage(list) }
     }
 
     private fun setupGUI() {
@@ -182,6 +139,76 @@ class ReviewModifyActivity :
             .setGotoSettingButtonText(R.string.setting)
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
+    }
+
+    private val permissionListener: PermissionListener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            val prefs: SharedPreferences =
+                this@ReviewModifyActivity.getSharedPreferences("pref", MODE_PRIVATE)
+            val isFirstRun = prefs.getBoolean("isFirstRun", true)
+            if (isFirstRun) {
+                Toast.makeText(
+                    this@ReviewModifyActivity,
+                    R.string.permission_granted,
+                    Toast.LENGTH_SHORT
+                ).show()
+                prefs.edit().putBoolean("isFirstRun", false).apply()
+            }
+            setNormalMultiButton()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: List<String>) {
+            isCreated = false
+            Toast.makeText(
+                this@ReviewModifyActivity,
+                "${R.string.permission_denied}\n$deniedPermissions",
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+    }
+
+    private fun setNormalMultiButton() {
+        TedImagePicker.with(this)
+            .mediaType(MediaType.IMAGE)
+            .min(1, R.string.min_msg)
+            .max(4, R.string.max_msg)
+            .errorListener { message -> Log.d("ted", "message: $message") }
+            .selectedUri(selectedUriList)
+            .startMultiImage { list: List<Uri> -> showMultiImage(list) }
+    }
+
+    private fun showMultiImage(uris: List<Uri>) {
+        this.selectedUriList = uris.toMutableList()
+
+        uris.forEachIndexed { index, uri ->
+            val rl = LayoutInflater.from(this).inflate(
+                R.layout.slider_item_image,
+                image_container,
+                false
+            ) as RelativeLayout
+
+            rl.image_item.run {
+                glideImageSet(uri, measuredWidth, measuredHeight)
+                image_container.addView(rl)
+            }
+
+            rl.btn_delete.setOnClickListener {
+                image_container.removeView(rl)
+                if (this.selectedUriList.count() != 0)
+                    this.selectedUriList.removeAt(index)
+            }
+
+            btn_clear.setOnClickListener {
+                image_container.removeAllViews()
+                if (this.selectedUriList.count() != 0)
+                    this.selectedUriList.removeAll(uris)
+            }
+
+            uri.path?.let { uriDataList.add(it) }
+            val distinctData = uriDataList.distinct()
+            uriList = ArrayList(distinctData)
+        }
     }
 
     companion object {
