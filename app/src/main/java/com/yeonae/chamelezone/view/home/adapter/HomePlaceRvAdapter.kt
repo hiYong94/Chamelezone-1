@@ -81,17 +81,6 @@ class HomePlaceRvAdapter :
             }
         }
 
-        fun textChange(text: String) {
-            val distance = itemView.distance
-            distanceCalculator =
-                distanceByDegree(
-                    currentLatitude,
-                    currentLongitude,
-                    place.latitude.toDouble(),
-                    place.longitude.toDouble()
-                )
-            distance.text = distanceCalculator
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -101,25 +90,17 @@ class HomePlaceRvAdapter :
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isEmpty()) {
-            holder.bind(placeList[position])
-        } else {
-            holder.textChange(distanceCalculator)
-        }
+        holder.bind(placeList[position])
     }
 
     override fun getItemCount(): Int {
         return placeList.size
     }
 
-    fun itemChange(position: Int) {
-        notifyItemChanged(position, 1)
-    }
-
     fun replaceDataDistance(lat: Double, log: Double) {
         currentLatitude = lat
         currentLongitude = log
-        notifyItemRangeChanged(0, itemCount, PAYLOAD)
+        notifyItemRangeChanged(0, itemCount, PAYLOAD_ITEM_CHANGE)
     }
 
     fun addData(addDataList: List<PlaceResponse>) {
@@ -133,6 +114,6 @@ class HomePlaceRvAdapter :
     }
 
     companion object {
-        const val PAYLOAD = 1
+        const val PAYLOAD_ITEM_CHANGE = 1
     }
 }

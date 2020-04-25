@@ -21,7 +21,7 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
         memberNumber: Int,
         placeNumber: Int,
         content: String,
-        imageNumber: List<Int>,
+        deleteImageNumber: List<Int>,
         callback: ReviewCallback<Boolean>
     ) {
         reviewRemoteDataSource.updateReview(
@@ -30,7 +30,7 @@ class ReviewRepositoryImpl private constructor(private val reviewRemoteDataSourc
             memberNumber,
             placeNumber,
             content,
-            imageNumber,
+            deleteImageNumber,
             callback
         )
     }

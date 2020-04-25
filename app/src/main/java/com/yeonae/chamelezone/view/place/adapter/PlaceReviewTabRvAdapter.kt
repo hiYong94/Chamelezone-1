@@ -17,7 +17,7 @@ import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
-class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
+open class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
     RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
     private val reviewList = arrayListOf<ReviewItem>()
     private lateinit var itemClickListener: OnItemClickListener
@@ -83,7 +83,8 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
                     reviewImg.measuredHeight
                 )
             } else {
-                val backgroundColor = ContextCompat.getDrawable(App.instance.context(), R.drawable.color)
+                val backgroundColor =
+                    ContextCompat.getDrawable(App.instance.context(), R.drawable.color)
                 itemView.iv_image.background = backgroundColor
                 reviewCount.text = ""
                 itemView.post {
@@ -131,5 +132,12 @@ class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
         reviewList.clear()
         reviewList.addAll(addDataList)
         notifyDataSetChanged()
+    }
+
+    fun removeData(review: ReviewItem) {
+        val position = reviewList.indexOf(review)
+        reviewList.remove(review)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, reviewList.size)
     }
 }
