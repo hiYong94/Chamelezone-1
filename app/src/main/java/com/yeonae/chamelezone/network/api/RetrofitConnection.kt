@@ -13,7 +13,7 @@ object RetrofitConnection {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://shopinshop.tk:3030")
+        .baseUrl("https://shopinshop.tk")
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

@@ -1,8 +1,8 @@
 package com.yeonae.chamelezone.view.mypage.myreview
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -43,7 +43,7 @@ class MyReviewActivity : AppCompatActivity(),
         if (reviewList.isNotEmpty()) {
             rl_my_review.isVisible = true
             rl_no_my_review.isGone = true
-            myReviewRvAdapter.addData(reviewList)
+            myReviewRvAdapter.addDataList(reviewList)
         } else {
             rl_my_review.isGone = true
             rl_no_my_review.isVisible = true
@@ -53,7 +53,6 @@ class MyReviewActivity : AppCompatActivity(),
 
     override fun showReviewDelete(message: String) {
         shortToast(R.string.review_delete)
-        Toast.makeText(this, "", Toast.LENGTH_LONG).show()
     }
 
     override fun onModifyClick() {
@@ -63,12 +62,12 @@ class MyReviewActivity : AppCompatActivity(),
         intent.putExtra(PLACE_NUMBER, placeNumber)
         intent.putExtra(REVIEW_NUMBER, reviewNumber)
         intent.putExtra(MEMBER_NUMBER, memberNumber)
-        startActivity(intent)
-
+        startActivityForResult(intent, UPDATE_REQUEST)
     }
 
     override fun onDeleteClick() {
         presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
+        myReviewRvAdapter.removeData(reviewItem)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,7 +76,9 @@ class MyReviewActivity : AppCompatActivity(),
         setAdapter()
 
         presenter = MyReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(), this
+            Injection.reviewRepository(),
+            Injection.memberRepository(),
+            this
         )
 
         presenter.checkMember()
@@ -99,6 +100,7 @@ class MyReviewActivity : AppCompatActivity(),
 
         myReviewRvAdapter.setMoreButtonListener(object : MyReviewRvAdapter.MoreButtonListener {
             override fun bottomSheetDialog(review: ReviewItem) {
+                reviewItem = review
                 placeNumber = review.placeNumber
                 reviewNumber = review.reviewNumber
                 showBottomSheet(placeNumber, reviewNumber)
@@ -107,6 +109,16 @@ class MyReviewActivity : AppCompatActivity(),
 
         btn_back.setOnClickListener {
             finish()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            UPDATE_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK)
+                    presenter.getUserReview(memberNumber)
+            }
         }
     }
 
@@ -121,6 +133,7 @@ class MyReviewActivity : AppCompatActivity(),
     }
 
     companion object {
+        const val UPDATE_REQUEST = 102
         const val PLACE_NAME = "placeName"
         const val REVIEW_CONTENT = "content"
         const val PLACE_NUMBER = "placeNumber"

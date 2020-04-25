@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:background="@color/transparent"
         android:padding="7dp"
-        android:src="@drawable/ic_icon_x_black" />
+        android:src="@drawable/ic_icon_x_orange" />
 
 </RelativeLayout>

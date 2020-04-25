@@ -34,7 +34,6 @@ class HomeTabFragment :
     Fragment(),
     SwipeRefreshLayout.OnRefreshListener,
     HomeContract.View {
-
     override lateinit var presenter: HomeContract.Presenter
     private lateinit var placeAdapter: HomePlaceRvAdapter
     private var memberNumber: Int = 0
@@ -45,7 +44,6 @@ class HomeTabFragment :
     override fun showHomeList(placeList: List<PlaceResponse>) {
         if (::placeAdapter.isInitialized) {
             placeAdapter.addData(placeList)
-            placeAdapter.itemChange(placeList.lastIndex)
         }
     }
 
@@ -156,6 +154,14 @@ class HomeTabFragment :
         super.onResume()
         if (::presenter.isInitialized)
             presenter.checkMember()
+
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            getCurrentLocation()
+        }
     }
 
     override fun onRefresh() {
@@ -177,26 +183,31 @@ class HomeTabFragment :
             ActivityCompat.requestPermissions(
                 requireActivity(),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                0
+                LOCATION_REQUEST_CODE
             )
         } else {
-            val lm =
-                context?.getSystemService(LOCATION_SERVICE) as? LocationManager
-            var location: Location? =
-                lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-            if (location == null) {
-                location = lm?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
-            }
-            if (location != null) {
-                currentLatitude = location.latitude
-                currentLongitude = location.longitude
-                placeAdapter.replaceDataDistance(currentLatitude, currentLongitude)
+            getCurrentLocation()
+        }
+    }
 
-            }
+    @SuppressLint("MissingPermission")
+    private fun getCurrentLocation() {
+        val lm =
+            context?.getSystemService(LOCATION_SERVICE) as? LocationManager
+        var location: Location? =
+            lm?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+        if (location == null) {
+            location = lm?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+        }
+        if (location != null) {
+            currentLatitude = location.latitude
+            currentLongitude = location.longitude
+            placeAdapter.replaceDataDistance(currentLatitude, currentLongitude)
         }
     }
 
     companion object {
+        private const val LOCATION_REQUEST_CODE = 100
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }

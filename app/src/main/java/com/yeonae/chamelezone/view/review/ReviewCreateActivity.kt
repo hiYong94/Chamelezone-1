@@ -1,13 +1,14 @@
 package com.yeonae.chamelezone.view.review
 
 import android.Manifest
+import android.app.Activity
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -23,19 +24,22 @@ import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_review_create.*
+import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class ReviewCreateActivity :
     AppCompatActivity(),
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
-    private val uriList = arrayListOf<String>()
-    private var selectedUriList: List<Uri>? = null
+    private var uriList = ArrayList<String>()
+    private var uriDataList = arrayListOf<String>()
+    private var selectedUriList = mutableListOf<Uri>()
     private var isCreated = false
     private var isChecked = false
     private var memberNumber = 0
 
     override fun review(message: String) {
         shortToast(R.string.review_create_msg)
+        setResult(Activity.RESULT_OK)
         finish()
     }
 
@@ -47,25 +51,6 @@ class ReviewCreateActivity :
         presenter.getMember()
     }
 
-    private fun showMultiImage(uris: List<Uri>) {
-        this.selectedUriList = uris
-
-        image_container.removeAllViews()
-
-        uris.forEachIndexed { _, uri ->
-            val iv = LayoutInflater.from(this).inflate(
-                R.layout.slider_item_image,
-                image_container,
-                false
-            ) as ImageView
-            iv.run {
-                glideImageSet(uri, measuredWidth, measuredHeight)
-                image_container.addView(iv)
-            }
-            uri.path?.let { uriList.add(it) }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_review_create)
@@ -73,7 +58,8 @@ class ReviewCreateActivity :
         setupGUI()
 
         presenter = ReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(), this
+            Injection.reviewRepository(),
+            Injection.memberRepository(), this
         )
 
         presenter.checkMember()
@@ -96,39 +82,6 @@ class ReviewCreateActivity :
         }
     }
 
-    private val permissionListener: PermissionListener = object : PermissionListener {
-        override fun onPermissionGranted() {
-            val prefs: SharedPreferences =
-                this@ReviewCreateActivity.getSharedPreferences("pref", MODE_PRIVATE)
-            val isFirstRun = prefs.getBoolean("isFirstRun", true)
-            if (isFirstRun) {
-                Toast.makeText(this@ReviewCreateActivity, R.string.permission_granted, Toast.LENGTH_SHORT).show()
-                prefs.edit().putBoolean("isFirstRun", false).apply()
-            }
-            setNormalMultiButton()
-        }
-
-        override fun onPermissionDenied(deniedPermissions: List<String>) {
-            isCreated = false
-            Toast.makeText(
-                    this@ReviewCreateActivity,
-                    R.string.permission_denied,
-                    Toast.LENGTH_SHORT
-                )
-                .show()
-        }
-    }
-
-    private fun setNormalMultiButton() {
-        TedImagePicker.with(this)
-            .mediaType(MediaType.IMAGE)
-            .min(1, R.string.min_msg)
-            .max(4, R.string.max_msg)
-            .errorListener { message -> Log.d("ted", "message: $message") }
-            .selectedUri(selectedUriList)
-            .startMultiImage { list: List<Uri> -> showMultiImage(list) }
-    }
-
     private fun setupGUI() {
         tv_title.text = intent.getStringExtra(PLACE_NAME)
         tv_title.catchFocus()
@@ -145,7 +98,6 @@ class ReviewCreateActivity :
                 isChecked = false
             }, 1000)
         }
-        btn_image_clear.setOnClickListener { image_container.removeAllViews() }
     }
 
     private fun checkPermission() {
@@ -158,6 +110,77 @@ class ReviewCreateActivity :
             .setGotoSettingButtonText(R.string.setting)
             .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             .check()
+    }
+
+    private val permissionListener: PermissionListener = object : PermissionListener {
+        override fun onPermissionGranted() {
+            val prefs: SharedPreferences =
+                this@ReviewCreateActivity.getSharedPreferences("pref", MODE_PRIVATE)
+            val isFirstRun = prefs.getBoolean("isFirstRun", true)
+            if (isFirstRun) {
+                Toast.makeText(
+                    this@ReviewCreateActivity,
+                    R.string.permission_granted,
+                    Toast.LENGTH_SHORT
+                ).show()
+                prefs.edit().putBoolean("isFirstRun", false).apply()
+            }
+            setNormalMultiButton()
+        }
+
+        override fun onPermissionDenied(deniedPermissions: List<String>) {
+            isCreated = false
+            Toast.makeText(
+                this@ReviewCreateActivity,
+                R.string.permission_denied,
+                Toast.LENGTH_SHORT
+            )
+                .show()
+        }
+    }
+
+    private fun setNormalMultiButton() {
+        TedImagePicker.with(this)
+            .mediaType(MediaType.IMAGE)
+            .min(1, R.string.min_msg)
+            .max(4, R.string.max_msg)
+            .errorListener { message -> Log.d("ted", "message: $message") }
+            .selectedUri(selectedUriList)
+            .startMultiImage { list: List<Uri> -> showMultiImage(list) }
+    }
+
+    private fun showMultiImage(uris: List<Uri>) {
+        this.selectedUriList = uris.toMutableList()
+
+        image_container.removeAllViews()
+
+        uris.forEachIndexed { index, uri ->
+            val rl = LayoutInflater.from(this).inflate(
+                R.layout.slider_item_image,
+                image_container,
+                false
+            ) as RelativeLayout
+            image_container.addView(rl)
+            rl.image_item.run {
+                glideImageSet(uri, measuredWidth, measuredHeight)
+            }
+
+            rl.btn_delete.setOnClickListener {
+                image_container.removeView(rl)
+                if (this.selectedUriList.count() != 0)
+                    this.selectedUriList.removeAt(index)
+            }
+
+            btn_image_clear.setOnClickListener {
+                image_container.removeAllViews()
+                if (this.selectedUriList.count() != 0)
+                    this.selectedUriList.removeAll(uris)
+            }
+
+            uri.path?.let { uriDataList.add(it) }
+            val distinctData = uriDataList.distinct()
+            uriList = ArrayList(distinctData)
+        }
     }
 
     companion object {

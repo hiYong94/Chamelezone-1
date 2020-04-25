@@ -173,7 +173,7 @@ class HomeActivity : AppCompatActivity() {
 
         if (System.currentTimeMillis() > time + 2000) {
             time = System.currentTimeMillis()
-            Toast.makeText(applicationContext, "뒤로 버튼을 한번 더 누르면 종료합니다.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, R.string.back_pressed_msg, Toast.LENGTH_SHORT).show()
             return
         }
         if (System.currentTimeMillis() <= time + 2000) {
