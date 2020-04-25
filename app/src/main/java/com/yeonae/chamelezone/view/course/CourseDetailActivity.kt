@@ -26,7 +26,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
         tv_register_date.text = courseList[0].regiDate
 
         iv_place_image1.glideImageSet(
-            courseList[0].placeImages,
+            courseList[0].placeImage,
             iv_place_image1.measuredWidth,
             iv_place_image1.measuredHeight
         )
@@ -42,7 +42,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
 
         layout_second_place.visibility = View.VISIBLE
         iv_place_image2.glideImageSet(
-            courseList[1].placeImages,
+            courseList[1].placeImage,
             iv_place_image2.measuredWidth,
             iv_place_image2.measuredHeight
         )
@@ -58,7 +58,7 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
         if (courseList.size == 3) {
             layout_third_place.visibility = View.VISIBLE
             iv_place_image3.glideImageSet(
-                courseList[2].placeImages,
+                courseList[2].placeImage,
                 iv_place_image3.measuredWidth,
                 iv_place_image3.measuredHeight
             )

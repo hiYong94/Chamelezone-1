@@ -57,11 +57,11 @@ class LikePresenter(
     override fun getMyLikeList(memberNumber: Int) {
         likeRepository.getMyLikeList(memberNumber, object : LikeCallback<List<PlaceResponse>> {
             override fun onSuccess(response: List<PlaceResponse>) {
-                val likeItem = mutableListOf<LikeItem>()
+                val likeItemList = mutableListOf<LikeItem>()
                 for (i in response.indices) {
-                    likeItem.add(response[i].toLikeItem())
+                    likeItemList.add(response[i].toLikeItem())
                 }
-                view.showMyLikeList(likeItem)
+                view.showMyLikeList(likeItemList)
             }
 
             override fun onFailure(message: String) {

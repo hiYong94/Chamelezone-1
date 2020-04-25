@@ -78,7 +78,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         }
 
         iv_place_image1.glideImageSet(
-            IMAGE_RESOURCE + courseList[0].placeImages,
+            IMAGE_RESOURCE + courseList[0].placeImage,
             iv_place_image1.measuredWidth,
             iv_place_image1.measuredHeight
         )
@@ -93,7 +93,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         tv_place_address1.text = courseList[0].address
 
         iv_place_image2.glideImageSet(
-            IMAGE_RESOURCE + courseList[1].placeImages,
+            IMAGE_RESOURCE + courseList[1].placeImage,
             iv_place_image2.measuredWidth,
             iv_place_image2.measuredHeight
         )
@@ -111,7 +111,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
             thirdPlaceNumber = courseList[2].placeNumber
             layout_course3.visibility = View.VISIBLE
             iv_place_image3.glideImageSet(
-                IMAGE_RESOURCE + courseList[2].placeImages,
+                IMAGE_RESOURCE + courseList[2].placeImage,
                 iv_place_image3.measuredWidth,
                 iv_place_image3.measuredHeight
             )
