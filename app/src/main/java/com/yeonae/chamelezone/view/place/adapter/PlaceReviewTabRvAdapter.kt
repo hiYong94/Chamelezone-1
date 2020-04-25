@@ -17,7 +17,7 @@ import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
-class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
+open class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
     RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
     private val reviewList = arrayListOf<ReviewItem>()
     private lateinit var itemClickListener: OnItemClickListener

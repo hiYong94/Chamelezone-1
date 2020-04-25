@@ -45,7 +45,37 @@ class PlaceReviewTabFragment :
         requireContext().shortToast(R.string.review_delete)
     }
 
-    override fun showMemberReview(user: UserEntity) {}
+    override fun showMemberReview(user: UserEntity) {
+        memberNumber = user.userNumber ?: 0
+
+        setAdapter()
+
+        placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
+
+        placeNumber.let {
+            presenter.placeDetailReview(it)
+        }
+
+        placeReviewRvAdapter.setItemClickListener(object :
+            PlaceReviewTabRvAdapter.OnItemClickListener {
+            override fun onItemClick(view: View, position: Int, review: ReviewItem) {
+                reviewNumber = review.reviewNumber
+                val intent = Intent(context, ReviewImageActivity::class.java)
+                intent.putExtra(PLACE_NUMBER, placeNumber)
+                intent.putExtra(REVIEW_NUMBER, reviewNumber)
+                startActivity(intent)
+            }
+        })
+
+        placeReviewRvAdapter.setMoreButtonListener(object :
+            PlaceReviewTabRvAdapter.MoreButtonListener {
+            override fun bottomSheetDialog(review: ReviewItem) {
+                reviewItem = review
+                reviewNumber = review.reviewNumber
+                showBottomSheet(reviewNumber)
+            }
+        })
+    }
 
     override fun getMemberCheck(response: Boolean) {
         if (response) {
@@ -75,45 +105,13 @@ class PlaceReviewTabFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         presenter = PlaceReviewPresenter(
             Injection.reviewRepository(), Injection.memberRepository(), this
         )
 
-        placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
-        memberNumber = arguments?.getInt(MEMBER_NUMBER) ?: 0
-
-        val memberNumber = memberNumber
-        placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
-
         presenter.checkMember()
 
-        setAdapter()
-
-        placeNumber.let {
-            presenter.placeDetailReview(it)
-        }
-
-        placeReviewRvAdapter.setItemClickListener(object :
-            PlaceReviewTabRvAdapter.OnItemClickListener {
-            override fun onItemClick(view: View, position: Int, review: ReviewItem) {
-                reviewNumber = review.reviewNumber
-                val intent = Intent(context, ReviewImageActivity::class.java)
-                intent.putExtra(PLACE_NUMBER, placeNumber)
-                intent.putExtra(REVIEW_NUMBER, reviewNumber)
-                startActivity(intent)
-            }
-        })
-
-        placeReviewRvAdapter.setMoreButtonListener(object :
-            PlaceReviewTabRvAdapter.MoreButtonListener {
-            override fun bottomSheetDialog(review: ReviewItem) {
-                reviewItem = review
-                reviewNumber = review.reviewNumber
-                showBottomSheet(reviewNumber)
-            }
-        })
-
+        placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
