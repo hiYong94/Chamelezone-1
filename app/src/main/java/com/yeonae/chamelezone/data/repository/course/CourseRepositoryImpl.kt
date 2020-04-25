@@ -62,7 +62,6 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
         placeNumbers: List<Int>,
         title: String,
         content: String,
-        imageNumber: Int,
         savedImageName: String,
         callback: CourseCallback<Boolean>
     ) {
@@ -72,7 +71,6 @@ class CourseRepositoryImpl private constructor(private val remoteDataSource: Cou
             placeNumbers,
             title,
             content,
-            imageNumber,
             savedImageName,
             callback
         )

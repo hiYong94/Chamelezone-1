@@ -223,14 +223,9 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
         placeNumbers: List<Int>,
         title: String,
         content: String,
-        imageNumber: Int,
         savedImageName: String,
         callback: CourseCallback<Boolean>
     ) {
-
-        val imageNumber = RequestBody.create(
-            MediaType.parse("text/plain"), imageNumber.toString()
-        )
 
         val memberNumber = RequestBody.create(
             MediaType.parse("text/plain"), memberNumber.toString()
@@ -256,7 +251,6 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
 
         courseService.updateCourse(
             courseNumber,
-            imageNumber,
             memberNumber,
             placeNumber,
             title,

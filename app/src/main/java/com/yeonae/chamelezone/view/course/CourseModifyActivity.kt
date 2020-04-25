@@ -1,6 +1,8 @@
 package com.yeonae.chamelezone.view.course
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
@@ -9,6 +11,7 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.gun0912.tedpermission.PermissionListener
@@ -18,10 +21,13 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyContract
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyPresenter
+import com.yeonae.chamelezone.view.mypage.mycourse.MyCourseActivity
 import gun0912.tedimagepicker.builder.TedImagePicker
 import kotlinx.android.synthetic.main.activity_course_modify.*
 
@@ -40,6 +46,9 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     override fun showMessage(response: Boolean) {
         if (response) {
             this.shortToast(R.string.success_update_course)
+            hideLoading()
+            val intent = Intent(this, MyCourseActivity::class.java)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
@@ -53,18 +62,23 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         edt_course_content.text = SpannableStringBuilder(courseList[0].content)
 
         imageContainer.removeAllViews()
-        val ivSlideImg = LayoutInflater.from(this).inflate(
+        val rlSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
-        ) as ImageView
-        imageContainer.addView(ivSlideImg)
-        ivSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        ) as RelativeLayout
+        imageContainer.addView(rlSlideImg)
+        rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(IMAGE_RESOURCE + courseList[0].courseImage, measuredWidth, measuredHeight)
+        }
+        rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            imageContainer.removeView(rlSlideImg)
+            imageUri = ""
+            savedImageName = ""
         }
 
         iv_place_image1.glideImageSet(
-            IMAGE_RESOURCE + courseList[0].placeImages,
+            IMAGE_RESOURCE + courseList[0].placeImage,
             iv_place_image1.measuredWidth,
             iv_place_image1.measuredHeight
         )
@@ -79,7 +93,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         tv_place_address1.text = courseList[0].address
 
         iv_place_image2.glideImageSet(
-            IMAGE_RESOURCE + courseList[1].placeImages,
+            IMAGE_RESOURCE + courseList[1].placeImage,
             iv_place_image2.measuredWidth,
             iv_place_image2.measuredHeight
         )
@@ -97,7 +111,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
             thirdPlaceNumber = courseList[2].placeNumber
             layout_course3.visibility = View.VISIBLE
             iv_place_image3.glideImageSet(
-                IMAGE_RESOURCE + courseList[2].placeImages,
+                IMAGE_RESOURCE + courseList[2].placeImage,
                 iv_place_image3.measuredWidth,
                 iv_place_image3.measuredHeight
             )
@@ -120,15 +134,21 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     }
 
     private fun showSingleImage(uri: Uri) {
+        savedImageName = ""
         imageContainer.removeAllViews()
         val rlSlideImg = LayoutInflater.from(this).inflate(
             R.layout.slider_item_image,
             imageContainer,
             false
-        ) as ImageView
+        ) as RelativeLayout
         imageContainer.addView(rlSlideImg)
         rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
             glideImageSet(uri, measuredWidth, measuredHeight)
+        }
+        rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            imageContainer.removeView(rlSlideImg)
+            imageUri = ""
+            savedImageName = ""
         }
         if (!uri.path.isNullOrEmpty()) {
             imageUri = uri.path.toString()
@@ -207,27 +227,30 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
-            }
-            if (imageUri == "") {
-                presenter.modifyCourse(
-                    courseNumber,
-                    memberNumber,
-                    placeNumbers,
-                    "${edt_course_title.text}",
-                    "${edt_course_content.text}",
-                    imageNumber,
-                    savedImageName
-                )
-            } else {
-                presenter.modifyCourse(
-                    courseNumber,
-                    memberNumber,
-                    placeNumbers,
-                    "${edt_course_title.text}",
-                    "${edt_course_content.text}",
-                    imageUri,
-                    imageNumber
-                )
+                savedImageName.isEmpty() && imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
+                else -> {
+                    showLoading()
+                    if (imageUri.isEmpty() && savedImageName.isNotEmpty()) {
+                        presenter.modifyCourse(
+                            courseNumber,
+                            memberNumber,
+                            placeNumbers,
+                            "${edt_course_title.text}",
+                            "${edt_course_content.text}",
+                            savedImageName
+                        )
+                    } else {
+                        presenter.modifyCourse(
+                            courseNumber,
+                            memberNumber,
+                            placeNumbers,
+                            "${edt_course_title.text}",
+                            "${edt_course_content.text}",
+                            imageUri,
+                            imageNumber
+                        )
+                    }
+                }
             }
         }
     }
@@ -327,7 +350,12 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
                 isCreated = false
             }, 1000)
         }
-        btn_image_clear.setOnClickListener { imageContainer.removeAllViews() }
+
+        btn_image_clear.setOnClickListener {
+            imageUri = ""
+            savedImageName = ""
+            imageContainer.removeAllViews()
+        }
     }
 
     private fun checkPermission() {

@@ -60,7 +60,7 @@ class SearchAddressActivity : AppCompatActivity() {
                     return true
                 }
             }
-            loadUrl("http://13.209.136.122:3000/addressSearch")
+            loadUrl("https://shopinshop.tk/addressSearch")
         }
     }
 
