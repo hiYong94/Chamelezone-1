@@ -49,6 +49,7 @@ class ReviewModifyActivity :
     override fun reviewModify(response: Boolean) {
         if (response) {
             shortToast(R.string.review_modify_msg)
+            hideLoading()
             val intent = Intent(this, MyReviewActivity::class.java)
             setResult(Activity.RESULT_OK, intent)
             finish()
@@ -100,6 +101,7 @@ class ReviewModifyActivity :
 
         btn_review_modify.setOnClickListener {
             val content = "${edt_review.text}"
+            showLoading()
             if (!isCreated) {
                 isCreated = true
                 presenter.modifyReview(

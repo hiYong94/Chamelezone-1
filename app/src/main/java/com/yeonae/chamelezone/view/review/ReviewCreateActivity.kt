@@ -37,6 +37,7 @@ class ReviewCreateActivity :
 
     override fun review(message: String) {
         shortToast(R.string.review_create_msg)
+        hideLoading()
         setResult(Activity.RESULT_OK)
         finish()
     }
@@ -70,6 +71,7 @@ class ReviewCreateActivity :
                 edt_review.text.isEmpty() -> shortToast(R.string.review_content)
                 uriList.isEmpty() -> shortToast(R.string.review_image)
                 else -> {
+                    showLoading()
                     if (!isCreated) {
                         isCreated = true
                         presenter.reviewCreate(
