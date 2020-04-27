@@ -181,11 +181,7 @@ class HomeTabFragment :
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_REQUEST_CODE
-            )
+            requireContext().shortToast("위치 권한이 필요합니다.")
         } else {
             getCurrentLocation()
         }
