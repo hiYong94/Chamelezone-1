@@ -86,7 +86,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3.9"
-                            android:background="#00FFFFFF" />
+                            android:background="@drawable/edge_rectangle_image" />
 
                         <ImageView
                             android:layout_width="0dp"
