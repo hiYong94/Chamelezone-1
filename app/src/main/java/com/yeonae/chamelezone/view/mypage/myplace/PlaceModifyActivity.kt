@@ -96,7 +96,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
                 imageContainer.removeView(rlSlideImg)
                 if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAt(index)
+                    this.selectedUriList.remove(uri)
             }
 
             btn_image_clear.setOnClickListener {
