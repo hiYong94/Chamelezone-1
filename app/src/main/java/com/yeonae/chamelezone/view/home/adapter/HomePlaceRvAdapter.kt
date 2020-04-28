@@ -109,10 +109,6 @@ class HomePlaceRvAdapter :
         notifyDataSetChanged()
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(placeList[position])
-    }
-
     companion object {
         const val PAYLOAD_ITEM_CHANGE = 1
     }
