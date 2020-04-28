@@ -83,8 +83,8 @@ class ReviewCreateActivity :
     }
 
     private fun setupGUI() {
-        tv_title.text = intent.getStringExtra(PLACE_NAME)
-        tv_title.catchFocus()
+        tv_place_name.text = intent.getStringExtra(PLACE_NAME)
+        tv_place_name.catchFocus()
         ll_touch.run { setOnClickListener { catchFocus() } }
         btn_back.setOnClickListener {
             finish()
