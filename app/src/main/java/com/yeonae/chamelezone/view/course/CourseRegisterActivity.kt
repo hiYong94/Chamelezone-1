@@ -16,10 +16,7 @@ import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
-import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.ext.hideLoading
-import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.ext.showLoading
+import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
@@ -83,6 +80,8 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         )
 
         presenter.getUser()
+
+        edt_course_content.setTouchForScrollBars()
 
         btn_back.setOnClickListener {
             finish()

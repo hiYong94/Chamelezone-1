@@ -19,11 +19,8 @@ import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.PlaceItem
+import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
-import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.ext.hideLoading
-import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.model.CourseResponse
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyContract
 import com.yeonae.chamelezone.view.course.presenter.CourseModifyPresenter
@@ -168,6 +165,8 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         val memberNumber = intent.getIntExtra("memberNumber", 0)
         presenter.getCourseDetail(courseNumber)
 
+        edt_course_content.setTouchForScrollBars()
+
         btn_back.setOnClickListener {
             finish()
         }
@@ -211,7 +210,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
             layout_place_add3.visibility = View.VISIBLE
         }
 
-        btn_register.setOnClickListener {
+        btn_modify.setOnClickListener {
             placeNumbers.clear()
             if (firstPlaceNumber != NOT_SELECTED) {
                 placeNumbers.add(firstPlaceNumber)
