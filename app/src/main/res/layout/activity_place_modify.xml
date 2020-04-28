@@ -218,7 +218,7 @@
                             android:layout_margin="10dp"
                             android:background="@null"
                             android:hint="@string/place_phone_number_hint"
-                            android:maxLength="13"
+                            android:maxLength="14"
                             android:textColor="@color/colorBlack"
                             android:textColorHint="@color/lightGray"
                             android:textSize="15sp" />
