@@ -86,14 +86,14 @@ class MyCourseActivity : AppCompatActivity(), MyCourseContract.View,
     }
 
     override fun showMyCourseList(response: List<MyCourseItem>) {
-        layout_no_my_course.visibility = View.GONE
-        layout_my_course.visibility = View.VISIBLE
+        tv_message.visibility = View.GONE
+        recycler_my_course.visibility = View.VISIBLE
         myCourseRvAdapter.addData(response)
     }
 
     override fun showMessage(message: String) {
-        layout_no_my_course.visibility = View.VISIBLE
-        layout_my_course.visibility = View.GONE
+        tv_message.visibility = View.VISIBLE
+        recycler_my_course.visibility = View.GONE
         tv_message.text = message
     }
 
