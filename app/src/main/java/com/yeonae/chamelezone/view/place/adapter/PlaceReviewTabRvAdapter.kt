@@ -138,6 +138,5 @@ open class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
         val position = reviewList.indexOf(review)
         reviewList.remove(review)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position, reviewList.size)
     }
 }

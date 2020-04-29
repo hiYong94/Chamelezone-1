@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.home.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ class HomePlaceRvAdapter :
         private val placeName = itemView.place_name
         private val keyword = itemView.keyword
 
+        @SuppressLint("SetTextI18n")
         fun bind(place: PlaceResponse) {
             val latitude = place.latitude.toDouble()
             val longitude = place.longitude.toDouble()

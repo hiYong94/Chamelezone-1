@@ -180,11 +180,7 @@ class HomeTabFragment :
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_REQUEST_CODE
-            )
+            requireContext().shortToast("위치 권한이 필요합니다.")
         } else {
             getCurrentLocation()
         }
@@ -207,7 +203,6 @@ class HomeTabFragment :
     }
 
     companion object {
-        private const val LOCATION_REQUEST_CODE = 100
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }

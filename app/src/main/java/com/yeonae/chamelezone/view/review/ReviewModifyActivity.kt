@@ -20,7 +20,9 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
+import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
@@ -47,6 +49,7 @@ class ReviewModifyActivity :
     override fun reviewModify(response: Boolean) {
         if (response) {
             shortToast(R.string.review_modify_msg)
+            hideLoading()
             val intent = Intent(this, MyReviewActivity::class.java)
             setResult(Activity.RESULT_OK, intent)
             finish()
@@ -98,6 +101,7 @@ class ReviewModifyActivity :
 
         btn_modify.setOnClickListener {
             val content = "${edt_review.text}"
+            showLoading()
             if (!isCreated) {
                 isCreated = true
                 presenter.modifyReview(
@@ -181,7 +185,7 @@ class ReviewModifyActivity :
     private fun showMultiImage(uris: List<Uri>) {
         this.selectedUriList = uris.toMutableList()
 
-        uris.forEachIndexed { index, uri ->
+        uris.forEachIndexed { _, uri ->
             val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
@@ -196,7 +200,7 @@ class ReviewModifyActivity :
             rl.btn_delete.setOnClickListener {
                 image_container.removeView(rl)
                 if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAt(index)
+                    this.selectedUriList.remove(uri)
             }
 
             btn_clear.setOnClickListener {

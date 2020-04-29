@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
@@ -9,8 +11,9 @@
         android:id="@+id/card_list_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:clipToPadding="true">
+        android:layout_margin="5dp"
+        android:clipToPadding="true"
+        card_view:cardCornerRadius="7dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +28,8 @@
                 <ImageView
                     android:id="@+id/place_img"
                     android:layout_width="match_parent"
-                    android:layout_height="170dp" />
+                    android:layout_height="150dp"
+                    android:background="@color/colorGray"/>
 
                 <CheckBox
                     android:id="@+id/btn_like"
@@ -44,26 +48,47 @@
                 android:layout_marginStart="10dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/place_name"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="13sp" />
+                    android:orientation="horizontal"
+                    android:weightSum="5">
 
-                <TextView
-                    android:id="@+id/distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="10sp" />
+                    <TextView
+                        android:id="@+id/place_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="13sp"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:layout_weight="3.8"
+                        tools:text="장소이름"/>
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="0.2" />
+
+                    <TextView
+                        android:id="@+id/distance"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="9sp"
+                        android:paddingBottom="3dp"
+                        android:layout_weight="1"
+                        tools:text="거리"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:id="@+id/keyword"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlack"
-                    android:textSize="10sp" />
+                    android:textSize="10sp"
+                    android:paddingBottom="3dp"/>
 
             </LinearLayout>
         </LinearLayout>

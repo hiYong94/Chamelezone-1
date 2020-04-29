@@ -13,6 +13,7 @@ import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.login.LoginActivity
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment
 import com.yeonae.chamelezone.view.mypage.MoreButtonFragment.Companion.BTN_DELETE
@@ -127,6 +128,7 @@ class PlaceReviewTabFragment :
                     startActivityForResult(intent, UPDATE_REQUEST)
 
                 } else if (resultCode == BTN_DELETE) {
+                    Logger.d("reviewItem $reviewItem")
                     presenter.deleteReview(placeNumber, reviewNumber, memberNumber)
                     placeReviewRvAdapter.removeData(reviewItem)
                 }
