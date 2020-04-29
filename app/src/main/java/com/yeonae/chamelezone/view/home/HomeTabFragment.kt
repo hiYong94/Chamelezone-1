@@ -204,7 +204,6 @@ class HomeTabFragment :
     }
 
     companion object {
-        private const val LOCATION_REQUEST_CODE = 100
         private const val PLACE_NAME = "placeName"
         private const val PLACE_NUMBER = "placeNumber"
     }
