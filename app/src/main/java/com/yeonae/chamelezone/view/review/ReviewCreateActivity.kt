@@ -15,9 +15,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.catchFocus
-import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.ext.shortToast
+import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
@@ -39,6 +37,7 @@ class ReviewCreateActivity :
 
     override fun review(message: String) {
         shortToast(R.string.review_create_msg)
+        hideLoading()
         setResult(Activity.RESULT_OK)
         finish()
     }
@@ -71,13 +70,21 @@ class ReviewCreateActivity :
             when {
                 edt_review.text.isEmpty() -> shortToast(R.string.review_content)
                 uriList.isEmpty() -> shortToast(R.string.review_image)
-            }
-            if (!isCreated) {
-                isCreated = true
-                presenter.reviewCreate(memberNumber, placeNumber, content, uriList)
-                Handler().postDelayed({
-                    isCreated = false
-                }, 5000)
+                else -> {
+                    showLoading()
+                    if (!isCreated) {
+                        isCreated = true
+                        presenter.reviewCreate(
+                            memberNumber,
+                            placeNumber,
+                            content,
+                            uriList
+                        )
+                        Handler().postDelayed({
+                            isCreated = false
+                        }, 5000)
+                    }
+                }
             }
         }
     }
@@ -154,7 +161,7 @@ class ReviewCreateActivity :
 
         image_container.removeAllViews()
 
-        uris.forEachIndexed { index, uri ->
+        uris.forEachIndexed { _, uri ->
             val rl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
@@ -168,7 +175,7 @@ class ReviewCreateActivity :
             rl.btn_delete.setOnClickListener {
                 image_container.removeView(rl)
                 if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAt(index)
+                    this.selectedUriList.remove(uri)
             }
 
             btn_image_clear.setOnClickListener {

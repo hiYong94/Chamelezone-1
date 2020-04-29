@@ -24,7 +24,7 @@ fun View.catchFocus() {
 fun ImageView.glideImageSet(image: Int, width: Int, height: Int) {
     Glide.with(context)
         .load(image)
-        .error(R.drawable.ic_x)
+        .error(R.drawable.ic_error)
         .override(width, height)
         .centerCrop()
         .into(this)
@@ -33,7 +33,7 @@ fun ImageView.glideImageSet(image: Int, width: Int, height: Int) {
 fun ImageView.glideImageSet(image: String, width: Int, height: Int) {
     Glide.with(context)
         .load(image)
-        .error(R.drawable.ic_x)
+        .error(R.drawable.ic_error)
         .override(width, height)
         .centerCrop()
         .thumbnail(0.1f)
@@ -43,7 +43,7 @@ fun ImageView.glideImageSet(image: String, width: Int, height: Int) {
 fun ImageView.glideImageSet(image: Uri, width: Int, height: Int) {
     Glide.with(context)
         .load(image)
-        .error(R.drawable.ic_x)
+        .error(R.drawable.ic_error)
         .override(width, height)
         .centerCrop()
         .into(this)
@@ -52,7 +52,7 @@ fun ImageView.glideImageSet(image: Uri, width: Int, height: Int) {
 fun ImageView.glideOriginImageSet(image: String, width: Int, height: Int) {
     Glide.with(context)
         .load(image)
-        .error(R.drawable.ic_x)
+        .error(R.drawable.ic_error)
         .override(width, height)
         .fitCenter()
         .placeholder(ContextCompat.getDrawable(context, R.drawable.square_shape))
@@ -64,7 +64,7 @@ fun ImageView.glideTransformations(image: String, width: Int, height: Int) {
 
     Glide.with(context)
         .load(image)
-        .error(R.drawable.ic_x)
+        .error(R.drawable.ic_error)
         .override(width, height)
         .centerCrop()
         .transform(

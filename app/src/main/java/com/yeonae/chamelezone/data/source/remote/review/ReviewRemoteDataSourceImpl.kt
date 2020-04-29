@@ -13,6 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.net.URLEncoder
 
 class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemoteDataSource {
 
@@ -30,12 +31,13 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
 
         val file = ArrayList<MultipartBody.Part>()
         images.forEachIndexed { index, _ ->
+            val imageFile = File(images[index])
             val extends = images[index].split(".").lastOrNull() ?: "*"
             file.add(
                 MultipartBody.Part.createFormData(
                     "images",
-                    images[index],
-                    RequestBody.create(MediaType.parse("image/$extends"), File(images[index]))
+                    URLEncoder.encode(imageFile.name, "UTF-8"),
+                    RequestBody.create(MediaType.parse("image/$extends"), imageFile)
                 )
             )
         }

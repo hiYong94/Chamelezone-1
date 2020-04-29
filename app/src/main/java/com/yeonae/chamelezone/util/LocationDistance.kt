@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.util
 
 import android.location.Location
+import kotlin.math.roundToInt
 
 fun distanceByDegree(
     currentLatitude: Double,
@@ -19,5 +20,5 @@ fun distanceByDegree(
 
     val distance = startPos.distanceTo(endPos) / 1000
 
-    return "$distance km"
+    return "${(distance * 100).roundToInt() /100.0} km"
 }
