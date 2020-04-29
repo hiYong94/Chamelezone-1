@@ -75,7 +75,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:textColor="@color/colorBlack"
-                        android:textSize="8sp"
+                        android:textSize="9sp"
                         android:paddingBottom="3dp"
                         android:layout_weight="1"
                         tools:text="거리"/>
