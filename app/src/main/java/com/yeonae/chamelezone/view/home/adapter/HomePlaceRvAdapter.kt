@@ -91,6 +91,10 @@ class HomePlaceRvAdapter :
         return Holder(view)
     }
 
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(placeList[position])
+    }
+
     override fun onBindViewHolder(holder: Holder, position: Int, payloads: MutableList<Any>) {
         holder.bind(placeList[position])
     }
@@ -109,10 +113,6 @@ class HomePlaceRvAdapter :
         placeList.clear()
         placeList.addAll(addDataList)
         notifyDataSetChanged()
-    }
-
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(placeList[position])
     }
 
     companion object {
