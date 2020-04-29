@@ -58,7 +58,7 @@ class ReviewModifyActivity :
 
     override fun showReview(review: ReviewItem) {
         imageNumber = review.imageNumber
-        tv_title.text = review.name
+        tv_place_name.text = review.name
         edt_review.text = SpannableStringBuilder(review.content)
         review.images.forEachIndexed { index, image ->
             val rl = LayoutInflater.from(this).inflate(
@@ -83,7 +83,7 @@ class ReviewModifyActivity :
 
         setContentView(R.layout.activity_review_modify)
 
-        tv_title.requestFocus()
+        tv_place_name.requestFocus()
         btn_back.setOnClickListener {
             finish()
         }
@@ -99,7 +99,7 @@ class ReviewModifyActivity :
 
         presenter.getReview(placeNumber, reviewNumber)
 
-        btn_review_modify.setOnClickListener {
+        btn_modify.setOnClickListener {
             val content = "${edt_review.text}"
             showLoading()
             if (!isCreated) {

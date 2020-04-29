@@ -23,10 +23,7 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.ext.hideLoading
-import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.ext.showLoading
+import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.network.model.KeywordResponse
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceContract
@@ -120,7 +117,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
                 imageContainer.removeView(rlSlideImg)
                 if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAt(index)
+                    this.selectedUriList.remove(uri)
             }
 
             btn_image_clear.setOnClickListener {
@@ -153,6 +150,8 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             Injection.memberRepository(), Injection.placeRepository(), this
         )
 
+        edt_place_text.setTouchForScrollBars()
+
         btn_place_check.setOnClickListener {
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
@@ -180,7 +179,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             finish()
         }
 
-        tv_opening_hour.setOnClickListener {
+        btn_opening_hour.setOnClickListener {
             val intent = Intent(this, OpeningHoursActivity::class.java)
             intent.putExtra("selectedPosition", openingHoursPosition)
             startActivityForResult(intent, OPENING_HOURS_REQUEST_CODE)
