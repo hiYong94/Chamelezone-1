@@ -198,6 +198,7 @@
     <string name="success_update_opening_hours">영업시간 수정 성공</string>
     <string name="success_update_keyword">키워드 수정 성공</string>
     <string name="back_pressed_msg">뒤로가기 버튼을 한번 더 누르면 종료합니다.</string>
+    <string name="keyword_select">2개 이상의 키워드를 선택해주세요.</string>
 
     <string name="min_msg">1개의 이미지를 더 선택해주세요.</string>
     <string name="max_msg">4개의 이미지만 선택 가능합니다.</string>

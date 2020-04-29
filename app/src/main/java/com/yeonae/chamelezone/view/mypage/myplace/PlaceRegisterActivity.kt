@@ -104,7 +104,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             uriDataList.clear()
         this.selectedUriList = uris.toMutableList()
         imageContainer.removeAllViews()
-        uris.forEachIndexed { index, uri ->
+        uris.forEach { uri ->
             val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
@@ -204,6 +204,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 edt_place_phone.text.isEmpty() -> shortToast(R.string.enter_place_phone)
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+                selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
                 else -> {
                     Log.d("imageUri", imageUri.toString())
                     showLoading()

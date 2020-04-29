@@ -226,6 +226,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 edt_place_phone.text.isEmpty() -> shortToast(R.string.enter_place_phone)
                 edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
                 savedImageList.isEmpty() && imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+                selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
                 else -> {
                     latLng = findLatLng(applicationContext, "${tv_place_address.text}")
                     latitude = latLng.latitude.toString()
