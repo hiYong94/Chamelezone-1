@@ -143,8 +143,8 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 placeNumbers.add(thirdPlaceNumber)
             }
             when {
-                edt_course_title.text.isEmpty() -> shortToast(R.string.enter_course_title)
-                edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
+                "${edt_course_title.text}".trim().isEmpty() -> shortToast(R.string.enter_course_title)
+                "${edt_course_content.text}".trim().isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
