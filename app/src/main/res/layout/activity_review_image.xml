@@ -43,5 +43,4 @@
             android:src="@drawable/ic_keyboard_backspace_white_24dp" />
 
     </RelativeLayout>
-
 </LinearLayout>
