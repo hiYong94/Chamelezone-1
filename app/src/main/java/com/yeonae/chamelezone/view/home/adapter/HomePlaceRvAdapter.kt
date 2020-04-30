@@ -95,10 +95,6 @@ class HomePlaceRvAdapter :
         holder.bind(placeList[position])
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int, payloads: MutableList<Any>) {
-        holder.bind(placeList[position])
-    }
-
     override fun getItemCount(): Int {
         return placeList.size
     }
