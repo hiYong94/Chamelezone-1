@@ -62,22 +62,25 @@
                         android:textSize="13sp"
                         android:paddingTop="3dp"
                         android:paddingBottom="3dp"
-                        android:layout_weight="3.8"
+                        android:layout_weight="3.45"
                         tools:text="장소이름"/>
 
                     <View
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_weight="0.2" />
+                        android:layout_weight="0.1" />
 
                     <TextView
                         android:id="@+id/distance"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="end"
+                        android:paddingTop="5dp"
+                        android:paddingEnd="5dp"
                         android:textColor="@color/colorBlack"
-                        android:textSize="9sp"
+                        android:textSize="8.7dp"
                         android:paddingBottom="3dp"
-                        android:layout_weight="1"
+                        android:layout_weight="1.45"
                         tools:text="거리"/>
 
                 </LinearLayout>
