@@ -16,6 +16,8 @@ import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.*
+import com.yeonae.chamelezone.ext.Millisecond.ONE_SECOND
+import com.yeonae.chamelezone.ext.Millisecond.THREE_SECOND
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
@@ -82,7 +84,7 @@ class ReviewCreateActivity :
                         )
                         Handler().postDelayed({
                             isCreated = false
-                        }, 5000)
+                        }, THREE_SECOND.toLong())
                     }
                 }
             }
@@ -103,7 +105,7 @@ class ReviewCreateActivity :
             }
             Handler().postDelayed({
                 isChecked = false
-            }, 1000)
+            }, ONE_SECOND.toLong())
         }
     }
 

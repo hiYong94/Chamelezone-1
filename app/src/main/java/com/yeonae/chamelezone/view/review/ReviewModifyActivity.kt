@@ -20,6 +20,8 @@ import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
+import com.yeonae.chamelezone.ext.Millisecond.ONE_SECOND
+import com.yeonae.chamelezone.ext.Millisecond.THREE_SECOND
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.hideLoading
@@ -130,7 +132,7 @@ class ReviewModifyActivity :
                         )
                         Handler().postDelayed({
                             isCreated = false
-                        }, 5000)
+                        }, THREE_SECOND.toLong())
                     }
                 }
             }
@@ -145,7 +147,7 @@ class ReviewModifyActivity :
             }
             Handler().postDelayed({
                 isChecked = false
-            }, 1000)
+            }, ONE_SECOND.toLong())
         }
         btn_clear.setOnClickListener { image_container.removeAllViews() }
     }
