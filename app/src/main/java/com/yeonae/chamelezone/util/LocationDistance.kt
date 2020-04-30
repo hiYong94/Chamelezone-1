@@ -20,5 +20,5 @@ fun distanceByDegree(
 
     val distance = startPos.distanceTo(endPos) / 1000
 
-    return "${(distance * 100).roundToInt() /100.0} km"
+    return String.format("%.2f", distance) + "km"
 }
