@@ -68,7 +68,7 @@ class ReviewCreateActivity :
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
             when {
-                edt_review.text.isEmpty() -> shortToast(R.string.review_content)
+                edt_review.text.isEmpty() || edt_review.text.isBlank() -> shortToast(R.string.review_content)
                 uriList.isEmpty() -> shortToast(R.string.review_image)
                 else -> {
                     showLoading()
@@ -157,6 +157,9 @@ class ReviewCreateActivity :
     }
 
     private fun showMultiImage(uris: List<Uri>) {
+        if (uriDataList.count() != 0) {
+            uriDataList.clear()
+        }
         this.selectedUriList = uris.toMutableList()
 
         image_container.removeAllViews()
