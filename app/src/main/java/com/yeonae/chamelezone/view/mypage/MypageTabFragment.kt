@@ -100,6 +100,9 @@ class MypageTabFragment : Fragment(), MypageContract.View {
                     MultipleDialogFragment.OnClickListener {
                     override fun onClick() {
                         presenter.deleteUser(memberNumber)
+                        val editor = context?.getSharedPreferences("setting", 0)?.edit()
+                        editor?.clear()
+                        editor?.apply()
                         presenter.logout()
                         layout_nick_name.visibility = View.GONE
                         btn_login.visibility = View.VISIBLE

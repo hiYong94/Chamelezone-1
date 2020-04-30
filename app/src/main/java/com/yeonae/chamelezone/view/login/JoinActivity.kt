@@ -85,8 +85,13 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
         }
 
         btn_join.setOnClickListener {
-            presenter.checkEmail("${join_email.text}")
-            presenter.checkNickname("${join_nickname.text}")
+            emptyCheck(
+                "${join_email.text}",
+                "${join_password.text}",
+                "${join_name.text}",
+                "${join_nickname.text}",
+                "${join_phone.text}"
+            )
         }
 
         join_email.onFocusChangeListener = View.OnFocusChangeListener { _, b ->
@@ -103,7 +108,7 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
 
     }
 
-    private fun joinCheck(
+    private fun emptyCheck(
         email: String,
         password: String,
         name: String,
@@ -136,6 +141,21 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
                 R.string.enter_phone_number,
                 Toast.LENGTH_SHORT
             ).show()
+            else -> {
+                presenter.checkEmail("${join_email.text}")
+                presenter.checkNickname("${join_nickname.text}")
+            }
+        }
+    }
+
+    private fun joinCheck(
+        email: String,
+        password: String,
+        name: String,
+        nickName: String,
+        phone: String
+    ) {
+        when {
             !checkedEmail ->
                 email_layout.error = getString(R.string.registered_email)
             !checkedNickname ->

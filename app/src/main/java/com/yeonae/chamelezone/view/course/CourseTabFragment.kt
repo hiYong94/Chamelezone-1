@@ -1,7 +1,9 @@
 package com.yeonae.chamelezone.view.course
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,12 +31,21 @@ class CourseTabFragment : Fragment(), CourseContract.View, SwipeRefreshLayout.On
         if (response) {
             btn_register.setOnClickListener {
                 val intent = Intent(requireContext(), CourseRegisterActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, UPDATE_REQUEST_CODE)
             }
         } else {
             btn_register.setOnClickListener {
                 val intent = Intent(requireContext(), LoginActivity::class.java)
                 startActivity(intent)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                presenter.getCourseList()
             }
         }
     }
@@ -77,5 +88,9 @@ class CourseTabFragment : Fragment(), CourseContract.View, SwipeRefreshLayout.On
     override fun onResume() {
         super.onResume()
         presenter.checkLogin()
+    }
+
+    companion object {
+        const val UPDATE_REQUEST_CODE = 1
     }
 }
