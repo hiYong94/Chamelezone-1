@@ -16,6 +16,8 @@ import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.*
+import com.yeonae.chamelezone.ext.Millisecond.ONE_SECOND
+import com.yeonae.chamelezone.ext.Millisecond.THREE_SECOND
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
@@ -68,7 +70,7 @@ class ReviewCreateActivity :
         btn_register.setOnClickListener {
             val content = "${edt_review.text}"
             when {
-                edt_review.text.isEmpty() -> shortToast(R.string.review_content)
+                edt_review.text.isEmpty() || edt_review.text.isBlank() -> shortToast(R.string.review_content)
                 uriList.isEmpty() -> shortToast(R.string.review_image)
                 else -> {
                     showLoading()
@@ -82,7 +84,7 @@ class ReviewCreateActivity :
                         )
                         Handler().postDelayed({
                             isCreated = false
-                        }, 5000)
+                        }, THREE_SECOND.toLong())
                     }
                 }
             }
@@ -103,7 +105,7 @@ class ReviewCreateActivity :
             }
             Handler().postDelayed({
                 isChecked = false
-            }, 1000)
+            }, ONE_SECOND.toLong())
         }
     }
 
@@ -157,6 +159,9 @@ class ReviewCreateActivity :
     }
 
     private fun showMultiImage(uris: List<Uri>) {
+        if (uriDataList.count() != 0) {
+            uriDataList.clear()
+        }
         this.selectedUriList = uris.toMutableList()
 
         image_container.removeAllViews()

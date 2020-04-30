@@ -78,7 +78,7 @@ class HomePlaceRvAdapter :
                 if (currentLatitude == 0.0 || currentLongitude == 0.0) {
                     distance.text = "0km"
                 } else {
-                    distance.text = distanceCalculator
+                    distance.text = distanceCalculator + "km"
                 }
             }
         }
@@ -91,7 +91,7 @@ class HomePlaceRvAdapter :
         return Holder(view)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(placeList[position])
     }
 
