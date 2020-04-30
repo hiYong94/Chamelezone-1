@@ -25,6 +25,8 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     private var phone = ""
     private var nickname = ""
     private var checkUserModify: Boolean = false
+    override lateinit var presenter: UserModifyContract.Presenter
+    var lastInputTime = 0L
 
     override fun showUserInfo(user: UserEntity) {
         nickname = user.nickname.toString()
@@ -42,17 +44,24 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         if (nicknameCheck == CHECK_YES) {
             nickname_layout.isErrorEnabled = false
             checkedNickname = true
+            if (checkUserModify) {
+                updateMember("${user_password.text}", "${user_nickname.text}", "${user_phone.text}")
+            }
         } else if (nicknameCheck == CHECK_NO) {
             if ("${user_nickname.text}" == nickname) {
                 nickname_layout.isErrorEnabled = false
                 checkedNickname = true
+                if (checkUserModify) {
+                    updateMember(
+                        "${user_password.text}",
+                        "${user_nickname.text}",
+                        "${user_phone.text}"
+                    )
+                }
             } else {
                 nickname_layout.error = getString(R.string.registered_nickname)
                 checkedNickname = false
             }
-        }
-        if (checkedNickname) {
-            updateCheck()
         }
     }
 
@@ -67,8 +76,6 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
             finish()
         }
     }
-
-    override lateinit var presenter: UserModifyContract.Presenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -94,31 +101,42 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         }
 
         btn_user_modify.setOnClickListener {
-            if (checkUserModify) {
-                updateMember("${user_password.text}", updateNickname, updatePhone)
-            } else {
-                presenter.checkNickname("${user_nickname.text}")
-            }
+            emptyCheck(
+                "${user_password.text}",
+                "${user_nickname.text}",
+                "${user_phone.text}"
+            )
         }
     }
 
-    private var updateNickname = ""
-    private var updatePhone = ""
-
-    private fun updateCheck() {
-        if (user_password.text.toString().isEmpty()) {
-            password_layout.isErrorEnabled = false
-        }
-        if (!password_layout.isErrorEnabled && !nickname_layout.isErrorEnabled) {
-            when {
-                user_nickname.text!!.isEmpty() -> updateNickname = nickname
-                user_phone.text!!.isEmpty() -> updatePhone = phone
-                else -> {
-                    updateNickname = "${user_nickname.text}"
-                    updatePhone = "${user_phone.text}"
+    private fun emptyCheck(
+        password: String,
+        nickName: String,
+        phone: String
+    ) {
+        when {
+            nickName.isEmpty() -> Toast.makeText(
+                this,
+                R.string.enter_nickname,
+                Toast.LENGTH_SHORT
+            ).show()
+            phone.isEmpty() -> Toast.makeText(
+                this,
+                R.string.enter_phone_number,
+                Toast.LENGTH_SHORT
+            ).show()
+            else -> {
+                if (checkedNickname) {
+                    updateMember(
+                        "${user_password.text}",
+                        "${user_nickname.text}",
+                        "${user_phone.text}"
+                    )
+                } else {
+                    checkUserModify = true
+                    presenter.checkNickname("${user_nickname.text}")
                 }
             }
-            checkUserModify = true
         }
     }
 
@@ -150,8 +168,6 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
             nickname_layout.isErrorEnabled = false
         }
     }
-
-    var lastInputTime = 0L
 
     private fun checkType() {
         user_password.addTextChangedListener(object : TextWatcher {

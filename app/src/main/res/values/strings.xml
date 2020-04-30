@@ -199,6 +199,8 @@
     <string name="success_update_opening_hours">영업시간 수정 성공</string>
     <string name="success_update_keyword">키워드 수정 성공</string>
     <string name="back_pressed_msg">뒤로가기 버튼을 한번 더 누르면 종료합니다.</string>
+    <string name="keyword_select">2개 이상의 키워드를 선택해주세요.</string>
+    <string name="auto_login">자동 로그인</string>
     <string name="location_request">위치 권한이 필요합니다.</string>
     <string name="distance">km</string>
 

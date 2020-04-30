@@ -83,7 +83,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         if (uriDataList.count() != 0)
             uriDataList.clear()
         this.selectedUriList = uris.toMutableList()
-        uris.forEachIndexed { index, uri ->
+        uris.forEach{ uri ->
             val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
@@ -219,13 +219,14 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
 
         btn_modify.setOnClickListener {
             when {
-                edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
+                "${edt_place_name.text}".trim().isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 tv_opening_time.text.isEmpty() -> shortToast(R.string.enter_place_opening_hours)
-                edt_place_phone.text.isEmpty() -> shortToast(R.string.enter_place_phone)
-                edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
+                "${edt_place_phone.text}".trim().isEmpty() -> shortToast(R.string.enter_place_phone)
+                "${edt_place_text.text}".trim().isEmpty() -> shortToast(R.string.enter_place_content)
                 savedImageList.isEmpty() && imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+                selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
                 else -> {
                     latLng = findLatLng(applicationContext, "${tv_place_address.text}")
                     latitude = latLng.latitude.toString()
