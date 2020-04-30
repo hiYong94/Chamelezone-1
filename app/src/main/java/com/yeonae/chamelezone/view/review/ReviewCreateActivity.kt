@@ -38,6 +38,7 @@ class ReviewCreateActivity :
     private var memberNumber = 0
 
     override fun review(message: String) {
+        isCreated = false
         shortToast(R.string.review_create_msg)
         hideLoading()
         setResult(Activity.RESULT_OK)
@@ -82,9 +83,6 @@ class ReviewCreateActivity :
                             content,
                             uriList
                         )
-                        Handler().postDelayed({
-                            isCreated = false
-                        }, THREE_SECOND.toLong())
                     }
                 }
             }

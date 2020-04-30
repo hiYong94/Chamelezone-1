@@ -53,6 +53,7 @@ class ReviewModifyActivity :
 
     override fun reviewModify(response: Boolean) {
         if (response) {
+            isCreated = false
             shortToast(R.string.review_modify_msg)
             hideLoading()
             val intent = Intent(this, MyReviewActivity::class.java)
@@ -130,9 +131,6 @@ class ReviewModifyActivity :
                             content,
                             deleteImageNumber
                         )
-                        Handler().postDelayed({
-                            isCreated = false
-                        }, THREE_SECOND.toLong())
                     }
                 }
             }
