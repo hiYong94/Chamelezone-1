@@ -5,6 +5,5 @@ object Url {
 }
 
 object Millisecond {
-    const val ONE_SECOND = 1000
-    const val THREE_SECOND = 3000
+    const val ONE_SECOND = 1000L
 }

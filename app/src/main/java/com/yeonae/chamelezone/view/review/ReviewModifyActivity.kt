@@ -12,7 +12,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,13 +21,11 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Millisecond.ONE_SECOND
-import com.yeonae.chamelezone.ext.Millisecond.THREE_SECOND
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.ext.showLoading
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
@@ -120,7 +117,9 @@ class ReviewModifyActivity :
             when {
                 edt_review.text.isEmpty() || edt_review.text.isBlank() -> shortToast(R.string.review_content)
                 uriList.isEmpty() && savedImages.isEmpty() -> shortToast(R.string.review_image)
-                ((imageNumbers.count() - deleteImageNumber.count()) + uriList.count() > 4) -> shortToast(R.string.review_image_max)
+                ((imageNumbers.count() - deleteImageNumber.count()) + uriList.count() > 4) -> shortToast(
+                    R.string.review_image_max
+                )
                 else -> {
                     showLoading()
                     if (!isCreated) {
@@ -147,7 +146,7 @@ class ReviewModifyActivity :
             }
             Handler().postDelayed({
                 isChecked = false
-            }, ONE_SECOND.toLong())
+            }, ONE_SECOND)
         }
         btn_clear.setOnClickListener { image_container.removeAllViews() }
     }
