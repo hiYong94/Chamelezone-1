@@ -40,7 +40,6 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
         }
         tv_first_address.text = courseList[0].address
 
-        layout_second_place.visibility = View.VISIBLE
         iv_place_image2.glideImageSet(
             courseList[1].placeImage,
             iv_place_image2.measuredWidth,
@@ -56,7 +55,8 @@ class CourseDetailActivity : AppCompatActivity(), CourseDetailContract.View {
         }
         tv_second_address.text = courseList[1].address
         if (courseList.size == 3) {
-            layout_third_place.visibility = View.VISIBLE
+            layout_third.visibility = View.VISIBLE
+
             iv_place_image3.glideImageSet(
                 courseList[2].placeImage,
                 iv_place_image3.measuredWidth,
