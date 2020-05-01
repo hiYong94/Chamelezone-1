@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
@@ -27,6 +28,7 @@ import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.ext.showLoading
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
@@ -72,7 +74,7 @@ class ReviewModifyActivity :
                 R.layout.slider_item_image,
                 image_container,
                 false
-            ) as RelativeLayout
+            ) as ConstraintLayout
             image_container.addView(rl)
             rl.image_item.run {
                 glideImageSet(IMAGE_RESOURCE + image, measuredWidth, measuredHeight)
@@ -210,7 +212,7 @@ class ReviewModifyActivity :
                 R.layout.slider_item_image,
                 image_container,
                 false
-            ) as RelativeLayout
+            ) as ConstraintLayout
 
             rl.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
@@ -221,12 +223,18 @@ class ReviewModifyActivity :
                 image_container.removeView(rl)
                 if (this.selectedUriList.count() != 0)
                     this.selectedUriList.remove(uri)
+                if (uriList.count() != 0) {
+                    uriList.remove(uri.path)
+                }
             }
 
             btn_clear.setOnClickListener {
                 image_container.removeAllViews()
                 if (this.selectedUriList.count() != 0)
                     this.selectedUriList.removeAll(uris)
+                if (uriList.count() != 0) {
+                    uriList.clear()
+                }
             }
 
             uri.path?.let { uriDataList.add(it) }

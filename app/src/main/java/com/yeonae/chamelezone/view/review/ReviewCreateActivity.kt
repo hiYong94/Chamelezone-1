@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
@@ -19,6 +20,7 @@ import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.ext.Millisecond.ONE_SECOND
 import com.yeonae.chamelezone.ext.Millisecond.THREE_SECOND
 import com.yeonae.chamelezone.network.room.entity.UserEntity
+import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -169,7 +171,7 @@ class ReviewCreateActivity :
                 R.layout.slider_item_image,
                 image_container,
                 false
-            ) as RelativeLayout
+            ) as ConstraintLayout
             image_container.addView(rl)
             rl.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
@@ -179,12 +181,18 @@ class ReviewCreateActivity :
                 image_container.removeView(rl)
                 if (this.selectedUriList.count() != 0)
                     this.selectedUriList.remove(uri)
+                if (uriList.count() != 0) {
+                    uriList.remove(uri.path)
+                }
             }
 
             btn_image_clear.setOnClickListener {
                 image_container.removeAllViews()
                 if (this.selectedUriList.count() != 0)
                     this.selectedUriList.removeAll(uris)
+                if (uriList.count() != 0) {
+                    uriList.clear()
+                }
             }
 
             uri.path?.let { uriDataList.add(it) }
