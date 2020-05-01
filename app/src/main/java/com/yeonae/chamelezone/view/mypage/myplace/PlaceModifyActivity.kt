@@ -54,6 +54,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     private var uriDataList = arrayListOf<String>()
     private var selectedUriList = mutableListOf<Uri>()
     private var savedImageList = arrayListOf<String>()
+    private var max = 4
+    private var min = 1
 
     override fun showResult(response: Boolean) {
         if (response) {
@@ -83,7 +85,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         if (uriDataList.count() != 0)
             uriDataList.clear()
         this.selectedUriList = uris.toMutableList()
-        uris.forEach{ uri ->
+        uris.forEach { uri ->
             val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
@@ -98,7 +100,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 if (this.selectedUriList.count() != 0)
                     this.selectedUriList.remove(uri)
             }
-
             btn_image_clear.setOnClickListener {
                 imageContainer.removeAllViews()
                 deleteImageNumbers = imageNumbers
@@ -110,6 +111,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             val distinctData = uriDataList.distinct()
             imageUri = ArrayList(distinctData)
         }
+
     }
 
     override fun showPlaceDetail(place: PlaceResponse) {
@@ -131,7 +133,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
                 imageContainer.removeView(rlSlideImg)
                 deleteImageNumbers.add(imageNumbers[index])
-                savedImageList.removeAt(index)
+                savedImageList.remove(image)
             }
 
             btn_image_clear.setOnClickListener {
@@ -224,7 +226,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 tv_opening_time.text.isEmpty() -> shortToast(R.string.enter_place_opening_hours)
                 "${edt_place_phone.text}".trim().isEmpty() -> shortToast(R.string.enter_place_phone)
-                "${edt_place_text.text}".trim().isEmpty() -> shortToast(R.string.enter_place_content)
+                "${edt_place_text.text}".trim()
+                    .isEmpty() -> shortToast(R.string.enter_place_content)
                 savedImageList.isEmpty() && imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
                 selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
                 else -> {
@@ -306,8 +309,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     private fun setNormalMultiButton() {
         TedImagePicker.with(this)
             .mediaType(MediaType.IMAGE)
-            .min(2, R.string.min_msg)
-            .max(4, R.string.max_msg)
+            .min(min, R.string.min_msg)
+            .max(max, R.string.max_msg)
             .errorListener { message -> Log.d("ted", "message: $message") }
             .selectedUri(selectedUriList)
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
@@ -316,6 +319,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
 
     private fun setupGUI() {
         btn_image_create.setOnClickListener {
+            maxCheck()
             if (!isCreated) {
                 isCreated = true
                 checkPermission()
@@ -362,6 +366,31 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 Toast.LENGTH_SHORT
             )
                 .show()
+        }
+    }
+
+    private fun maxCheck() {
+        when (savedImageList.size) {
+            0 -> {
+                max = 4
+                min = 2
+            }
+            1 -> {
+                max = 3
+                min = 1
+            }
+            2 -> {
+                max = 2
+                min = 1
+            }
+            3 -> {
+                max = 1
+                min = 1
+            }
+            4 -> {
+                max = 0
+                min = 0
+            }
         }
     }
 
