@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.search
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +9,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.adapter.PagerAdapter
+import com.yeonae.chamelezone.ext.shortToast
 import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelectedListener {
@@ -43,11 +43,15 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
             imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
             val searchWord = "${edt_search.text}".trim()
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
-                supportFragmentManager.fragments.forEach {
-                    when (it) {
-                        is PlaceNameTabFragment -> it.searchByName(searchWord)
-                        is AddressTabFragment -> it.searchByAddress(searchWord)
-                        is KeywordTabFragment -> it.searchByKeyword(searchWord)
+                if ("${edt_search.text}".isEmpty()) {
+                    shortToast(R.string.enter_search)
+                } else {
+                    supportFragmentManager.fragments.forEach {
+                        when (it) {
+                            is PlaceNameTabFragment -> it.searchByName(searchWord)
+                            is AddressTabFragment -> it.searchByAddress(searchWord)
+                            is KeywordTabFragment -> it.searchByKeyword(searchWord)
+                        }
                     }
                 }
             }
@@ -64,11 +68,15 @@ class SearchActivity : AppCompatActivity(), KeywordTabFragment.OnKeywordSelected
             val searchWord = "${edt_search.text}".trim()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
-            supportFragmentManager.fragments.forEach {
-                when (it) {
-                    is PlaceNameTabFragment -> it.searchByName(searchWord)
-                    is AddressTabFragment -> it.searchByAddress(searchWord)
-                    is KeywordTabFragment -> it.searchByKeyword(searchWord)
+            if ("${edt_search.text}".isEmpty()) {
+                shortToast(R.string.enter_search)
+            } else {
+                supportFragmentManager.fragments.forEach {
+                    when (it) {
+                        is PlaceNameTabFragment -> it.searchByName(searchWord)
+                        is AddressTabFragment -> it.searchByAddress(searchWord)
+                        is KeywordTabFragment -> it.searchByKeyword(searchWord)
+                    }
                 }
             }
         }
