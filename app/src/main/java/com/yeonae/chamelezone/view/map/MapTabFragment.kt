@@ -48,10 +48,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     private lateinit var locationCallBack: LocationCallback
 
     override fun showMessage(message: String) {
-        btn_close.visibility = View.VISIBLE
-        tv_message.visibility = View.VISIBLE
-        map_fragment.visibility = View.GONE
-        tv_message.text = message
+        context?.shortToast(message)
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
@@ -67,8 +64,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     }
 
     override fun placeInfo(placeList: List<MapItem>) {
-        btn_close.visibility = View.GONE
-        tv_message.visibility = View.GONE
         map_fragment.visibility = View.VISIBLE
         map.clear()
         for (i in placeList.indices) {
@@ -194,12 +189,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 val searchWord = "${edt_search.text}".replace(" ", "")
                 presenter.searchPlace(searchWord)
             }
-        }
-
-        btn_close.setOnClickListener {
-            btn_close.visibility = View.GONE
-            tv_message.visibility = View.GONE
-            map_fragment.visibility = View.VISIBLE
         }
 
         keyBoard()
