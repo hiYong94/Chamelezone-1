@@ -69,6 +69,11 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         if (response) {
             Toast.makeText(this, R.string.successful_member_info_modification, Toast.LENGTH_LONG)
                 .show()
+            val editor = getSharedPreferences("setting", 0)?.edit()
+            editor?.clear()
+            editor?.putString("ID", "${user_email.text}")
+            editor?.putString("PW", "${user_password.text}")
+            editor?.apply()
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(user_nickname.windowToken, 0)
             imm.hideSoftInputFromWindow(user_password.windowToken, 0)
@@ -141,12 +146,14 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     }
 
     private fun updateMember(password: String?, nickname: String, phone: String) {
-        presenter.updateMember(
-            memberNumber,
-            password,
-            nickname,
-            phone
-        )
+        if(!password_layout.isErrorEnabled){
+            presenter.updateMember(
+                memberNumber,
+                password,
+                nickname,
+                phone
+            )
+        }
     }
 
     private fun checkPassword() {
