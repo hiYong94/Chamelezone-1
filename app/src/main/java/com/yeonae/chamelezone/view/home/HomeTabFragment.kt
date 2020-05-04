@@ -1,6 +1,7 @@
 package com.yeonae.chamelezone.view.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context.LOCATION_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,7 +12,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -154,7 +154,8 @@ class HomeTabFragment :
         if (::presenter.isInitialized)
             presenter.checkMember()
 
-        if (ContextCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+            ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED

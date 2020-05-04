@@ -86,13 +86,14 @@ class ReviewRemoteDataSourceImpl(private val reviewApi: ReviewApi) : ReviewRemot
         }
 
         val file = ArrayList<MultipartBody.Part>()
-        images.forEach {
-            val extends = it.split(".").lastOrNull() ?: "*"
+        images.forEachIndexed { index, s ->
+            val imageFile = File(images[index])
+            val extends = images[index].split(".").lastOrNull() ?: "*"
             file.add(
                 MultipartBody.Part.createFormData(
                     "images",
-                    it,
-                    RequestBody.create(MediaType.parse("image/$extends"), File(it))
+                    URLEncoder.encode(imageFile.name, "UTF-8"),
+                    RequestBody.create(MediaType.parse("image/$extends"), imageFile)
                 )
             )
         }

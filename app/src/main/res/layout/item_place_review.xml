@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -43,7 +44,7 @@
                                 android:id="@+id/tv_nickname"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="yeonjae22"
+                                tools:text="yeonjae22"
                                 android:textSize="15sp" />
 
                             <TextView
@@ -51,7 +52,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:text="어제"
+                                tools:text="어제"
                                 android:textSize="15sp" />
                         </LinearLayout>
 
@@ -112,7 +113,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:text="여기 진짜 분위기 이뻐요"
+                        tools:text="여기 진짜 분위기 이뻐요"
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
