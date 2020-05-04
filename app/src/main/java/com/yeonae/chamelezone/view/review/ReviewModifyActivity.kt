@@ -48,6 +48,8 @@ class ReviewModifyActivity :
     private var imageNumbers = arrayListOf<Int>()
     private var deleteImageNumber = ArrayList<Int>()
     private var savedImages = arrayListOf<String>()
+    private var max = 4
+    private var min = 1
 
     override fun reviewModify(response: Boolean) {
         if (response) {
@@ -140,6 +142,7 @@ class ReviewModifyActivity :
 
     private fun setupGUI() {
         btn_image_create.setOnClickListener {
+            maxCheck()
             if (!isChecked) {
                 isChecked = true
                 checkPermission()
@@ -192,8 +195,8 @@ class ReviewModifyActivity :
     private fun setNormalMultiButton() {
         TedImagePicker.with(this)
             .mediaType(MediaType.IMAGE)
-            .min(1, R.string.min_msg)
-            .max(4, R.string.max_msg)
+            .min(min, R.string.min_msg)
+            .max(max, R.string.max_msg)
             .errorListener { message -> Log.d("ted", "message: $message") }
             .selectedUri(uriSet.toList())
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
@@ -232,6 +235,32 @@ class ReviewModifyActivity :
         }
         uriSet.addAll(uris)
     }
+
+    private fun maxCheck() {
+        when (savedImages.size) {
+            0 -> {
+                max = 4
+                min = 2
+            }
+            1 -> {
+                max = 3
+                min = 1
+            }
+            2 -> {
+                max = 2
+                min = 1
+            }
+            3 -> {
+                max = 1
+                min = 1
+            }
+            4 -> {
+                max = 0
+                min = 0
+            }
+        }
+    }
+
 
     companion object {
         const val PLACE_NAME = "placeName"
