@@ -27,7 +27,6 @@ import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.ext.showLoading
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
@@ -82,12 +81,6 @@ class ReviewModifyActivity :
                 deleteImageNumber.add(imageNumbers[index])
                 savedImages.remove(image)
             }
-//            btn_clear.setOnClickListener {
-//                image_container.removeAllViews()
-//                deleteImageNumber = imageNumbers
-//                if (savedImages.count() != 0)
-//                    savedImages.clear()
-//            }
         }
     }
 
@@ -113,11 +106,10 @@ class ReviewModifyActivity :
         presenter.getReview(placeNumber, reviewNumber)
 
         btn_clear.setOnClickListener {
-            uriSet.clear()
             image_container.removeAllViews()
-            Logger.d("imageNumber $imageNumbers")
+            uriSet.clear()
             deleteImageNumber = imageNumbers
-            Logger.d("deleteImageNumber $deleteImageNumber")
+            savedImages.clear()
         }
 
         btn_modify.setOnClickListener {
@@ -198,9 +190,6 @@ class ReviewModifyActivity :
     }
 
     private fun setNormalMultiButton() {
-
-        Logger.d("test ${uriSet.toList()}")
-
         TedImagePicker.with(this)
             .mediaType(MediaType.IMAGE)
             .min(1, R.string.min_msg)
@@ -213,36 +202,34 @@ class ReviewModifyActivity :
     private fun showMultiImage(uris: List<Uri>) {
 
         uris.forEachIndexed { _, uri ->
-            val viewGroup = LayoutInflater.from(this)
+            val vgImage = LayoutInflater.from(this)
                 .inflate(
                     R.layout.slider_item_image,
                     image_container,
                     false
                 ) as ViewGroup
-            val ivImage = viewGroup.findViewById<ImageView>(R.id.image_item)
 
-            val btnDelete = viewGroup.findViewById<ImageButton>(R.id.btn_delete)
+            val ivImage = vgImage.findViewById<ImageView>(R.id.image_item)
+            val btnDelete = vgImage.findViewById<ImageButton>(R.id.btn_delete)
 
             ivImage.run {
-
                 glideImageSet(uri, measuredWidth, measuredHeight)
                 if (uriSet.isNotEmpty()) {
                     if (!uriSet.contains(uri)) {
-                        image_container.addView(viewGroup)
+                        image_container.addView(vgImage)
                     }
                 } else {
-                    image_container.addView(viewGroup)
+                    image_container.addView(vgImage)
                 }
             }
 
             btnDelete.setOnClickListener {
-                image_container.removeView(viewGroup)
+                image_container.removeView(vgImage)
                 if (uriSet.isNotEmpty()) {
                     uriSet.remove(uri)
                 }
             }
         }
-
         uriSet.addAll(uris)
     }
 
