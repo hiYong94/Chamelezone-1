@@ -1,7 +1,6 @@
 package com.yeonae.chamelezone.view.place
 
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.ViewGroup
@@ -51,9 +50,12 @@ class PlaceDetailActivity :
         if (place.likeStatus) {
             btn_like.isChecked = true
         }
+        val memberNumber = memberNumber ?:0
         imageAdapter =
             ImageViewPagerAdapter(
-                images
+                images,
+                placeNumber,
+                memberNumber
             )
         vp_image.adapter = imageAdapter
 
@@ -146,6 +148,7 @@ class PlaceDetailActivity :
 
     companion object {
         private const val PLACE_NAME = "placeName"
-        private const val PLACE_NUMBER = "placeNumber"
+        const val PLACE_NUMBER = "placeNumber"
+        const val MEMBER_NUMBER = "memberNumber"
     }
 }
