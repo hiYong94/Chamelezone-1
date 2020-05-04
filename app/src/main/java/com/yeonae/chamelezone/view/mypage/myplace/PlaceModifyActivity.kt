@@ -101,6 +101,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                     this.selectedUriList.remove(uri)
             }
             btn_image_clear.setOnClickListener {
+                imageUri.clear()
                 imageContainer.removeAllViews()
                 deleteImageNumbers = imageNumbers
                 if (this.selectedUriList.count() != 0)
@@ -189,8 +190,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         presenter.getPlaceDetail(placeNumber, memberNumber)
 
         edt_place_text.setTouchForScrollBars()
-
-        edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
         edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         btn_back.setOnClickListener {

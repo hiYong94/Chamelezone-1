@@ -172,7 +172,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         presenter.getUser()
         presenter.getKeyword()
 
-        edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
         edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         btn_back.setOnClickListener {
