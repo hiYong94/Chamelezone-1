@@ -164,18 +164,18 @@ class ReviewCreateActivity :
         image_container.removeAllViews()
 
         uris.forEachIndexed { _, uri ->
-            val rl = LayoutInflater.from(this).inflate(
+            val cl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
             ) as ConstraintLayout
-            image_container.addView(rl)
-            rl.image_item.run {
+            image_container.addView(cl)
+            cl.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
 
-            rl.btn_delete.setOnClickListener {
-                image_container.removeView(rl)
+            cl.btn_delete.setOnClickListener {
+                image_container.removeView(cl)
                 if (this.selectedUriList.count() != 0)
                     this.selectedUriList.remove(uri)
                 if (uriList.count() != 0) {
