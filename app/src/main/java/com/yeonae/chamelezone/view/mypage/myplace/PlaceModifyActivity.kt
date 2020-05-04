@@ -15,10 +15,13 @@ import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.gms.maps.model.LatLng
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -37,8 +40,6 @@ import java.io.IOException
 class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     KeywordModifyFragment.OnClickListener {
     override lateinit var presenter: PlaceModifyContract.Presenter
-    var memberNumber: Int = 0
-    private var imageUri = arrayListOf<String>()
     private var openingHours = ArrayList<String>()
     private var openingHoursPosition = ArrayList<String>()
     private val keywordMap = hashMapOf<Int, String>()
@@ -51,11 +52,11 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     private val imageNumbers = arrayListOf<Int>()
     private var deleteImageNumbers = arrayListOf<Int>()
     private var placeKeywordNumbers = arrayListOf<Int>()
-    private var uriDataList = arrayListOf<String>()
-    private var selectedUriList = mutableListOf<Uri>()
     private var savedImageList = arrayListOf<String>()
     private var max = 4
     private var min = 1
+    private val uriSet = mutableSetOf<Uri>()
+    private lateinit var originPlace: PlaceResponse
 
     override fun showResult(response: Boolean) {
         if (response) {
@@ -82,68 +83,59 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     }
 
     private fun showMultiImage(uris: List<Uri>) {
-        if (uriDataList.count() != 0)
-            uriDataList.clear()
-        this.selectedUriList = uris.toMutableList()
-        uris.forEach { uri ->
-            val rlSlideImg = LayoutInflater.from(this).inflate(
-                R.layout.slider_item_image,
-                imageContainer,
-                false
-            ) as RelativeLayout
-            imageContainer.addView(rlSlideImg)
-            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        uris.forEachIndexed { _, uri ->
+            val viewGroup = LayoutInflater.from(this)
+                .inflate(
+                    R.layout.slider_item_image,
+                    image_container,
+                    false
+                ) as ViewGroup
+            val ivImage = viewGroup.findViewById<ImageView>(R.id.image_item)
+            val btnDelete = viewGroup.findViewById<ImageButton>(R.id.btn_delete)
+
+            ivImage.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
-            }
-            rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
-                imageContainer.removeView(rlSlideImg)
-                if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.remove(uri)
-            }
-            btn_image_clear.setOnClickListener {
-                imageUri.clear()
-                imageContainer.removeAllViews()
-                deleteImageNumbers = imageNumbers
-                if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAll(uris)
+                if (uriSet.isNotEmpty()) {
+                    if (!uriSet.contains(uri)) {
+                        image_container.addView(viewGroup)
+                    }
+                } else {
+                    image_container.addView(viewGroup)
+                }
             }
 
-            uri.path?.let { uriDataList.add(it) }
-            val distinctData = uriDataList.distinct()
-            imageUri = ArrayList(distinctData)
+            btnDelete.setOnClickListener {
+                image_container.removeView(viewGroup)
+                if (uriSet.isNotEmpty()) {
+                    uriSet.remove(uri)
+                }
+            }
         }
 
+        uriSet.addAll(uris)
     }
 
     override fun showPlaceDetail(place: PlaceResponse) {
+        originPlace = place
         place.imageNumbers.forEach {
             imageNumbers.add(it)
         }
-        imageContainer.removeAllViews()
+        image_container.removeAllViews()
         place.savedImageName.forEachIndexed { index, image ->
             savedImageList.add(image)
-            val rlSlideImg = LayoutInflater.from(this).inflate(
+            val clSliderImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
-                imageContainer,
+                image_container,
                 false
-            ) as RelativeLayout
-            imageContainer.addView(rlSlideImg)
-            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+            ) as ConstraintLayout
+            image_container.addView(clSliderImg)
+            clSliderImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(IMAGE_RESOURCE + image, measuredWidth, measuredHeight)
             }
-            rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
-                imageContainer.removeView(rlSlideImg)
+            clSliderImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+                image_container.removeView(clSliderImg)
                 deleteImageNumbers.add(imageNumbers[index])
                 savedImageList.remove(image)
-            }
-
-            btn_image_clear.setOnClickListener {
-                if (deleteImageNumbers.count() != 0)
-                    deleteImageNumbers.clear()
-                if (savedImageList.count() != 0)
-                    savedImageList.clear()
-                imageContainer.removeAllViews()
-                deleteImageNumbers = imageNumbers
             }
         }
         edt_place_name.text = SpannableStringBuilder(place.name)
@@ -196,6 +188,14 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             finish()
         }
 
+        btn_image_clear.setOnClickListener {
+            savedImageList.clear()
+            maxCheck()
+            uriSet.clear()
+            image_container.removeAllViews()
+            deleteImageNumbers = imageNumbers
+        }
+
         btn_opening_hour.setOnClickListener {
             val intent = Intent(this, OpeningHoursModifyActivity::class.java)
             intent.putExtra("selectedPosition", openingHoursPosition)
@@ -227,37 +227,22 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 "${edt_place_phone.text}".trim().isEmpty() -> shortToast(R.string.enter_place_phone)
                 "${edt_place_text.text}".trim()
                     .isEmpty() -> shortToast(R.string.enter_place_content)
-                savedImageList.isEmpty() && imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+                savedImageList.isEmpty() && uriSet.isEmpty() -> shortToast(R.string.enter_place_image)
                 selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
                 else -> {
                     latLng = findLatLng(applicationContext, "${tv_place_address.text}")
                     latitude = latLng.latitude.toString()
                     longitude = latLng.longitude.toString()
-                    showLoading()
-                    if (uriDataList.isEmpty()) {
-                        presenter.updatePlace(
-                            placeNumber,
-                            memberNumber,
-                            "${tv_place_address.text}",
-                            "${edt_detail_address.text}",
-                            "${edt_place_phone.text}",
-                            "${edt_place_text.text}",
-                            latitude.toBigDecimal(),
-                            longitude.toBigDecimal()
-                        )
+                    if ("${tv_place_address.text}" == originPlace.address &&
+                        "${edt_detail_address.text}" == originPlace.addressDetail &&
+                        latitude == originPlace.latitude &&
+                        longitude == originPlace.longitude &&
+                        "${edt_place_phone.text}" == originPlace.phoneNumber &&
+                        "${edt_place_text.text}" == originPlace.content
+                    ) {
+                        finish()
                     } else {
-                        presenter.updatePlace(
-                            placeNumber,
-                            imageUri,
-                            deleteImageNumbers,
-                            memberNumber,
-                            "${tv_place_address.text}",
-                            "${edt_detail_address.text}",
-                            "${edt_place_phone.text}",
-                            "${edt_place_text.text}",
-                            latitude.toBigDecimal(),
-                            longitude.toBigDecimal()
-                        )
+                        updatePlace(placeNumber, memberNumber)
                     }
                 }
             }
@@ -287,6 +272,35 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
     }
 
+    private fun updatePlace(placeNumber: Int, memberNumber: Int) {
+        showLoading()
+        if (uriSet.isEmpty()) {
+            presenter.updatePlace(
+                placeNumber,
+                memberNumber,
+                "${tv_place_address.text}",
+                "${edt_detail_address.text}",
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}",
+                latitude.toBigDecimal(),
+                longitude.toBigDecimal()
+            )
+        } else {
+            presenter.updatePlace(
+                placeNumber,
+                uriSet.map { it.toString().replace("file://", "") },
+                deleteImageNumbers,
+                memberNumber,
+                "${tv_place_address.text}",
+                "${edt_detail_address.text}",
+                "${edt_place_phone.text}",
+                "${edt_place_text.text}",
+                latitude.toBigDecimal(),
+                longitude.toBigDecimal()
+            )
+        }
+    }
+
     private fun findLatLng(context: Context, address: String): LatLng {
         val coder = Geocoder(context)
         var addresses: List<Address>? = null
@@ -311,9 +325,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             .min(min, R.string.min_msg)
             .max(max, R.string.max_msg)
             .errorListener { message -> Log.d("ted", "message: $message") }
-            .selectedUri(selectedUriList)
+            .selectedUri(uriSet.toList())
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
-
     }
 
     private fun setupGUI() {
