@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.glideOriginImageSet
-import kotlinx.android.synthetic.main.slideer_item_myreview_image_detail.view.*
+import kotlinx.android.synthetic.main.slider_item_myreview_image_detail.view.*
 
 class MyReviewImageDetailVpAdapter(private val images: List<String>) : PagerAdapter() {
 
@@ -16,7 +16,7 @@ class MyReviewImageDetailVpAdapter(private val images: List<String>) : PagerAdap
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val view =
             LayoutInflater.from(container.context)
-                .inflate(R.layout.slideer_item_myreview_image_detail, container, false)
+                .inflate(R.layout.slider_item_myreview_image_detail, container, false)
 
         view.post {
             view.iv_review_img.glideOriginImageSet(
