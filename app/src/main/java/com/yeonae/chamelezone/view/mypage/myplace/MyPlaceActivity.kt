@@ -91,14 +91,14 @@ class MyPlaceActivity : AppCompatActivity(), MyPlaceContract.View,
     }
 
     override fun showMyPlaceList(response: List<PlaceItem>) {
-        layout_no_my_place.visibility = View.GONE
-        layout_my_place.visibility = View.VISIBLE
+        tv_message.visibility = View.GONE
+        recycler_my_place.visibility = View.VISIBLE
         myPlaceRvAdapter.addData(response)
     }
 
     override fun showMessage(message: String) {
-        layout_no_my_place.visibility = View.VISIBLE
-        layout_my_place.visibility = View.GONE
+        tv_message.visibility = View.VISIBLE
+        recycler_my_place.visibility = View.GONE
         tv_message.text = message
     }
 

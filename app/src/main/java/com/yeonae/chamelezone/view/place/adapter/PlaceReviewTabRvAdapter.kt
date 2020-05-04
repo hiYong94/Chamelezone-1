@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.yeonae.chamelezone.App
@@ -17,11 +18,12 @@ import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideTransformations
 import kotlinx.android.synthetic.main.item_place_review.view.*
 
-open class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
+open class PlaceReviewTabRvAdapter() :
     RecyclerView.Adapter<PlaceReviewTabRvAdapter.PlaceReviewViewHolder>() {
     private val reviewList = arrayListOf<ReviewItem>()
     private lateinit var itemClickListener: OnItemClickListener
     private lateinit var moreButtonListener: MoreButtonListener
+    private var memberNumber = 0
 
     interface OnItemClickListener {
         fun onItemClick(view: View, position: Int, review: ReviewItem)
@@ -84,7 +86,7 @@ open class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
                 )
             } else {
                 val backgroundColor =
-                    ContextCompat.getDrawable(App.instance.context(), R.drawable.color)
+                    ContextCompat.getDrawable(App.instance.context(), R.drawable.edge_rectangle_image)
                 itemView.iv_image.background = backgroundColor
                 reviewCount.text = ""
                 itemView.post {
@@ -120,6 +122,8 @@ open class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
             }
 
             itemView.apply {
+                if (memberNumber == 0)
+                    btn_more.isInvisible = true
                 btn_more.isVisible = memberNumber == review.memberNumber
                 btn_more.setOnClickListener {
                     moreButtonListener.bottomSheetDialog(review)
@@ -134,10 +138,19 @@ open class PlaceReviewTabRvAdapter(private val memberNumber: Int) :
         notifyDataSetChanged()
     }
 
+    fun replaceMore(memberNum: Int) {
+        memberNumber = memberNum
+        notifyItemRangeChanged(0, itemCount, PAYLOAD_ITEM_CHANGE)
+    }
+
     fun removeData(review: ReviewItem) {
         val position = reviewList.indexOf(review)
         reviewList.remove(review)
         notifyItemRemoved(position)
-        notifyItemRangeChanged(position, reviewList.size)
     }
+
+    companion object {
+        const val PAYLOAD_ITEM_CHANGE = 1
+    }
+
 }

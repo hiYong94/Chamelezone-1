@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_review"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -27,13 +28,11 @@
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="10dp"
                     android:minHeight="250dp"
-                    android:orientation="vertical"
-                    android:weightSum="5">
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -45,7 +44,7 @@
                                 android:id="@+id/tv_nickname"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="yeonjae22"
+                                tools:text="yeonjae22"
                                 android:textSize="15sp" />
 
                             <TextView
@@ -53,7 +52,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="5dp"
-                                android:text="어제"
+                                tools:text="어제"
                                 android:textSize="15sp" />
                         </LinearLayout>
 
@@ -76,9 +75,8 @@
                     <LinearLayout
                         android:id="@+id/ll_image"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="150dp"
                         android:layout_marginTop="5dp"
-                        android:layout_weight="3"
                         android:weightSum="5">
 
                         <ImageView
@@ -86,7 +84,7 @@
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="3.9"
-                            android:background="#00FFFFFF" />
+                            android:background="@drawable/edge_rectangle_image" />
 
                         <ImageView
                             android:layout_width="0dp"
@@ -113,10 +111,9 @@
                     <TextView
                         android:id="@+id/tv_review_content"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
-                        android:layout_weight="1"
-                        android:text="여기 진짜 분위기 이뻐요"
+                        tools:text="여기 진짜 분위기 이뻐요"
                         android:textSize="15sp" />
                 </LinearLayout>
             </LinearLayout>
@@ -124,6 +121,8 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:paddingTop="5dp"
+
                 android:background="@color/lightGray" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

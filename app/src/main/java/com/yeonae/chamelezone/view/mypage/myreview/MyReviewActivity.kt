@@ -41,13 +41,13 @@ class MyReviewActivity : AppCompatActivity(),
 
     override fun showMyReviewList(reviewList: List<ReviewItem>) {
         if (reviewList.isNotEmpty()) {
-            rl_my_review.isVisible = true
-            rl_no_my_review.isGone = true
+            recycler_my_review.isVisible = true
+            tv_message.isGone = true
             myReviewRvAdapter.addDataList(reviewList)
         } else {
-            rl_my_review.isGone = true
-            rl_no_my_review.isVisible = true
-            tv_no_my_review.text = getText(R.string.register_my_review)
+            recycler_my_review.isGone = true
+            tv_message.isVisible = true
+            tv_message.text = getText(R.string.register_my_review)
         }
     }
 

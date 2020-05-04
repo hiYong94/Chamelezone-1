@@ -85,7 +85,7 @@
     <string name="intro">샵인샵(# in shop)은 \&apos;가게 안에 테마(해시태그(#))\&apos;라는 뜻입니다.
         \n\n 또 다른 말로 카멜레존(Chamelezone)\&apos;이라고도 소개 할 수 있는데요.
         \n 카멜레존이란 \&apos;카멜레온\&apos;과 공간을 뜻하는 \&apos;존(zone)\&apos;을 합친 신조어로 원래의 용도와는 달리 상황에 맞게 변화하는 공간을 뜻합니다.
-        \n\n 저희 샵인샵 어플은 카멜레존이라는 단어처럼 한 공간에 여러 상점이나 테마들이 있는 곳들을 소개하는 것이 목적입니다.
+        \n 저희 샵인샵 어플은 카멜레존이라는 단어처럼 한 공간에 여러 상점이나 테마들이 있는 곳들을 소개하는 것이 목적입니다.
         \n 또한 사용자들이 보다 쉽게 찾고, 찾아갈 수 있도록 서비스를 제공하고자 합니다.</string>
 
     <string name="permission_msg">만약 권한 허가를 거부한다면, 이 서비스를 사용할 수 없습니다. [설정] > [사용 권한]에서 사용 권한을 설정하십시오.</string>
@@ -194,10 +194,15 @@
     <string name="review_modify_msg">리뷰가 수정되었습니다.</string>
     <string name="review_content">리뷰 내용을 입력해주세요.</string>
     <string name="review_image">리뷰 사진을 선택해주세요.</string>
+    <string name="review_image_max">최대 4장의 이미지만 등록 가능합니다.</string>
     <string name="register_my_review">리뷰 등록을 해보세요.</string>
     <string name="success_update_opening_hours">영업시간 수정 성공</string>
     <string name="success_update_keyword">키워드 수정 성공</string>
     <string name="back_pressed_msg">뒤로가기 버튼을 한번 더 누르면 종료합니다.</string>
+    <string name="keyword_select">2개 이상의 키워드를 선택해주세요.</string>
+    <string name="auto_login">자동 로그인</string>
+    <string name="location_request">위치 권한이 필요합니다.</string>
+    <string name="distance">km</string>
 
     <string name="min_msg">1개의 이미지를 더 선택해주세요.</string>
     <string name="max_msg">4개의 이미지만 선택 가능합니다.</string>

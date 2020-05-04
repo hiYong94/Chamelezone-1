@@ -31,7 +31,6 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.data.model.MapItem
-import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.home.HomeActivity
 import com.yeonae.chamelezone.view.map.presenter.MapContract
 import com.yeonae.chamelezone.view.map.presenter.MapPresenter
@@ -48,7 +47,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     private lateinit var locationCallBack: LocationCallback
 
     override fun showMessage(message: String) {
-        layout_no_search.visibility = View.VISIBLE
+        btn_close.visibility = View.VISIBLE
+        tv_message.visibility = View.VISIBLE
         map_fragment.visibility = View.GONE
         tv_message.text = message
     }
@@ -66,7 +66,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     }
 
     override fun placeInfo(placeList: List<MapItem>) {
-        layout_no_search.visibility = View.GONE
+        btn_close.visibility = View.GONE
+        tv_message.visibility = View.GONE
         map_fragment.visibility = View.VISIBLE
         map.clear()
         for (i in placeList.indices) {
@@ -153,8 +154,8 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
             )
         val layoutParams = locationButton.layoutParams as RelativeLayout.LayoutParams
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0)
-        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE)
-        layoutParams.setMargins(0, 0, 30, 30)
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
+        layoutParams.setMargins(0, 250, 0, 0)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -192,6 +193,12 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 val searchWord = "${edt_search.text}".replace(" ", "")
                 presenter.searchPlace(searchWord)
             }
+        }
+
+        btn_close.setOnClickListener {
+            btn_close.visibility = View.GONE
+            tv_message.visibility = View.GONE
+            map_fragment.visibility = View.VISIBLE
         }
 
         keyBoard()

@@ -1,5 +1,6 @@
 package com.yeonae.chamelezone.view.home.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ class HomePlaceRvAdapter :
         private val placeName = itemView.place_name
         private val keyword = itemView.keyword
 
+        @SuppressLint("SetTextI18n")
         fun bind(place: PlaceResponse) {
             val latitude = place.latitude.toDouble()
             val longitude = place.longitude.toDouble()
@@ -76,7 +78,7 @@ class HomePlaceRvAdapter :
                 if (currentLatitude == 0.0 || currentLongitude == 0.0) {
                     distance.text = "0km"
                 } else {
-                    distance.text = distanceCalculator
+                    distance.text = distanceCalculator + "km"
                 }
             }
         }
@@ -89,7 +91,7 @@ class HomePlaceRvAdapter :
         return Holder(view)
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(placeList[position])
     }
 

@@ -29,7 +29,7 @@ class PlaceReviewTabFragment :
     Fragment(),
     PlaceReviewContract.View {
     override lateinit var presenter: PlaceReviewContract.Presenter
-    private lateinit var placeReviewRvAdapter: PlaceReviewTabRvAdapter
+    private var placeReviewRvAdapter = PlaceReviewTabRvAdapter()
     private var reviewNumber = 0
     private var placeNumber = 0
     var memberNumber = 0
@@ -37,24 +37,54 @@ class PlaceReviewTabFragment :
     private lateinit var reviewItem: ReviewItem
 
     override fun showPlaceReview(reviewList: List<ReviewItem>) {
-        if (::placeReviewRvAdapter.isInitialized)
-            placeReviewRvAdapter.addDataList(reviewList)
-    }
-
-    override fun showReviewDelete(message: String) {
-        requireContext().shortToast(R.string.review_delete)
+        placeReviewRvAdapter.addDataList(reviewList)
     }
 
     override fun showMemberReview(user: UserEntity) {
         memberNumber = user.userNumber ?: 0
+        placeReviewRvAdapter.replaceMore(memberNumber)
+    }
+
+    override fun getMemberCheck(response: Boolean) {
+        if (response) {
+            presenter.getMember()
+            btn_review.setOnClickListener {
+                placeName = arguments?.getString(PLACE_NAME).orEmpty()
+                val intent = Intent(context, ReviewCreateActivity::class.java)
+                intent.putExtra(PLACE_NUMBER, placeNumber)
+                intent.putExtra(PLACE_NAME, placeName)
+                startActivityForResult(intent, ADD_REQUEST)
+            }
+        } else {
+            presenter.placeDetailReview(placeNumber)
+            btn_review.setOnClickListener {
+                val intent = Intent(context, LoginActivity::class.java)
+                startActivity(intent)
+            }
+        }
+    }
+
+    override fun showReviewDelete(message: String) {
+        context?.shortToast(R.string.review_delete)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? =
+        inflater.inflate(R.layout.fragment_place_review_tab, container, false)
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter = PlaceReviewPresenter(
+            Injection.reviewRepository(), Injection.memberRepository(), this
+        )
+
+        placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
 
         setAdapter()
-
-        placeReviewRvAdapter = PlaceReviewTabRvAdapter(memberNumber)
-
-        placeNumber.let {
-            presenter.placeDetailReview(it)
-        }
 
         placeReviewRvAdapter.setItemClickListener(object :
             PlaceReviewTabRvAdapter.OnItemClickListener {
@@ -75,43 +105,12 @@ class PlaceReviewTabFragment :
                 showBottomSheet(reviewNumber)
             }
         })
-    }
 
-    override fun getMemberCheck(response: Boolean) {
-        if (response) {
-            presenter.getMember()
-            btn_review.setOnClickListener {
-                placeName = arguments?.getString(PLACE_NAME).orEmpty()
-                val intent = Intent(context, ReviewCreateActivity::class.java)
-                intent.putExtra(PLACE_NUMBER, placeNumber)
-                intent.putExtra(PLACE_NAME, placeName)
-                startActivityForResult(intent, ADD_REQUEST)
-            }
-        } else {
-            btn_review.setOnClickListener {
-                val intent = Intent(context, LoginActivity::class.java)
-                startActivity(intent)
-            }
+        placeNumber.let {
+            presenter.placeDetailReview(it)
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? =
-        inflater.inflate(R.layout.fragment_place_review_tab, container, false)
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        presenter = PlaceReviewPresenter(
-            Injection.reviewRepository(), Injection.memberRepository(), this
-        )
 
         presenter.checkMember()
-
-        placeNumber = arguments?.getInt(PLACE_NUMBER) ?: 0
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -145,6 +144,7 @@ class PlaceReviewTabFragment :
         }
     }
 
+
     override fun onResume() {
         super.onResume()
         presenter.checkMember()
@@ -153,8 +153,7 @@ class PlaceReviewTabFragment :
     private fun setAdapter() {
         recycler_place_review.apply {
             layoutManager = LinearLayoutManager(context)
-            if (::placeReviewRvAdapter.isInitialized)
-                adapter = placeReviewRvAdapter
+            adapter = placeReviewRvAdapter
         }
     }
 

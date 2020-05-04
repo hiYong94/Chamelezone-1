@@ -24,11 +24,8 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
-import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.ext.hideLoading
-import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.ext.showLoading
 import com.yeonae.chamelezone.network.model.PlaceResponse
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyContract
 import com.yeonae.chamelezone.view.mypage.myplace.presenter.PlaceModifyPresenter
@@ -86,7 +83,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         if (uriDataList.count() != 0)
             uriDataList.clear()
         this.selectedUriList = uris.toMutableList()
-        uris.forEachIndexed { index, uri ->
+        uris.forEach{ uri ->
             val rlSlideImg = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 imageContainer,
@@ -99,7 +96,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
                 imageContainer.removeView(rlSlideImg)
                 if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAt(index)
+                    this.selectedUriList.remove(uri)
             }
 
             btn_image_clear.setOnClickListener {
@@ -189,6 +186,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
 
         presenter.getPlaceDetail(placeNumber, memberNumber)
 
+        edt_place_text.setTouchForScrollBars()
+
         edt_place_phone.inputType = android.text.InputType.TYPE_CLASS_PHONE
         edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
@@ -196,7 +195,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             finish()
         }
 
-        tv_opening_hour.setOnClickListener {
+        btn_opening_hour.setOnClickListener {
             val intent = Intent(this, OpeningHoursModifyActivity::class.java)
             intent.putExtra("selectedPosition", openingHoursPosition)
             intent.putExtra("placeNumber", placeNumber)
@@ -218,15 +217,16 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             newFragment.show(supportFragmentManager, "dialog")
         }
 
-        btn_register.setOnClickListener {
+        btn_modify.setOnClickListener {
             when {
-                edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
+                "${edt_place_name.text}".trim().isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 tv_opening_time.text.isEmpty() -> shortToast(R.string.enter_place_opening_hours)
-                edt_place_phone.text.isEmpty() -> shortToast(R.string.enter_place_phone)
-                edt_place_text.text.isEmpty() -> shortToast(R.string.enter_place_content)
+                "${edt_place_phone.text}".trim().isEmpty() -> shortToast(R.string.enter_place_phone)
+                "${edt_place_text.text}".trim().isEmpty() -> shortToast(R.string.enter_place_content)
                 savedImageList.isEmpty() && imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+                selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
                 else -> {
                     latLng = findLatLng(applicationContext, "${tv_place_address.text}")
                     latitude = latLng.latitude.toString()

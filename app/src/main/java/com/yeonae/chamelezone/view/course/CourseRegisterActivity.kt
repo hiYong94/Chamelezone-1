@@ -1,6 +1,8 @@
 package com.yeonae.chamelezone.view.course
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
@@ -15,11 +17,9 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
+import com.yeonae.chamelezone.data.model.Course
 import com.yeonae.chamelezone.data.model.PlaceItem
-import com.yeonae.chamelezone.ext.glideImageSet
-import com.yeonae.chamelezone.ext.hideLoading
-import com.yeonae.chamelezone.ext.shortToast
-import com.yeonae.chamelezone.ext.showLoading
+import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.network.room.entity.UserEntity
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterContract
 import com.yeonae.chamelezone.view.course.presenter.CourseRegisterPresenter
@@ -49,6 +49,8 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     override fun showMessage(message: String) {
         this.shortToast(message)
         hideLoading()
+        val intent = Intent(this, CourseTabFragment::class.java)
+        setResult(Activity.RESULT_OK, intent)
         finish()
     }
 
@@ -83,6 +85,8 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         )
 
         presenter.getUser()
+
+        edt_course_content.setTouchForScrollBars()
 
         btn_back.setOnClickListener {
             finish()
@@ -139,8 +143,8 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 placeNumbers.add(thirdPlaceNumber)
             }
             when {
-                edt_course_title.text.isEmpty() -> shortToast(R.string.enter_course_title)
-                edt_course_content.text.isEmpty() -> shortToast(R.string.enter_course_content)
+                "${edt_course_title.text}".trim().isEmpty() -> shortToast(R.string.enter_course_title)
+                "${edt_course_content.text}".trim().isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
