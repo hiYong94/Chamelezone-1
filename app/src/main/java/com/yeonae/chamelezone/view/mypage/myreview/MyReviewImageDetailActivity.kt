@@ -11,8 +11,11 @@ import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewImageDetail
 import com.yeonae.chamelezone.view.mypage.myreview.presenter.MyReviewImageDetailPresenter
 import kotlinx.android.synthetic.main.activity_review_image.*
 
-class MyReviewImageDetailActivity : AppCompatActivity(), MyReviewImageDetailContract.View {
+class MyReviewImageDetailActivity :
+    AppCompatActivity(),
+    MyReviewImageDetailContract.View {
     override lateinit var presenter: MyReviewImageDetailContract.Presenter
+    private var position = 0
 
     override fun showReviewImage(review: ReviewItem) {
         val reviewImages = review.images
@@ -21,6 +24,7 @@ class MyReviewImageDetailActivity : AppCompatActivity(), MyReviewImageDetailCont
         }
         val imageAdapter = MyReviewImageDetailVpAdapter(imageList)
         view_image.adapter = imageAdapter
+        view_image.currentItem = position
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +33,7 @@ class MyReviewImageDetailActivity : AppCompatActivity(), MyReviewImageDetailCont
 
         val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
         val reviewNumber = intent.getIntExtra(REVIEW_NUMBER, 0)
+        position = intent.getIntExtra(POSITION, 0)
 
         presenter = MyReviewImageDetailPresenter(
             Injection.reviewRepository(), this
@@ -45,5 +50,6 @@ class MyReviewImageDetailActivity : AppCompatActivity(), MyReviewImageDetailCont
     companion object {
         private const val PLACE_NUMBER = "placeNumber"
         private const val REVIEW_NUMBER = "reviewNumber"
+        private const val POSITION = "position"
     }
 }
