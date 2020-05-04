@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.yeonae.chamelezone">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,8 +17,8 @@
         android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:usesCleartextTraffic="true"
-        >
+        tools:ignore="LockedOrientationActivity"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".view.home.StartActivity"
             android:screenOrientation="portrait">
@@ -33,7 +34,7 @@
 
         <activity
             android:name=".view.home.HomeActivity"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".view.place.PlaceDetailActivity"

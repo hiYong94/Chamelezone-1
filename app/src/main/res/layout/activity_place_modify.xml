@@ -186,16 +186,16 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:weightSum="10"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:weightSum="10">
 
                     <TextView
-                        android:layout_weight="9"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
+                        android:layout_weight="9"
                         android:padding="10dp"
                         android:text="영업시간"
                         android:textSize="15sp" />
@@ -234,6 +234,7 @@
                             android:layout_margin="10dp"
                             android:background="@null"
                             android:hint="@string/place_phone_number_hint"
+                            android:inputType="phone"
                             android:maxLength="14"
                             android:textColor="@color/colorBlack"
                             android:textColorHint="@color/lightGray"

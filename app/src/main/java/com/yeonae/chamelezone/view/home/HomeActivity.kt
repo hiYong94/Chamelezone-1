@@ -165,8 +165,8 @@ class HomeActivity : AppCompatActivity() {
         tabLayout.visibility = View.VISIBLE
     }
 
-    fun tabGone() {
-        tabLayout.visibility = View.GONE
+    fun tabInvisible() {
+        tabLayout.visibility = View.INVISIBLE
     }
 
     override fun onBackPressed() {

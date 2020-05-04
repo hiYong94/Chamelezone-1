@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,7 +34,6 @@ class KeywordModifyFragment : DialogFragment(), KeywordContract.View {
         keywordMap.values.forEach {
             addKeywordView(it)
         }
-        Log.d("Keyword", keywordMap.toString())
     }
 
     override fun showResult(response: Boolean) {

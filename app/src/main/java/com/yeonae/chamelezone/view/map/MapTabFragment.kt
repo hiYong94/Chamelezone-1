@@ -31,6 +31,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.SingleDialogFragment
 import com.yeonae.chamelezone.data.model.MapItem
+import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.view.home.HomeActivity
 import com.yeonae.chamelezone.view.map.presenter.MapContract
 import com.yeonae.chamelezone.view.map.presenter.MapPresenter
@@ -47,10 +48,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     private lateinit var locationCallBack: LocationCallback
 
     override fun showMessage(message: String) {
-        btn_close.visibility = View.VISIBLE
-        tv_message.visibility = View.VISIBLE
-        map_fragment.visibility = View.GONE
-        tv_message.text = message
+        context?.shortToast(message)
     }
 
     override fun onMarkerClick(marker: Marker?): Boolean {
@@ -66,8 +64,6 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     }
 
     override fun placeInfo(placeList: List<MapItem>) {
-        btn_close.visibility = View.GONE
-        tv_message.visibility = View.GONE
         map_fragment.visibility = View.VISIBLE
         map.clear()
         for (i in placeList.indices) {
@@ -170,12 +166,12 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
 
         edt_search.setOnEditorActionListener { _, i, _ ->
             if (i == EditorInfo.IME_ACTION_DONE || i == EditorInfo.IME_ACTION_NEXT || i == EditorInfo.IME_ACTION_SEARCH || i == EditorInfo.IME_ACTION_GO) {
+                val imm =
+                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
                 if ("${edt_search.text}".isEmpty()) {
-                    showDialog()
+                    context?.shortToast(R.string.enter_search)
                 } else {
-                    val imm =
-                        context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
                     val searchWord = "${edt_search.text}".replace(" ", "")
                     presenter.searchPlace(searchWord)
                 }
@@ -184,21 +180,15 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
         }
 
         btn_search.setOnClickListener {
+            val imm =
+                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
             if ("${edt_search.text}".isEmpty()) {
-                showDialog()
+                context?.shortToast(R.string.enter_search)
             } else {
-                val imm =
-                    context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(edt_search.windowToken, 0)
                 val searchWord = "${edt_search.text}".replace(" ", "")
                 presenter.searchPlace(searchWord)
             }
-        }
-
-        btn_close.setOnClickListener {
-            btn_close.visibility = View.GONE
-            tv_message.visibility = View.GONE
-            map_fragment.visibility = View.VISIBLE
         }
 
         keyBoard()
@@ -274,7 +264,7 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 if (keypadHeight > screenHeight * 0.15) {
                     if (!isKeyboardShowing) {
                         isKeyboardShowing = true
-                        (activity as HomeActivity).tabGone()
+                        (activity as HomeActivity).tabInvisible()
                     }
                 } else {
                     if (isKeyboardShowing) {
