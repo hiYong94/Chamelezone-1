@@ -10,9 +10,9 @@ import android.os.Handler
 import android.text.SpannableStringBuilder
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,6 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.data.model.ReviewItem
 import com.yeonae.chamelezone.ext.Millisecond.ONE_SECOND
-import com.yeonae.chamelezone.ext.Millisecond.THREE_SECOND
 import com.yeonae.chamelezone.ext.Url.IMAGE_RESOURCE
 import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.hideLoading
@@ -41,9 +40,7 @@ class ReviewModifyActivity :
     AppCompatActivity(),
     ReviewModifyContract.View {
     override lateinit var presenter: ReviewModifyContract.Presenter
-    private var uriList = ArrayList<String>()
-    private var uriDataList = arrayListOf<String>()
-    private var selectedUriList = mutableListOf<Uri>()
+    private val uriSet = mutableSetOf<Uri>()
     private var isCreated = false
     private var isChecked = false
     private var placeNumber = 0
@@ -85,12 +82,12 @@ class ReviewModifyActivity :
                 deleteImageNumber.add(imageNumbers[index])
                 savedImages.remove(image)
             }
-            btn_clear.setOnClickListener {
-                image_container.removeAllViews()
-                deleteImageNumber = imageNumbers
-                if (savedImages.count() != 0)
-                    savedImages.clear()
-            }
+//            btn_clear.setOnClickListener {
+//                image_container.removeAllViews()
+//                deleteImageNumber = imageNumbers
+//                if (savedImages.count() != 0)
+//                    savedImages.clear()
+//            }
         }
     }
 
@@ -115,18 +112,28 @@ class ReviewModifyActivity :
 
         presenter.getReview(placeNumber, reviewNumber)
 
+        btn_clear.setOnClickListener {
+            uriSet.clear()
+            image_container.removeAllViews()
+            Logger.d("imageNumber $imageNumbers")
+            deleteImageNumber = imageNumbers
+            Logger.d("deleteImageNumber $deleteImageNumber")
+        }
+
         btn_modify.setOnClickListener {
             val content = "${edt_review.text}"
             when {
                 edt_review.text.isEmpty() || edt_review.text.isBlank() -> shortToast(R.string.review_content)
-                uriList.isEmpty() && savedImages.isEmpty() -> shortToast(R.string.review_image)
-                ((imageNumbers.count() - deleteImageNumber.count()) + uriList.count() > 4) -> shortToast(R.string.review_image_max)
+                uriSet.isEmpty() && savedImages.isEmpty() -> shortToast(R.string.review_image)
+                ((imageNumbers.count() - deleteImageNumber.count()) + uriSet.count() > 4) -> shortToast(
+                    R.string.review_image_max
+                )
                 else -> {
                     showLoading()
                     if (!isCreated) {
                         isCreated = true
                         presenter.modifyReview(
-                            uriList,
+                            uriSet.map { it.toString().replace("file://", "") },
                             reviewNumber,
                             memberNumber,
                             placeNumber,
@@ -147,9 +154,8 @@ class ReviewModifyActivity :
             }
             Handler().postDelayed({
                 isChecked = false
-            }, ONE_SECOND.toLong())
+            }, ONE_SECOND)
         }
-        btn_clear.setOnClickListener { image_container.removeAllViews() }
     }
 
     private fun checkPermission() {
@@ -192,55 +198,52 @@ class ReviewModifyActivity :
     }
 
     private fun setNormalMultiButton() {
+
+        Logger.d("test ${uriSet.toList()}")
+
         TedImagePicker.with(this)
             .mediaType(MediaType.IMAGE)
             .min(1, R.string.min_msg)
             .max(4, R.string.max_msg)
             .errorListener { message -> Log.d("ted", "message: $message") }
-            .selectedUri(selectedUriList)
+            .selectedUri(uriSet.toList())
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
     }
 
     private fun showMultiImage(uris: List<Uri>) {
-        if (uriDataList.count() != 0) {
-            uriDataList.clear()
-        }
-        this.selectedUriList = uris.toMutableList()
 
         uris.forEachIndexed { _, uri ->
-            val rl = LayoutInflater.from(this).inflate(
-                R.layout.slider_item_image,
-                image_container,
-                false
-            ) as ConstraintLayout
+            val viewGroup = LayoutInflater.from(this)
+                .inflate(
+                    R.layout.slider_item_image,
+                    image_container,
+                    false
+                ) as ViewGroup
+            val ivImage = viewGroup.findViewById<ImageView>(R.id.image_item)
 
-            rl.findViewById<ImageView>(R.id.image_item).run {
+            val btnDelete = viewGroup.findViewById<ImageButton>(R.id.btn_delete)
+
+            ivImage.run {
+
                 glideImageSet(uri, measuredWidth, measuredHeight)
-                image_container.addView(rl)
-            }
-
-            rl.findViewById<ImageButton>(R.id.btn_delete).setOnClickListener {
-                image_container.removeView(rl)
-                if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.remove(uri)
-                if (uriList.count() != 0) {
-                    uriList.remove(uri.path)
+                if (uriSet.isNotEmpty()) {
+                    if (!uriSet.contains(uri)) {
+                        image_container.addView(viewGroup)
+                    }
+                } else {
+                    image_container.addView(viewGroup)
                 }
             }
 
-            btn_clear.setOnClickListener {
-                image_container.removeAllViews()
-                if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAll(uris)
-                if (uriList.count() != 0) {
-                    uriList.clear()
+            btnDelete.setOnClickListener {
+                image_container.removeView(viewGroup)
+                if (uriSet.isNotEmpty()) {
+                    uriSet.remove(uri)
                 }
             }
-
-            uri.path?.let { uriDataList.add(it) }
-            val distinctData = uriDataList.distinct()
-            uriList = ArrayList(distinctData)
         }
+
+        uriSet.addAll(uris)
     }
 
     companion object {

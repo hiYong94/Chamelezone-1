@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -18,9 +17,7 @@ import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
 import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.ext.Millisecond.ONE_SECOND
-import com.yeonae.chamelezone.ext.Millisecond.THREE_SECOND
 import com.yeonae.chamelezone.network.room.entity.UserEntity
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.review.presenter.ReviewContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
@@ -105,7 +102,7 @@ class ReviewCreateActivity :
             }
             Handler().postDelayed({
                 isChecked = false
-            }, ONE_SECOND.toLong())
+            }, ONE_SECOND)
         }
     }
 
@@ -167,18 +164,18 @@ class ReviewCreateActivity :
         image_container.removeAllViews()
 
         uris.forEachIndexed { _, uri ->
-            val rl = LayoutInflater.from(this).inflate(
+            val cl = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
             ) as ConstraintLayout
-            image_container.addView(rl)
-            rl.image_item.run {
+            image_container.addView(cl)
+            cl.image_item.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
 
-            rl.btn_delete.setOnClickListener {
-                image_container.removeView(rl)
+            cl.btn_delete.setOnClickListener {
+                image_container.removeView(cl)
                 if (this.selectedUriList.count() != 0)
                     this.selectedUriList.remove(uri)
                 if (uriList.count() != 0) {

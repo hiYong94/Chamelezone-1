@@ -65,7 +65,7 @@
             android:paddingTop="5dp"
             android:paddingBottom="3dp"
             android:textColor="@color/colorBlack"
-            android:textSize="8.7dp"
+            android:textSize="9dp"
             app:layout_constraintDimensionRatio="w,7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="1"
