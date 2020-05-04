@@ -194,12 +194,15 @@
     <string name="review_modify_msg">리뷰가 수정되었습니다.</string>
     <string name="review_content">리뷰 내용을 입력해주세요.</string>
     <string name="review_image">리뷰 사진을 선택해주세요.</string>
+    <string name="review_image_max">최대 4장의 이미지만 등록 가능합니다.</string>
     <string name="register_my_review">리뷰 등록을 해보세요.</string>
     <string name="success_update_opening_hours">영업시간 수정 성공</string>
     <string name="success_update_keyword">키워드 수정 성공</string>
     <string name="back_pressed_msg">뒤로가기 버튼을 한번 더 누르면 종료합니다.</string>
     <string name="keyword_select">2개 이상의 키워드를 선택해주세요.</string>
     <string name="auto_login">자동 로그인</string>
+    <string name="location_request">위치 권한이 필요합니다.</string>
+    <string name="distance">km</string>
 
     <string name="min_msg">1개의 이미지를 더 선택해주세요.</string>
     <string name="max_msg">4개의 이미지만 선택 가능합니다.</string>

@@ -19,7 +19,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp">
+                android:layout_marginVertical="5dp">
 
                 <LinearLayout
                     android:id="@+id/layout_01"
@@ -82,11 +82,12 @@
                     <TextView
                         android:id="@+id/tv_review_content"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:maxLines="3"
-                        android:textSize="11sp"
-                        android:layout_marginBottom="5dp"
+                        android:maxLines="1"
+                        android:textSize="13dp"
+                        android:layout_marginTop="7dp"
+                        android:layout_marginBottom="13dp"
                         tools:text="내용" />
 
                     <TextView
@@ -94,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
-                        android:textSize="10sp"
+                        android:textSize="13dp"
                         tools:text="날짜"
                         tools:ignore="SmallSp" />
                 </LinearLayout>

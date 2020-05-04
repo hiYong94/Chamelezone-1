@@ -60,7 +60,6 @@ class HomeTabFragment :
             presenter.getMember()
         } else {
             memberNumber = 0
-
             presenter.getHomeList(memberNumber)
         }
     }
@@ -156,7 +155,8 @@ class HomeTabFragment :
         if (::presenter.isInitialized)
             presenter.checkMember()
 
-        if (ContextCompat.checkSelfPermission(
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+            ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
@@ -181,7 +181,7 @@ class HomeTabFragment :
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            requireContext().shortToast("위치 권한이 필요합니다.")
+            context?.shortToast(R.string.location_request)
         } else {
             getCurrentLocation()
         }
