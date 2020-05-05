@@ -160,6 +160,9 @@ class ReviewCreateActivity :
 
     private fun showMultiImage(uris: List<Uri>) {
         image_container.removeAllViews()
+        if (uriSet.isNotEmpty()) {
+            uriSet.clear()
+        }
 
         uris.forEachIndexed { _, uri ->
             val vgImage = LayoutInflater.from(this).inflate(
