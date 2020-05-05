@@ -67,13 +67,13 @@
                     android:background="@drawable/draw">
 
                     <EditText
-                        android:enabled="false"
                         android:id="@+id/edt_place_name"
                         style="@style/EditTextStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="10dp"
                         android:background="@null"
+                        android:enabled="false"
                         android:hint="@string/place_title_hint"
                         android:maxLength="20"
                         android:singleLine="true"
@@ -220,23 +220,57 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/draw">
+                        android:background="@drawable/draw"
+                        android:weightSum="3">
+
+                        <Spinner
+                            android:id="@+id/phone_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginBottom="7dp"
+                            android:background="@color/colorGray" />
 
                         <EditText
-                            android:id="@+id/edt_place_phone"
+                            android:id="@+id/edt_phone_first"
                             style="@style/EditTextStyle"
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_margin="10dp"
+                            android:layout_weight="1"
                             android:background="@null"
-                            android:hint="@string/place_phone_number_hint"
-                            android:inputType="phone"
-                            android:maxLength="14"
+                            android:gravity="center"
+                            android:maxLength="4"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/lightGray"
+                            android:textSize="15sp" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginBottom="7dp"
+                            android:background="@color/colorGray" />
+
+                        <EditText
+                            android:id="@+id/edt_phone_second"
+                            style="@style/EditTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:maxLength="4"
                             android:textColor="@color/colorBlack"
                             android:textColorHint="@color/lightGray"
                             android:textSize="15sp" />

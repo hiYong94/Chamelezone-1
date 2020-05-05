@@ -11,15 +11,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
 import android.text.SpannableStringBuilder
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.gms.maps.model.LatLng
@@ -57,6 +56,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     private var min = 1
     private val uriSet = mutableSetOf<Uri>()
     private lateinit var originPlace: PlaceResponse
+    private var phoneSpinner = ""
 
     override fun showResult(response: Boolean) {
         if (response) {
@@ -155,7 +155,36 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 tv_opening_time.text = "${tv_opening_time.text}\n$it"
             }
         }
-        edt_place_phone.text = SpannableStringBuilder(place.phoneNumber)
+        val phoneNumber = place.phoneNumber.split("-")
+        val phoneMap = mapOf<Int, String>(
+            0 to "02",
+            1 to "031",
+            2 to "032",
+            3 to "033",
+            4 to "041",
+            5 to "042",
+            6 to "043",
+            7 to "044",
+            8 to "050",
+            9 to "051",
+            10 to "052",
+            11 to "053",
+            12 to "054",
+            13 to "061",
+            14 to "062",
+            15 to "063",
+            16 to "064",
+            17 to "070",
+            18 to "010"
+        )
+        phoneMap.forEach {
+            if(phoneNumber[0] == it.value){
+                phone_spinner.setSelection(it.key)
+            }
+        }
+        edt_phone_first.text = SpannableStringBuilder(phoneNumber[1])
+        edt_phone_second.text = SpannableStringBuilder(phoneNumber[2])
+
         edt_place_text.text = SpannableStringBuilder(place.content)
         if (place.addressDetail != null) {
             edt_detail_address.text = SpannableStringBuilder(place.addressDetail)
@@ -182,7 +211,23 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         presenter.getPlaceDetail(placeNumber, memberNumber)
 
         edt_place_text.setTouchForScrollBars()
-        edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
+
+        val phoneArray = resources.getStringArray(R.array.phone_array)
+        val phoneAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, phoneArray)
+        phone_spinner.adapter = phoneAdapter
+
+        edt_phone_first.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(edt_phone_first.length() == 4){
+                    edt_phone_second.requestFocus()
+                }
+            }
+        })
 
         btn_back.setOnClickListener {
             finish()
@@ -219,12 +264,14 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
 
         btn_modify.setOnClickListener {
+            phoneSpinner = phone_spinner.selectedItem.toString()
+            val phone = "$phoneSpinner-${edt_phone_first.text}-${edt_phone_second.text}"
             when {
                 "${edt_place_name.text}".trim().isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 tv_opening_time.text.isEmpty() -> shortToast(R.string.enter_place_opening_hours)
-                "${edt_place_phone.text}".trim().isEmpty() -> shortToast(R.string.enter_place_phone)
+                phone.isEmpty() -> shortToast(R.string.enter_place_phone)
                 "${edt_place_text.text}".trim()
                     .isEmpty() -> shortToast(R.string.enter_place_content)
                 savedImageList.isEmpty() && uriSet.isEmpty() -> shortToast(R.string.enter_place_image)
@@ -237,12 +284,12 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                         "${edt_detail_address.text}" == originPlace.addressDetail &&
                         latitude == originPlace.latitude &&
                         longitude == originPlace.longitude &&
-                        "${edt_place_phone.text}" == originPlace.phoneNumber &&
+                        phone == originPlace.phoneNumber &&
                         "${edt_place_text.text}" == originPlace.content
                     ) {
                         finish()
                     } else {
-                        updatePlace(placeNumber, memberNumber)
+                        updatePlace(placeNumber, memberNumber, phone)
                     }
                 }
             }
@@ -272,7 +319,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
     }
 
-    private fun updatePlace(placeNumber: Int, memberNumber: Int) {
+    private fun updatePlace(placeNumber: Int, memberNumber: Int, phone:String) {
         showLoading()
         if (uriSet.isEmpty()) {
             presenter.updatePlace(
@@ -280,7 +327,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 memberNumber,
                 "${tv_place_address.text}",
                 "${edt_detail_address.text}",
-                "${edt_place_phone.text}",
+                phone,
                 "${edt_place_text.text}",
                 latitude.toBigDecimal(),
                 longitude.toBigDecimal()
@@ -293,7 +340,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 memberNumber,
                 "${tv_place_address.text}",
                 "${edt_detail_address.text}",
-                "${edt_place_phone.text}",
+                phone,
                 "${edt_place_text.text}",
                 latitude.toBigDecimal(),
                 longitude.toBigDecimal()
