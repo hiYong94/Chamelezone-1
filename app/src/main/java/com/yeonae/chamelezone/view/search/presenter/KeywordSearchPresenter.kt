@@ -10,8 +10,8 @@ class KeywordSearchPresenter(
     private val repository: PlaceRepository,
     private val view: KeywordSearchContract.View
 ) : KeywordSearchContract.Presenter {
-    override fun getKeyword() {
-        repository.getKeyword(object : PlaceCallback<List<KeywordResponse>> {
+    override fun getKeywordRank() {
+        repository.getKeywordRank(object : PlaceCallback<List<KeywordResponse>> {
             override fun onSuccess(response: List<KeywordResponse>) {
                 view.showKeywordList(response)
             }

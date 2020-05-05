@@ -8,4 +8,8 @@ interface KeywordApi {
     @GET("/v1.0/keyword")
     fun getKeywordList(
     ): Call<List<KeywordResponse>>
+
+    @GET("/v1.0/keyword/rank")
+    fun getKeywordRank(
+    ): Call<List<KeywordResponse>>
 }

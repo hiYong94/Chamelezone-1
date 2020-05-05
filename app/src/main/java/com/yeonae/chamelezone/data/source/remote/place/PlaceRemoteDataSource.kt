@@ -76,4 +76,5 @@ interface PlaceRemoteDataSource {
         longitude: String,
         callback: PlaceCallback<PlaceDuplicateResponse>
     )
+    fun getKeywordRank(callback: PlaceCallback<List<KeywordResponse>>)
 }

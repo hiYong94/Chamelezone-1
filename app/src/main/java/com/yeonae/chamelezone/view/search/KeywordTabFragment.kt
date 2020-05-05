@@ -44,7 +44,7 @@ class KeywordTabFragment : Fragment(), KeywordSearchContract.View {
         presenter = KeywordSearchPresenter(
             Injection.placeRepository(), this
         )
-        presenter.getKeyword()
+        presenter.getKeywordRank()
         setAdapter()
 
         searchRvAdapter.setOnClickListener(object : SearchRvAdapter.OnClickListener {
