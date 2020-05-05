@@ -83,6 +83,14 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     }
 
     private fun showMultiImage(uris: List<Uri>) {
+        if (uriSet.isNotEmpty()) {
+            if (!uris.containsAll(uriSet)) {
+                image_container.removeViews(
+                    imageNumbers.count() - deleteImageNumbers.count(),
+                    uriSet.count() - uris.count()
+                )
+            }
+        }
         uris.forEachIndexed { _, uri ->
             val viewGroup = LayoutInflater.from(this)
                 .inflate(
@@ -111,7 +119,9 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                 }
             }
         }
-
+        if (uriSet.isNotEmpty()) {
+            uriSet.clear()
+        }
         uriSet.addAll(uris)
     }
 
