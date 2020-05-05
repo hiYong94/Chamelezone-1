@@ -35,6 +35,10 @@ class PlaceImageDetailActivity :
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_image)
 
+        btn_back.setOnClickListener {
+            finish()
+        }
+
         val placeNumber = intent.getIntExtra(PLACE_NUMBER, 0)
         val memberNumber = intent.getIntExtra(MEMBER_NUMBER, 0)
 
