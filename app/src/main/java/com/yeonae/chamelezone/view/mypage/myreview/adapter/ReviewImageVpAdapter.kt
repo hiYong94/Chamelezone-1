@@ -2,7 +2,6 @@ package com.yeonae.chamelezone.view.mypage.myreview.adapter
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,11 +35,10 @@ class ReviewImageVpAdapter(
 
         view.setOnClickListener {
             val intent = Intent(container.context, MyReviewImageDetailActivity::class.java)
+            val data = intent.apply { putExtra(POSITION, position) }
             intent.putExtra(PLACE_NUMBER, placeNumber)
             intent.putExtra(REVIEW_NUMBER, reviewNumber)
-            Log.d("MyReviewDetailActivity placeNumber", placeNumber.toString())
-            Log.d("MyReviewDetailActivity reviewNumber", reviewNumber.toString())
-            startActivity(container.context, intent, Bundle())
+            startActivity(container.context, data, Bundle())
         }
         return view
     }
@@ -51,4 +49,7 @@ class ReviewImageVpAdapter(
     override fun getCount(): Int =
         images.size
 
+    companion object {
+        const val POSITION = "position"
+    }
 }

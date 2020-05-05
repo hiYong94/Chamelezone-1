@@ -27,7 +27,6 @@ import com.yeonae.chamelezone.ext.glideImageSet
 import com.yeonae.chamelezone.ext.hideLoading
 import com.yeonae.chamelezone.ext.shortToast
 import com.yeonae.chamelezone.ext.showLoading
-import com.yeonae.chamelezone.util.Logger
 import com.yeonae.chamelezone.view.mypage.myreview.MyReviewActivity
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyContract
 import com.yeonae.chamelezone.view.review.presenter.ReviewModifyPresenter
@@ -49,6 +48,8 @@ class ReviewModifyActivity :
     private var imageNumbers = arrayListOf<Int>()
     private var deleteImageNumber = ArrayList<Int>()
     private var savedImages = arrayListOf<String>()
+    private var max = 4
+    private var min = 1
 
     override fun reviewModify(response: Boolean) {
         if (response) {
@@ -82,12 +83,6 @@ class ReviewModifyActivity :
                 deleteImageNumber.add(imageNumbers[index])
                 savedImages.remove(image)
             }
-//            btn_clear.setOnClickListener {
-//                image_container.removeAllViews()
-//                deleteImageNumber = imageNumbers
-//                if (savedImages.count() != 0)
-//                    savedImages.clear()
-//            }
         }
     }
 
@@ -113,11 +108,10 @@ class ReviewModifyActivity :
         presenter.getReview(placeNumber, reviewNumber)
 
         btn_clear.setOnClickListener {
-            uriSet.clear()
             image_container.removeAllViews()
-            Logger.d("imageNumber $imageNumbers")
+            uriSet.clear()
             deleteImageNumber = imageNumbers
-            Logger.d("deleteImageNumber $deleteImageNumber")
+            savedImages.clear()
         }
 
         btn_modify.setOnClickListener {
@@ -148,6 +142,7 @@ class ReviewModifyActivity :
 
     private fun setupGUI() {
         btn_image_create.setOnClickListener {
+            maxCheck()
             if (!isChecked) {
                 isChecked = true
                 checkPermission()
@@ -198,13 +193,10 @@ class ReviewModifyActivity :
     }
 
     private fun setNormalMultiButton() {
-
-        Logger.d("test ${uriSet.toList()}")
-
         TedImagePicker.with(this)
             .mediaType(MediaType.IMAGE)
-            .min(1, R.string.min_msg)
-            .max(4, R.string.max_msg)
+            .min(min, R.string.min_msg)
+            .max(max, R.string.max_msg)
             .errorListener { message -> Log.d("ted", "message: $message") }
             .selectedUri(uriSet.toList())
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
@@ -212,39 +204,75 @@ class ReviewModifyActivity :
 
     private fun showMultiImage(uris: List<Uri>) {
 
-        uris.forEachIndexed { _, uri ->
-            val viewGroup = LayoutInflater.from(this)
+        if (uriSet.isNotEmpty()) {
+            if (!uris.containsAll(uriSet)) {
+                image_container.removeViews(
+                    imageNumbers.count() - deleteImageNumber.count(),
+                    uriSet.count() - uris.count()
+                )
+            }
+        }
+
+        uris.forEachIndexed { index, uri ->
+            val vgImage = LayoutInflater.from(this)
                 .inflate(
                     R.layout.slider_item_image,
                     image_container,
                     false
                 ) as ViewGroup
-            val ivImage = viewGroup.findViewById<ImageView>(R.id.image_item)
 
-            val btnDelete = viewGroup.findViewById<ImageButton>(R.id.btn_delete)
+            val ivImage = vgImage.findViewById<ImageView>(R.id.image_item)
+            val btnDelete = vgImage.findViewById<ImageButton>(R.id.btn_delete)
 
             ivImage.run {
-
                 glideImageSet(uri, measuredWidth, measuredHeight)
                 if (uriSet.isNotEmpty()) {
                     if (!uriSet.contains(uri)) {
-                        image_container.addView(viewGroup)
+                        image_container.addView(vgImage)
                     }
                 } else {
-                    image_container.addView(viewGroup)
+                    image_container.addView(vgImage)
                 }
             }
 
             btnDelete.setOnClickListener {
-                image_container.removeView(viewGroup)
+                image_container.removeView(vgImage)
                 if (uriSet.isNotEmpty()) {
                     uriSet.remove(uri)
                 }
             }
         }
-
+        if (uriSet.isNotEmpty()) {
+            uriSet.clear()
+        }
         uriSet.addAll(uris)
     }
+
+    private fun maxCheck() {
+        when (savedImages.size) {
+            0 -> {
+                max = 4
+                min = 1
+            }
+            1 -> {
+                max = 3
+                min = 1
+            }
+            2 -> {
+                max = 2
+                min = 1
+            }
+            3 -> {
+                max = 1
+                min = 1
+            }
+            4 -> {
+                max = 0
+                min = 0
+            }
+        }
+    }
+
 
     companion object {
         const val PLACE_NAME = "placeName"

@@ -8,9 +8,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
@@ -23,15 +25,12 @@ import com.yeonae.chamelezone.view.review.presenter.ReviewPresenter
 import gun0912.tedimagepicker.builder.TedImagePicker
 import gun0912.tedimagepicker.builder.type.MediaType
 import kotlinx.android.synthetic.main.activity_review_create.*
-import kotlinx.android.synthetic.main.slider_item_image.view.*
 
 class ReviewCreateActivity :
     AppCompatActivity(),
     ReviewContract.View {
     override lateinit var presenter: ReviewContract.Presenter
-    private var uriList = ArrayList<String>()
-    private var uriDataList = arrayListOf<String>()
-    private var selectedUriList = mutableListOf<Uri>()
+    private var uriSet = mutableSetOf<Uri>()
     private var isCreated = false
     private var isChecked = false
     private var memberNumber = 0
@@ -71,7 +70,7 @@ class ReviewCreateActivity :
             val content = "${edt_review.text}"
             when {
                 edt_review.text.isEmpty() || edt_review.text.isBlank() -> shortToast(R.string.review_content)
-                uriList.isEmpty() -> shortToast(R.string.review_image)
+                uriSet.isEmpty() -> shortToast(R.string.review_image)
                 else -> {
                     showLoading()
                     if (!isCreated) {
@@ -80,7 +79,7 @@ class ReviewCreateActivity :
                             memberNumber,
                             placeNumber,
                             content,
-                            uriList
+                            uriSet.map { it.toString().replace("file://", "") }
                         )
                     }
                 }
@@ -103,6 +102,10 @@ class ReviewCreateActivity :
             Handler().postDelayed({
                 isChecked = false
             }, ONE_SECOND)
+        }
+        btn_image_clear.setOnClickListener {
+            image_container.removeAllViews()
+            uriSet.clear()
         }
     }
 
@@ -151,50 +154,33 @@ class ReviewCreateActivity :
             .min(1, R.string.min_msg)
             .max(4, R.string.max_msg)
             .errorListener { message -> Log.d("ted", "message: $message") }
-            .selectedUri(selectedUriList)
+            .selectedUri(uriSet.toList())
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
     }
 
     private fun showMultiImage(uris: List<Uri>) {
-        if (uriDataList.count() != 0) {
-            uriDataList.clear()
-        }
-        this.selectedUriList = uris.toMutableList()
-
         image_container.removeAllViews()
 
         uris.forEachIndexed { _, uri ->
-            val cl = LayoutInflater.from(this).inflate(
+            val vgImage = LayoutInflater.from(this).inflate(
                 R.layout.slider_item_image,
                 image_container,
                 false
-            ) as ConstraintLayout
-            image_container.addView(cl)
-            cl.image_item.run {
+            ) as ViewGroup
+            val ivImage = vgImage.findViewById<ImageView>(R.id.image_item)
+            val btnDelete = vgImage.findViewById<ImageButton>(R.id.btn_delete)
+            image_container.addView(vgImage)
+            ivImage.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
             }
 
-            cl.btn_delete.setOnClickListener {
-                image_container.removeView(cl)
-                if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.remove(uri)
-                if (uriList.count() != 0) {
-                    uriList.remove(uri.path)
+            btnDelete.setOnClickListener {
+                image_container.removeView(vgImage)
+                if (uriSet.isNotEmpty()) {
+                    uriSet.remove(uri)
                 }
             }
-
-            btn_image_clear.setOnClickListener {
-                image_container.removeAllViews()
-                if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAll(uris)
-                if (uriList.count() != 0) {
-                    uriList.clear()
-                }
-            }
-
-            uri.path?.let { uriDataList.add(it) }
-            val distinctData = uriDataList.distinct()
-            uriList = ArrayList(distinctData)
+            uriSet.addAll(uris)
         }
     }
 

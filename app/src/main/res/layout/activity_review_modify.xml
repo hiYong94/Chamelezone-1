@@ -124,7 +124,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.7"
-                    android:background="@color/transparent"
+                    android:paddingVertical="10dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_icon" />
 
                 <View
@@ -138,7 +139,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="0.7"
-                    android:background="@color/transparent"
+                    android:paddingVertical="10dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
                     android:src="@drawable/ic_x" />
 
                 <View

@@ -24,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/colorGray"
-            app:layout_constraintDimensionRatio="H,6:4"
+            app:layout_constraintDimensionRatio="H,4:3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -74,72 +74,19 @@
         <TextView
             android:id="@+id/keyword"
             tools:text="키워드"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="5dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:textColor="@color/colorBlack"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/place_name"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_marginStart="10dp"-->
-    <!--            android:orientation="vertical">-->
-
-    <!--            <LinearLayout-->
-    <!--                android:layout_width="wrap_content"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:orientation="horizontal"-->
-    <!--                android:weightSum="5">-->
-
-    <!--                        <TextView-->
-    <!--                            android:id="@+id/place_name"-->
-    <!--                            android:layout_width="0dp"-->
-    <!--                            android:layout_height="wrap_content"-->
-    <!--                            android:textColor="@color/colorBlack"-->
-    <!--                            android:textSize="13sp"-->
-    <!--                            android:paddingTop="3dp"-->
-    <!--                            android:paddingBottom="3dp"-->
-    <!--                            android:layout_weight="3.45"-->
-    <!--                            tools:text="장소이름"/>-->
-
-    <!--                <View-->
-    <!--                    android:layout_width="0dp"-->
-    <!--                    android:layout_height="0dp"-->
-    <!--                    android:layout_weight="0.1" />-->
-
-    <!--                        <TextView-->
-    <!--                            android:id="@+id/distance"-->
-    <!--                            android:layout_width="0dp"-->
-    <!--                            android:layout_height="match_parent"-->
-    <!--                            android:gravity="end"-->
-    <!--                            android:paddingTop="5dp"-->
-    <!--                            android:paddingEnd="5dp"-->
-    <!--                            android:textColor="@color/colorBlack"-->
-    <!--                            android:textSize="8.7dp"-->
-    <!--                            android:paddingBottom="3dp"-->
-    <!--                            android:layout_weight="1.45"-->
-    <!--                            tools:text="거리"/>-->
-
-    <!--            </LinearLayout>-->
-
-    <!--                    <TextView-->
-    <!--                        android:id="@+id/keyword"-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:textColor="@color/colorBlack"-->
-    <!--                        android:maxLines="1"-->
-    <!--                        android:ellipsize="end"-->
-    <!--                        android:textSize="10sp"-->
-    <!--                        android:paddingBottom="3dp"/>-->
-    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 </androidx.cardview.widget.CardView>
