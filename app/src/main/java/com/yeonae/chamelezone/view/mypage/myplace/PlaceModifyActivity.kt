@@ -10,7 +10,6 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.SpannableStringBuilder
 import android.text.TextWatcher
@@ -18,7 +17,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.gms.maps.model.LatLng
@@ -188,7 +190,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             18 to "010"
         )
         phoneMap.forEach {
-            if(phoneNumber[0] == it.value){
+            if (phoneNumber[0] == it.value) {
                 phone_spinner.setSelection(it.key)
             }
         }
@@ -208,8 +210,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_modify)
-
-        setupGUI()
 
         presenter = PlaceModifyPresenter(
             Injection.placeRepository(), this
@@ -233,14 +233,21 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(edt_phone_first.length() == 4){
+                if (edt_phone_first.length() == 4) {
                     edt_phone_second.requestFocus()
                 }
             }
         })
 
-        btn_back.setOnClickListener {
-            finish()
+        btn_image_create.setOnClickListener {
+            maxCheck()
+            if (!isCreated) {
+                isCreated = true
+                checkPermission()
+            }
+            Handler().postDelayed({
+                isCreated = false
+            }, 1000)
         }
 
         btn_image_clear.setOnClickListener {
@@ -249,6 +256,10 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             uriSet.clear()
             image_container.removeAllViews()
             deleteImageNumbers = imageNumbers
+        }
+
+        btn_back.setOnClickListener {
+            finish()
         }
 
         btn_opening_hour.setOnClickListener {
@@ -329,7 +340,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         }
     }
 
-    private fun updatePlace(placeNumber: Int, memberNumber: Int, phone:String) {
+    private fun updatePlace(placeNumber: Int, memberNumber: Int, phone: String) {
         showLoading()
         if (uriSet.isEmpty()) {
             presenter.updatePlace(
@@ -384,19 +395,6 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
             .errorListener { message -> Log.d("ted", "message: $message") }
             .selectedUri(uriSet.toList())
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
-    }
-
-    private fun setupGUI() {
-        btn_image_create.setOnClickListener {
-            maxCheck()
-            if (!isCreated) {
-                isCreated = true
-                checkPermission()
-            }
-            Handler().postDelayed({
-                isCreated = false
-            }, 1000)
-        }
     }
 
     private fun checkPermission() {
