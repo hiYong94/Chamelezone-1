@@ -213,7 +213,7 @@ class ReviewModifyActivity :
             }
         }
 
-        uris.forEachIndexed { index, uri ->
+        uris.forEachIndexed { _, uri ->
             val vgImage = LayoutInflater.from(this)
                 .inflate(
                     R.layout.slider_item_image,
