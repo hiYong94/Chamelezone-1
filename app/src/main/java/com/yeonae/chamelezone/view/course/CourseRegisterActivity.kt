@@ -10,14 +10,13 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.yeonae.chamelezone.Injection
 import com.yeonae.chamelezone.R
-import com.yeonae.chamelezone.data.model.Course
 import com.yeonae.chamelezone.data.model.PlaceItem
 import com.yeonae.chamelezone.ext.*
 import com.yeonae.chamelezone.network.room.entity.UserEntity
@@ -55,18 +54,18 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     }
 
     private fun showSingleImage(uri: Uri) {
-        imageContainer.removeAllViews()
-        val rlSlideImg = LayoutInflater.from(this).inflate(
-            R.layout.slider_item_image,
-            imageContainer,
+        image_container.removeAllViews()
+        val clSliderImg = LayoutInflater.from(this).inflate(
+            R.layout.slider_course_image,
+            image_container,
             false
-        ) as RelativeLayout
-        imageContainer.addView(rlSlideImg)
-        rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        ) as ConstraintLayout
+        image_container.addView(clSliderImg)
+        clSliderImg.findViewById<ImageView>(R.id.iv_item).run {
             glideImageSet(uri, measuredWidth, measuredHeight)
         }
-        rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
-            imageContainer.removeView(rlSlideImg)
+        clSliderImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            image_container.removeView(clSliderImg)
             imageUri = ""
         }
         if (!uri.path.isNullOrEmpty()) {
@@ -143,8 +142,10 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
                 placeNumbers.add(thirdPlaceNumber)
             }
             when {
-                "${edt_course_title.text}".trim().isEmpty() -> shortToast(R.string.enter_course_title)
-                "${edt_course_content.text}".trim().isEmpty() -> shortToast(R.string.enter_course_content)
+                "${edt_course_title.text}".trim()
+                    .isEmpty() -> shortToast(R.string.enter_course_title)
+                "${edt_course_content.text}".trim()
+                    .isEmpty() -> shortToast(R.string.enter_course_content)
                 tv_place_name1.text.isEmpty() -> shortToast(R.string.select_two_places)
                 tv_place_name2.text.isEmpty() -> shortToast(R.string.select_two_places)
                 imageUri.isEmpty() -> shortToast(R.string.enter_course_image)
@@ -260,7 +261,7 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
         btn_image_clear.setOnClickListener {
             imageUri = ""
-            imageContainer.removeAllViews()
+            image_container.removeAllViews()
         }
     }
 

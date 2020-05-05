@@ -75,4 +75,5 @@ interface PlaceRepository {
         longitude: String,
         callback: PlaceCallback<PlaceDuplicateResponse>
     )
+    fun getKeywordRank(callback: PlaceCallback<List<KeywordResponse>>)
 }

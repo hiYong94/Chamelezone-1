@@ -163,6 +163,10 @@ class PlaceRepositoryImpl private constructor(private val remoteDataSource: Plac
         remoteDataSource.checkPlace(name, latitude, longitude, callback)
     }
 
+    override fun getKeywordRank(callback: PlaceCallback<List<KeywordResponse>>) {
+        remoteDataSource.getKeywordRank(callback)
+    }
+
     companion object {
         fun getInstance(remoteDataSource: PlaceRemoteDataSource): PlaceRepository =
             PlaceRepositoryImpl(remoteDataSource)

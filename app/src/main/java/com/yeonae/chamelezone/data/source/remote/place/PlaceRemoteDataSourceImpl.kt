@@ -547,6 +547,24 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
             })
     }
 
+    override fun getKeywordRank(callback: PlaceCallback<List<KeywordResponse>>) {
+        keywordService.getKeywordRank().enqueue(object : Callback<List<KeywordResponse>> {
+            override fun onFailure(call: Call<List<KeywordResponse>>, t: Throwable) {
+                Log.e("tag", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<List<KeywordResponse>>,
+                response: Response<List<KeywordResponse>>
+            ) {
+                if (response.code() == Network.SUCCESS) {
+                    response.body()?.let { callback.onSuccess(it) }
+                }
+            }
+
+        })
+    }
+
     private fun bodyToString(request: RequestBody): String {
         return try {
             val buffer = Buffer()

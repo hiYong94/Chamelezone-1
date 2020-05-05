@@ -13,7 +13,7 @@ interface KeywordSearchContract {
     }
 
     interface Presenter {
-        fun getKeyword()
         fun searchByKeyword(keyword: String)
+        fun getKeywordRank()
     }
 }

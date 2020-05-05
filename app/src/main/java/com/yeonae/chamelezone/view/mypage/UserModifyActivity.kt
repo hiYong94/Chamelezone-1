@@ -27,8 +27,10 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     private var checkUserModify: Boolean = false
     override lateinit var presenter: UserModifyContract.Presenter
     var lastInputTime = 0L
+    private lateinit var originUser: UserEntity
 
     override fun showUserInfo(user: UserEntity) {
+        originUser = user
         nickname = user.nickname.toString()
         phone = user.phone.toString()
         val email = SpannableStringBuilder(user.email)
@@ -52,11 +54,18 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
                 nickname_layout.isErrorEnabled = false
                 checkedNickname = true
                 if (checkUserModify) {
-                    updateMember(
-                        "${user_password.text}",
-                        "${user_nickname.text}",
-                        "${user_phone.text}"
-                    )
+                    if ("${user_password.text}".isNullOrEmpty() &&
+                        "${user_nickname.text}" == originUser.nickname &&
+                        "${user_phone.text}" == originUser.phone
+                    ) {
+                        finish()
+                    } else {
+                        updateMember(
+                            "${user_password.text}",
+                            "${user_nickname.text}",
+                            "${user_phone.text}"
+                        )
+                    }
                 }
             } else {
                 nickname_layout.error = getString(R.string.registered_nickname)
@@ -146,7 +155,7 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     }
 
     private fun updateMember(password: String?, nickname: String, phone: String) {
-        if(!password_layout.isErrorEnabled){
+        if (!password_layout.isErrorEnabled) {
             presenter.updateMember(
                 memberNumber,
                 password,

@@ -11,13 +11,17 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.gms.maps.model.LatLng
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -51,6 +55,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private var uriDataList = arrayListOf<String>()
     private var selectedUriList = mutableListOf<Uri>()
     private var isClicked = false
+    private var phoneSpinner = ""
 
     override fun showPlaceMessage(placeCheck: String) {
         if (placeCheck == CHECK_YES) {
@@ -109,7 +114,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 R.layout.slider_item_image,
                 imageContainer,
                 false
-            ) as RelativeLayout
+            ) as ConstraintLayout
             imageContainer.addView(rlSlideImg)
             rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
@@ -152,6 +157,24 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
         edt_place_text.setTouchForScrollBars()
 
+        val phoneArray = resources.getStringArray(R.array.phone_array)
+        val phoneAdapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, phoneArray)
+        phone_spinner.adapter = phoneAdapter
+        phoneSpinner = phone_spinner.selectedItem.toString()
+
+        edt_phone_first.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                if(edt_phone_first.length() == 4){
+                    edt_phone_second.requestFocus()
+                }
+            }
+        })
+
         btn_place_check.setOnClickListener {
             when {
                 edt_place_name.text.isEmpty() -> shortToast(R.string.enter_place_name)
@@ -171,8 +194,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
         presenter.getUser()
         presenter.getKeyword()
-
-        edt_place_phone.addTextChangedListener(PhoneNumberFormattingTextWatcher())
 
         btn_back.setOnClickListener {
             finish()
@@ -195,12 +216,13 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
         }
 
         btn_register.setOnClickListener {
+            val phone = "$phoneSpinner-${edt_phone_first.text}-${edt_phone_second.text}"
             when {
                 "${edt_place_name.text}".trim().isEmpty() -> shortToast(R.string.enter_place_name)
                 tv_place_keyword.text.isEmpty() -> shortToast(R.string.enter_place_keyword)
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 tv_opening_time.text.isEmpty() -> shortToast(R.string.enter_place_opening_hours)
-                "${edt_place_phone.text}".trim().isEmpty() -> shortToast(R.string.enter_place_phone)
+                phone.trim().isEmpty() -> shortToast(R.string.enter_place_phone)
                 "${edt_place_text.text}".trim().isEmpty() -> shortToast(R.string.enter_place_content)
                 imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
                 selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
@@ -216,7 +238,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                             "${tv_place_address.text}",
                             "${edt_detail_address.text}",
                             openingHours,
-                            "${edt_place_phone.text}",
+                            phone,
                             "${edt_place_text.text}",
                             latitude.toBigDecimal(),
                             longitude.toBigDecimal(),
