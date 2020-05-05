@@ -204,7 +204,16 @@ class ReviewModifyActivity :
 
     private fun showMultiImage(uris: List<Uri>) {
 
-        uris.forEachIndexed { _, uri ->
+        if (uriSet.isNotEmpty()) {
+            if (!uris.containsAll(uriSet)) {
+                image_container.removeViews(
+                    imageNumbers.count() - deleteImageNumber.count(),
+                    uriSet.count() - uris.count()
+                )
+            }
+        }
+
+        uris.forEachIndexed { index, uri ->
             val vgImage = LayoutInflater.from(this)
                 .inflate(
                     R.layout.slider_item_image,
@@ -233,6 +242,9 @@ class ReviewModifyActivity :
                 }
             }
         }
+        if (uriSet.isNotEmpty()) {
+            uriSet.clear()
+        }
         uriSet.addAll(uris)
     }
 
@@ -240,7 +252,7 @@ class ReviewModifyActivity :
         when (savedImages.size) {
             0 -> {
                 max = 4
-                min = 2
+                min = 1
             }
             1 -> {
                 max = 3
