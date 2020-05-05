@@ -77,8 +77,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course_register)
 
-        setupGUI()
-
         presenter = CourseRegisterPresenter(
             Injection.memberRepository(), Injection.courseRepository(), this
         )
@@ -89,6 +87,15 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
         btn_back.setOnClickListener {
             finish()
+        }
+
+        btn_image_create.setOnClickListener {
+            checkPermission()
+        }
+
+        btn_image_clear.setOnClickListener {
+            imageUri = ""
+            image_container.removeAllViews()
         }
 
         btn_place_add1.setOnClickListener {
@@ -252,17 +259,6 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
     private fun setNormalSingleButton() {
         TedImagePicker.with(this)
             .start { uri -> showSingleImage(uri) }
-    }
-
-    private fun setupGUI() {
-        btn_image_create.setOnClickListener {
-            checkPermission()
-        }
-
-        btn_image_clear.setOnClickListener {
-            imageUri = ""
-            image_container.removeAllViews()
-        }
     }
 
     private fun checkPermission() {

@@ -10,18 +10,17 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.gms.maps.model.LatLng
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
@@ -52,8 +51,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     private lateinit var latLng: LatLng
     lateinit var latitude: String
     lateinit var longitude: String
-    private var uriDataList = arrayListOf<String>()
-    private var selectedUriList = mutableListOf<Uri>()
+    private val uriSet = mutableSetOf<Uri>()
     private var isClicked = false
     private var phoneSpinner = ""
 
@@ -105,35 +103,42 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     }
 
     private fun showMultiImage(uris: List<Uri>) {
-        if (uriDataList.count() != 0)
-            uriDataList.clear()
-        this.selectedUriList = uris.toMutableList()
-        imageContainer.removeAllViews()
-        uris.forEach { uri ->
-            val rlSlideImg = LayoutInflater.from(this).inflate(
-                R.layout.slider_item_image,
-                imageContainer,
-                false
-            ) as ConstraintLayout
-            imageContainer.addView(rlSlideImg)
-            rlSlideImg.findViewById<ImageView>(R.id.image_item).run {
+        image_container.removeAllViews()
+        if (uriSet.isNotEmpty()) {
+            uriSet.clear()
+        }
+        uris.forEachIndexed { _, uri ->
+            val viewGroup = LayoutInflater.from(this)
+                .inflate(
+                    R.layout.slider_item_image,
+                    image_container,
+                    false
+                ) as ViewGroup
+            val ivImage = viewGroup.findViewById<ImageView>(R.id.image_item)
+            val btnDelete = viewGroup.findViewById<ImageButton>(R.id.btn_delete)
+
+            ivImage.run {
                 glideImageSet(uri, measuredWidth, measuredHeight)
-            }
-            rlSlideImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
-                imageContainer.removeView(rlSlideImg)
-                if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.remove(uri)
+                if (uriSet.isNotEmpty()) {
+                    if (!uriSet.contains(uri)) {
+                        image_container.addView(viewGroup)
+                    }
+                } else {
+                    image_container.addView(viewGroup)
+                }
             }
 
-            btn_image_clear.setOnClickListener {
-                imageContainer.removeAllViews()
-                if (this.selectedUriList.count() != 0)
-                    this.selectedUriList.removeAll(uris)
+            btnDelete.setOnClickListener {
+                image_container.removeView(viewGroup)
+                if (uriSet.isNotEmpty()) {
+                    uriSet.remove(uri)
+                }
             }
-            uri.path?.let { uriDataList.add(it) }
-            val distinctData = uriDataList.distinct()
-            imageUri = ArrayList(distinctData)
         }
+        if (uriSet.isNotEmpty()) {
+            uriSet.clear()
+        }
+        uriSet.addAll(uris)
     }
 
     override fun showMessage(message: String) {
@@ -148,8 +153,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_place_register)
-
-        setupGUI()
 
         presenter = PlacePresenter(
             Injection.memberRepository(), Injection.placeRepository(), this
@@ -169,7 +172,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(edt_phone_first.length() == 4){
+                if (edt_phone_first.length() == 4) {
                     edt_phone_second.requestFocus()
                 }
             }
@@ -194,6 +197,21 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
 
         presenter.getUser()
         presenter.getKeyword()
+
+        btn_image_create.setOnClickListener {
+            if (!isCreated) {
+                isCreated = true
+                checkPermission()
+            }
+            Handler().postDelayed({
+                isCreated = false
+            }, 1000)
+        }
+
+        btn_image_clear.setOnClickListener {
+            uriSet.clear()
+            image_container.removeAllViews()
+        }
 
         btn_back.setOnClickListener {
             finish()
@@ -223,11 +241,11 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 tv_place_address.text.isEmpty() -> shortToast(R.string.enter_place_address)
                 tv_opening_time.text.isEmpty() -> shortToast(R.string.enter_place_opening_hours)
                 phone.trim().isEmpty() -> shortToast(R.string.enter_place_phone)
-                "${edt_place_text.text}".trim().isEmpty() -> shortToast(R.string.enter_place_content)
-                imageUri.isEmpty() -> shortToast(R.string.enter_place_image)
+                "${edt_place_text.text}".trim()
+                    .isEmpty() -> shortToast(R.string.enter_place_content)
+                uriSet.isEmpty() -> shortToast(R.string.enter_place_image)
                 selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
                 else -> {
-                    Log.d("imageUri", imageUri.toString())
                     showLoading()
                     if (!isClicked) {
                         isClicked = true
@@ -242,7 +260,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                             "${edt_place_text.text}",
                             latitude.toBigDecimal(),
                             longitude.toBigDecimal(),
-                            imageUri
+                            uriSet.map { it.toString().replace("file://", "") }
                         )
                         Handler().postDelayed({
                             isClicked = false
@@ -300,21 +318,9 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
             .min(2, R.string.min_msg)
             .max(4, R.string.max_msg)
             .errorListener { message -> Log.d("ted", "message: $message") }
-            .selectedUri(selectedUriList)
+            .selectedUri(uriSet.toList())
             .startMultiImage { list: List<Uri> -> showMultiImage(list) }
 
-    }
-
-    private fun setupGUI() {
-        btn_image_create.setOnClickListener {
-            if (!isCreated) {
-                isCreated = true
-                checkPermission()
-            }
-            Handler().postDelayed({
-                isCreated = false
-            }, 1000)
-        }
     }
 
     private fun checkPermission() {
