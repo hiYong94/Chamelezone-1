@@ -155,6 +155,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:gravity="center"
                     android:text="@string/select_two_places"
                     android:textColor="@color/darkGray" />
@@ -163,7 +164,7 @@
                     android:id="@+id/layout_place_add1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/draw"
                     android:visibility="gone">
 
