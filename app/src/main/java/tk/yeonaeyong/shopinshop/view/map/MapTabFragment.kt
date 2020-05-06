@@ -45,6 +45,17 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
     private lateinit var currentLocation: Location
     private lateinit var currentLatLng: LatLng
     private lateinit var locationCallBack: LocationCallback
+    private lateinit var listener: HomeTabListener
+
+    interface HomeTabListener {
+        fun homeTabVisible()
+        fun homeTabInvisible()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = (context as HomeTabListener)
+    }
 
     override fun showMessage(message: String) {
         context?.shortToast(message)
@@ -263,12 +274,12 @@ class MapTabFragment : Fragment(), OnMapReadyCallback, MapContract.View,
                 if (keypadHeight > screenHeight * 0.15) {
                     if (!isKeyboardShowing) {
                         isKeyboardShowing = true
-                        (activity as HomeActivity).tabInvisible()
+                        listener.homeTabInvisible()
                     }
                 } else {
                     if (isKeyboardShowing) {
                         isKeyboardShowing = false
-                        (activity as HomeActivity).tabVisible()
+                        listener.homeTabVisible()
                     }
                 }
             } catch (e: Exception) {

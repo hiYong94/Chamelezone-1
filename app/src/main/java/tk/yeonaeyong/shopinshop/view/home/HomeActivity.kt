@@ -16,7 +16,7 @@ import tk.yeonaeyong.shopinshop.view.like.LikeTabFragment
 import tk.yeonaeyong.shopinshop.view.map.MapTabFragment
 import tk.yeonaeyong.shopinshop.view.mypage.MypageTabFragment
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), MapTabFragment.HomeTabListener {
     var tabList = arrayOf<String>()
     private var time: Long = 0
 
@@ -158,14 +158,6 @@ class HomeActivity : AppCompatActivity() {
         supportFragmentManager.popBackStack()
     }
 
-    fun tabVisible() {
-        tabLayout.visibility = View.VISIBLE
-    }
-
-    fun tabInvisible() {
-        tabLayout.visibility = View.INVISIBLE
-    }
-
     override fun onBackPressed() {
         if (System.currentTimeMillis() > time + 2000) {
             time = System.currentTimeMillis()
@@ -175,5 +167,13 @@ class HomeActivity : AppCompatActivity() {
         if (System.currentTimeMillis() <= time + 2000) {
             finish()
         }
+    }
+
+    override fun homeTabVisible() {
+        tabLayout.visibility = View.VISIBLE
+    }
+
+    override fun homeTabInvisible() {
+        tabLayout.visibility = View.INVISIBLE
     }
 }
