@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.yeonae.chamelezone.view.home.NonSwipeViewPager
+        <tk.yeonaeyong.shopinshop.view.home.NonSwipeViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -24,7 +24,7 @@
             android:layout_marginTop="0dp"
             android:layout_marginEnd="0dp">
 
-        </com.yeonae.chamelezone.view.home.NonSwipeViewPager>
+        </tk.yeonaeyong.shopinshop.view.home.NonSwipeViewPager>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"

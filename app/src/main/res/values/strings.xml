@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Chamelezone</string>
+    <string name="app_name">#inshop</string>
     <string name="file_provider" translatable="false">com.kroegerama.imgpicker.demo.fileprovider</string>
     <string name="pick_single">Please select your image</string>
     <plurals name="pick_multi">

@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:624101478892:android:bb415a8595736f7fc270c9",
+        "mobilesdk_app_id": "1:624101478892:android:40bfc8e397ffe7bcc270c9",
         "android_client_info": {
-          "package_name": "com.yeonae.chamelezone"
+          "package_name": "tk.yeonaeyong.shopinshop"
         }
       },
       "oauth_client": [
         {
-          "client_id": "624101478892-mheh9n0unfcbiar85lf3m9dnctbbvtvh.apps.googleusercontent.com",
+          "client_id": "624101478892-lnggpppnmo8nbags86hai1h2ch18d7rn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.yeonae.chamelezone",
+            "package_name": "tk.yeonaeyong.shopinshop",
             "certificate_hash": "3050607191289449e8da0febc8fb260881a6e12c"
           }
         },
