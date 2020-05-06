@@ -9,7 +9,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.yeonae.chamelezone"
+        applicationId "tk.yeonaeyong.shopinshop"
         minSdkVersion 24
         targetSdkVersion 29
         versionCode 1
@@ -80,12 +80,12 @@ dependencies {
     implementation 'com.kroegerama:android-kaiteki:2.7.1'
 
     // room
-    implementation "androidx.room:room-runtime:2.2.3"
-    kapt "androidx.room:room-compiler:2.2.3"
+    implementation "androidx.room:room-runtime:2.2.5"
+    kapt "androidx.room:room-compiler:2.2.5"
 
     //swipe
     implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
 
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
-    implementation 'com.google.firebase:firebase-crashlytics:17.0.0-beta01'
+    implementation 'com.google.firebase:firebase-crashlytics:17.0.0'
 }
