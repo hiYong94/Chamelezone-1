@@ -10,6 +10,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import tk.yeonaeyong.shopinshop.App
 import tk.yeonaeyong.shopinshop.R
+import tk.yeonaeyong.shopinshop.data.Network.REQUEST_ERR
+import tk.yeonaeyong.shopinshop.data.Network.SUCCESS
 import tk.yeonaeyong.shopinshop.data.repository.course.CourseCallback
 import tk.yeonaeyong.shopinshop.network.api.CourseApi
 import tk.yeonaeyong.shopinshop.network.api.RetrofitConnection.courseService
@@ -283,8 +285,6 @@ class CourseRemoteDataSourceImpl private constructor(private val courseApi: Cour
     }
 
     companion object {
-        private const val SUCCESS = 200
-        private const val REQUEST_ERR = 404
         fun getInstance(courseApi: CourseApi): CourseRemoteDataSource =
             CourseRemoteDataSourceImpl(
                 courseApi

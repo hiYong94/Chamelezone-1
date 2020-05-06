@@ -12,6 +12,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import tk.yeonaeyong.shopinshop.App
 import tk.yeonaeyong.shopinshop.R
+import tk.yeonaeyong.shopinshop.data.Network.REQUEST_ERR
 import tk.yeonaeyong.shopinshop.data.Network.SUCCESS
 import tk.yeonaeyong.shopinshop.data.repository.place.PlaceCallback
 import tk.yeonaeyong.shopinshop.network.api.PlaceApi
@@ -562,8 +563,6 @@ class PlaceRemoteDataSourceImpl private constructor(private val placeApi: PlaceA
     }
 
     companion object {
-        private const val REQUEST_ERR = 404
-
         fun getInstance(placeApi: PlaceApi): PlaceRemoteDataSource =
             PlaceRemoteDataSourceImpl(
                 placeApi

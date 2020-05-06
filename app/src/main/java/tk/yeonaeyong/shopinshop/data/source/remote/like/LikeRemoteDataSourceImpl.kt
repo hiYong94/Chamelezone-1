@@ -7,6 +7,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import tk.yeonaeyong.shopinshop.App
 import tk.yeonaeyong.shopinshop.R
+import tk.yeonaeyong.shopinshop.data.Network.REQUEST_ERR
+import tk.yeonaeyong.shopinshop.data.Network.SUCCESS
 import tk.yeonaeyong.shopinshop.data.repository.like.LikeCallback
 import tk.yeonaeyong.shopinshop.network.api.LikeApi
 import tk.yeonaeyong.shopinshop.network.api.RetrofitConnection.likeService
@@ -85,8 +87,6 @@ class LikeRemoteDataSourceImpl private constructor(private val likeApi: LikeApi)
     }
 
     companion object {
-        private const val SUCCESS = 200
-        private const val REQUEST_ERR = 404
         fun getInstance(likeApi: LikeApi): LikeRemoteDataSource =
             LikeRemoteDataSourceImpl(
                 likeApi
