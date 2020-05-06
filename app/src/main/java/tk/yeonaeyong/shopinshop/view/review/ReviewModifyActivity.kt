@@ -119,9 +119,9 @@ class ReviewModifyActivity :
             when {
                 edt_review.text.isEmpty() || edt_review.text.isBlank() -> shortToast(R.string.review_content)
                 uriSet.isEmpty() && savedImages.isEmpty() -> shortToast(R.string.review_image)
-                ((imageNumbers.count() - deleteImageNumber.count()) + uriSet.count() > 4) -> shortToast(
-                    R.string.review_image_max
-                )
+                (imageNumbers.count() - deleteImageNumber.count() + uriSet.count() > 4) -> {
+                    shortToast(R.string.review_image_max)
+                }
                 else -> {
                     showLoading()
                     if (!isCreated) {

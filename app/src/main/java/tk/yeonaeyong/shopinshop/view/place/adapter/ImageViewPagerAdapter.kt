@@ -1,24 +1,24 @@
 package tk.yeonaeyong.shopinshop.view.place.adapter
 
-import android.content.Intent
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.viewpager.widget.PagerAdapter
 import kotlinx.android.synthetic.main.slider_image.view.*
 import tk.yeonaeyong.shopinshop.R
 import tk.yeonaeyong.shopinshop.ext.glideImageSet
-import tk.yeonaeyong.shopinshop.view.place.PlaceDetailActivity.Companion.MEMBER_NUMBER
-import tk.yeonaeyong.shopinshop.view.place.PlaceDetailActivity.Companion.PLACE_NUMBER
-import tk.yeonaeyong.shopinshop.view.place.PlaceImageDetailActivity
 
-class ImageViewPagerAdapter(
-    val images: List<String>,
-    private val placeNumber: Int,
-    private val memberNumber: Int
-) : PagerAdapter() {
+class ImageViewPagerAdapter(val images: List<String>) : PagerAdapter() {
+
+    private lateinit var onClickListener: OnClickListener
+
+    interface OnClickListener {
+        fun onClick(position: Int)
+    }
+
+    fun setOnClickListener(listener: OnClickListener) {
+        onClickListener = listener
+    }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
         return view == `object`
@@ -38,11 +38,7 @@ class ImageViewPagerAdapter(
         container.addView(view)
 
         view.setOnClickListener {
-            val intent = Intent(container.context, PlaceImageDetailActivity::class.java)
-            val data = intent.apply { putExtra(POSITION, position) }
-            intent.putExtra(PLACE_NUMBER, placeNumber)
-            intent.putExtra(MEMBER_NUMBER, memberNumber)
-            startActivity(container.context, data, Bundle())
+            onClickListener.onClick(position)
         }
 
         return view
@@ -54,10 +50,6 @@ class ImageViewPagerAdapter(
 
     override fun getCount(): Int =
         images.size
-
-    companion object {
-        const val POSITION = "position"
-    }
 }
 
 

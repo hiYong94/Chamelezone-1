@@ -15,10 +15,18 @@ import tk.yeonaeyong.shopinshop.view.mypage.myreview.MyReviewDetailActivity.Comp
 import tk.yeonaeyong.shopinshop.view.mypage.myreview.MyReviewImageDetailActivity
 
 class ReviewImageVpAdapter(
-    private val images: List<String>,
-    private val placeNumber: Int,
-    private val reviewNumber: Int
+    private val images: List<String>
 ) : PagerAdapter() {
+
+    private lateinit var onClickListener: OnClickListener
+
+    interface OnClickListener {
+        fun onClick(position: Int)
+    }
+
+    fun setOnClickListener(listener: OnClickListener) {
+        onClickListener = listener
+    }
 
     override fun isViewFromObject(view: View, obj: Any): Boolean =
         view == obj
@@ -34,11 +42,7 @@ class ReviewImageVpAdapter(
         container.addView(view)
 
         view.setOnClickListener {
-            val intent = Intent(container.context, MyReviewImageDetailActivity::class.java)
-            val data = intent.apply { putExtra(POSITION, position) }
-            intent.putExtra(PLACE_NUMBER, placeNumber)
-            intent.putExtra(REVIEW_NUMBER, reviewNumber)
-            startActivity(container.context, data, Bundle())
+            onClickListener.onClick(position)
         }
         return view
     }
@@ -48,8 +52,4 @@ class ReviewImageVpAdapter(
 
     override fun getCount(): Int =
         images.size
-
-    companion object {
-        const val POSITION = "position"
-    }
 }
