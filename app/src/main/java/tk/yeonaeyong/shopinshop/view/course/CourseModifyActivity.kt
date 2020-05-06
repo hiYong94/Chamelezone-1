@@ -10,6 +10,7 @@ import android.os.Handler
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -61,17 +62,17 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
         edt_course_content.text = SpannableStringBuilder(courseList[0].content)
 
         image_container.removeAllViews()
-        val clSliderImg = LayoutInflater.from(this).inflate(
+        val viewGroup = LayoutInflater.from(this).inflate(
             R.layout.slider_course_image,
             image_container,
             false
-        ) as ConstraintLayout
-        image_container.addView(clSliderImg)
-        clSliderImg.findViewById<ImageView>(R.id.iv_item).run {
+        ) as ViewGroup
+        image_container.addView(viewGroup)
+        viewGroup.findViewById<ImageView>(R.id.iv_item).run {
             glideImageSet(IMAGE_RESOURCE + courseList[0].courseImage, measuredWidth, measuredHeight)
         }
-        clSliderImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
-            image_container.removeView(clSliderImg)
+        viewGroup.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            image_container.removeView(viewGroup)
             imageUri = ""
             savedImageName = ""
         }
@@ -135,17 +136,17 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     private fun showSingleImage(uri: Uri) {
         savedImageName = ""
         image_container.removeAllViews()
-        val clSliderImg = LayoutInflater.from(this).inflate(
+        val viewGroup = LayoutInflater.from(this).inflate(
             R.layout.slider_course_image,
             image_container,
             false
-        ) as ConstraintLayout
-        image_container.addView(clSliderImg)
-        clSliderImg.findViewById<ImageView>(R.id.iv_item).run {
+        ) as ViewGroup
+        image_container.addView(viewGroup)
+        viewGroup.findViewById<ImageView>(R.id.iv_item).run {
             glideImageSet(uri, measuredWidth, measuredHeight)
         }
-        clSliderImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
-            image_container.removeView(clSliderImg)
+        viewGroup.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            image_container.removeView(viewGroup)
             imageUri = ""
             savedImageName = ""
         }

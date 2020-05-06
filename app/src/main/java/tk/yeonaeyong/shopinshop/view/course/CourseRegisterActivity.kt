@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -55,17 +56,17 @@ class CourseRegisterActivity : AppCompatActivity(), CourseRegisterContract.View,
 
     private fun showSingleImage(uri: Uri) {
         image_container.removeAllViews()
-        val clSliderImg = LayoutInflater.from(this).inflate(
+        val viewGroup = LayoutInflater.from(this).inflate(
             R.layout.slider_course_image,
             image_container,
             false
-        ) as ConstraintLayout
-        image_container.addView(clSliderImg)
-        clSliderImg.findViewById<ImageView>(R.id.iv_item).run {
+        ) as ViewGroup
+        image_container.addView(viewGroup)
+        viewGroup.findViewById<ImageView>(R.id.iv_item).run {
             glideImageSet(uri, measuredWidth, measuredHeight)
         }
-        clSliderImg.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
-            image_container.removeView(clSliderImg)
+        viewGroup.findViewById<ImageView>(R.id.btn_delete).setOnClickListener {
+            image_container.removeView(viewGroup)
             imageUri = ""
         }
         if (!uri.path.isNullOrEmpty()) {
