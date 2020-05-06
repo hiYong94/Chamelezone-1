@@ -52,12 +52,18 @@ class PlaceDetailActivity :
         }
         val memberNumber = memberNumber ?: 0
         imageAdapter =
-            ImageViewPagerAdapter(
-                images,
-                placeNumber,
-                memberNumber
-            )
+            ImageViewPagerAdapter(images)
         vp_image.adapter = imageAdapter
+
+        imageAdapter.setOnClickListener(object : ImageViewPagerAdapter.OnClickListener {
+            override fun onClick(position: Int) {
+                val intent = Intent(applicationContext, PlaceImageDetailActivity::class.java)
+                val data = intent.apply { putExtra(POSITION, position) }
+                intent.putExtra(PLACE_NUMBER, placeNumber)
+                intent.putExtra(MEMBER_NUMBER, memberNumber)
+                startActivity(data)
+            }
+        })
 
         if (memberNumber == null) {
             btn_like.setOnClickListener {
@@ -150,5 +156,6 @@ class PlaceDetailActivity :
         private const val PLACE_NAME = "placeName"
         const val PLACE_NUMBER = "placeNumber"
         const val MEMBER_NUMBER = "memberNumber"
+        const val POSITION = "position"
     }
 }
