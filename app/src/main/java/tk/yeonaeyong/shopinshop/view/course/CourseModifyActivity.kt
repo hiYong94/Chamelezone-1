@@ -40,7 +40,7 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     private var isCreated = false
     private var imageNumber: Int = 0
     private var savedImageName: String = ""
-    private var originCourseList = listOf<CourseResponse>()
+    private val originCourseList = mutableListOf<CourseResponse>()
 
     override fun showMessage(response: Boolean) {
         if (response) {
@@ -53,7 +53,9 @@ class CourseModifyActivity : AppCompatActivity(), CourseModifyContract.View,
     }
 
     override fun showCourseDetail(courseList: List<CourseResponse>) {
-        originCourseList = courseList
+        courseList.forEach {
+            originCourseList.add(it)
+        }
         savedImageName = courseList[0].courseImage
         firstPlaceNumber = courseList[0].placeNumber
         secondPlaceNumber = courseList[1].placeNumber
