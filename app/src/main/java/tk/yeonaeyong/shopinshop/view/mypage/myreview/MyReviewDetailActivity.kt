@@ -1,5 +1,6 @@
 package tk.yeonaeyong.shopinshop.view.mypage.myreview
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -24,13 +25,20 @@ class MyReviewDetailActivity : AppCompatActivity(), MyReviewDetailContract.View 
         reviewImages.forEachIndexed { index, _ ->
             imageList.add(IMAGE_RESOURCE + reviewImages[index])
         }
-        Log.d("imageList imageList reviewImages", reviewImages.toString())
-        Log.d("imageList imageList imageList", imageList.toString())
-
-        imagePagerAdapter = ReviewImageVpAdapter(imageList, placeNumber, reviewNumber)
+        imagePagerAdapter = ReviewImageVpAdapter(imageList)
 
         if (::imagePagerAdapter.isInitialized)
             vp_image.adapter = imagePagerAdapter
+
+        imagePagerAdapter.setOnClickListener(object : ReviewImageVpAdapter.OnClickListener {
+            override fun onClick(position: Int) {
+                val intent = Intent(applicationContext, MyReviewImageDetailActivity::class.java)
+                val data = intent.apply { putExtra(POSITION, position) }
+                intent.putExtra(PLACE_NUMBER, placeNumber)
+                intent.putExtra(REVIEW_NUMBER, reviewNumber)
+                startActivity(data)
+            }
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +52,8 @@ class MyReviewDetailActivity : AppCompatActivity(), MyReviewDetailContract.View 
         )
 
         presenter.getMyReviewDetail(placeNumber, reviewNumber)
+
+
 
         tv_place_title.text = intent.getStringExtra(PLACE_NAME)
         tv_content.text = intent.getStringExtra(REVIEW_CONTENT)
@@ -60,5 +70,6 @@ class MyReviewDetailActivity : AppCompatActivity(), MyReviewDetailContract.View 
         const val REVIEW_CONTENT = "content"
         const val PLACE_NUMBER = "placeNumber"
         const val REVIEW_NUMBER = "reviewNumber"
+        const val POSITION = "position"
     }
 }
