@@ -8,6 +8,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import tk.yeonaeyong.shopinshop.App
 import tk.yeonaeyong.shopinshop.R
+import tk.yeonaeyong.shopinshop.data.Network.REQUEST_ERR
+import tk.yeonaeyong.shopinshop.data.Network.SUCCESS
 import tk.yeonaeyong.shopinshop.data.repository.member.MemberCallback
 import tk.yeonaeyong.shopinshop.network.api.MemberApi
 import tk.yeonaeyong.shopinshop.network.api.RetrofitConnection.memberService
@@ -288,8 +290,6 @@ class MemberRemoteDataSourceImpl private constructor(private val memberApi: Memb
         private const val NICKNAME = "nickName"
         private const val PHONE = "phoneNumber"
         private const val SECURITY_CODE = "securityCode"
-        private const val SUCCESS = 200
-        private const val REQUEST_ERR = 404
         fun getInstance(memberApi: MemberApi): MemberRemoteDataSource =
             MemberRemoteDataSourceImpl(
                 memberApi
