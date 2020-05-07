@@ -138,6 +138,7 @@
                         android:layout_margin="10dp"
                         android:background="@null"
                         android:hint="@string/detail_address_hint"
+                        android:singleLine="true"
                         android:textColor="@color/colorBlack"
                         android:textColorHint="@color/lightGray"
                         android:textSize="15sp" />
@@ -250,6 +251,7 @@
                             android:background="@null"
                             android:gravity="center"
                             android:maxLength="4"
+                            android:singleLine="true"
                             android:textColor="@color/colorBlack"
                             android:textColorHint="@color/lightGray"
                             android:textSize="15sp" />
@@ -271,6 +273,7 @@
                             android:background="@null"
                             android:gravity="center"
                             android:maxLength="4"
+                            android:singleLine="true"
                             android:textColor="@color/colorBlack"
                             android:textColorHint="@color/lightGray"
                             android:textSize="15sp" />
