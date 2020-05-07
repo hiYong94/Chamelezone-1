@@ -5,6 +5,7 @@ import android.os.Handler
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
     private var checkedEmail: Boolean = false
     private var checkedNickname: Boolean = false
     override lateinit var presenter: JoinContract.Presenter
+    private var checkButton: Boolean = false
 
     override fun showNicknameMessage(nicknameCheck: String) {
         if (nicknameCheck == CHECK_YES) {
@@ -27,8 +29,9 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
         } else if (nicknameCheck == CHECK_NO) {
             nickname_layout.error = getString(R.string.registered_nickname)
             checkedNickname = false
+            checkButton = false
         }
-        if (checkedEmail && checkedNickname) {
+        if (checkedEmail && checkedNickname && checkButton) {
             joinCheck(
                 "${join_email.text}",
                 "${join_password.text}",
@@ -47,9 +50,10 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
         } else if (emailCheck == CHECK_NO) {
             email_layout.error = getString(R.string.registered_email)
             checkedNickname = false
+            checkButton = false
         }
 
-        if (checkedEmail && checkedNickname) {
+        if (checkedEmail && checkedNickname && checkButton) {
             joinCheck(
                 "${join_email.text}",
                 "${join_password.text}",
@@ -141,8 +145,19 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
                 Toast.LENGTH_SHORT
             ).show()
             else -> {
-                presenter.checkEmail("${join_email.text}")
-                presenter.checkNickname("${join_nickname.text}")
+                if (checkedEmail && checkedNickname) {
+                    joinCheck(
+                        "${join_email.text}",
+                        "${join_password.text}",
+                        "${join_name.text}",
+                        "${join_nickname.text}",
+                        "${join_phone.text}"
+                    )
+                } else {
+                    checkButton = true
+                    presenter.checkEmail("${join_email.text}")
+                    presenter.checkNickname("${join_nickname.text}")
+                }
             }
         }
     }
@@ -154,23 +169,15 @@ class JoinActivity : AppCompatActivity(), JoinContract.View {
         nickName: String,
         phone: String
     ) {
-        when {
-            !checkedEmail ->
-                email_layout.error = getString(R.string.registered_email)
-            !checkedNickname ->
-                nickname_layout.error = getString(R.string.registered_nickname)
-            else -> {
-                if (!email_layout.isErrorEnabled &&
-                    !password_layout.isErrorEnabled &&
-                    !nickname_layout.isErrorEnabled &&
-                    checkedEmail &&
-                    checkedNickname
-                ) {
-                    presenter.userRegister(
-                        email, password, name, nickName, phone
-                    )
-                }
-            }
+        if (!email_layout.isErrorEnabled &&
+            !password_layout.isErrorEnabled &&
+            !nickname_layout.isErrorEnabled &&
+            checkedEmail &&
+            checkedNickname
+        ) {
+            presenter.userRegister(
+                email, password, name, nickName, phone
+            )
         }
     }
 
