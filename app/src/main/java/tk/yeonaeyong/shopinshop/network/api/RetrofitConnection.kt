@@ -24,4 +24,5 @@ object RetrofitConnection {
     val courseService = retrofit.create<CourseApi>(CourseApi::class.java)
     val keywordService = retrofit.create<KeywordApi>(KeywordApi::class.java)
     val likeService = retrofit.create<LikeApi>(LikeApi::class.java)
+    val versionService = retrofit.create<VersionApi>(VersionApi::class.java)
 }

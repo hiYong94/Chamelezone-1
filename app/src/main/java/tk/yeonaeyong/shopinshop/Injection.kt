@@ -10,12 +10,15 @@ import tk.yeonaeyong.shopinshop.data.repository.place.PlaceRepository
 import tk.yeonaeyong.shopinshop.data.repository.place.PlaceRepositoryImpl
 import tk.yeonaeyong.shopinshop.data.repository.review.ReviewRepository
 import tk.yeonaeyong.shopinshop.data.repository.review.ReviewRepositoryImpl
+import tk.yeonaeyong.shopinshop.data.repository.version.VersionRepository
+import tk.yeonaeyong.shopinshop.data.repository.version.VersionRepositoryImpl
 import tk.yeonaeyong.shopinshop.data.source.local.member.MemberLocalDataSourceImpl
 import tk.yeonaeyong.shopinshop.data.source.remote.course.CourseRemoteDataSourceImpl
 import tk.yeonaeyong.shopinshop.data.source.remote.like.LikeRemoteDataSourceImpl
 import tk.yeonaeyong.shopinshop.data.source.remote.member.MemberRemoteDataSourceImpl
 import tk.yeonaeyong.shopinshop.data.source.remote.place.PlaceRemoteDataSourceImpl
 import tk.yeonaeyong.shopinshop.data.source.remote.review.ReviewRemoteDataSourceImpl
+import tk.yeonaeyong.shopinshop.data.source.remote.version.VersionRemoteDataSourceImpl
 import tk.yeonaeyong.shopinshop.network.api.RetrofitConnection
 import tk.yeonaeyong.shopinshop.network.room.database.UserDatabase
 import tk.yeonaeyong.shopinshop.util.AppExecutors
@@ -56,6 +59,12 @@ object Injection {
     fun likeRepository(): LikeRepository {
         return LikeRepositoryImpl.getInstance(
             LikeRemoteDataSourceImpl.getInstance(RetrofitConnection.likeService)
+        )
+    }
+
+    fun versionRepository(): VersionRepository {
+        return VersionRepositoryImpl.getInstance(
+            VersionRemoteDataSourceImpl.getInstance(RetrofitConnection.versionService)
         )
     }
 }
