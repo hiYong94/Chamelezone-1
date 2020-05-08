@@ -5,6 +5,7 @@ interface StartContract {
         var presenter: Presenter
         fun showMessage(isSuccess: Boolean)
         fun showDialog(message: String)
+        fun showAppUpdateDialog(version: String)
     }
 
     interface Presenter {
@@ -14,5 +15,6 @@ interface StartContract {
         )
 
         fun logout()
+        fun getAppVersion()
     }
 }

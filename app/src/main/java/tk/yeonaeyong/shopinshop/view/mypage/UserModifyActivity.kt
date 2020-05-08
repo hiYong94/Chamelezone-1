@@ -46,14 +46,14 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
         if (nicknameCheck == CHECK_YES) {
             nickname_layout.isErrorEnabled = false
             checkedNickname = true
-            if (checkUserModify) {
+            if (checkUserModify && checkedNickname) {
                 updateMember("${user_password.text}", "${user_nickname.text}", "${user_phone.text}")
             }
         } else if (nicknameCheck == CHECK_NO) {
             if ("${user_nickname.text}" == nickname) {
                 nickname_layout.isErrorEnabled = false
                 checkedNickname = true
-                if (checkUserModify) {
+                if (checkUserModify && checkedNickname) {
                     if ("${user_password.text}".isNullOrEmpty() &&
                         "${user_nickname.text}" == originUser.nickname &&
                         "${user_phone.text}" == originUser.phone
@@ -70,6 +70,7 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
             } else {
                 nickname_layout.error = getString(R.string.registered_nickname)
                 checkedNickname = false
+                checkUserModify = false
             }
         }
     }
@@ -155,13 +156,22 @@ class UserModifyActivity : AppCompatActivity(), UserModifyContract.View {
     }
 
     private fun updateMember(password: String?, nickname: String, phone: String) {
-        if (!password_layout.isErrorEnabled) {
+        if ("${user_password.text}".isNullOrEmpty()) {
             presenter.updateMember(
                 memberNumber,
                 password,
                 nickname,
                 phone
             )
+        } else {
+            if (!password_layout.isErrorEnabled) {
+                presenter.updateMember(
+                    memberNumber,
+                    password,
+                    nickname,
+                    phone
+                )
+            }
         }
     }
 

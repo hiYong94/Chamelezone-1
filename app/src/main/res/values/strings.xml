@@ -203,6 +203,7 @@
     <string name="auto_login">자동 로그인</string>
     <string name="location_request">위치 권한이 필요합니다.</string>
     <string name="distance">km</string>
+    <string name="app_update">새로운 버전이 출시되었습니다.\n지금 업데이트 하시겠습니까?</string>
 
     <string name="min_msg">1개의 이미지를 더 선택해주세요.</string>
     <string name="max_msg">4개의 이미지만 선택 가능합니다.</string>
