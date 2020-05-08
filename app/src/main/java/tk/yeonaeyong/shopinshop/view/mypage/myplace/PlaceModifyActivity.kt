@@ -357,7 +357,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         } else {
             presenter.updatePlace(
                 placeNumber,
-                uriSet.map { it.toString().replace("file://", "") },
+                uriSet.map { it.path.toString().replace("file://", "") },
                 deleteImageNumbers,
                 memberNumber,
                 "${tv_place_address.text}",

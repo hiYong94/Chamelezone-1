@@ -127,7 +127,7 @@ class ReviewModifyActivity :
                     if (!isCreated) {
                         isCreated = true
                         presenter.modifyReview(
-                            uriSet.map { it.toString().replace("file://", "") },
+                            uriSet.map { it.path.toString().replace("file://", "") },
                             reviewNumber,
                             memberNumber,
                             placeNumber,

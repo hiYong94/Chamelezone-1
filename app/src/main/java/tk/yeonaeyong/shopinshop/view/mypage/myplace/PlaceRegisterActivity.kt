@@ -256,7 +256,7 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                         "${edt_place_text.text}",
                         latitude.toBigDecimal(),
                         longitude.toBigDecimal(),
-                        uriSet.map { it.toString().replace("file://", "") }
+                        uriSet.map { it.path.toString().replace("file://", "") }
                     )
                 }
             }
