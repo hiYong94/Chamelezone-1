@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import tk.yeonaeyong.shopinshop.Injection
-import tk.yeonaeyong.shopinshop.MultipleDialogFragment
 import tk.yeonaeyong.shopinshop.R
 import tk.yeonaeyong.shopinshop.SingleDialogFragment
 import tk.yeonaeyong.shopinshop.ext.Url.STORE_URL
@@ -28,10 +27,10 @@ class StartActivity : AppCompatActivity(), StartContract.View {
     override fun showAppUpdateDialog(version: String) {
         val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
         if (packageInfo.versionName != version) {
-            val newFragment = MultipleDialogFragment.newInstance(
+            val newFragment = AppUpdateDialogFragment.newInstance(
                 getString(R.string.app_update), object :
-                    MultipleDialogFragment.OnClickListener {
-                    override fun onClick() {
+                    AppUpdateDialogFragment.OnClickListener {
+                    override fun onOkClick() {
                         val marketLaunch = Intent(
                             Intent.ACTION_VIEW
                         )
@@ -39,6 +38,10 @@ class StartActivity : AppCompatActivity(), StartContract.View {
                             .parse(STORE_URL)
                         startActivity(marketLaunch)
                         finish()
+                    }
+
+                    override fun onCancelClick() {
+                        setting()
                     }
                 }
             )
