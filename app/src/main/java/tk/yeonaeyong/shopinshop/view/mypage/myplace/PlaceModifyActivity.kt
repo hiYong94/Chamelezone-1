@@ -306,7 +306,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                         latitude == originPlace.latitude &&
                         longitude == originPlace.longitude &&
                         phone == originPlace.phoneNumber &&
-                        "${edt_place_text.text}" == originPlace.content
+                        "${edt_place_text.text}" == originPlace.content &&
+                        savedImageList == originPlace.savedImageName
                     ) {
                         finish()
                     } else {
@@ -356,7 +357,7 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
         } else {
             presenter.updatePlace(
                 placeNumber,
-                uriSet.map { it.toString().replace("file://", "") },
+                uriSet.map { it.path.toString().replace("file://", "") },
                 deleteImageNumbers,
                 memberNumber,
                 "${tv_place_address.text}",

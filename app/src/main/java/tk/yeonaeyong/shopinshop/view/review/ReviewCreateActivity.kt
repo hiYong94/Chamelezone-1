@@ -79,7 +79,7 @@ class ReviewCreateActivity :
                             memberNumber,
                             placeNumber,
                             content,
-                            uriSet.map { it.toString().replace("file://", "") }
+                            uriSet.map { it.path.toString().replace("file://", "") }
                         )
                     }
                 }
