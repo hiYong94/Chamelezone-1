@@ -306,7 +306,8 @@ class PlaceModifyActivity : AppCompatActivity(), PlaceModifyContract.View,
                         latitude == originPlace.latitude &&
                         longitude == originPlace.longitude &&
                         phone == originPlace.phoneNumber &&
-                        "${edt_place_text.text}" == originPlace.content
+                        "${edt_place_text.text}" == originPlace.content &&
+                        savedImageList == originPlace.savedImageName
                     ) {
                         finish()
                     } else {

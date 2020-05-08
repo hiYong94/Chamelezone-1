@@ -40,7 +40,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     CheckDialogFragment.OnClickListener {
     override lateinit var presenter: PlaceContract.Presenter
     var memberNumber: Int = 0
-    private var imageUri = arrayListOf<String>()
     private var openingHours = ArrayList<String>()
     private var openingHoursPosition = ArrayList<String>()
     private val keywordMap = hashMapOf<Int, String>()
@@ -52,7 +51,6 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
     lateinit var latitude: String
     lateinit var longitude: String
     private val uriSet = mutableSetOf<Uri>()
-    private var isClicked = false
     private var phoneSpinner = ""
 
     override fun showPlaceMessage(placeCheck: String) {
@@ -247,25 +245,19 @@ class PlaceRegisterActivity : AppCompatActivity(), PlaceContract.View,
                 selectedKeyword.size == 1 -> shortToast(R.string.keyword_select)
                 else -> {
                     showLoading()
-                    if (!isClicked) {
-                        isClicked = true
-                        presenter.placeRegister(
-                            memberNumber,
-                            keywords,
-                            "${edt_place_name.text}",
-                            "${tv_place_address.text}",
-                            "${edt_detail_address.text}",
-                            openingHours,
-                            phone,
-                            "${edt_place_text.text}",
-                            latitude.toBigDecimal(),
-                            longitude.toBigDecimal(),
-                            uriSet.map { it.toString().replace("file://", "") }
-                        )
-                        Handler().postDelayed({
-                            isClicked = false
-                        }, 5000)
-                    }
+                    presenter.placeRegister(
+                        memberNumber,
+                        keywords,
+                        "${edt_place_name.text}",
+                        "${tv_place_address.text}",
+                        "${edt_detail_address.text}",
+                        openingHours,
+                        phone,
+                        "${edt_place_text.text}",
+                        latitude.toBigDecimal(),
+                        longitude.toBigDecimal(),
+                        uriSet.map { it.toString().replace("file://", "") }
+                    )
                 }
             }
         }
