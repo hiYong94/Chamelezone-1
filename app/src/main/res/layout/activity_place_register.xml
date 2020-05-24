@@ -1,295 +1,426 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:background="@color/colorWhite">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center_vertical">
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:padding="10dp"
+        android:src="@drawable/ic_keyboard_backspace_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:background="@color/transparent"
-            android:padding="20dp"
-            android:src="@drawable/ic_keyboard_backspace_black_24dp" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/place_create"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+        app:layout_constraintStart_toEndOf="@+id/btn_back"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="장소 등록"
-            android:textSize="20sp" />
+    <ImageButton
+        android:id="@+id/btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:padding="10dp"
+        android:src="@drawable/ic_check_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_back">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="end|center_vertical">
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw">
+
+                    <EditText
+                        android:id="@+id/edt_place_name"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@null"
+                        android:hint="@string/place_title_hint"
+                        android:maxLength="20"
+                        android:singleLine="true"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/tv_place_address"
+                        style="@style/EditTextStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:layout_weight="9"
+                        android:background="@null"
+                        android:hint="@string/address_hint"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/btn_address_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="10dp"
+                        android:text="검색" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/draw">
+
+                    <EditText
+                        android:id="@+id/edt_detail_address"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:background="@null"
+                        android:hint="@string/detail_address_hint"
+                        android:singleLine="true"
+                        android:textColor="@color/colorBlack"
+                        android:textColorHint="@color/lightGray"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/btn_register"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
-                android:padding="10dp"
-                android:text="등록"
-                android:textSize="20sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-            <LinearLayout
+                android:id="@+id/tv_check_place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/draw">
-
-                <EditText
-                    android:id="@+id/edt_place_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:hint="장소명을 입력하세요 (최대 20자)"
-                    android:maxLength="20"
-                    android:singleLine="true"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/registered_place_message"
+                android:textSize="14sp" />
 
             <LinearLayout
+                android:id="@+id/layout_check_place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/draw"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
                 android:weightSum="10">
 
-                <TextView
-                    android:id="@+id/tv_place_keyword"
+                <Button
+                    android:id="@+id/btn_place_check"
+                    style="@style/ButtonStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="9"
-                    android:background="@null"
-                    android:hint="키워드를 선택하세요"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/btn_category_choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="선택" />
-
+                    android:layout_weight="6"
+                    android:text="@string/check_place"
+                    android:textSize="14sp" />
             </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
 
             <LinearLayout
+                android:id="@+id/layout_add_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/draw"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <EditText
-                    android:id="@+id/edt_place_address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="9"
-                    android:background="@null"
-                    android:hint="주소를 검색하세요"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:id="@+id/btn_address_search"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:text="검색" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/draw">
-
-                <EditText
-                    android:id="@+id/edt_detail_address"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:hint="상세주소를 입력하세요"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="20dp">
 
-            </LinearLayout>
-        </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/draw"
+                        android:weightSum="10">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:weightSum="10">
+                        <TextView
+                            android:id="@+id/tv_place_keyword"
+                            style="@style/EditTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:layout_weight="9"
+                            android:background="@null"
+                            android:hint="@string/keyword_hint"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/lightGray"
+                            android:textSize="15sp" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="2"
-                android:text="영업시간"
-                android:textSize="15sp" />
+                        <TextView
+                            android:id="@+id/btn_category_choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:padding="10dp"
+                            android:text="선택" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:background="@drawable/draw"
-                android:weightSum="3">
+                    </LinearLayout>
+                </LinearLayout>
 
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:background="@drawable/draw"
-                android:weightSum="3">
-
-                <Spinner
-                    android:id="@+id/day_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Spinner
-                    android:id="@+id/open_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <Spinner
-                    android:id="@+id/close_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/draw">
-
-                <EditText
-                    android:id="@+id/edt_place_phone"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:hint="- 없이 번호만 입력하세요"
-                    android:textSize="15sp" />
+                    android:layout_marginTop="10dp"
+                    android:weightSum="10">
 
-            </LinearLayout>
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="9"
+                        android:padding="10dp"
+                        android:text="영업시간"
+                        android:textSize="15sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+                    <ImageButton
+                        android:id="@+id/btn_opening_hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?android:selectableItemBackgroundBorderless"
+                        android:padding="10dp"
+                        android:src="@drawable/ic_keyboard_arrow_right_24dp" />
+                </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/draw">
-
-                <EditText
-                    android:id="@+id/edt_place_text"
+                <TextView
+                    android:id="@+id/tv_opening_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:background="@null"
-                    android:gravity="top"
-                    android:hint="장소에 대한 설명을 입력하세요"
-                    android:lines="8"
-                    android:textSize="15sp" />
+                    android:padding="10dp"
+                    android:visibility="gone" />
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/draw"
+                        android:weightSum="3">
+
+                        <Spinner
+                            android:id="@+id/phone_spinner"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginBottom="7dp"
+                            android:background="@color/colorGray" />
+
+                        <EditText
+                            android:id="@+id/edt_phone_first"
+                            style="@style/EditTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:maxLength="4"
+                            android:singleLine="true"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/lightGray"
+                            android:textSize="15sp" />
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginBottom="7dp"
+                            android:background="@color/colorGray" />
+
+                        <EditText
+                            android:id="@+id/edt_phone_second"
+                            style="@style/EditTextStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="1"
+                            android:background="@null"
+                            android:gravity="center"
+                            android:maxLength="4"
+                            android:singleLine="true"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/lightGray"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/draw">
+
+                        <EditText
+                            android:id="@+id/edt_place_text"
+                            style="@style/EditTextStyle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="10dp"
+                            android:background="@null"
+                            android:gravity="top"
+                            android:hint="@string/place_detail_description_hint"
+                            android:lines="8"
+                            android:textColor="@color/colorBlack"
+                            android:textColorHint="@color/lightGray"
+                            android:textSize="15sp" />
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="5">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="사진"
+                            android:textSize="15sp" />
+
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2.7" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.8"
+                            android:orientation="horizontal"
+                            android:weightSum="3">
+
+                            <ImageButton
+                                android:id="@+id/btn_image_create"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.4"
+                                android:background="@color/transparent"
+                                android:src="@drawable/ic_icon" />
+
+                            <ImageButton
+                                android:id="@+id/btn_image_clear"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1.4"
+                                android:background="@color/transparent"
+                                android:src="@drawable/ic_x" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <HorizontalScrollView
+                        android:id="@+id/scrollView"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/colorWhite"
+                        android:clipToPadding="false"
+                        android:paddingStart="8dp"
+                        android:paddingTop="16dp"
+                        android:paddingEnd="0dp"
+                        android:paddingBottom="16dp"
+                        android:scrollbarStyle="outsideOverlay">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:weightSum="5">
+
+                            <LinearLayout
+                                android:id="@+id/image_container"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="4.2"
+                                android:orientation="horizontal" />
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="0.8" />
+
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="사진"
-            android:textSize="15sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:gravity="center">
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-        </LinearLayout>
-
-    </LinearLayout>
-</LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

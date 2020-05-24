@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "624101478892",
+    "firebase_url": "https://chamelezone-f0cb6.firebaseio.com",
+    "project_id": "chamelezone-f0cb6",
+    "storage_bucket": "chamelezone-f0cb6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:624101478892:android:40bfc8e397ffe7bcc270c9",
+        "android_client_info": {
+          "package_name": "tk.yeonaeyong.shopinshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "624101478892-lnggpppnmo8nbags86hai1h2ch18d7rn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "tk.yeonaeyong.shopinshop",
+            "certificate_hash": "3050607191289449e8da0febc8fb260881a6e12c"
+          }
+        },
+        {
+          "client_id": "624101478892-b0g1p1emtmkfmr7sma7n44epgae4vlim.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcS2-Tc_1MN-ayVyycUgL8L6S7TBn1kB4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "624101478892-b0g1p1emtmkfmr7sma7n44epgae4vlim.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

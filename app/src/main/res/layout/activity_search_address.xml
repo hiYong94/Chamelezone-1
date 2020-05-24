@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
+    android:weightSum="5"
     android:orientation="vertical">
 
     <WebView
@@ -10,12 +11,4 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="4" />
-
-    <TextView
-        android:id="@+id/tv_address"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:text="Result" />
 </LinearLayout>

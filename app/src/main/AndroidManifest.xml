@@ -1,41 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yeonae.chamelezone">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="tk.yeonaeyong.shopinshop">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_app_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_app_icon_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
-        <activity android:name=".view.home.HomeActivity"
-            android:windowSoftInputMode="stateHidden">
+        android:theme="@style/AppTheme"
+        tools:ignore="LockedOrientationActivity"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".view.home.StartActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.place.PlaceDetailActivity"/>
-        <activity android:name=".view.search.SearchActivity"/>
-        <activity android:name=".view.course.CourseDetailActivity"/>
-        <activity android:name=".view.course.CourseRegisterActivity"/>
-        <activity android:name=".view.review.ReviewCreateActivity"/>
-        <activity android:name=".view.mypage.myplace.MyPlaceActivity"/>
-        <activity android:name=".view.mypage.myplace.PlaceRegisterActivity"/>
-        <activity android:name=".view.mypage.myplace.SearchAddressActivity"/>
-        <activity android:name=".view.mypage.mycourse.MyCourseActivity"/>
-        <activity android:name=".view.mypage.myreview.MyReviewActivity"/>
-        <activity android:name=".view.login.LoginActivity"/>
-        <activity android:name=".view.login.UserModifyActivity"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBsO2NUfvIVobYpGAHkUdjrwDkTqs1UvxU" />
+
+        <activity
+            android:name=".view.home.HomeActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.place.PlaceDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.search.SearchActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.course.CourseDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.course.CourseRegisterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.review.ReviewCreateActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myplace.MyPlaceActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myplace.PlaceRegisterActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myplace.SearchAddressActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.mycourse.MyCourseActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myreview.MyReviewActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.login.LoginActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.UserModifyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.IntroActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.PersonaInfoActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myreview.MyReviewDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.review.ReviewImageActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.review.ReviewModifyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myplace.OpeningHoursActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.login.JoinActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myreview.MyReviewImageDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myplace.PlaceModifyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.course.CourseModifyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".view.mypage.myplace.OpeningHoursModifyActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".view.place.PlaceImageDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
     </application>
+
 </manifest>

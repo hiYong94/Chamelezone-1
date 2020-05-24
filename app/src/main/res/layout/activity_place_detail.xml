@@ -1,134 +1,174 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-        <ImageButton
-            android:id="@+id/btn_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
-            android:background="@color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/backward" />
-
-    </LinearLayout>
-
-    <ScrollView
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:liftOnScroll="true"
+        app:liftOnScrollTargetViewId="@id/tabs_detail">
 
-        <LinearLayout
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsing_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <view
-                    android:id="@+id/view"
-                    class="androidx.viewpager.widget.ViewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="170dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginRight="30dp" />
-
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="162dp"
-                    app:tabBackground="@drawable/tab_selector"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp">
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="정보" />
-
-                    <com.google.android.material.tabs.TabItem
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="리뷰" />
-
-                </com.google.android.material.tabs.TabLayout>
-
-            </RelativeLayout>
+            app:contentScrim="?attr/colorPrimary"
+            app:expandedTitleGravity="top"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/user_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="100dp"
-                    android:text="구슬모아당구장"
-                    android:textSize="25sp" />
-
-                <ImageButton
-                    android:id="@+id/product_like"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@color/transparent"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/like_empty">
-
-                </ImageButton>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="30dp"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/img_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="4"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent">
+
+                            <androidx.viewpager.widget.ViewPager
+                                android:id="@+id/vp_image"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                            <com.google.android.material.tabs.TabLayout
+                                android:id="@+id/tab_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:background="@color/transparent"
+                                app:tabBackground="@drawable/tab_selector"
+                                app:tabGravity="center"
+                                app:tabIndicatorHeight="0dp" />
+
+                            <ImageButton
+                                android:id="@+id/btn_back"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="10dp"
+                                android:background="?android:selectableItemBackgroundBorderless"
+                                android:padding="10dp"
+                                android:src="@drawable/ic_keyboard_backspace_black_24dp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@color/colorWhite"
+                        android:orientation="horizontal"
+                        android:weightSum="8">
+
+                        <TextView
+                            android:id="@+id/tv_place_name"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="7"
+                            android:text="@string/place_name_test"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="25sp" />
+
+                        <CheckBox
+                            android:id="@+id/btn_like"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_weight="1"
+                            android:button="@null"
+                            android:drawableStart="@drawable/btn_heart"
+                            android:padding="10dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_collapseMode="pin">
+
+                    <RelativeLayout
+                        android:id="@+id/layout_visibility"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorWhite"
+                        android:visibility="gone"
+                        app:layout_collapseMode="pin">
+
+                        <ImageButton
+                            android:id="@+id/btn_back_2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/transparent"
+                            android:padding="20dp"
+                            android:src="@drawable/ic_keyboard_backspace_orange_24dp" />
+
+                        <TextView
+                            android:id="@+id/tv_place_name_two"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="60dp"
+                            android:layout_marginTop="13dp"
+                            android:text="구슬모아당구장"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="25sp" />
+
+                    </RelativeLayout>
 
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/tabs_detail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        app:tabMode="fixed" />
+                        android:background="@color/colorWhite"
+                        app:layout_collapseMode="pin" />
 
-                    <view
-                        android:id="@+id/viewpager_detail"
-                        class="androidx.viewpager.widget.ViewPager"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
-                </RelativeLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:visibility="invisible"
+                app:layout_collapseMode="pin" />
 
-    </ScrollView>
-
-</LinearLayout>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

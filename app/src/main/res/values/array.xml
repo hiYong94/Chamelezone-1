@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="day_array">
-        <item>매일</item>
-        <item>평일</item>
-        <item>주말</item>
+    <string-array name="phone_array">
+        <item>02</item>
+        <item>031</item>
+        <item>032</item>
+        <item>033</item>
+        <item>041</item>
+        <item>042</item>
+        <item>043</item>
+        <item>044</item>
+        <item>050</item>
+        <item>051</item>
+        <item>052</item>
+        <item>053</item>
+        <item>054</item>
+        <item>055</item>
+        <item>061</item>
+        <item>062</item>
+        <item>063</item>
+        <item>064</item>
+        <item>070</item>
+        <item>010</item>
     </string-array>
 
     <string-array name="open_array">
@@ -106,5 +123,19 @@
         <item>22:30</item>
         <item>23:00</item>
         <item>23:30</item>
+    </string-array>
+
+    <string-array name="home_tab">
+        <item>홈</item>
+        <item>코스</item>
+        <item>지도</item>
+        <item>좋아요</item>
+        <item>MY</item>
+    </string-array>
+
+    <string-array name="search_tab">
+        <item>장소명</item>
+        <item>지역명</item>
+        <item>키워드명</item>
     </string-array>
 </resources>

@@ -1,140 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:background="@color/colorWhite">
 
-    <ScrollView
+    <ImageButton
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:padding="10dp"
+        android:src="@drawable/ic_keyboard_backspace_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/review_create"
+        android:textColor="@color/colorBlack"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+        app:layout_constraintStart_toEndOf="@+id/btn_back"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
+
+    <ImageButton
+        android:id="@+id/btn_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:adjustViewBounds="true"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:padding="10dp"
+        android:src="@drawable/ic_check_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_back" />
+
+    <LinearLayout
+        android:id="@+id/ll_touch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="2.75"
+        android:gravity="center"
+        android:minHeight="0dp"
+        android:orientation="vertical"
+        android:weightSum="12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_back">
+
+        <TextView
+            android:id="@+id/tv_place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:textSize="25sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="4"
+            android:background="@drawable/edit_edge">
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/edt_review"
+                style="@style/EditTextStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/selected_btn_background"
-                    android:text="리뷰 등록"
-                    android:textColor="@drawable/selected_btn_text" />
-
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="30dp"
-                    android:text="구슬모아 당구장"
-                    android:textSize="25sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center">
-
-                    <ScrollView
-                        android:layout_width="300dp"
-                        android:layout_height="200dp">
-
-                        <RelativeLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-
-                            <EditText
-                                android:layout_width="300dp"
-                                android:layout_height="200dp"
-                                android:background="@drawable/edit_edge"
-                                android:inputType="textMultiLine|textNoSuggestions" />
-
-                        </RelativeLayout>
-
-                    </ScrollView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="30dp"
-                            android:text="사진"
-                            android:textSize="15sp" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="150dp"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/btn_image_create"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/selected_btn_background"
-                                android:text="사진 등록"
-                                android:textColor="@drawable/selected_btn_text" />
-
-                            <Button
-                                android:id="@+id/btn_image_clear"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="10dp"
-                                android:background="@drawable/selected_btn_background"
-                                android:text="리셋"
-                                android:textColor="@drawable/selected_btn_text" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <HorizontalScrollView
-                        android:id="@+id/scrollView"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:background="#eee"
-                        android:clipToPadding="false"
-                        android:paddingStart="8dp"
-                        android:paddingTop="16dp"
-                        android:paddingEnd="0dp"
-                        android:paddingBottom="16dp"
-                        android:scrollbarStyle="outsideOverlay">
-
-                        <LinearLayout
-                            android:id="@+id/imageContainer"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal" />
-                    </HorizontalScrollView>
-
-                </LinearLayout>
-
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:gravity="top"
+                android:hint="@string/review_create_message"
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack"
+                android:textColorHint="@color/lightGray"
+                android:textSize="15sp"
+                tools:ignore="Suspicious0dp" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6.5"
+            android:orientation="vertical"
+            android:weightSum="5">
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="5">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="0.5"
+                    android:text="@string/image"
+                    android:textSize="15sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.75" />
+
+                <ImageButton
+                    android:id="@+id/btn_image_create"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.7"
+                    android:paddingVertical="10dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_icon" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.15" />
+
+                <ImageButton
+                    android:id="@+id/btn_image_clear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.7"
+                    android:paddingVertical="10dp"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_x" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="3.5"
+                android:background="@color/colorWhite">
+
+                <HorizontalScrollView
+                    android:id="@+id/scroll_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingStart="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="16dp"
+                    android:scrollbarStyle="outsideOverlay">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:weightSum="5">
+
+
+                        <LinearLayout
+                            android:id="@+id/image_container"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="4"
+                            android:orientation="horizontal" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
+
+                </HorizontalScrollView>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.5" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,23 +18,29 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp">
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
 
                 <LinearLayout
+                    android:id="@+id/layout_01"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:id="@+id/iv_place_image"
                         android:layout_width="80dp"
                         android:layout_height="80dp"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginVertical="10dp" />
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/colorGray" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="5dp"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -58,18 +64,16 @@
                                 android:textSize="15sp" />
                         </LinearLayout>
 
-                        <LinearLayout
+                        <ImageButton
+                            android:id="@+id/btn_more"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:background="?android:selectableItemBackgroundBorderless"
+                            android:padding="5dp"
+                            android:src="@drawable/ic_more_black_24dp" />
 
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@color/transparent"
-                                android:padding="5dp"
-                                android:src="@drawable/ic_more_vert_black_24dp" />
-                        </LinearLayout>
                     </LinearLayout>
 
                     <TextView
